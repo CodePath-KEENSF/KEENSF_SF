@@ -40,9 +40,9 @@ The initial set of epics is listed below:
 
 **User Stories**
 
-1) Login page.
-1.1) User needs to login at the first page.
-1.2) Keep login session until user logout.
+1. Login page.
+..1.1) User needs to login at the first page.
+..1.2) Keep login session until user logout.
 2) List out available sessions.
 2.1) Option to select: Coach option.
 2.1.1) Option to select: Register Coach for available sessions.
