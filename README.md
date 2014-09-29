@@ -1,11 +1,14 @@
 KEENSF_SF
 =========
 
-What problem does this app address:
+**What problem does this app address**
+
 KEEN SF is a part of national, nonprofit organization that provides one-to-one-volunteer-led recreational opportunities for children and young adults with developmental delays or physical disabilities at no cost to their families and caregivers. KEEN’s mission is to foster the self-esteem, confidence, skills and talents of its athletes through non-competitive activities, allowing young people facing even the most significant challenges to meet their individual goals.
+
 Currently KEEN relies on their website to register new participants and new volunteers as well as register approved volunteers for an upcoming session. All sessions are one-to-one so its is mandatory to pre-register and be mindful about cancellations. However it is hard to track attendance and athletes progress as coaches and participants cannot be easily check-in for the sessions on the spot. Additionally updating athlete and volunteer profile information is not streamlined at the moment. It requires entering the data by a staff member with appropriate profile access level. There is only one paid staff member and his/her time could be more effectively managed for outreach and program development instead of checking–in and entering data. Furthermore there is a critical need to get parents and volunteers more engaged and better informed about sessions, athlete’s progress feedback and upcoming events.
 
-How does this app will solve that problem:
+**How does this app will solve that problem**
+
 The app should provide an easy and efficient way to check-in coaching volunteers and athletes/parents for a session as well as to update their profile information. Furthermore an app could help with sending SMS/email/push notification updates, reminders and info to parents and volunteers.
 
 The initial set of epics is listed below:
