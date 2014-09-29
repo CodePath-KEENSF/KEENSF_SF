@@ -41,27 +41,27 @@ The initial set of epics is listed below:
 **User Stories**
 
 1. Login page.
-..1.1) User needs to login at the first page.
-..1.2) Keep login session until user logout.
-2) List out available sessions.
-2.1) Option to select: Coach option.
-2.1.1) Option to select: Register Coach for available sessions.
-2.1.2) Option to select: Register Athelets for available sessions.
-2.1.3) Auto-Notification (1 day ahead).
-2.1.3.1) send out SMS to Coach.
-2.1.3.2) send out SMS to Atheletes.
-2.1.3.3) notify User (no need SMS or email) -- just app notification.
-2.2) Option to select: Session option.
-2.2.1) Option to select: Send out Cancelling session.
-2.2.2) Option to select: Check-in Coach for the session.
-2.2.3) Option to select: Check-in Athletes for the session.
-2.2.4) Option to select: Mark athletes as "Absent" for the session if miss the session.
-2.2.5) Option to select: Send out new sessions available.
+..* User needs to login at the first page.
+..* Keep login session until user logout.
+2. List out available sessions.
+..* Option to select: Coach option.
+..* Option to select: Register Coach for available sessions.
+..* Option to select: Register Athelets for available sessions.
+..* Auto-Notification (1 day ahead).
+....* send out SMS to Coach.
+....* send out SMS to Atheletes.
+....* notify User (no need SMS or email) -- just app notification.
+..* Option to select: Session option.
+....* Option to select: Send out Cancelling session.
+....* Option to select: Check-in Coach for the session.
+....* Option to select: Check-in Athletes for the session.
+....* Option to select: Mark athletes as "Absent" for the session if miss the session.
+....* Option to select: Send out new sessions available.
 3) Data Warehouse.
-3.1) Coach.
-3.1.1) Update Coach profile.
-3.1.2) List out all registered sessions belong to the Coach.
-3.2) Atheletes.
-3.2.1) Update Atheletes profile.
-3.2.1) List out all registered sessions belong to the Atheletes.
+..* Coach.
+....* Update Coach profile.
+....* List out all registered sessions belong to the Coach.
+..* Atheletes.
+....* Update Atheletes profile.
+....* List out all registered sessions belong to the Atheletes.
           
