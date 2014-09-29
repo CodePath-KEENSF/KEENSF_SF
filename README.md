@@ -23,7 +23,7 @@ The initial set of epics is listed below:
 6.	As a staff member I want to **_update important athlete profile data_** on the spot so that I do not forget to do it later on the web.
 7.	As a staff member I want to **_notify relevant athletes and coaches about a cancelled session_** so that they know about it.
 8.	As a staff member I want to **_notify relevant athletes and coaches about a new session_** so that they know about it and coaches can register.
-9.	As a staff member I want **_athletes and coaches to be reminded about an upcoming session_** that they are registered to.
+9.	As a staff member I want **_athletes and coaches to be reminded about an upcoming session_** that they are registered to so that they do not forget about it.
 
 **OPTIONAL**
 
