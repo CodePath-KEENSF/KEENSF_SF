@@ -18,7 +18,7 @@ The initial set of epics is listed below:
 1.	As a staff member I want to **_login to KEEN MOBILE_** so that I can get access to required information and actions.
 2.	As a staff member I want to **_register and check-in a coach for a session_** on the spot so that attendance is tracked properly.
 3.	As a staff member I want to **_check-in an athlete for a session_** on the spot so that attendance is tracked properly.
-4.	As a staff member I want to **_mark an athlete as absent for a session_** on the spot so that attendance is tracked properly.
+4.	As a staff member I want to **_mark an athlete as absent from a session_** on the spot so that attendance is tracked properly.
 5.	As a staff member I want to **_update important coach profile data_** on the spot so that I do not forget to do it later on the web.
 6.	As a staff member I want to **_update important athlete profile data_** on the spot so that I do not forget to do it later on the web.
 7.	As a staff member I want to **_notify relevant athletes and coaches about a cancelled session_** so that they know about it.
