@@ -40,28 +40,27 @@ The initial set of epics is listed below:
 
 **User Stories**
 
-1. Login page.
-..* User needs to login at the first page.
+1. Login page
+..* User needs to login at the first page
 ..* Keep login session until user logout.
-2. List out available sessions.
-..* Option to select: Coach option.
-..* Option to select: Register Coach for available sessions.
-..* Option to select: Register Athelets for available sessions.
-..* Auto-Notification (1 day ahead).
-....* send out SMS to Coach.
-....* send out SMS to Atheletes.
-....* notify User (no need SMS or email) -- just app notification.
-..* Option to select: Session option.
-....* Option to select: Send out Cancelling session.
-....* Option to select: Check-in Coach for the session.
-....* Option to select: Check-in Athletes for the session.
-....* Option to select: Mark athletes as "Absent" for the session if miss the session.
+2. List out available sessions
+..* Option to select: Coach option
+..* Option to select: Register Coach for available sessions
+..* Option to select: Register Athelets for available sessions
+..* Auto-Notification (1 day ahead)
+....* send out SMS to Coach
+....* send out SMS to Atheletes
+....* notify User (no need SMS or email) -- just app notification
+..* Option to select: Session option
+....* Option to select: Send out Cancelling session
+....* Option to select: Check-in Coach for the session
+....* Option to select: Check-in Athletes for the session
+....* Option to select: Mark athletes as "Absent" for the session if miss the session
 ....* Option to select: Send out new sessions available.
-3) Data Warehouse.
-..* Coach.
-....* Update Coach profile.
-....* List out all registered sessions belong to the Coach.
-..* Atheletes.
-....* Update Atheletes profile.
-....* List out all registered sessions belong to the Atheletes.
-          
+3) Data Warehouse
+..* Coach
+....* Update Coach profile
+....* List out all registered sessions belong to the Coach
+..* Atheletes
+....* Update Atheletes profile
+....* List out all registered sessions belong to the Atheletes
