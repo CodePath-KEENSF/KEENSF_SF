@@ -2,24 +2,22 @@ package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
+import org.keenusa.connect.fragments.CoachesFragment;
 import org.keenusa.connect.models.TestDataFactory;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-public class CoachListActivity extends Activity {
+public class CoachListActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coach_list);
-
-		ListView lvCoaches = (ListView) findViewById(R.id.lvCoaches);
-		CoachListItemAdapter adapter = new CoachListItemAdapter(this, TestDataFactory.getInstance().getCoachList());
-		lvCoaches.setAdapter(adapter);
 	}
 
 	@Override

@@ -17,4 +17,13 @@
         android:layout_marginBottom="164dp"
         android:text="Go to Coach List" />
 
+    <Button
+        android:id="@+id/btnSessionDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnGoToCoachList"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:text="@string/session_details_button" />
+
 </RelativeLayout>

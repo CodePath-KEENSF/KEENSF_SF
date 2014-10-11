@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/tvProgramNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/program_name_label" />
+
+    <TextView
+        android:id="@+id/tvLocationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvProgramNameLabel"
+        android:layout_marginTop="20dp"
+        android:text="@string/location_label" />
+
+    <TextView
+        android:id="@+id/tvDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvLocationLabel"
+        android:layout_marginTop="20dp"
+        android:text="@string/date_label" />
+
+    <TextView
+        android:id="@+id/tvSessionPeriodLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvDateLabel"
+        android:layout_marginTop="20dp"
+        android:text="@string/session_period_label" />
+
+    <TextView
+        android:id="@+id/tvProgramName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tvProgramNameLabel"
+        android:text="@string/program_name_changable" />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvLocationLabel"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tvLocationLabel"
+        android:text="@string/location_changable" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvSessionPeriodLabel"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tvDateLabel"
+        android:text="@string/date_changable" />
+
+    <TextView
+        android:id="@+id/tvSessionPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvSessionPeriodLabel"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tvSessionPeriodLabel"
+        android:text="@string/session_changable" /> 
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvSessionPeriodLabel" >
+
+    </FrameLayout>
+
+</RelativeLayout>

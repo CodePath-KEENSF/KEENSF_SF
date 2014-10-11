@@ -30,18 +30,34 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090005;
-        public static final int btnGoToCoachList=0x7f090002;
-        public static final int ivCoachProfilePic=0x7f090003;
-        public static final int listView1=0x7f090000;
-        public static final int lvCoaches=0x7f090001;
-        public static final int tvCoachName=0x7f090004;
+        public static final int action_settings=0x7f090011;
+        public static final int btnGoToCoachList=0x7f090001;
+        public static final int btnSessionDetails=0x7f090002;
+        public static final int flContainer=0x7f090000;
+        public static final int ivAthleteProfilePic=0x7f09000b;
+        public static final int ivCoachProfilePic=0x7f09000d;
+        public static final int lvAthletes=0x7f09000f;
+        public static final int lvCoaches=0x7f090010;
+        public static final int tvAthleteName=0x7f09000c;
+        public static final int tvCoachName=0x7f09000e;
+        public static final int tvDate=0x7f090009;
+        public static final int tvDateLabel=0x7f090005;
+        public static final int tvLocation=0x7f090008;
+        public static final int tvLocationLabel=0x7f090004;
+        public static final int tvProgramName=0x7f090007;
+        public static final int tvProgramNameLabel=0x7f090003;
+        public static final int tvSessionPeriod=0x7f09000a;
+        public static final int tvSessionPeriodLabel=0x7f090006;
     }
     public static final class layout {
         public static final int activity_athlete_list=0x7f030000;
         public static final int activity_coach_list=0x7f030001;
         public static final int activity_login=0x7f030002;
-        public static final int coach_list_item=0x7f030003;
+        public static final int activity_session_details=0x7f030003;
+        public static final int athlete_list_item=0x7f030004;
+        public static final int coach_list_item=0x7f030005;
+        public static final int fragment_athletes=0x7f030006;
+        public static final int fragment_coaches=0x7f030007;
     }
     public static final class menu {
         public static final int athlete_list=0x7f080000;
@@ -51,8 +67,19 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
+        public static final int date_changable=0x7f06000c;
+        public static final int date_label=0x7f060008;
+        public static final int hello_world=0x7f060005;
+        public static final int location_changable=0x7f06000b;
+        public static final int location_label=0x7f060007;
+        public static final int program_name_changable=0x7f06000a;
+        public static final int program_name_label=0x7f060006;
+        public static final int session_changable=0x7f06000d;
+        public static final int session_details_button=0x7f06000e;
+        public static final int session_period_label=0x7f060009;
         public static final int title_activity_athlete_list=0x7f060003;
         public static final int title_activity_coach_list=0x7f060002;
+        public static final int title_activity_session_details=0x7f060004;
     }
     public static final class style {
         /** 

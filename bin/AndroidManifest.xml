@@ -27,8 +27,12 @@
             android:label="@string/title_activity_coach_list" >
         </activity>
         <activity
-            android:name="org.keenusa.connect.activities.AthleteListActivity"
+            android:name=".activities.AthleteListActivity"
             android:label="@string/title_activity_athlete_list" >
+        </activity>
+        <activity
+            android:name="org.keenusa.connect.activities.SessionDetailsActivity"
+            android:label="@string/title_activity_session_details" >
         </activity>
     </application>
 
