@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
-public class Session {
+public class KeenSession {
 
 	private long remoteId;
 	private DateTime date;
-	private Program program;
+	private KeenProgram program;
 
 	private boolean openToPublicRegistration;
 	private int numberOfNewCoachesNeeded;
@@ -17,11 +17,11 @@ public class Session {
 	private List<AthleteAttendance> athleteAttendance;
 	private List<CoachAttendance> coachAttendance;
 
-	public Session() {
+	public KeenSession() {
 		super();
 	}
 
-	public Session(long remoteId, DateTime date, Program program, boolean openToPublicRegistration, int numberOfNewCoachesNeeded,
+	public KeenSession(long remoteId, DateTime date, KeenProgram program, boolean openToPublicRegistration, int numberOfNewCoachesNeeded,
 			int numberOfReturningCoachesNeeded, List<AthleteAttendance> athleteAttendance, List<CoachAttendance> coachAttendance) {
 		super();
 		this.remoteId = remoteId;
@@ -32,6 +32,27 @@ public class Session {
 		this.numberOfReturningCoachesNeeded = numberOfReturningCoachesNeeded;
 		this.athleteAttendance = athleteAttendance;
 		this.coachAttendance = coachAttendance;
+	}
+
+	public int getRegisteredAthleteCount() {
+		int registeredAthleteCount = 0;
+		if (program != null && program.getEnrolledAthletes() != null) {
+			registeredAthleteCount = program.getEnrolledAthletes().size();
+		}
+		return registeredAthleteCount;
+	}
+
+	public int getRegisteredCoachCount() {
+		int registeredCoachCount = 0;
+		if (coachAttendance != null) {
+			for (CoachAttendance attendance : coachAttendance) {
+				if (attendance.getAttendanceValue() == CoachAttendance.AttendanceValue.REGISTERED) {
+					registeredCoachCount++;
+				}
+			}
+		}
+
+		return registeredCoachCount;
 	}
 
 	public long getRemoteId() {
@@ -58,11 +79,11 @@ public class Session {
 		this.openToPublicRegistration = openToPublicRegistration;
 	}
 
-	public Program getProgram() {
+	public KeenProgram getProgram() {
 		return program;
 	}
 
-	public void setProgram(Program program) {
+	public void setProgram(KeenProgram program) {
 		this.program = program;
 	}
 

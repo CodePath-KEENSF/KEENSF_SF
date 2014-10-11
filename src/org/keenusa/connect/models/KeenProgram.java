@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
-public class Program {
+public class KeenProgram {
 
 	private long remoteId;
 	private String name;
@@ -20,10 +20,10 @@ public class Program {
 		SPORTS, RECREATION, SPECIAL_EVENTS
 	}
 
-	public Program() {
+	public KeenProgram() {
 	}
 
-	public Program(long remoteId, String name, DateTime activeFromDate, DateTime activeToDate, GeneralProgramType generalProgramType,
+	public KeenProgram(long remoteId, String name, DateTime activeFromDate, DateTime activeToDate, GeneralProgramType generalProgramType,
 			String programTimes, Location location, List<Athlete> enrolledAthletes) {
 		super();
 		this.remoteId = remoteId;

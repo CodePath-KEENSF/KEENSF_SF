@@ -29,8 +29,8 @@ public class TestDataFactory {
 		return instance;
 	}
 
-	public Program getProgram() {
-		return new Program(1, "BASKETBALL CLINIC", parseDate("01/01/2012"), parseDate("01/01/2015"), Program.GeneralProgramType.SPORTS, "1pm-2pm",
+	public KeenProgram getProgram() {
+		return new KeenProgram(1, "BASKETBALL CLINIC", parseDate("01/01/2012"), parseDate("01/01/2015"), KeenProgram.GeneralProgramType.SPORTS, "1pm-2pm",
 				programLocation, getAthleteList());
 	}
 
@@ -92,11 +92,11 @@ public class TestDataFactory {
 		return coaches;
 	}
 
-	public List<Session> getSessionList() {
-		ArrayList<Session> sessions = new ArrayList<Session>();
+	public List<KeenSession> getSessionList() {
+		ArrayList<KeenSession> sessions = new ArrayList<KeenSession>();
 		// program contains list of enrolled athletes (registered athletes)
 		// for a coach once he/she is registered for a session an attendance record is created with AttendanceValue.REGISTERED
-		Session session = new Session(1, parseDate("10/26/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		KeenSession session = new KeenSession(1, parseDate("10/26/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
 		sessions.add(session);
 
 		return sessions;

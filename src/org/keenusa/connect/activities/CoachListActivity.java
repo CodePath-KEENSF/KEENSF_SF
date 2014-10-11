@@ -1,16 +1,13 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.adapters.CoachListItemAdapter;
 import org.keenusa.connect.fragments.CoachesFragment;
-import org.keenusa.connect.models.TestDataFactory;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 public class CoachListActivity extends FragmentActivity {
 
@@ -18,6 +15,11 @@ public class CoachListActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coach_list);
+
+		FragmentTransaction sft = getSupportFragmentManager().beginTransaction();
+		CoachesFragment coachesFragment = new CoachesFragment();
+		sft.add(R.id.flContainer, coachesFragment);
+		sft.commit();
 	}
 
 	@Override

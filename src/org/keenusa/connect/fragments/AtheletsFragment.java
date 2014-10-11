@@ -17,11 +17,12 @@ public class AtheletsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// placeholder. in reality parent activity should tell what athlete list it is expecting e.g. full list or athletes for the session
 		adapter = new AtheletListItemAdapter(getActivity(), TestDataFactory.getInstance().getAthleteList());
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_athletes, container, false);
 		ListView lvAthletes = (ListView) v.findViewById(R.id.lvAthletes);
 		lvAthletes.setAdapter(adapter);

@@ -1,21 +1,25 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.R.id;
-import org.keenusa.connect.R.layout;
-import org.keenusa.connect.R.menu;
+import org.keenusa.connect.fragments.AtheletsFragment;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class AthleteListActivity extends Activity {
+public class AthleteListActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_athlete_list);
+
+		FragmentTransaction sft = getSupportFragmentManager().beginTransaction();
+		AtheletsFragment atheletsFragment = new AtheletsFragment();
+		sft.add(R.id.flContainer, atheletsFragment);
+		sft.commit();
 	}
 
 	@Override

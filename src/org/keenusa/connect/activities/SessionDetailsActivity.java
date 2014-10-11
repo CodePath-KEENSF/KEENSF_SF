@@ -4,7 +4,8 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AtheletsFragment;
 import org.keenusa.connect.fragments.CoachesFragment;
 import org.keenusa.connect.listeners.FragmentTabListener;
-import org.keenusa.connect.models.Program;
+import org.keenusa.connect.models.KeenProgram;
+import org.keenusa.connect.models.KeenSession;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -15,7 +16,11 @@ import android.widget.TextView;
 public class SessionDetailsActivity extends FragmentActivity {
 	private TextView tvProgramNameLabel, tvLocationLabel, tvDateLabel, tvSessionPeriodLabel;
 	private TextView tvProgramName, tvLocation, tvDate, tvSessionPeriod;
-	Program program = null;
+
+	// this is the session that is passed from session list activity or session list activity could pass session id if we use SQLite
+	private KeenSession session;
+	//program is inside session - session.getProgram()
+	KeenProgram program = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +39,11 @@ public class SessionDetailsActivity extends FragmentActivity {
 		tvLocation = (TextView) findViewById(R.id.tvLocation);
 		tvDate = (TextView) findViewById(R.id.tvDate);
 		tvSessionPeriod = (TextView) findViewById(R.id.tvSessionPeriod);
-		
-//		tvProgramName.setText(program.getName());
-//		tvLocation.setLocation(program.getLocation());
-//		tvDate.setText(program.getProgramTimes());
-//		tvSessionPeriod.setText(program.getProgramPeriod);
+
+		//		tvProgramName.setText(program.getName());
+		//		tvLocation.setLocation(program.getLocation());
+		//		tvDate.setText(program.getProgramTimes());
+		//		tvSessionPeriod.setText(program.getProgramPeriod);
 	}
 
 	private void setupTabs() {
@@ -46,24 +51,18 @@ public class SessionDetailsActivity extends FragmentActivity {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(true);
 
-		Tab coaches = actionBar
-			.newTab()
-			.setText("Coaches")
-//			.setIcon(R.drawable.ic_home)
-			.setTag("CoachesFragment")
-			.setTabListener(
-				new FragmentTabListener<CoachesFragment>(R.id.flContainer, this, "Coaches", CoachesFragment.class));
+		Tab coaches = actionBar.newTab().setText("Coaches")
+				//			.setIcon(R.drawable.ic_home)
+				.setTag("CoachesFragment")
+				.setTabListener(new FragmentTabListener<CoachesFragment>(R.id.flContainer, this, "Coaches", CoachesFragment.class));
 
 		actionBar.addTab(coaches);
 		actionBar.selectTab(coaches);
 
-		Tab athletes = actionBar
-			.newTab()
-			.setText("Athletes")
-//			.setIcon(R.drawable.ic_mentions)
-			.setTag("AtheletsFragment")
-			.setTabListener(
-			    new FragmentTabListener<AtheletsFragment>(R.id.flContainer, this, "Athletes", AtheletsFragment.class));
+		Tab athletes = actionBar.newTab().setText("Athletes")
+				//			.setIcon(R.drawable.ic_mentions)
+				.setTag("AtheletsFragment")
+				.setTabListener(new FragmentTabListener<AtheletsFragment>(R.id.flContainer, this, "Athletes", AtheletsFragment.class));
 
 		actionBar.addTab(athletes);
 	}
