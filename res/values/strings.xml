@@ -16,5 +16,15 @@
     <string name="date_changable">Sample Date</string>
     <string name="session_changable">Sample Session</string>
     <string name="session_details_button">Session Details</string>
+    <string name="title_activity_check_in">CheckInActivity</string>
+    <string name="check_in_button">Check-In</string>
+    <string name="search">Search</string>
+    <string name="search_check_in">Enter name ....</string>
+    <string name="header">KEEN SF &#8230;</string>
+    <color name="color">#eee9e9</color>
+    <string-array name="check_in">
+        <item>Coaches</item>
+        <item>Athletes</item>
+    </string-array>
 
 </resources>

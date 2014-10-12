@@ -26,6 +26,7 @@ public class LoginActivity extends Activity {
 
 		Button btnGoToCoachList = (Button) findViewById(R.id.btnGoToCoachList);
 		Button btnSessionDetails = (Button) findViewById(R.id.btnSessionDetails);
+		Button btnCheckIn = (Button) findViewById(R.id.btnCheckIn);
 		btnGoToCoachList.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -43,7 +44,20 @@ public class LoginActivity extends Activity {
 				openSessionDetails();
 			}
 		});
+		
+		btnCheckIn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openCheckIn();
+			}
+		});
 		return true;
+	}
+
+	protected void openCheckIn() {
+		Intent i = new Intent(this, CheckInActivity.class);
+		startActivity(i);
 	}
 
 	protected void openSessionDetails() {

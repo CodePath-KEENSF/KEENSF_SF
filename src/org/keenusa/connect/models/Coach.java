@@ -1,5 +1,7 @@
 package org.keenusa.connect.models;
 
+import java.util.ArrayList;
+
 import org.joda.time.DateTime;
 
 public class Coach extends ContactPerson {
@@ -11,6 +13,8 @@ public class Coach extends ContactPerson {
 	// inactive y/n can be used but there are only 2 out of 650 coaches marked as inactive
 	private boolean isActive;
 	private Location location;
+	private String sequence = "";
+	private String name = "";
 
 	public Coach() {
 		super();
@@ -65,4 +69,19 @@ public class Coach extends ContactPerson {
 		this.isActive = isActive;
 	}
 
+	public String getSequence() {
+		return sequence;
+	}
+	
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 }
