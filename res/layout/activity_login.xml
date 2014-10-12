@@ -9,21 +9,32 @@
     tools:context="org.keenusa.connect.activities.LoginActivity" >
 
     <Button
+        android:id="@+id/btnGoToAthleteList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnGoToCoachList"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:text="Go to Athlete List" />
+
+    <Button
         android:id="@+id/btnGoToCoachList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnGoToAthleteList"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="164dp"
+        android:layout_alignRight="@+id/btnGoToAthleteList"
+        android:layout_marginBottom="178dp"
         android:text="Go to Coach List" />
 
     <Button
         android:id="@+id/btnSessionDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnGoToCoachList"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/btnGoToAthleteList"
+        android:layout_alignLeft="@+id/btnGoToAthleteList"
+        android:layout_alignRight="@+id/btnGoToAthleteList"
+        android:layout_marginBottom="16dp"
         android:text="@string/session_details_button" />
     
     <Button

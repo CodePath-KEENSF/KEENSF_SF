@@ -1,7 +1,11 @@
 package org.keenusa.connect.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.keenusa.connect.networking.RemoteAthlete;
 
 public class Athlete extends ContactPerson {
 
@@ -32,6 +36,32 @@ public class Athlete extends ContactPerson {
 		this.isActive = isActive;
 		this.location = location;
 		this.primaryParent = primaryParent;
+	}
+
+	public static Athlete fromRemoteAthlete(RemoteAthlete remoteAthlete) {
+		Athlete athlete = null;
+		if (remoteAthlete != null) {
+			athlete = new Athlete();
+			athlete.setRemoteId(Long.valueOf(remoteAthlete.getRemoteId()));
+			athlete.setFirstName(remoteAthlete.getFirstName());
+			athlete.setLastName(remoteAthlete.getLastName());
+		}
+		return athlete;
+	}
+
+	public static List<Athlete> fromRemoteAthleteList(List<RemoteAthlete> remoteAthleteList) {
+		List<Athlete> athletes = null;
+		if (remoteAthleteList != null) {
+			athletes = new ArrayList<Athlete>(remoteAthleteList.size());
+			for (RemoteAthlete remoteAthlete : remoteAthleteList) {
+				Athlete athlete = fromRemoteAthlete(remoteAthlete);
+				athletes.add(athlete);
+			}
+
+		} else {
+			athletes = new ArrayList<Athlete>();
+		}
+		return athletes;
 	}
 
 	public long getRemoteId() {

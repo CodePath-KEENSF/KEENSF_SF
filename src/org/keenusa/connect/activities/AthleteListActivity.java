@@ -1,7 +1,12 @@
 package org.keenusa.connect.activities;
 
+import java.util.List;
+
 import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AtheletsFragment;
+import org.keenusa.connect.models.Athlete;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,7 +14,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class AthleteListActivity extends FragmentActivity {
+public class AthleteListActivity<T> extends FragmentActivity implements CivicoreDataResultListener<Athlete> {
+
+	AtheletsFragment atheletsFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +24,12 @@ public class AthleteListActivity extends FragmentActivity {
 		setContentView(R.layout.activity_athlete_list);
 
 		FragmentTransaction sft = getSupportFragmentManager().beginTransaction();
-		AtheletsFragment atheletsFragment = new AtheletsFragment();
+		atheletsFragment = new AtheletsFragment();
 		sft.add(R.id.flContainer, atheletsFragment);
 		sft.commit();
+
+		KeenCivicoreClient client = new KeenCivicoreClient(this);
+		client.fetchAthleteListData(this);
 	}
 
 	@Override
@@ -39,5 +49,12 @@ public class AthleteListActivity extends FragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onListResult(List<Athlete> athletes) {
+		//		if (athletes instanceof List<Athlete>)
+		atheletsFragment.addAPIData(athletes);
+
 	}
 }
