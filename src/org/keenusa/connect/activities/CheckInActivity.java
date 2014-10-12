@@ -33,7 +33,8 @@ public class CheckInActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_check_in);
 		
-		loadCoachesData();
+		// TODO - fixing loading coach data to check-in
+//		loadCoachesData();
 		elvCoaches = (ExpandableListView) findViewById(R.id.elvRegisteredPeople);
 		coachesSubListAdapter = new CoachesSubListAdapter(CheckInActivity.this, coachesSubListArray);
 		elvCoaches.setAdapter(coachesSubListAdapter);
@@ -72,9 +73,9 @@ public class CheckInActivity extends Activity implements OnClickListener{
 		}
 	}
 
-	private void loadCoachesData() {
-		addCoachNames("Coaches", coach.getFirstName() + " " + coach.getLastName());
-	}
+//	private void loadCoachesData() {
+//		addCoachNames("Coaches", coach.getFirstName());
+//	}
 
 	private int addCoachNames(String header, String list) {
 		int groupPosition = 0;
