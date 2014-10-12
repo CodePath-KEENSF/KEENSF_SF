@@ -1,106 +1,115 @@
-//package org.keenusa.connect.networking;
-//
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.net.HttpURLConnection;
-//import java.net.URL;
-//import java.util.List;
-//
-//import org.keenusa.connect.models.Coach;
-//import org.xmlpull.v1.XmlPullParserException;
-//
-//import android.os.AsyncTask;
-//import android.util.Log;
-//
-//public class KeenCivicoreClient {
-//
-//	//  http://fwdev.civicore.com/keen/__revision=apiTest/
-//	// API key bebcc6f2fc64175348e460321de42b53.3.7e9c26ee361ea9052a5033dee59e0673.1499008737
-//
-//	private KeenCivicoreClient() {
-//	}
-//
-//	public static void fetchCoachList(final FetchCoachListResultListener listener) {
-//
-//		AsyncTask<String, Void, String> fetchCoachDataTask = new AsyncTask<String, Void, String>() {
-//			@Override
-//			protected String doInBackground(String... urls) {
-//				try {
-//
-//					return loadXMLDataFromNetwork(urls[0]);
-//
-//					//					
-//				} catch (IOException ioe) {
-//					ioe.printStackTrace();
-//					return null;
-//				} catch (XmlPullParserException xppe) {
-//					xppe.printStackTrace();
-//					return null;
-//				}
-//			}
-//
-//			@Override
-//			protected void onPostExecute(String result) {
-//				Log.i("XML_RESULT", result);
-//			}
-//		};
-//
-//		fetchCoachDataTask.execute();
-//	}
-//
-//	private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
-//		InputStream stream = null;
-//		// Instantiate the parser
-//		CoachListCivicoreXmlParser coachListCivicoreXmlParser = new CoachListCivicoreXmlParser();
-//		List<Coach> entries = null;
-//
-//		String urlString = "http://fwdev.civicore.com/keen/__revision=apiTest/?version=2.0&api={\"key\":\"bebcc6f2fc64175348e460321de42b53.3.7e9c26ee361ea9052a5033dee59e0673.1499008737\",\"function\":\"getAll\",\"tableName\":\"contacts\",\"fieldList\":[\"firstName\", \"lastName\"]}";
-//
-//		try {
-//			stream = downloadUrl(urlString);
-//			entries = stackOverflowXmlParser.parse(stream);
-//			// Makes sure that the InputStream is closed after the app is
-//			// finished using it.
-//		} finally {
-//			if (stream != null) {
-//				stream.close();
-//			}
-//		}
-//
-//		// StackOverflowXmlParser returns a List (called "entries") of Entry objects.
-//		// Each Entry object represents a single post in the XML feed.
-//		// This section processes the entries list to combine each entry with HTML markup.
-//		// Each entry is displayed in the UI as a link that optionally includes
-//		// a text summary.
-//		for (Entry entry : entries) {
-//			htmlString.append("<p><a href='");
-//			htmlString.append(entry.link);
-//			htmlString.append("'>" + entry.title + "</a></p>");
-//			// If the user set the preference to include summary text,
-//			// adds it to the display.
-//			if (pref) {
-//				htmlString.append(entry.summary);
-//			}
-//		}
-//		return htmlString.toString();
-//	}
-//
-//	// Given a string representation of a URL, sets up a connection and gets
-//	// an input stream.
-//	private InputStream downloadUrl(String urlString) throws IOException {
-//		URL url = new URL(urlString);
-//		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//		conn.setReadTimeout(10000 /* milliseconds */);
-//		conn.setConnectTimeout(15000 /* milliseconds */);
-//		conn.setRequestMethod("GET");
-//		conn.setDoInput(true);
-//		// Starts the query
-//		conn.connect();
-//		return conn.getInputStream();
-//	}
-//
-//	public interface FetchCoachListResultListener {
-//		public void onFetchCoachListResult(List<Coach> coaches);
-//	}
-//
-//}
+package org.keenusa.connect.networking;
+
+import java.util.List;
+
+import org.apache.http.Header;
+import org.keenusa.connect.models.Athlete;
+import org.keenusa.connect.models.Coach;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+public class KeenCivicoreClient {
+
+	private final AsyncHttpClient client;
+	private Context context;
+
+	public static final String LOG_TAG_CLASS = KeenCivicoreClient.class.getSimpleName();
+	public static final String LOG_TAG_URL = "URL";
+	public static final String BASE_URL = "http://fwdev.civicore.com/keen/__revision=apiTest/";
+	//	public static final String URL_STRING = "http://fwdev.civicore.com/keen/__revision=apiTest/?version=2.0&api={\"key\":\"bebcc6f2fc64175348e460321de42b53.3.7e9c26ee361ea9052a5033dee59e0673.1499008737\",\"function\":\"getAll\",\"tableName\":\"contacts\",\"fieldList\":[\"firstName\",\"lastName\"],\"pageSize\":\"50\",\"pageNumber\":\"1\"}";
+
+	public static final String VERSION_PARAMETER_KEY = "version";
+	public static final String REQUEST_STRING_PARAMETER_KEY = "api";
+
+	public enum APIRequestCode {
+		COACH_LIST, ATHLETE_LIST
+	};
+
+	public KeenCivicoreClient(Context context) {
+		this.client = new AsyncHttpClient();
+		this.context = context;
+	}
+
+	public void fetchCoachListData(final CivicoreDataResultListener<Coach> listener) {
+
+		String url = buildURL(APIRequestCode.COACH_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					RemoteCoachList coaches = serializer.read(RemoteCoachList.class, new String(arg2));
+					listener.onListResult(Coach.fromRemoteCoachList(coaches.getCoaches()));
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void fetchAthleteListData(final CivicoreDataResultListener<Athlete> listener) {
+
+		String url = buildURL(APIRequestCode.ATHLETE_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					RemoteAthleteList athletes = serializer.read(RemoteAthleteList.class, new String(arg2));
+					listener.onListResult(Athlete.fromRemoteAthleteList(athletes.getAthletes()));
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	private String buildURL(APIRequestCode apiRequestCode) {
+
+		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
+		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
+
+		String apiJSONString = ApiRequestJSONStringBuilder.buildRequestJSONString(context, apiRequestCode, 1);
+
+		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+		String URL = builder.build().toString();
+
+		Log.i(LOG_TAG_URL, URL);
+		return URL;
+	}
+
+	public interface CivicoreDataResultListener<T> {
+		public void onListResult(List<T> list);
+	}
+}

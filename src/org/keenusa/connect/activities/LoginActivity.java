@@ -25,6 +25,7 @@ public class LoginActivity extends Activity {
 		getMenuInflater().inflate(R.menu.login, menu);
 
 		Button btnGoToCoachList = (Button) findViewById(R.id.btnGoToCoachList);
+		Button btnGoToAthleteList = (Button) findViewById(R.id.btnGoToAthleteList);
 		Button btnSessionDetails = (Button) findViewById(R.id.btnSessionDetails);
 		btnGoToCoachList.setOnClickListener(new OnClickListener() {
 
@@ -35,9 +36,19 @@ public class LoginActivity extends Activity {
 			}
 
 		});
-		
+
+		btnGoToAthleteList.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				openAthleteList();
+
+			}
+
+		});
+
 		btnSessionDetails.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				openSessionDetails();
@@ -65,6 +76,12 @@ public class LoginActivity extends Activity {
 
 	private void openCoachList() {
 		Intent i = new Intent(this, CoachListActivity.class);
+		startActivity(i);
+
+	}
+
+	private void openAthleteList() {
+		Intent i = new Intent(this, AthleteListActivity.class);
 		startActivity(i);
 
 	}

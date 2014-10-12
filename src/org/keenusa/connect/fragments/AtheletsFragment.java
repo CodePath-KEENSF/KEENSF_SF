@@ -1,7 +1,10 @@
 package org.keenusa.connect.fragments;
 
+import java.util.List;
+
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.AtheletListItemAdapter;
+import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.TestDataFactory;
 
 import android.os.Bundle;
@@ -31,5 +34,10 @@ public class AtheletsFragment extends Fragment {
 
 	public AtheletListItemAdapter getAdapter() {
 		return adapter;
+	}
+
+	public void addAPIData(List<Athlete> athletes) {
+		adapter.clear();
+		adapter.addAll(athletes);
 	}
 }
