@@ -1,10 +1,7 @@
 package org.keenusa.connect.models;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
 import java.util.List;
->>>>>>> 790dac47e5ed06eb9171a272d6ff5c9340235753
 
 import org.joda.time.DateTime;
 import org.keenusa.connect.networking.RemoteCoach;

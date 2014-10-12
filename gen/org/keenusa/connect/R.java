@@ -34,54 +34,33 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-<<<<<<< HEAD
-        public static final int action_settings=0x7f0a0019;
+        public static final int action_settings=0x7f0a001a;
         public static final int btnAdd=0x7f0a0002;
-        public static final int btnCheckIn=0x7f0a0007;
-        public static final int btnGoToCoachList=0x7f0a0005;
-        public static final int btnSessionDetails=0x7f0a0006;
+        public static final int btnCheckIn=0x7f0a0008;
+        public static final int btnGoToAthleteList=0x7f0a0005;
+        public static final int btnGoToCoachList=0x7f0a0006;
+        public static final int btnSessionDetails=0x7f0a0007;
         public static final int elvRegisteredPeople=0x7f0a0004;
         public static final int etSearch=0x7f0a0001;
         public static final int flContainer=0x7f0a0000;
-        public static final int ivAthleteProfilePic=0x7f0a0010;
-        public static final int ivCoachProfilePic=0x7f0a0012;
-        public static final int lvAthletes=0x7f0a0014;
-        public static final int lvCoaches=0x7f0a0015;
-        public static final int tvAthleteName=0x7f0a0011;
-        public static final int tvCoachName=0x7f0a0013;
-        public static final int tvCoahesList=0x7f0a0018;
-        public static final int tvDate=0x7f0a000e;
-        public static final int tvDateLabel=0x7f0a000a;
+        public static final int ivAthleteProfilePic=0x7f0a0011;
+        public static final int ivCoachProfilePic=0x7f0a0013;
+        public static final int lvAthletes=0x7f0a0015;
+        public static final int lvCoaches=0x7f0a0016;
+        public static final int tvAthleteName=0x7f0a0012;
+        public static final int tvCoachName=0x7f0a0014;
+        public static final int tvCoahesList=0x7f0a0019;
+        public static final int tvDate=0x7f0a000f;
+        public static final int tvDateLabel=0x7f0a000b;
         public static final int tvHeader=0x7f0a0003;
-        public static final int tvHeading=0x7f0a0016;
-        public static final int tvLocation=0x7f0a000d;
-        public static final int tvLocationLabel=0x7f0a0009;
-        public static final int tvProgramName=0x7f0a000c;
-        public static final int tvProgramNameLabel=0x7f0a0008;
-        public static final int tvSequence=0x7f0a0017;
-        public static final int tvSessionPeriod=0x7f0a000f;
-        public static final int tvSessionPeriodLabel=0x7f0a000b;
-=======
-        public static final int action_settings=0x7f090012;
-        public static final int btnGoToAthleteList=0x7f090001;
-        public static final int btnGoToCoachList=0x7f090002;
-        public static final int btnSessionDetails=0x7f090003;
-        public static final int flContainer=0x7f090000;
-        public static final int ivAthleteProfilePic=0x7f09000c;
-        public static final int ivCoachProfilePic=0x7f09000e;
-        public static final int lvAthletes=0x7f090010;
-        public static final int lvCoaches=0x7f090011;
-        public static final int tvAthleteName=0x7f09000d;
-        public static final int tvCoachName=0x7f09000f;
-        public static final int tvDate=0x7f09000a;
-        public static final int tvDateLabel=0x7f090006;
-        public static final int tvLocation=0x7f090009;
-        public static final int tvLocationLabel=0x7f090005;
-        public static final int tvProgramName=0x7f090008;
-        public static final int tvProgramNameLabel=0x7f090004;
-        public static final int tvSessionPeriod=0x7f09000b;
-        public static final int tvSessionPeriodLabel=0x7f090007;
->>>>>>> 790dac47e5ed06eb9171a272d6ff5c9340235753
+        public static final int tvHeading=0x7f0a0017;
+        public static final int tvLocation=0x7f0a000e;
+        public static final int tvLocationLabel=0x7f0a000a;
+        public static final int tvProgramName=0x7f0a000d;
+        public static final int tvProgramNameLabel=0x7f0a0009;
+        public static final int tvSequence=0x7f0a0018;
+        public static final int tvSessionPeriod=0x7f0a0010;
+        public static final int tvSessionPeriodLabel=0x7f0a000c;
     }
     public static final class layout {
         public static final int activity_athlete_list=0x7f030000;
