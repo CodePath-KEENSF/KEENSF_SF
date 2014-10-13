@@ -1,4 +1,4 @@
-package org.keenusa.connect.networking;
+package org.keenusa.connect.models.remote;
 
 import java.util.List;
 
@@ -7,10 +7,10 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 @Root(name = "results")
-public class RemoteAthleteList {
+public class RemoteCoachList {
 
 	@ElementList(inline = true)
-	List<RemoteAthlete> athletes;
+	List<RemoteCoach> coaches;
 
 	@Attribute(name = "totalCount")
 	private String totalCount;
@@ -25,8 +25,16 @@ public class RemoteAthleteList {
 		return totalCount;
 	}
 
-	public List<RemoteAthlete> getAthletes() {
-		return athletes;
+	public String getCount() {
+		return count;
+	}
+
+	public String getPage() {
+		return page;
+	}
+
+	public List<RemoteCoach> getRemoteCoaches() {
+		return coaches;
 	}
 
 }

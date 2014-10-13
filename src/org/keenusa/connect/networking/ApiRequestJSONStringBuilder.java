@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class ApiRequestJSONStringBuilder {
 
-	public static final String PAGE_SIZE = "50";
+	public static final String PAGE_SIZE = "100";
 
 	public static final String LOG_TAG_CLASS = ApiRequestJSONStringBuilder.class.getSimpleName();
 	public static final String API_KEY_PARAMETER_KEY = "key";
@@ -29,8 +29,11 @@ public class ApiRequestJSONStringBuilder {
 	public static final String COACH_TABLE_NAME_VALUE = "contacts";
 	public static final String ATHLETES_TABLE_NAME_VALUE = "youth";
 
-	private static final String[] COACH_FILEDS_LIST = { "firstName", "lastName" };
-	private static final String[] ATHLETE_FILEDS_LIST = { "firstName", "lastName" };
+	private static final String[] COACH_FILEDS_LIST = { "firstName", "lastName", "middleName", "dob", "inactive", "gender", "emailAddress",
+			"cellPhone", "homePhone", "homeCity", "homeState", "homeZipCode" };
+	private static final String[] ATHLETE_FILEDS_LIST = { "firstName", "lastName", "nickName", "dob", "gender", "email", "homePhone", "city",
+			"state", "zipCode", "status", "parentGuardianCellPhone", "parentGuardianEmailAddress", "parentGuardianHomePhone",
+			"parentGuardianRelationship", "primaryLanguageAtHome", "primaryParentGuardianFirstName", "primaryParentGuardianLastName" };
 
 	public static String buildRequestJSONString(Context context, KeenCivicoreClient.APIRequestCode apiRequestCode, int page) {
 		SharedLoggedUserDetails sharedLoggedUserDetails = ((KeenConnectApp) context.getApplicationContext()).getSharedLoggedUserDetails();

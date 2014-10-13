@@ -12,8 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:padding="5dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_user_photos_u" />
 
     <TextView
         android:id="@+id/tvCoachName"
