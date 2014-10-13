@@ -15,28 +15,30 @@ The initial set of epics is listed below:
 
 **REQUIRED**
 
-1.	As a staff member I want to **_login to KEEN MOBILE_** so that I can get access to required information and actions.
-2.	As a staff member I want to **_register and check-in a coach for a session_** on the spot so that attendance is tracked properly.
-3.	As a staff member I want to **_check-in an athlete for a session_** on the spot so that attendance is tracked properly.
-4.	As a staff member I want to **_mark an athlete as absent from a session_** on the spot so that attendance is tracked properly.
-5.	As a staff member I want to **_update important coach profile data_** on the spot so that I do not forget to do it later on the web.
-6.	As a staff member I want to **_update important athlete profile data_** on the spot so that I do not forget to do it later on the web.
-7.	As a staff member I want to **_notify relevant athletes and coaches about a cancelled session_** so that they know about it.
-8.	As a staff member I want to **_notify relevant athletes and coaches about a new session_** so that they know about it and coaches can register.
-9.	As a staff member I want **_athletes and coaches to be reminded about an upcoming session_** that they are registered to so that they do not forget about it.
+1.	User should be able to **_login to KEEN MOBILE_**. As per Civicore one user account is for one affiliate (e.g. KEEN SF) and related data access. If existing  API access key is found then user is not asked to login and Session List screen is loaded. If API access key is not found then user is asked to enter his/her user name and password. Then Civicore API generates an API access key for a user on authentication request. No sign-up should be available.
+2.	User should be able to **_view sessions for today or next available day_** if applicable. Session list should be the main landing screen for a logged user. Session should be grouped by location and ordered by session time within the location group. For each session the following info should be displayed: program name, time, number of registered athletes and number of registered coaches (plus location and date info displayed on the screen). 
+3.	User should be able to **_view session details_** by clicking on a session in session list. The following information for a session should be displayed: date, times, program name, location, registered coach list and registered athlete list.
+4.	User should be able to **_click on a registered participant in session details screen and navigate to relevant profile page_**.
+5.	User should be able to **_register a participant for a session_**. User will search for a coach or athlete by name/surname/phone number and add him/her to a registered coach/athlete list for a session.
+6.	User should be able to **_update attendance status of participant(s) for a session_**. Existing attendance statuses and rules should be applied.
+7.	User should be able to **_see a list of coaches and search for a coach by name/phone_**. Coaches should be ordered with the most recently attended sessions first.
+8.	User should be able to **_contact a coach via sms, email or phone call from the profile screen_** providing that the phone/email for a coach exist.
+9.	User should be able to **_see a list of athletes and search for an athlete by name/phone_**. Athletes should be ordered with the most recently attended sessions first. 
+10.	User should be able to **_contact an athlete’s primary parent via sms, email or phone call from the profile screen_** providing that the phone/email for a primary parent exist.
+11.	User should be able to **_update contact info for a coach_**
+12.	User should be able to **_update contact info for an athlete’s primary parent_**
 
 **OPTIONAL**
+13.	User should be able to **_view session for a selected date in the past or in future_**
+14.	User should be able to **_to filter sessions based on location or program_**. Filtering preferences may be saved for a user.
+15.	User should be able to **_create a new session_**. Date and program should be specified. On session creation **_athletes that enrolled in the program should get notified by email/sms_**.
+16.	User should be able to **_cancel an upcoming session_**. On session cancelation all relevant **_participants that are registered for the session should get notified by email/sms_**.
+17	**_Athletes and coaches should be reminded about an upcoming session_** that they are registered to by email/sms.
+18.	User should be able to **_create and send bulk sms/email to a selected participants_**.
+19.	Coach user should be able to **_login to KEEN MOBILE, view upcoming sessions, register for a session, cancel registration for a session and update own contact info_**.
+20.	Athlete’s parent/guardian user should be able to **_login to KEEN MOBILE, view upcoming sessions, notify about absence and update own contact info_**.
 
-10.	As a coach I want to **_login to KEEN MOBILE_** so that I can get access to required information and actions.
-11.	As a coach I want to **_check-in my athlete and myself for a session_** on the spot so that I can report my attendance.
-12.	As a coach I want to **_update my profile info_** so that it is up-to-date.
-13.	As a coach I want to **_register for a session_** so that KEEN SF knows that I am coming.
-14.	As an athlete’s parent/guardian I want to **_login to KEEN MOBILE_** so that I can get access to required information and actions.
-15.	As an athlete’s parent/guardian I want to **_notify KEENSF that my kid will be absent from a session_** so that KEENSF know about it.
-16.	As an athlete’s parent/guardian I want to **_update my profile info*_* so that it is up-to-date.
-17.	As a staff member I want to **_notify athletes and coaches about a new program_** so that they are informed and can express interest.
-18.	As a staff member I want to **_notify athletes and coaches about a canceled program_** so that they know about it.
-19.	As a staff member I want to **_notify athletes and coaches about an upcoming event_** so that they know about it and can express interest
+
 
 **User Stories**
 
