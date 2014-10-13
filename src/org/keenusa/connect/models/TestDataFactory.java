@@ -94,11 +94,18 @@ public class TestDataFactory {
 
 	public List<KeenSession> getSessionList() {
 		ArrayList<KeenSession> sessions = new ArrayList<KeenSession>();
+		KeenSession session;
 		// program contains list of enrolled athletes (registered athletes)
 		// for a coach once he/she is registered for a session an attendance record is created with AttendanceValue.REGISTERED
-		KeenSession session = new KeenSession(1, parseDate("10/26/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		session = new KeenSession(1, parseDate("10/26/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
 		sessions.add(session);
-
+		session = new KeenSession(1, parseDate("11/02/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/09/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/16/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		
 		return sessions;
 	}
 

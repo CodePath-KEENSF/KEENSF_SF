@@ -18,13 +18,24 @@
     <string name="session_details_button">Session Details</string>
     <string name="title_activity_check_in">CheckInActivity</string>
     <string name="check_in_button">Check-In</string>
+    <string name="session_list_button">Session List</string>
     <string name="search">Search</string>
     <string name="search_check_in">Enter name ....</string>
     <string name="header">KEEN SF &#8230;</string>
+    <string name="session_name_label">Session Name</string>
+    <string name="session_location_label">Session Location</string>
+    <string name="num_athletes_label">23</string>
+    <string name="num_coaches_label">34</string>
+    <string name="session_time_label">4:00 p.m.</string>
+    <string name="session_date_label">10/24/2014</string>
+
     <color name="color">#eee9e9</color>
+
     <string-array name="check_in">
         <item>Coaches</item>
         <item>Athletes</item>
     </string-array>
+
+    <string name="title_activity_session_list">SessionListActivity</string>
 
 </resources>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tvSessionDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/session_date_label" />
+
+    <TextView
+        android:id="@+id/tvSessionTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/session_time_label" />
+
+    <TextView
+        android:id="@+id/tvSessionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvSessionDate"
+        android:text="@string/session_name_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tvSessionLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvSessionName"
+        android:text="@string/session_location_label" />
+
+    <ImageView
+        android:id="@+id/ivAthleteIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvSessionLocation"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tvNumAthletes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivAthleteIcon"
+        android:layout_alignTop="@+id/ivAthleteIcon"
+        android:layout_toRightOf="@+id/ivAthleteIcon"
+        android:text="@string/num_athletes_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageView
+        android:id="@+id/ivCoachIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignBottom="@+id/tvNumAthletes"
+        android:layout_alignTop="@+id/tvNumAthletes"
+        android:layout_toRightOf="@+id/tvNumAthletes"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tvNumCoaches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivCoachIcon"
+        android:layout_alignTop="@+id/ivCoachIcon"
+        android:layout_toRightOf="@+id/ivCoachIcon"
+        android:text="@string/num_coaches_label"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>

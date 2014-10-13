@@ -40,8 +40,12 @@
             android:label="@string/title_activity_session_details" >
         </activity>
         <activity
-            android:name="org.keenusa.connect.activities.CheckInActivity"
+            android:name=".activities.CheckInActivity"
             android:label="@string/title_activity_check_in" >
+        </activity>
+        <activity
+            android:name="org.keenusa.connect.activities.SessionListActivity"
+            android:label="@string/title_activity_session_list" >
         </activity>
     </application>
 
