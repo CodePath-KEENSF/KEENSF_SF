@@ -29,6 +29,7 @@ The initial set of epics is listed below:
 12.	User should be able to **_update contact info for an athlete’s primary parent_**
 
 **OPTIONAL**
+
 13.	User should be able to **_view session for a selected date in the past or in future_**
 14.	User should be able to **_to filter sessions based on location or program_**. Filtering preferences may be saved for a user.
 15.	User should be able to **_create a new session_**. Date and program should be specified. On session creation **_athletes that enrolled in the program should get notified by email/sms_**.
