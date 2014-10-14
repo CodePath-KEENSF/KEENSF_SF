@@ -3,15 +3,20 @@ package org.keenusa.connect.fragments;
 import java.util.List;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.activities.CoachListActivity;
+import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.TestDataFactory;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class CoachesFragment extends Fragment {
@@ -29,6 +34,16 @@ public class CoachesFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
 		ListView lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
+		lvCoaches.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent i = new Intent(getActivity(), CoachProfileActivity.class);
+				i.putExtra(CoachListActivity.COACH_EXTRA_TAG, adapter.getItem(position));
+				startActivity(i);
+
+			}
+		});
 		return v;
 	}
 
@@ -40,4 +55,5 @@ public class CoachesFragment extends Fragment {
 		adapter.clear();
 		adapter.addAll(coaches);
 	}
+
 }

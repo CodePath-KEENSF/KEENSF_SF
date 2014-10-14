@@ -1,0 +1,187 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="org.keenusa.connect.activities.CoachProfileActivity" >
+
+    <TextView
+        android:id="@+id/tvLastAttended"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:text="01 Jan 2014"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvLastAttendedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/tvLastAttended"
+        android:gravity="right"
+        android:text="last attended:"
+        android:textSize="10sp" />
+
+    <ImageView
+        android:id="@+id/ivCoachProfilePic"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignLeft="@id/tvLastAttendedLabel"
+        android:layout_below="@id/tvLastAttendedLabel"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_user_photos_u" />
+
+    <TextView
+        android:id="@+id/tvCoachFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivCoachProfilePic"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/ivCoachProfilePic"
+        android:text="Sam Jetti Smith"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ivActiveIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/tvCoachFullName"
+        android:layout_toRightOf="@+id/tvCoachFullName"
+        android:src="@drawable/ic_active" />
+
+    <TextView
+        android:id="@+id/tvCoachAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachFullName"
+        android:layout_below="@id/tvCoachFullName"
+        android:text="30 years"
+        android:textColor="#ccd6dd"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvCoachForeignLanguagesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/ivCoachProfilePic"
+        android:layout_below="@id/ivCoachProfilePic"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Languages"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvCoachForeignLanguages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachForeignLanguagesLabel"
+        android:layout_below="@id/tvCoachForeignLanguagesLabel"
+        android:text="German" />
+
+    <TextView
+        android:id="@+id/tvCoachSkillsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachForeignLanguages"
+        android:layout_below="@id/tvCoachForeignLanguages"
+        android:layout_marginTop="16dp"
+        android:text="Skills and Experience"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvCoachSkills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachSkillsLabel"
+        android:layout_below="@id/tvCoachSkillsLabel"
+        android:text="Coach" />
+
+    <TextView
+        android:id="@+id/tvCoachLocationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachSkills"
+        android:layout_below="@id/tvCoachSkills"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="16dp"
+        android:text="Location"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvCoachLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvCoachLocationLabel"
+        android:layout_toRightOf="@+id/tvCoachLocationLabel"
+        android:text="San Francisco, CA 9400" />
+
+    <TextView
+        android:id="@+id/tvCoachCellPhoneLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachLocationLabel"
+        android:layout_below="@id/tvCoachLocationLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Mobile"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvCoachCellPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvCoachCellPhoneLabel"
+        android:layout_alignLeft="@id/tvCoachLocation"
+        android:layout_toRightOf="@+id/tvCoachCellPhoneLabel"
+        android:text="650-000-0000" />
+
+    <TextView
+        android:id="@+id/tvCoachPhoneLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachCellPhoneLabel"
+        android:layout_below="@id/tvCoachCellPhoneLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Phone"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvCoachPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvCoachPhoneLabel"
+        android:layout_alignLeft="@id/tvCoachCellPhone"
+        android:layout_toRightOf="@+id/tvCoachPhoneLabel"
+        android:text="650-000-0000" />
+
+    <TextView
+        android:id="@+id/tvCoachEmailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvCoachPhoneLabel"
+        android:layout_below="@id/tvCoachPhoneLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Email"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvCoachEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvCoachEmailLabel"
+        android:layout_alignLeft="@id/tvCoachPhone"
+        android:layout_toRightOf="@+id/tvCoachEmailLabel"
+        android:text="someone@mail.com" />
+
+</RelativeLayout>

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 public class CoachListActivity extends FragmentActivity implements CivicoreDataResultListener<Coach> {
 
+	public static final String COACH_EXTRA_TAG = "COACH";
 	CoachesFragment coachesFragment;
 
 	@Override

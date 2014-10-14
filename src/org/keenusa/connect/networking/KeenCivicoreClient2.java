@@ -17,12 +17,12 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-public class KeenCivicoreClient {
+public class KeenCivicoreClient2 {
 
 	private final AsyncHttpClient client;
 	private Context context;
 
-	public static final String LOG_TAG_CLASS = KeenCivicoreClient.class.getSimpleName();
+	public static final String LOG_TAG_CLASS = KeenCivicoreClient2.class.getSimpleName();
 	public static final String LOG_TAG_URL = "URL";
 	public static final String BASE_URL = "http://fwdev.civicore.com/keen/__revision=apiTest/";
 	//	public static final String URL_STRING = "http://fwdev.civicore.com/keen/__revision=apiTest/?version=2.0&api={\"key\":\"bebcc6f2fc64175348e460321de42b53.3.7e9c26ee361ea9052a5033dee59e0673.1499008737\",\"function\":\"getAll\",\"tableName\":\"contacts\",\"fieldList\":[\"firstName\",\"lastName\"],\"pageSize\":\"50\",\"pageNumber\":\"1\"}";
@@ -34,14 +34,14 @@ public class KeenCivicoreClient {
 		COACH_LIST, ATHLETE_LIST
 	};
 
-	public KeenCivicoreClient(Context context) {
+	public KeenCivicoreClient2(Context context) {
 		this.client = new AsyncHttpClient();
 		this.context = context;
 	}
 
 	public void fetchCoachListData(final CivicoreDataResultListener<Coach> listener) {
 
-		String url = buildURL(APIRequestCode.COACH_LIST);
+		String url = buildURL(KeenCivicoreClient.APIRequestCode.COACH_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
 
 			@Override
@@ -75,7 +75,7 @@ public class KeenCivicoreClient {
 
 	public void fetchAthleteListData(final CivicoreDataResultListener<Athlete> listener) {
 
-		String url = buildURL(APIRequestCode.ATHLETE_LIST);
+		String url = buildURL(KeenCivicoreClient.APIRequestCode.ATHLETE_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
 
 			@Override
@@ -108,7 +108,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	private String buildURL(APIRequestCode apiRequestCode) {
+	private String buildURL(KeenCivicoreClient.APIRequestCode apiRequestCode) {
 
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");

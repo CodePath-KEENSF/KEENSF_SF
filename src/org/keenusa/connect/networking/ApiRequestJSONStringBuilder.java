@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class ApiRequestJSONStringBuilder {
 
-	public static final String PAGE_SIZE = "100";
+	public static final String PAGE_SIZE = "1000";
 
 	public static final String LOG_TAG_CLASS = ApiRequestJSONStringBuilder.class.getSimpleName();
 	public static final String API_KEY_PARAMETER_KEY = "key";
@@ -30,7 +30,7 @@ public class ApiRequestJSONStringBuilder {
 	public static final String ATHLETES_TABLE_NAME_VALUE = "youth";
 
 	private static final String[] COACH_FILEDS_LIST = { "firstName", "lastName", "middleName", "dob", "inactive", "gender", "emailAddress",
-			"cellPhone", "homePhone", "homeCity", "homeState", "homeZipCode" };
+			"cellPhone", "homePhone", "homeCity", "homeState", "homeZipCode", "foreignLanguage", "skillsExperience" };
 	private static final String[] ATHLETE_FILEDS_LIST = { "firstName", "lastName", "nickName", "dob", "gender", "email", "homePhone", "city",
 			"state", "zipCode", "status", "parentGuardianCellPhone", "parentGuardianEmailAddress", "parentGuardianHomePhone",
 			"parentGuardianRelationship", "primaryLanguageAtHome", "primaryParentGuardianFirstName", "primaryParentGuardianLastName" };

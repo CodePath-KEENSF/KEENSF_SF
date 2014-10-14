@@ -1,6 +1,8 @@
 package org.keenusa.connect.models;
 
-public class ContactPerson {
+import java.io.Serializable;
+
+public class ContactPerson implements Serializable {
 
 	private long id;
 	private String firstName;
@@ -91,6 +93,18 @@ public class ContactPerson {
 
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	public String getFullName() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getFirstName());
+		if (getMiddleName() != null && !getMiddleName().isEmpty()) {
+			sb.append(" ");
+			sb.append(getMiddleName());
+		}
+		sb.append(" ");
+		sb.append(getLastName());
+		return sb.toString();
 	}
 
 }

@@ -1,6 +1,8 @@
 package org.keenusa.connect.models;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
 
 	private long id;
 	private String city;
@@ -68,6 +70,43 @@ public class Location {
 
 	public void setAddress2(String address2) {
 		this.address2 = address2;
+	}
+
+	public String getLocationString() {
+
+		StringBuilder sb = new StringBuilder();
+		if (getAddress1() != null && !getAddress1().isEmpty()) {
+			sb.append(getAddress1());
+		}
+		if (getAddress2() != null && !getAddress2().isEmpty()) {
+			if (sb.length() > 0) {
+				sb.append("\n");
+			}
+			sb.append(getAddress2());
+		}
+		if (getCity() != null && !getCity().isEmpty()) {
+			if (sb.length() > 0) {
+				sb.append("\n");
+			}
+			sb.append(getCity());
+		}
+		if (getState() != null && !getState().isEmpty()) {
+			if (getCity() != null && !getCity().isEmpty()) {
+				sb.append(", ");
+			} else if (sb.length() > 0) {
+				sb.append("\n");
+			}
+			sb.append(getState());
+		}
+		if (getZipCode() != null && !getZipCode().isEmpty()) {
+			if ((getState() != null && !getState().isEmpty()) || (getCity() != null && !getCity().isEmpty())) {
+				sb.append(" ");
+			} else if (sb.length() > 0) {
+				sb.append("\n");
+			}
+			sb.append(getZipCode());
+		}
+		return sb.toString();
 	}
 
 }

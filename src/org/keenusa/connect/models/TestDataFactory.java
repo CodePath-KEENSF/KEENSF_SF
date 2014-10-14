@@ -30,8 +30,8 @@ public class TestDataFactory {
 	}
 
 	public KeenProgram getProgram() {
-		return new KeenProgram(1, "BASKETBALL CLINIC", parseDate("01/01/2012"), parseDate("01/01/2015"), KeenProgram.GeneralProgramType.SPORTS, "1pm-2pm",
-				programLocation, getAthleteList());
+		return new KeenProgram(1, "BASKETBALL CLINIC", parseDate("01/01/2012"), parseDate("01/01/2015"), KeenProgram.GeneralProgramType.SPORTS,
+				"1pm-2pm", programLocation, getAthleteList());
 	}
 
 	public List<Athlete> getAthleteList() {
@@ -71,22 +71,22 @@ public class TestDataFactory {
 	public List<Coach> getCoachList() {
 		ArrayList<Coach> coaches = new ArrayList<Coach>();
 		Coach coach = new Coach(1, ContactPerson.Gender.MALE, parseDate("02/02/1970"), true, contactLocation, "Aris", "", "Flopp",
-				"af1452@mailo.com", "6500000006", "6500000006");
+				"af1452@mailo.com", "6500000006", "6500000006", null, null);
 		coaches.add(coach);
 		coach = new Coach(2, ContactPerson.Gender.MALE, parseDate("01/01/1950"), true, contactLocation, "Anthony", "Greg", "Lui", "a.lui@mail.com",
-				"", "6500000007");
+				"", "6500000007", null, null);
 		coaches.add(coach);
 		coach = new Coach(3, ContactPerson.Gender.FEMALE, parseDate("01/01/1990"), true, contactLocation, "Alison", "Luisa", "Ricotta",
-				"alica@stop.com", "7650000101", "6500000008");
+				"alica@stop.com", "7650000101", "6500000008", null, null);
 		coaches.add(coach);
 		coach = new Coach(4, ContactPerson.Gender.MALE, parseDate("10/01/1971"), true, contactLocation, "Nick", "", "Biork",
-				"nick.biork@law.berkley.com", "6500001111", "");
+				"nick.biork@law.berkley.com", "6500001111", "", null, null);
 		coaches.add(coach);
 		coach = new Coach(5, ContactPerson.Gender.FEMALE, parseDate("04/11/1979"), true, contactLocation, "Melody", "", "Biork",
-				"melody.biork@law.berkley.com", "6500001111", "650010101111");
+				"melody.biork@law.berkley.com", "6500001111", "650010101111", null, null);
 		coaches.add(coach);
 		coach = new Coach(6, ContactPerson.Gender.FEMALE, parseDate("04/11/1979"), true, contactLocation, "Rosa", "Maria", "Sanchez",
-				"sanchez45@rio.com", "6500002222", "6500002222");
+				"sanchez45@rio.com", "6500002222", "6500002222", null, null);
 		coaches.add(coach);
 
 		return coaches;
@@ -105,7 +105,7 @@ public class TestDataFactory {
 		sessions.add(session);
 		session = new KeenSession(1, parseDate("11/16/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
 		sessions.add(session);
-		
+
 		return sessions;
 	}
 

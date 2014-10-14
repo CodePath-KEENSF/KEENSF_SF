@@ -44,8 +44,12 @@
             android:label="@string/title_activity_check_in" >
         </activity>
         <activity
-            android:name="org.keenusa.connect.activities.SessionListActivity"
+            android:name=".activities.SessionListActivity"
             android:label="@string/title_activity_session_list" >
+        </activity>
+        <activity
+            android:name="org.keenusa.connect.activities.CoachProfileActivity"
+            android:label="@string/title_activity_coach_profile" >
         </activity>
     </application>
 

@@ -17,6 +17,9 @@ public class Coach extends ContactPerson {
 	// inactive y/n can be used but there are only 2 out of 650 coaches marked as inactive
 	private boolean isActive;
 	private Location location;
+	private String foreignLanguages;
+	private String skillsExperience;
+
 	private String sequence = "";
 	private String name = "";
 
@@ -25,12 +28,14 @@ public class Coach extends ContactPerson {
 	}
 
 	public Coach(long remoteId, Gender gender, DateTime dateOfbirth, boolean isActive, Location location, String firstName, String middleName,
-			String lastName, String email, String phone, String cellPhone) {
+			String lastName, String email, String phone, String cellPhone, String foreignLanguages, String skillsExperience) {
 		super(firstName, middleName, lastName, email, phone, cellPhone, gender);
 		this.remoteId = remoteId;
 		this.dateOfbirth = dateOfbirth;
 		this.isActive = isActive;
 		this.location = location;
+		this.foreignLanguages = foreignLanguages;
+		this.skillsExperience = skillsExperience;
 	}
 
 	public static Coach fromRemoteCoach(RemoteCoach remoteCoach) {
@@ -57,6 +62,8 @@ public class Coach extends ContactPerson {
 			location.setZipCode(remoteCoach.getHomeZipCode());
 			coach.setLocation(location);
 			coach.setGender(CivicoreGenderStringParser.parseGenderString(remoteCoach.getGender()));
+			coach.setForeignLanguages(remoteCoach.getForeignLanguage());
+			coach.setSkillsExperience(remoteCoach.getSkillsExperience());
 		}
 		return coach;
 	}
@@ -130,6 +137,22 @@ public class Coach extends ContactPerson {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getForeignLanguages() {
+		return foreignLanguages;
+	}
+
+	public void setForeignLanguages(String foreignLanguages) {
+		this.foreignLanguages = foreignLanguages;
+	}
+
+	public String getSkillsExperience() {
+		return skillsExperience;
+	}
+
+	public void setSkillsExperience(String skillsExperience) {
+		this.skillsExperience = skillsExperience;
 	}
 
 }

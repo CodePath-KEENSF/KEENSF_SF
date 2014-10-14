@@ -52,13 +52,19 @@ public class RemoteCoach {
 	@Element(name = "homeZipCode", required = false)
 	private String homeZipCode;
 
+	@Element(name = "foreignLanguage", required = false)
+	private String foreignLanguage;
+
+	@Element(name = "skillsExperience", required = false)
+	private String skillsExperience;
+
 	public RemoteCoach() {
 		super();
 	}
 
 	public RemoteCoach(String remoteId, String created, String updated, String firstName, String middleName, String lastName, String dateOfbirth,
 			String inactive, String gender, String emailAddress, String cellPhone, String homePhone, String homeCity, String homeState,
-			String homeZipCode) {
+			String homeZipCode, String foreignLanguage, String skillsExperience) {
 		super();
 		this.remoteId = remoteId;
 		this.created = created;
@@ -75,6 +81,8 @@ public class RemoteCoach {
 		this.homeCity = homeCity;
 		this.homeState = homeState;
 		this.homeZipCode = homeZipCode;
+		this.foreignLanguage = foreignLanguage;
+		this.skillsExperience = skillsExperience;
 	}
 
 	public String getRemoteId() {
@@ -135,6 +143,14 @@ public class RemoteCoach {
 
 	public String getHomeZipCode() {
 		return homeZipCode;
+	}
+
+	public String getForeignLanguage() {
+		return foreignLanguage;
+	}
+
+	public String getSkillsExperience() {
+		return skillsExperience;
 	}
 
 }
