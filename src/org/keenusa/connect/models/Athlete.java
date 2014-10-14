@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.keenusa.connect.networking.RemoteAthlete;
+import org.keenusa.connect.helpers.CivicoreDateStringParser;
+import org.keenusa.connect.helpers.CivicoreGenderStringParser;
+import org.keenusa.connect.helpers.CivicoreParentRelationshipStringParser;
+import org.keenusa.connect.models.remote.RemoteAthlete;
 
 public class Athlete extends ContactPerson {
 
@@ -45,6 +48,35 @@ public class Athlete extends ContactPerson {
 			athlete.setRemoteId(Long.valueOf(remoteAthlete.getRemoteId()));
 			athlete.setFirstName(remoteAthlete.getFirstName());
 			athlete.setLastName(remoteAthlete.getLastName());
+			athlete.setNickName(remoteAthlete.getNickName());
+			athlete.setDateOfBirth(CivicoreDateStringParser.parseDate(remoteAthlete.getDob()));
+			String status = remoteAthlete.getStatus();
+			boolean isActiveValue = true;
+			if (status != null && status.equalsIgnoreCase("inactive")) {
+				isActiveValue = false;
+			}
+			athlete.setActive(isActiveValue);
+			athlete.setPhone(remoteAthlete.getHomePhone());
+			athlete.setEmail(remoteAthlete.getEmail());
+			athlete.setPrimaryLanguage(remoteAthlete.getPrimaryLanguageAtHome());
+			athlete.setGender(CivicoreGenderStringParser.parseGenderString(remoteAthlete.getGender()));
+
+			Location location = new Location();
+			location.setCity(remoteAthlete.getCity());
+			location.setState(remoteAthlete.getState());
+			location.setZipCode(remoteAthlete.getZipCode());
+			athlete.setLocation(location);
+
+			Parent parent = new Parent();
+			parent.setFirstName(remoteAthlete.getPrimaryParentGuardianFirstName());
+			parent.setLastName(remoteAthlete.getPrimaryParentGuardianLastName());
+			parent.setCellPhone(remoteAthlete.getParentGuardianCellPhone());
+			parent.setEmail(remoteAthlete.getParentGuardianEmailAddress());
+			parent.setPhone(remoteAthlete.getParentGuardianHomePhone());
+			parent.setParentRelationship(CivicoreParentRelationshipStringParser.parseParentRelationshipString(remoteAthlete
+					.getParentGuardianRelationship()));
+			parent.setPrimary(true);
+			athlete.setPrimaryParent(parent);
 		}
 		return athlete;
 	}

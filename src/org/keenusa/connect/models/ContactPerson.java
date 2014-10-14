@@ -13,7 +13,7 @@ public class ContactPerson {
 	private Gender gender;
 
 	public enum Gender {
-		MALE, FEMALE
+		MALE, FEMALE, UNKNOWN
 	}
 
 	public ContactPerson() {

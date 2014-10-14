@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.Athlete;
-import org.keenusa.connect.models.Coach;
+import org.keenusa.connect.models.ContactPerson;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -39,6 +39,15 @@ public class AtheletListItemAdapter extends ArrayAdapter<Athlete> {
 
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 		viewHolder.tvAthleteName.setText(athlete.getFirstName() + " " + athlete.getLastName());
+
+		viewHolder.ivAthleteProfilePic.setImageResource(0);
+		if (athlete.getGender() == ContactPerson.Gender.FEMALE) {
+			viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+		} else if (athlete.getGender() == ContactPerson.Gender.MALE) {
+			viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+		} else {
+			viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+		}
 
 		return convertView;
 	}

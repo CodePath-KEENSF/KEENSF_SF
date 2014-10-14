@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.http.Header;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.Coach;
+import org.keenusa.connect.models.remote.RemoteAthleteList;
+import org.keenusa.connect.models.remote.RemoteCoachList;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -48,8 +50,16 @@ public class KeenCivicoreClient {
 				Serializer serializer = new Persister();
 
 				try {
-					RemoteCoachList coaches = serializer.read(RemoteCoachList.class, new String(arg2));
-					listener.onListResult(Coach.fromRemoteCoachList(coaches.getCoaches()));
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					//					response = response.replaceAll("\"", "&quot");
+					response = response.replaceAll("'", "&apos;");
+					//					response = response.replaceAll("<", "&lt");
+					//					response = response.replaceAll(">", "&gt");
+					RemoteCoachList coaches = serializer.read(RemoteCoachList.class, response);
+					if (listener != null) {
+						listener.onListResult(Coach.fromRemoteCoachList(coaches.getRemoteCoaches()));
+					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
 				}
@@ -77,8 +87,17 @@ public class KeenCivicoreClient {
 				Serializer serializer = new Persister();
 
 				try {
-					RemoteAthleteList athletes = serializer.read(RemoteAthleteList.class, new String(arg2));
-					listener.onListResult(Athlete.fromRemoteAthleteList(athletes.getAthletes()));
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					//					response = response.replaceAll("\"", "&quot");
+					response = response.replaceAll("'", "&apos;");
+					//					response = response.replaceAll("<", "&lt");
+					//					response = response.replaceAll(">", "&gt");
+
+					RemoteAthleteList athletes = serializer.read(RemoteAthleteList.class, response);
+					if (listener != null) {
+						listener.onListResult(Athlete.fromRemoteAthleteList(athletes.getRemoteAthletes()));
+					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
 				}

@@ -38,4 +38,14 @@
 
     <string name="title_activity_session_list">SessionListActivity</string>
 
+    <string-array name="navigation_drawer_array">
+        <item>Session-List</item>
+        <item>Check-In</item>
+        <item>Athlete-List</item>
+        <item>Coach-List</item>
+    </string-array>
+    
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_close">close drawer</string>
+
 </resources>
