@@ -31,7 +31,7 @@ public class ApiRequestJSONStringBuilder {
 
 	private static final String[] COACH_FILEDS_LIST = { "firstName", "lastName", "middleName", "dob", "inactive", "gender", "emailAddress",
 			"cellPhone", "homePhone", "homeCity", "homeState", "homeZipCode", "foreignLanguage", "skillsExperience" };
-	private static final String[] ATHLETE_FILEDS_LIST = { "firstName", "lastName", "nickName", "dob", "gender", "email", "homePhone", "city",
+	private static final String[] ATHLETE_FILEDS_LIST = { "firstName", "lastName", "nickName", "dateOfBirth", "gender", "email", "homePhone", "city",
 			"state", "zipCode", "status", "parentGuardianCellPhone", "parentGuardianEmailAddress", "parentGuardianHomePhone",
 			"parentGuardianRelationship", "primaryLanguageAtHome", "primaryParentGuardianFirstName", "primaryParentGuardianLastName" };
 

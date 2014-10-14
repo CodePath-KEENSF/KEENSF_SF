@@ -32,6 +32,8 @@
     <string name="no_phone_text">not provided</string>
     <string name="no_email_text">not provided</string>
     <string name="no_foreign_languages_text">not specified</string>
+    <string name="no_language_at_home_text">not specified</string>
+    <string name="no_parent_relationship_text">not specified</string>
     <string name="no_skills_text">not specified</string>
 
     <color name="color">#eee9e9</color>
@@ -53,5 +55,7 @@
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
     <string name="title_activity_coach_profile">Coach Profile</string>
+    <string name="title_activity_athlete_profile">Athlete Profile</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -97,13 +97,18 @@ public class ContactPerson implements Serializable {
 
 	public String getFullName() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getFirstName());
+		if (getFirstName() != null && !getFirstName().isEmpty()) {
+			sb.append(getFirstName());
+		}
+
 		if (getMiddleName() != null && !getMiddleName().isEmpty()) {
 			sb.append(" ");
 			sb.append(getMiddleName());
 		}
-		sb.append(" ");
-		sb.append(getLastName());
+		if (getLastName() != null && !getLastName().isEmpty()) {
+			sb.append(" ");
+			sb.append(getLastName());
+		}
 		return sb.toString();
 	}
 

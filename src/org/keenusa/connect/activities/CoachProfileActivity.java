@@ -1,6 +1,7 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.fragments.CoachesFragment;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
 
@@ -34,7 +35,7 @@ public class CoachProfileActivity extends Activity {
 		setContentView(R.layout.activity_coach_profile);
 
 		Intent i = getIntent();
-		Coach coach = (Coach) i.getSerializableExtra(CoachListActivity.COACH_EXTRA_TAG);
+		Coach coach = (Coach) i.getSerializableExtra(CoachesFragment.COACH_EXTRA_TAG);
 		setupViews();
 		populateViews(coach);
 

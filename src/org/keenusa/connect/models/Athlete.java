@@ -113,7 +113,7 @@ public class Athlete extends ContactPerson {
 	}
 
 	public int getAge() {
-		return age;
+		return (new Period(dateOfBirth, (new DateTime()))).getYears();
 	}
 
 	public DateTime getDateOfBirth() {
@@ -122,7 +122,7 @@ public class Athlete extends ContactPerson {
 
 	public void setDateOfBirth(DateTime dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-		this.age = new Period(dateOfBirth, (new DateTime())).getYears();
+		this.age = (new Period(dateOfBirth, (new DateTime()))).getYears();
 	}
 
 	public String getPrimaryLanguage() {
@@ -141,7 +141,7 @@ public class Athlete extends ContactPerson {
 		this.location = location;
 	}
 
-	public ContactPerson getPrimaryParent() {
+	public Parent getPrimaryParent() {
 		return primaryParent;
 	}
 

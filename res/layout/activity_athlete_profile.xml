@@ -1,0 +1,301 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="org.keenusa.connect.activities.CoachProfileActivity" >
+
+    <TextView
+        android:id="@+id/tvLastAttended"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:text="01 Jan 2014"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tvLastAttendedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/tvLastAttended"
+        android:gravity="right"
+        android:text="last attended:"
+        android:textSize="10sp" />
+
+    <ImageView
+        android:id="@+id/ivAthleteProfilePic"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignLeft="@id/tvLastAttendedLabel"
+        android:layout_below="@id/tvLastAttendedLabel"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_user_photos_u" />
+
+    <TextView
+        android:id="@+id/tvAthleteFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ivAthleteProfilePic"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/ivAthleteProfilePic"
+        android:text="Sam Jetti Smith"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ivActiveIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@id/tvAthleteFullName"
+        android:layout_toRightOf="@id/tvAthleteFullName"
+        android:src="@drawable/ic_active" />
+
+    <LinearLayout
+        android:id="@+id/llAthleteNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvAthleteFullName"
+        android:layout_below="@id/tvAthleteFullName"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvAthleteNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Sammy"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvAthleteAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/llAthleteNickName"
+        android:layout_toRightOf="@id/llAthleteNickName"
+        android:text="10 years"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tvAthleteLanguageAtHomeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/ivAthleteProfilePic"
+        android:layout_below="@id/ivAthleteProfilePic"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="16dp"
+        android:text="Language"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvAthleteLanguageAtHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvAthleteLanguageAtHomeLabel"
+        android:layout_toRightOf="@id/tvAthleteLanguageAtHomeLabel"
+        android:text="German" />
+
+    <TextView
+        android:id="@+id/tvAthleteLocationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvAthleteLanguageAtHomeLabel"
+        android:layout_below="@id/tvAthleteLanguageAtHomeLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Location"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvAthleteLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvAthleteLocationLabel"
+        android:layout_alignLeft="@id/tvAthleteLanguageAtHome"
+        android:layout_toRightOf="@id/tvAthleteLocationLabel"
+        android:text="San Francisco, CA 9400" />
+
+    <TextView
+        android:id="@+id/tvAthleteCellPhoneLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvAthleteLocationLabel"
+        android:layout_below="@id/tvAthleteLocationLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Mobile"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvAthleteCellPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvAthleteCellPhoneLabel"
+        android:layout_alignLeft="@id/tvAthleteLocation"
+        android:layout_toRightOf="@+id/tvAthleteCellPhoneLabel"
+        android:text="650-000-0000" />
+
+    <TextView
+        android:id="@+id/tvAthletePhoneLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvAthleteCellPhoneLabel"
+        android:layout_below="@id/tvAthleteCellPhoneLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Phone"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvAthletePhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvAthletePhoneLabel"
+        android:layout_alignLeft="@id/tvAthleteCellPhone"
+        android:layout_toRightOf="@id/tvAthletePhoneLabel"
+        android:text="650-000-0000" />
+
+    <TextView
+        android:id="@+id/tvAthleteEmailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvAthletePhoneLabel"
+        android:layout_below="@id/tvAthletePhoneLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Email"
+        android:textColor="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/tvAthleteEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvAthleteEmailLabel"
+        android:layout_alignLeft="@id/tvAthletePhone"
+        android:layout_toRightOf="@id/tvAthleteEmailLabel"
+        android:text="someone@mail.com" />
+
+    <RelativeLayout
+        android:id="@+id/rlPrimaryParent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvAthleteEmailLabel"
+        android:layout_below="@id/tvAthleteEmailLabel"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/tvAthletePrimaryParentLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Primary Parent"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentRelationshipLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAthletePrimaryParentLabel"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Relationship"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentRelationship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvAthleteParentRelationshipLabel"
+            android:layout_toRightOf="@id/tvAthleteParentRelationshipLabel"
+            android:text="mother" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentFullNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAthleteParentRelationshipLabel"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Name"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvAthleteParentFullNameLabel"
+            android:layout_alignLeft="@id/tvAthleteParentRelationship"
+            android:layout_toRightOf="@id/tvAthleteParentFullNameLabel"
+            android:text="Elissa Smith" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentCellPhoneLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvAthleteParentFullNameLabel"
+            android:layout_below="@id/tvAthleteParentFullNameLabel"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Mobile"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentCellPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvAthleteParentCellPhoneLabel"
+            android:layout_alignLeft="@id/tvAthleteParentFullName"
+            android:layout_toRightOf="@+id/tvAthleteParentCellPhoneLabel"
+            android:text="650-000-0000" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentPhoneLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvAthleteParentCellPhoneLabel"
+            android:layout_below="@id/tvAthleteParentCellPhoneLabel"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Phone"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvAthleteParentPhoneLabel"
+            android:layout_alignLeft="@id/tvAthleteParentCellPhone"
+            android:layout_toRightOf="@id/tvAthleteParentPhoneLabel"
+            android:text="650-000-0000" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentEmailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvAthleteParentPhoneLabel"
+            android:layout_below="@id/tvAthleteParentPhoneLabel"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Email"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/tvAthleteParentEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvAthleteParentEmailLabel"
+            android:layout_alignLeft="@id/tvAthleteParentPhone"
+            android:layout_toRightOf="@id/tvAthleteParentEmailLabel"
+            android:text="someone@mail.com" />
+    </RelativeLayout>
+
+</RelativeLayout>

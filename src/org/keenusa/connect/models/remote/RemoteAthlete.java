@@ -25,7 +25,7 @@ public class RemoteAthlete {
 	@Element(name = "nickName", required = false)
 	private String nickName;
 
-	@Element(name = "dob", required = false)
+	@Element(name = "dateOfBirth", required = false)
 	private String dob;
 
 	@Element(name = "gender", required = false)

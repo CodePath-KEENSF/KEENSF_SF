@@ -3,7 +3,6 @@ package org.keenusa.connect.fragments;
 import java.util.List;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.activities.CoachListActivity;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
 import org.keenusa.connect.models.Coach;
@@ -20,6 +19,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class CoachesFragment extends Fragment {
+
+	public static final String COACH_EXTRA_TAG = "COACH";
 	CoachListItemAdapter adapter;
 
 	@Override
@@ -39,7 +40,7 @@ public class CoachesFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent i = new Intent(getActivity(), CoachProfileActivity.class);
-				i.putExtra(CoachListActivity.COACH_EXTRA_TAG, adapter.getItem(position));
+				i.putExtra(COACH_EXTRA_TAG, adapter.getItem(position));
 				startActivity(i);
 
 			}
