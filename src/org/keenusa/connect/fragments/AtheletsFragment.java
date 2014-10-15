@@ -2,8 +2,8 @@ package org.keenusa.connect.fragments;
 
 import java.util.List;
 
-import org.keenusa.connect.AthleteProfileActivity;
 import org.keenusa.connect.R;
+import org.keenusa.connect.activities.AthleteProfileActivity;
 import org.keenusa.connect.adapters.AtheletListItemAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.TestDataFactory;

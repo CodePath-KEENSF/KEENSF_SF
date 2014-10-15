@@ -38,7 +38,7 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 		}
 
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-		viewHolder.tvCoachName.setText(coach.getFirstName() + " " + coach.getLastName());
+		viewHolder.tvCoachName.setText(coach.getFullName());
 
 		viewHolder.ivCoachProfilePic.setImageResource(0);
 		if (coach.getGender() == ContactPerson.Gender.FEMALE) {

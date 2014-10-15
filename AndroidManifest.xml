@@ -9,6 +9,7 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -52,7 +53,7 @@
             android:label="@string/title_activity_coach_profile" >
         </activity>
         <activity
-            android:name=".AthleteProfileActivity"
+            android:name="org.keenusa.connect.activities.AthleteProfileActivity"
             android:label="@string/title_activity_athlete_profile" >
         </activity>
     </application>

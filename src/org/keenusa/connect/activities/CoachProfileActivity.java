@@ -2,6 +2,8 @@ package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.CoachesFragment;
+import org.keenusa.connect.listeners.OnEmailLongClickListener;
+import org.keenusa.connect.listeners.OnPhoneLongClickListener;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
 
@@ -29,10 +31,15 @@ public class CoachProfileActivity extends Activity {
 	private TextView tvCoachForeignLanguages;
 	private TextView tvCoachSkills;
 
+	private OnPhoneLongClickListener onPhoneLongClickListener;
+	private OnEmailLongClickListener onEmailLongClickListener;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coach_profile);
+		onPhoneLongClickListener = new OnPhoneLongClickListener(this);
+		onEmailLongClickListener = new OnEmailLongClickListener(this);
 
 		Intent i = getIntent();
 		Coach coach = (Coach) i.getSerializableExtra(CoachesFragment.COACH_EXTRA_TAG);
@@ -84,12 +91,15 @@ public class CoachProfileActivity extends Activity {
 			} else {
 				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_u);
 			}
+
 			tvCoachFullName.setText(coach.getFullName());
+
 			if (coach.isActive()) {
 				ivActiveIcon.setImageResource(R.drawable.ic_active);
 			} else {
 				ivActiveIcon.setImageResource(0);
 			}
+
 			if (coach.getAge() > 0) {
 				tvCoachAge.setText(coach.getAge() + " years");
 			} else {
@@ -106,20 +116,25 @@ public class CoachProfileActivity extends Activity {
 
 			String mobile = coach.getCellPhone();
 			if (mobile == null || mobile.isEmpty()) {
+				tvCoachCellPhone.setEnabled(false);
 				mobile = getResources().getString(R.string.no_mobile_text);
 				tvCoachCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
 				tvCoachCellPhone.setTypeface(null, Typeface.ITALIC);
 			}
 			tvCoachCellPhone.setText(mobile);
+
 			String phone = coach.getPhone();
 			if (phone == null || phone.isEmpty()) {
+				tvCoachPhone.setEnabled(false);
 				phone = getResources().getString(R.string.no_phone_text);
 				tvCoachPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
 				tvCoachPhone.setTypeface(null, Typeface.ITALIC);
 			}
 			tvCoachPhone.setText(phone);
+
 			String email = coach.getEmail();
 			if (email == null || email.isEmpty()) {
+				tvCoachEmail.setEnabled(false);
 				email = getResources().getString(R.string.no_email_text);
 				tvCoachEmail.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
 				tvCoachEmail.setTypeface(null, Typeface.ITALIC);
@@ -141,7 +156,19 @@ public class CoachProfileActivity extends Activity {
 				tvCoachSkills.setTypeface(null, Typeface.ITALIC);
 			}
 			tvCoachSkills.setText(skills);
+			setupOnPhoneLongClickListeners();
+			setupOnEmailLongClickListeners();
 		}
+
+	}
+
+	private void setupOnPhoneLongClickListeners() {
+		tvCoachCellPhone.setOnLongClickListener(onPhoneLongClickListener);
+		tvCoachPhone.setOnLongClickListener(onPhoneLongClickListener);
+	}
+
+	private void setupOnEmailLongClickListeners() {
+		tvCoachEmail.setOnLongClickListener(onEmailLongClickListener);
 
 	}
 }

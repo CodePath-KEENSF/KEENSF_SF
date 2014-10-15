@@ -64,9 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tvCoachFullName"
         android:layout_below="@id/tvCoachFullName"
-        android:text="30 years"
-        android:textColor="#ccd6dd"
-        android:textSize="10sp" />
+        android:text="30 years" />
 
     <TextView
         android:id="@+id/tvCoachForeignLanguagesLabel"
@@ -107,12 +105,13 @@
 
     <TextView
         android:id="@+id/tvCoachLocationLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tvCoachSkills"
         android:layout_below="@id/tvCoachSkills"
+        android:layout_marginBottom="15dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:text="Location"
         android:textColor="@android:color/holo_green_dark" />
 
@@ -126,12 +125,13 @@
 
     <TextView
         android:id="@+id/tvCoachCellPhoneLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tvCoachLocationLabel"
         android:layout_below="@id/tvCoachLocationLabel"
+        android:layout_marginBottom="15dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:text="Mobile"
         android:textColor="@android:color/holo_green_dark" />
 
@@ -142,16 +142,18 @@
         android:layout_alignBaseline="@id/tvCoachCellPhoneLabel"
         android:layout_alignLeft="@id/tvCoachLocation"
         android:layout_toRightOf="@+id/tvCoachCellPhoneLabel"
-        android:text="650-000-0000" />
+        android:text="650-000-0000"
+        android:textColor="@android:color/holo_blue_dark" />
 
     <TextView
         android:id="@+id/tvCoachPhoneLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tvCoachCellPhoneLabel"
         android:layout_below="@id/tvCoachCellPhoneLabel"
+        android:layout_marginBottom="15dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:text="Phone"
         android:textColor="@android:color/holo_green_dark" />
 
@@ -162,16 +164,18 @@
         android:layout_alignBaseline="@id/tvCoachPhoneLabel"
         android:layout_alignLeft="@id/tvCoachCellPhone"
         android:layout_toRightOf="@+id/tvCoachPhoneLabel"
-        android:text="650-000-0000" />
+        android:text="650-000-0000"
+        android:textColor="@android:color/holo_blue_dark" />
 
     <TextView
         android:id="@+id/tvCoachEmailLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tvCoachPhoneLabel"
         android:layout_below="@id/tvCoachPhoneLabel"
+        android:layout_marginBottom="15dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:text="Email"
         android:textColor="@android:color/holo_green_dark" />
 
@@ -182,6 +186,7 @@
         android:layout_alignBaseline="@id/tvCoachEmailLabel"
         android:layout_alignLeft="@id/tvCoachPhone"
         android:layout_toRightOf="@+id/tvCoachEmailLabel"
-        android:text="someone@mail.com" />
+        android:text="someone@mail.com"
+        android:textColor="@android:color/holo_blue_dark" />
 
 </RelativeLayout>

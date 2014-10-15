@@ -38,7 +38,7 @@ public class AtheletListItemAdapter extends ArrayAdapter<Athlete> {
 		}
 
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-		viewHolder.tvAthleteName.setText(athlete.getFirstName() + " " + athlete.getLastName());
+		viewHolder.tvAthleteName.setText(athlete.getFullName());
 
 		viewHolder.ivAthleteProfilePic.setImageResource(0);
 		if (athlete.getGender() == ContactPerson.Gender.FEMALE) {

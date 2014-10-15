@@ -15,8 +15,6 @@ public class Athlete extends ContactPerson {
 	private long remoteId;
 	// can be empty in the source but present in recent records
 	private String nickName;
-	// to be calculated from dob
-	private int age;
 	private DateTime dateOfBirth;
 	private String primaryLanguage;
 	// status can be empty in the source. values observed : Approved and Inactive
@@ -122,7 +120,6 @@ public class Athlete extends ContactPerson {
 
 	public void setDateOfBirth(DateTime dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-		this.age = (new Period(dateOfBirth, (new DateTime()))).getYears();
 	}
 
 	public String getPrimaryLanguage() {

@@ -27,10 +27,10 @@
     <string name="num_coaches_label">34</string>
     <string name="session_time_label">4:00 p.m.</string>
     <string name="session_date_label">10/24/2014</string>
-    <string name="no_location_text">not provided</string>
-    <string name="no_mobile_text">not provided</string>
-    <string name="no_phone_text">not provided</string>
-    <string name="no_email_text">not provided</string>
+    <string name="no_location_text">not specified</string>
+    <string name="no_mobile_text">not specified</string>
+    <string name="no_phone_text">not specified</string>
+    <string name="no_email_text">not specified</string>
     <string name="no_foreign_languages_text">not specified</string>
     <string name="no_language_at_home_text">not specified</string>
     <string name="no_parent_relationship_text">not specified</string>

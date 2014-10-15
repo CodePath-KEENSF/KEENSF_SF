@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreGenderStringParser;
 import org.keenusa.connect.models.remote.RemoteCoach;
 
+import android.util.Log;
+
 public class Coach extends ContactPerson {
 
 	private long remoteId;
-	private int age;
-	private DateTime dateOfbirth;
+	private DateTime dateOfBirth;
 	// status mostly empty in the source
 	// inactive y/n can be used but there are only 2 out of 650 coaches marked as inactive
 	private boolean isActive;
@@ -27,11 +29,11 @@ public class Coach extends ContactPerson {
 		super();
 	}
 
-	public Coach(long remoteId, Gender gender, DateTime dateOfbirth, boolean isActive, Location location, String firstName, String middleName,
+	public Coach(long remoteId, Gender gender, DateTime dateOfBirth, boolean isActive, Location location, String firstName, String middleName,
 			String lastName, String email, String phone, String cellPhone, String foreignLanguages, String skillsExperience) {
 		super(firstName, middleName, lastName, email, phone, cellPhone, gender);
 		this.remoteId = remoteId;
-		this.dateOfbirth = dateOfbirth;
+		this.dateOfBirth = dateOfBirth;
 		this.isActive = isActive;
 		this.location = location;
 		this.foreignLanguages = foreignLanguages;
@@ -42,11 +44,15 @@ public class Coach extends ContactPerson {
 		Coach coach = null;
 		if (remoteCoach != null) {
 			coach = new Coach();
+			if (remoteCoach.getDateOfbirth() != null) {
+				Log.d("DOB", remoteCoach.getDateOfbirth() + " " + remoteCoach.getFirstName() + " " + remoteCoach.getLastName());
+			}
+
 			coach.setRemoteId(Long.valueOf(remoteCoach.getRemoteId()));
 			coach.setFirstName(remoteCoach.getFirstName());
 			coach.setLastName(remoteCoach.getLastName());
 			coach.setMiddleName(remoteCoach.getMiddleName());
-			coach.setDateOfbirth(CivicoreDateStringParser.parseDate(remoteCoach.getDateOfbirth()));
+			coach.setDateOfBirth(CivicoreDateStringParser.parseDate(remoteCoach.getDateOfbirth()));
 			String inactiveString = remoteCoach.getInactive();
 			boolean isActiveValue = true;
 			if (inactiveString != null && inactiveString.equalsIgnoreCase("yes")) {
@@ -92,19 +98,15 @@ public class Coach extends ContactPerson {
 	}
 
 	public int getAge() {
-		return age;
+		return (new Period(dateOfBirth, (new DateTime()))).getYears();
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public DateTime getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public DateTime getDateOfbirth() {
-		return dateOfbirth;
-	}
-
-	public void setDateOfbirth(DateTime dateOfbirth) {
-		this.dateOfbirth = dateOfbirth;
+	public void setDateOfBirth(DateTime dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public Location getLocation() {

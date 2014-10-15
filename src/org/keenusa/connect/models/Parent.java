@@ -9,7 +9,17 @@ public class Parent extends ContactPerson {
 
 	//in remote source lookup 97
 	public enum ParentRelationship {
-		MOTHER, FATHER, GRANDPARENT, OTHER, PARENTS, FOSTER_PARENT
+		MOTHER("mother"), FATHER("father"), GRANDPARENT("grandparent"), OTHER("parent/guardian"), PARENTS("parents"), FOSTER_PARENT("foster parent");
+
+		private final String displayName;
+
+		private ParentRelationship(String displayName) {
+			this.displayName = displayName;
+		}
+
+		public String getDisplayName() {
+			return displayName;
+		}
 	}
 
 	public Parent() {
