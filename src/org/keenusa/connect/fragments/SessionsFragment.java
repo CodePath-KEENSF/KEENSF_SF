@@ -5,25 +5,30 @@ import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.SessionDetailsActivity;
-import org.keenusa.connect.adapters.SessionListItemAdapter;
+import org.keenusa.connect.adapters.StickySessionListItemAdapter;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.models.TestDataFactory;
 
-import android.support.v4.app.Fragment;
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 public class SessionsFragment extends Fragment {
 
-	private ListView lvSessionList;
 	private ArrayList<KeenSession>sessionList;
-	private SessionListItemAdapter sessionListAdapter;
+	
+    // Sticky Header List View
+    private ExpandableStickyListHeadersListView expandableStickySessionList;
+    private StickyListHeadersAdapter expandableStickySessionListAdapter;
+
 
 	// Creates a new fragment with given arguments
 	public static SessionsFragment newInstance() {
@@ -49,13 +54,24 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setOnClickListeners() {
-		lvSessionList.setOnItemClickListener(new OnItemClickListener() {
+		expandableStickySessionList.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int pos, long id) {
 				openSessionDetails(pos);
 			}
 		});
+
+		expandableStickySessionList.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+            @Override
+            public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+                if(expandableStickySessionList.isHeaderCollapsed(headerId)){
+                	expandableStickySessionList.expand(headerId);
+                }else {
+                	expandableStickySessionList.collapse(headerId);
+                }
+            }
+        });
 	}
 
 	private void openSessionDetails(int pos) {
@@ -65,20 +81,23 @@ public class SessionsFragment extends Fragment {
 
 	private void setAdapter() {
 		sessionList = new ArrayList<KeenSession>(TestDataFactory.getInstance().getSessionList());
-		sessionListAdapter = new SessionListItemAdapter(getActivity(), sessionList);
+		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 	}
 
 	private void setViews(View v) {
-		lvSessionList = (ListView)v.findViewById(R.id.lvSessionList);
-		lvSessionList.setAdapter(sessionListAdapter);
+		expandableStickySessionList = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
+		expandableStickySessionList.setAdapter(expandableStickySessionListAdapter);
 	}
 
-	public SessionListItemAdapter getAdapter() {
-		return sessionListAdapter;
+	public StickyListHeadersAdapter getAdapter() {
+		return expandableStickySessionListAdapter;
 	}
 
-	public void addAPIData(List<KeenSession> sessions) {
-		sessionListAdapter.clear();
-		sessionListAdapter.addAll(sessions);
-	}
+//	public void addAPIData(List<KeenSession> sessions) {
+//		sessionListAdapter.clear();
+//		sessionListAdapter.addAll(sessions);
+//		
+//		expandableStickySessionListAdapter.clear();
+//		expandableStickySessionListAdapter.addAll(sessions);
+//	}
 }
