@@ -24,39 +24,7 @@ public class LoginActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
 
-		Button btnGoToCoachList = (Button) findViewById(R.id.btnGoToCoachList);
-		Button btnGoToAthleteList = (Button) findViewById(R.id.btnGoToAthleteList);
-		Button btnSessionDetails = (Button) findViewById(R.id.btnSessionDetails);
-		Button btnSessionList = (Button) findViewById(R.id.btnSessionList);
 		Button btnCheckIn = (Button) findViewById(R.id.btnCheckIn);
-		btnGoToCoachList.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				openCoachList();
-
-			}
-
-		});
-
-		btnGoToAthleteList.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				openAthleteList();
-
-			}
-
-		});
-
-		btnSessionDetails.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				openSessionDetails();
-			}
-		});
-		
 		btnCheckIn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -65,14 +33,61 @@ public class LoginActivity extends Activity {
 			}
 		});
 		
-		btnSessionList.setOnClickListener(new OnClickListener() {
+		Button btnLogin = (Button) findViewById(R.id.btnLogin);
+		btnLogin.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				openSessionList();
+				openSessionAthleteCoachList();
 			}
 		});
+
+//		Button btnGoToCoachList = (Button) findViewById(R.id.btnGoToCoachList);
+//		btnGoToCoachList.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				openCoachList();
+//
+//			}
+//
+//		});
+//
+//		Button btnGoToAthleteList = (Button) findViewById(R.id.btnGoToAthleteList);
+//		btnGoToAthleteList.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				openAthleteList();
+//
+//			}
+//
+//		});
+//
+//		Button btnSessionDetails = (Button) findViewById(R.id.btnSessionDetails);
+//		btnSessionDetails.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				openSessionDetails();
+//			}
+//		});
+//		
+//		Button btnSessionList = (Button) findViewById(R.id.btnSessionList);
+//		btnSessionList.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				openSessionList();
+//			}
+//		});
+		
 		return true;
+	}
+
+	private void openSessionAthleteCoachList() {
+		Intent i = new Intent(this, SessionAthleteCoachListActivity.class);
+		startActivity(i);
 	}
 
 	private void openSessionList() {

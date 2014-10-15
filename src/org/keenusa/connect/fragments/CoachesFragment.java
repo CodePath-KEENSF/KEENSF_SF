@@ -7,9 +7,12 @@ import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.TestDataFactory;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +21,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class CoachesFragment extends Fragment {
+public class CoachesFragment extends Fragment implements CivicoreDataResultListener<Coach>{
 
 	public static final String COACH_EXTRA_TAG = "COACH";
 	CoachListItemAdapter adapter;
+
+	// Creates a new fragment with given arguments
+	public static CoachesFragment newInstance() {
+		CoachesFragment coachesFragment = new CoachesFragment();
+		return coachesFragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +54,16 @@ public class CoachesFragment extends Fragment {
 
 			}
 		});
+		
 		return v;
+	}
+	
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+		client.fetchCoachListData(this);
 	}
 
 	public CoachListItemAdapter getAdapter() {
@@ -55,6 +73,11 @@ public class CoachesFragment extends Fragment {
 	public void addAPIData(List<Coach> coaches) {
 		adapter.clear();
 		adapter.addAll(coaches);
+	}
+
+	@Override
+	public void onListResult(List<Coach> list) {
+		addAPIData(list);
 	}
 
 }

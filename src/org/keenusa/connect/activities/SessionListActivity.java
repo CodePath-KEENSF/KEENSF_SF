@@ -50,12 +50,6 @@ public class SessionListActivity extends Activity {
 		});
 	}
 
-	private void setNavigationDrawer() {
-		// Setup drawer view
-		dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), 
-                     R.layout.drawer_nav_item);
-	}
-
 	private void openSessionDetails(int pos) {
 		Intent i = new Intent(this, SessionDetailsActivity.class);
 		startActivity(i);
@@ -72,6 +66,12 @@ public class SessionListActivity extends Activity {
 		dlDrawer = (KeenNavigationDrawer) findViewById(R.id.drawer_layout);
 	}
 	
+	private void setNavigationDrawer() {
+		// Setup drawer view
+		dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), 
+                     R.layout.drawer_nav_item);
+	}
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content
