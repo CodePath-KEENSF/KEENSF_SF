@@ -6,14 +6,12 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.activities.AthleteProfileActivity;
 import org.keenusa.connect.adapters.AtheletListItemAdapter;
 import org.keenusa.connect.models.Athlete;
-import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.TestDataFactory;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +34,11 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		// placeholder. in reality parent activity should tell what athlete list it is expecting e.g. full list or athletes for the session
 		adapter = new AtheletListItemAdapter(getActivity(), TestDataFactory.getInstance().getAthleteList());
+		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+		client.fetchAthleteListData(this);
 	}
 
 	@Override
@@ -56,14 +57,6 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 			}
 		});
 		return v;
-	}
-
-	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchAthleteListData(this);
 	}
 
 	public AtheletListItemAdapter getAdapter() {

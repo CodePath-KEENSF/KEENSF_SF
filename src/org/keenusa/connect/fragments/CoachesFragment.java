@@ -12,7 +12,6 @@ import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListe
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +36,8 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		super.onCreate(savedInstanceState);
 		// placeholder. in reality parent activity should tell what coach list it is expecting e.g. full list or coaches for the session
 		adapter = new CoachListItemAdapter(getActivity(), TestDataFactory.getInstance().getCoachList());
+		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+		client.fetchCoachListData(this);
 	}
 
 	@Override
@@ -58,14 +59,6 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		return v;
 	}
 	
-	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchCoachListData(this);
-	}
-
 	public CoachListItemAdapter getAdapter() {
 		return adapter;
 	}
