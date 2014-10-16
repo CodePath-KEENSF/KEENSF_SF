@@ -26,14 +26,21 @@ public class ApiRequestJSONStringBuilder {
 	public static final String PAGE_NUMBER_PARAMETER_KEY = "pageNumber";
 
 	public static final String SELECT_FUNCTION_VALUE = "getAll";
+
 	public static final String COACH_TABLE_NAME_VALUE = "contacts";
-	public static final String ATHLETES_TABLE_NAME_VALUE = "youth";
+	public static final String ATHLETE_TABLE_NAME_VALUE = "youth";
+	public static final String SESSION_TABLE_NAME_VALUE = "classes_days";
+	public static final String PROGRAM_TABLE_NAME_VALUE = "classes";
 
 	private static final String[] COACH_FILEDS_LIST = { "firstName", "lastName", "middleName", "dob", "inactive", "gender", "emailAddress",
 			"cellPhone", "homePhone", "homeCity", "homeState", "homeZipCode", "foreignLanguage", "skillsExperience" };
 	private static final String[] ATHLETE_FILEDS_LIST = { "firstName", "lastName", "nickName", "dateOfBirth", "gender", "email", "homePhone", "city",
 			"state", "zipCode", "status", "parentGuardianCellPhone", "parentGuardianEmailAddress", "parentGuardianHomePhone",
 			"parentGuardianRelationship", "primaryLanguageAtHome", "primaryParentGuardianFirstName", "primaryParentGuardianLastName" };
+	private static final String[] SESSION_FILEDS_LIST = { "attendanceDate", "classes_id", "athletes", "coachesAttended", "coachesRegistered",
+			"newCoachesNeeded", "openToPublicRegistration", "returningCoachesNeeded" };
+	private static final String[] PROGRAM_FILEDS_LIST = { "address1", "address2", "approvalEmailMessage", "city", "classEndDate", "className",
+			"classStartDate", "generalProgramType", "registrationConfirmation", "state", "times", "zipCode" };
 
 	public static String buildRequestJSONString(Context context, KeenCivicoreClient.APIRequestCode apiRequestCode, int page) {
 		SharedLoggedUserDetails sharedLoggedUserDetails = ((KeenConnectApp) context.getApplicationContext()).getSharedLoggedUserDetails();
@@ -58,8 +65,9 @@ public class ApiRequestJSONStringBuilder {
 	private static String getRequestFunctionFieldValue(KeenCivicoreClient.APIRequestCode apiRequestCode) {
 		switch (apiRequestCode) {
 		case COACH_LIST:
-			return SELECT_FUNCTION_VALUE;
 		case ATHLETE_LIST:
+		case SESSION_LIST:
+		case PROGRAM_LIST:
 			return SELECT_FUNCTION_VALUE;
 		}
 		return null;
@@ -70,7 +78,11 @@ public class ApiRequestJSONStringBuilder {
 		case COACH_LIST:
 			return COACH_TABLE_NAME_VALUE;
 		case ATHLETE_LIST:
-			return ATHLETES_TABLE_NAME_VALUE;
+			return ATHLETE_TABLE_NAME_VALUE;
+		case SESSION_LIST:
+			return SESSION_TABLE_NAME_VALUE;
+		case PROGRAM_LIST:
+			return PROGRAM_TABLE_NAME_VALUE;
 		}
 		return null;
 	}
@@ -83,6 +95,12 @@ public class ApiRequestJSONStringBuilder {
 			break;
 		case ATHLETE_LIST:
 			fieldList = ATHLETE_FILEDS_LIST;
+			break;
+		case SESSION_LIST:
+			fieldList = SESSION_FILEDS_LIST;
+			break;
+		case PROGRAM_LIST:
+			fieldList = PROGRAM_FILEDS_LIST;
 			break;
 		}
 		if (fieldList != null) {

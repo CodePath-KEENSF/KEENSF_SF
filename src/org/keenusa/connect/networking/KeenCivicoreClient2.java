@@ -113,9 +113,9 @@ public class KeenCivicoreClient2 {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
 
-		String apiJSONString = ApiRequestJSONStringBuilder.buildRequestJSONString(context, apiRequestCode, 1);
-
-		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+		//		String apiJSONString = ApiRequestJSONStringBuilder.buildRequestJSONString(context, apiRequestCode, 1);
+		//
+		//		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 
 		Log.i(LOG_TAG_URL, URL);
