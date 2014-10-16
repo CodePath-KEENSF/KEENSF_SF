@@ -1,7 +1,13 @@
 package org.keenusa.connect.models;
 
-public class CoachAttendance {
+import java.io.Serializable;
 
+public class CoachAttendance implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9026136333954262937L;
 	private long remoteId;
 	private long remoteSessionId;
 	private Coach coach;

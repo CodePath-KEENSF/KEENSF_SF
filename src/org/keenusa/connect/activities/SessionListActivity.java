@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class SessionListActivity extends Activity {
 
@@ -52,6 +53,8 @@ public class SessionListActivity extends Activity {
 
 	private void openSessionDetails(int pos) {
 		Intent i = new Intent(this, SessionDetailsActivity.class);
+		i.putExtra("Program Name", sessionList.get(pos));
+		Toast.makeText(SessionListActivity.this, "Program name" + sessionList.get(pos) , Toast.LENGTH_SHORT).show();
 		startActivity(i);
 	}
 

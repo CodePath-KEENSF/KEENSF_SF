@@ -107,6 +107,7 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onListResult(List<RemoteSession> list) {
 						Toast.makeText(LoginActivity.this, "sessions data fetched " + list.size(), Toast.LENGTH_LONG).show();
+						openSessionList();
 					}
 				});
 			}
