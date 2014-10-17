@@ -76,6 +76,8 @@ public class SessionsFragment extends Fragment {
 
 	private void openSessionDetails(int pos) {
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
+		i.putExtra("session", sessionList.get(pos));
+		i.putExtra("program", sessionList.get(pos).getProgram());
 		startActivity(i);
 	}
 
