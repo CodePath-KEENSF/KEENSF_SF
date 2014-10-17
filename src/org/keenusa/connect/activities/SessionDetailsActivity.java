@@ -1,21 +1,22 @@
 package org.keenusa.connect.activities;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import org.keenusa.connect.R;
-import org.keenusa.connect.fragments.AtheletsFragment;
-import org.keenusa.connect.fragments.CoachesFragment;
-import org.keenusa.connect.listeners.FragmentTabListener;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SessionDetailsActivity extends FragmentActivity {
-	private TextView tvProgramNameLabel, tvLocationLabel, tvDateLabel, tvSessionPeriodLabel;
-	private TextView tvProgramName, tvLocation, tvDate, tvSessionPeriod;
+	private TextView tvProgramNameLabel, tvLocationLabel, tvDateLabel, tvProgramTypeLabel, tvProgramActiveDateLabel;
+	private TextView tvProgramName, tvLocation, tvDate, tvProgramType, tvProgramActiveDate;
+	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
 	// this is the session that is passed from session list activity or session list activity could pass session id if we use SQLite
 	KeenSession session;
@@ -33,6 +34,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 		session = (KeenSession) getIntent().getSerializableExtra("session");
 		program = (KeenProgram) getIntent().getSerializableExtra("program");
 		
+<<<<<<< HEAD
 		tvProgramName.setText(program.getName());
 		String address = program.getLocation().getAddress1() + program.getLocation().getAddress2() +
 				program.getLocation().getCity() + program.getLocation().getState() + program.getLocation().getZipCode();
@@ -41,15 +43,41 @@ public class SessionDetailsActivity extends FragmentActivity {
 		tvSessionPeriod.setText(program.getGeneralProgramType().toString());
 	}
 
+=======
+		tvDate.setText(program.getActiveToDate().toString());
+		tvProgramName.setText(program.getName());
+		String address = /*program.getLocation().getAddress1() + */program.getLocation().getAddress2() + " " +
+				 program.getLocation().getCity() + " " + program.getLocation().getState() + " " + program.getLocation().getZipCode();
+		tvLocation.setText(address);
+		tvProgramType.setText(program.getGeneralProgramType().toString());
+		tvProgramActiveDate.setText(session.getProgram().getProgramTimes());
+		
+		Toast.makeText(this, "Class name " + program.getClass().toString(), Toast.LENGTH_SHORT).show();
+		Log.d("Class", program.getClass().toString());
+		Toast.makeText(this, "Name " + session.getProgram().getName().toString(), Toast.LENGTH_SHORT).show();
+		Log.d("Name", session.getProgram().getName().toString());
+
+	}
+
+//	@SuppressWarnings("deprecation")
+//	private CharSequence setDateTime(String dateTime) {
+//		Date date = new Date(dateTime);
+//		DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
+//		return dateFormat.format(date);
+//	}
+
+>>>>>>> nat
 	private void setView() {
 		tvProgramNameLabel = (TextView) findViewById(R.id.tvProgramNameLabel);
 		tvLocationLabel = (TextView) findViewById(R.id.tvLocationLabel);
 		tvDateLabel = (TextView) findViewById(R.id.tvDateLabel);
-		tvSessionPeriodLabel = (TextView) findViewById(R.id.tvSessionPeriodLabel);
+		tvProgramActiveDateLabel = (TextView) findViewById(R.id.tvProgramActiveDateLabel);
+		tvProgramTypeLabel = (TextView) findViewById(R.id.tvProgramTypeLabel);
 		tvProgramName = (TextView) findViewById(R.id.tvProgramName);
 		tvLocation = (TextView) findViewById(R.id.tvLocation);
 		tvDate = (TextView) findViewById(R.id.tvDate);
-		tvSessionPeriod = (TextView) findViewById(R.id.tvSessionPeriod);
+		tvProgramActiveDate = (TextView) findViewById(R.id.tvProgramActiveDate);
+		tvProgramType = (TextView) findViewById(R.id.tvProgramType);
 
 		
 		

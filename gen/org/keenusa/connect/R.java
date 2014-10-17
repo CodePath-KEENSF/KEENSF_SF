@@ -63,9 +63,13 @@ containing a value of this type.
         public static final int ic_user_photos_u=0x7f02000a;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int action_search_athletes=0x7f0a0052;
         public static final int action_search_coaches=0x7f0a0053;
         public static final int action_settings=0x7f0a0051;
+=======
+        public static final int action_settings=0x7f0a0053;
+>>>>>>> nat
         public static final int btnAdd=0x7f0a001e;
         public static final int btnCheckIn=0x7f0a0034;
         public static final int btnGoToAthleteList=0x7f0a0030;
@@ -73,24 +77,31 @@ containing a value of this type.
         public static final int btnLogin=0x7f0a0035;
         public static final int btnSessionDetails=0x7f0a0032;
         public static final int btnSessionList=0x7f0a0033;
-        public static final int drawer_layout=0x7f0a003f;
+        public static final int drawer_layout=0x7f0a0041;
         public static final int elvRegisteredPeople=0x7f0a0020;
         public static final int etSearch=0x7f0a001d;
         public static final int flContainer=0x7f0a0000;
         public static final int ivActiveIcon=0x7f0a0007;
         public static final int ivAthleteCellPhoneMsg=0x7f0a000f;
-        public static final int ivAthleteIcon=0x7f0a004b;
+        public static final int ivAthleteIcon=0x7f0a004d;
         public static final int ivAthleteParentCellPhoneMsg=0x7f0a0018;
         public static final int ivAthleteProfilePic=0x7f0a0003;
-        public static final int ivCoachIcon=0x7f0a004d;
+        public static final int ivCoachIcon=0x7f0a004f;
         public static final int ivCoachProfilePic=0x7f0a0021;
         public static final int llAthleteNickName=0x7f0a0005;
+<<<<<<< HEAD
         public static final int lvAthletes=0x7f0a0044;
         public static final int lvCoaches=0x7f0a0045;
         public static final int lvDrawer=0x7f0a0041;
         public static final int lvSessionList=0x7f0a0040;
         public static final int miCollapseAll=0x7f0a0055;
         public static final int miExpandAll=0x7f0a0054;
+=======
+        public static final int lvAthletes=0x7f0a0046;
+        public static final int lvCoaches=0x7f0a0047;
+        public static final int lvDrawer=0x7f0a0043;
+        public static final int lvSessionList=0x7f0a0042;
+>>>>>>> nat
         public static final int rlPrimaryParent=0x7f0a0014;
         public static final int tvAthleteAge=0x7f0a0008;
         public static final int tvAthleteCellPhone=0x7f0a000e;
@@ -102,7 +113,7 @@ containing a value of this type.
         public static final int tvAthleteLanguageAtHomeLabel=0x7f0a0009;
         public static final int tvAthleteLocation=0x7f0a000c;
         public static final int tvAthleteLocationLabel=0x7f0a000b;
-        public static final int tvAthleteName=0x7f0a0042;
+        public static final int tvAthleteName=0x7f0a0044;
         public static final int tvAthleteNickName=0x7f0a0006;
         public static final int tvAthleteParentCellPhone=0x7f0a0017;
         public static final int tvAthleteParentCellPhoneLabel=0x7f0a0016;
@@ -123,31 +134,33 @@ containing a value of this type.
         public static final int tvCoachFullName=0x7f0a0022;
         public static final int tvCoachLocation=0x7f0a0029;
         public static final int tvCoachLocationLabel=0x7f0a0028;
-        public static final int tvCoachName=0x7f0a0043;
+        public static final int tvCoachName=0x7f0a0045;
         public static final int tvCoachPhone=0x7f0a002d;
         public static final int tvCoachPhoneLabel=0x7f0a002c;
         public static final int tvCoachSkills=0x7f0a0027;
         public static final int tvCoachSkillsLabel=0x7f0a0026;
-        public static final int tvCoahesList=0x7f0a0050;
-        public static final int tvDate=0x7f0a003d;
-        public static final int tvDateLabel=0x7f0a0039;
+        public static final int tvCoahesList=0x7f0a0052;
+        public static final int tvDate=0x7f0a0037;
+        public static final int tvDateLabel=0x7f0a0038;
         public static final int tvHeader=0x7f0a001f;
-        public static final int tvHeading=0x7f0a0046;
+        public static final int tvHeading=0x7f0a0048;
         public static final int tvLastAttended=0x7f0a0001;
         public static final int tvLastAttendedLabel=0x7f0a0002;
-        public static final int tvLocation=0x7f0a003c;
-        public static final int tvLocationLabel=0x7f0a0038;
-        public static final int tvNumAthletes=0x7f0a004c;
-        public static final int tvNumCoaches=0x7f0a004e;
-        public static final int tvProgramName=0x7f0a003b;
-        public static final int tvProgramNameLabel=0x7f0a0037;
-        public static final int tvSequence=0x7f0a004f;
-        public static final int tvSessionDate=0x7f0a0047;
-        public static final int tvSessionLocation=0x7f0a004a;
-        public static final int tvSessionName=0x7f0a0049;
-        public static final int tvSessionPeriod=0x7f0a003e;
-        public static final int tvSessionPeriodLabel=0x7f0a003a;
-        public static final int tvSessionTime=0x7f0a0048;
+        public static final int tvLocation=0x7f0a003d;
+        public static final int tvLocationLabel=0x7f0a003e;
+        public static final int tvNumAthletes=0x7f0a004e;
+        public static final int tvNumCoaches=0x7f0a0050;
+        public static final int tvProgramActiveDate=0x7f0a0040;
+        public static final int tvProgramActiveDateLabel=0x7f0a003f;
+        public static final int tvProgramName=0x7f0a0039;
+        public static final int tvProgramNameLabel=0x7f0a003a;
+        public static final int tvProgramType=0x7f0a003b;
+        public static final int tvProgramTypeLabel=0x7f0a003c;
+        public static final int tvSequence=0x7f0a0051;
+        public static final int tvSessionDate=0x7f0a0049;
+        public static final int tvSessionLocation=0x7f0a004c;
+        public static final int tvSessionName=0x7f0a004b;
+        public static final int tvSessionTime=0x7f0a004a;
         public static final int vpPager=0x7f0a0036;
     }
     public static final class layout {
@@ -206,8 +219,11 @@ containing a value of this type.
         public static final int no_skills_text=0x7f060023;
         public static final int num_athletes_label=0x7f060018;
         public static final int num_coaches_label=0x7f060019;
+        public static final int program_active_date=0x7f06002c;
         public static final int program_name_changable=0x7f06000a;
         public static final int program_name_label=0x7f060006;
+        public static final int program_type=0x7f06002b;
+        public static final int program_type_label=0x7f06002a;
         public static final int search=0x7f060013;
         public static final int search_check_in=0x7f060014;
         public static final int session_changable=0x7f06000d;
