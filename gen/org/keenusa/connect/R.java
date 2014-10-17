@@ -51,41 +51,20 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int drawer_shadow=0x7f020000;
-<<<<<<< HEAD
         public static final int ic_action_search=0x7f020001;
         public static final int ic_active=0x7f020002;
         public static final int ic_collapse=0x7f020003;
         public static final int ic_drawer=0x7f020004;
         public static final int ic_expand=0x7f020005;
         public static final int ic_launcher=0x7f020006;
-        public static final int ic_user_photos_f=0x7f020007;
-        public static final int ic_user_photos_m=0x7f020008;
-        public static final int ic_user_photos_u=0x7f020009;
+        public static final int ic_message=0x7f020007;
+        public static final int ic_user_photos_f=0x7f020008;
+        public static final int ic_user_photos_m=0x7f020009;
+        public static final int ic_user_photos_u=0x7f02000a;
     }
     public static final class id {
-        public static final int action_search_athletes=0x7f0a0050;
-        public static final int action_search_coaches=0x7f0a0051;
-        public static final int action_settings=0x7f0a004f;
-        public static final int btnAdd=0x7f0a001c;
-        public static final int btnCheckIn=0x7f0a0032;
-        public static final int btnGoToAthleteList=0x7f0a002e;
-        public static final int btnGoToCoachList=0x7f0a002f;
-        public static final int btnLogin=0x7f0a0033;
-        public static final int btnSessionDetails=0x7f0a0030;
-        public static final int btnSessionList=0x7f0a0031;
-        public static final int drawer_layout=0x7f0a003d;
-        public static final int elvRegisteredPeople=0x7f0a001e;
-        public static final int etSearch=0x7f0a001b;
-=======
-        public static final int ic_active=0x7f020001;
-        public static final int ic_drawer=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int ic_message=0x7f020004;
-        public static final int ic_user_photos_f=0x7f020005;
-        public static final int ic_user_photos_m=0x7f020006;
-        public static final int ic_user_photos_u=0x7f020007;
-    }
-    public static final class id {
+        public static final int action_search_athletes=0x7f0a0052;
+        public static final int action_search_coaches=0x7f0a0053;
         public static final int action_settings=0x7f0a0051;
         public static final int btnAdd=0x7f0a001e;
         public static final int btnCheckIn=0x7f0a0034;
@@ -97,7 +76,6 @@ containing a value of this type.
         public static final int drawer_layout=0x7f0a003f;
         public static final int elvRegisteredPeople=0x7f0a0020;
         public static final int etSearch=0x7f0a001d;
->>>>>>> 741b9c1e972f5e71ae1ddad6be8ea36d9eab64f4
         public static final int flContainer=0x7f0a0000;
         public static final int ivActiveIcon=0x7f0a0007;
         public static final int ivAthleteCellPhoneMsg=0x7f0a000f;
@@ -107,21 +85,13 @@ containing a value of this type.
         public static final int ivCoachIcon=0x7f0a004d;
         public static final int ivCoachProfilePic=0x7f0a0021;
         public static final int llAthleteNickName=0x7f0a0005;
-<<<<<<< HEAD
-        public static final int lvAthletes=0x7f0a0042;
-        public static final int lvCoaches=0x7f0a0043;
-        public static final int lvDrawer=0x7f0a003f;
-        public static final int lvSessionList=0x7f0a003e;
-        public static final int miCollapseAll=0x7f0a0053;
-        public static final int miExpandAll=0x7f0a0052;
-        public static final int rlPrimaryParent=0x7f0a0013;
-=======
         public static final int lvAthletes=0x7f0a0044;
         public static final int lvCoaches=0x7f0a0045;
         public static final int lvDrawer=0x7f0a0041;
         public static final int lvSessionList=0x7f0a0040;
+        public static final int miCollapseAll=0x7f0a0055;
+        public static final int miExpandAll=0x7f0a0054;
         public static final int rlPrimaryParent=0x7f0a0014;
->>>>>>> 741b9c1e972f5e71ae1ddad6be8ea36d9eab64f4
         public static final int tvAthleteAge=0x7f0a0008;
         public static final int tvAthleteCellPhone=0x7f0a000e;
         public static final int tvAthleteCellPhoneLabel=0x7f0a000d;
