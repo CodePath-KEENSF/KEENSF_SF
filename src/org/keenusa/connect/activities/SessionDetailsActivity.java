@@ -34,6 +34,16 @@ public class SessionDetailsActivity extends FragmentActivity {
 		session = (KeenSession) getIntent().getSerializableExtra("session");
 		program = (KeenProgram) getIntent().getSerializableExtra("program");
 		
+<<<<<<< HEAD
+		tvProgramName.setText(program.getName());
+		String address = program.getLocation().getAddress1() + program.getLocation().getAddress2() +
+				program.getLocation().getCity() + program.getLocation().getState() + program.getLocation().getZipCode();
+		tvLocation.setText(address);
+		tvDate.setText(program.getActiveFromDate().toString());
+		tvSessionPeriod.setText(program.getGeneralProgramType().toString());
+	}
+
+=======
 		tvDate.setText(program.getActiveToDate().toString());
 		tvProgramName.setText(program.getName());
 		String address = /*program.getLocation().getAddress1() + */program.getLocation().getAddress2() + " " +
@@ -56,6 +66,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 //		return dateFormat.format(date);
 //	}
 
+>>>>>>> nat
 	private void setView() {
 		tvProgramNameLabel = (TextView) findViewById(R.id.tvProgramNameLabel);
 		tvLocationLabel = (TextView) findViewById(R.id.tvLocationLabel);
@@ -68,6 +79,8 @@ public class SessionDetailsActivity extends FragmentActivity {
 		tvProgramActiveDate = (TextView) findViewById(R.id.tvProgramActiveDate);
 		tvProgramType = (TextView) findViewById(R.id.tvProgramType);
 
+		
+		
 		//		tvProgramName.setText(program.getName());
 		//		tvLocation.setLocation(program.getLocation());
 		//		tvDate.setText(program.getProgramTimes());

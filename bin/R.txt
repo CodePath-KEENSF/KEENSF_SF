@@ -10,6 +10,21 @@ int color secondary_theme_color 0x7f040001
 int dimen activity_horizontal_margin 0x7f050000
 int dimen activity_vertical_margin 0x7f050001
 int drawable drawer_shadow 0x7f020000
+<<<<<<< HEAD
+int drawable ic_action_search 0x7f020001
+int drawable ic_active 0x7f020002
+int drawable ic_collapse 0x7f020003
+int drawable ic_drawer 0x7f020004
+int drawable ic_expand 0x7f020005
+int drawable ic_launcher 0x7f020006
+int drawable ic_message 0x7f020007
+int drawable ic_user_photos_f 0x7f020008
+int drawable ic_user_photos_m 0x7f020009
+int drawable ic_user_photos_u 0x7f02000a
+int id action_search_athletes 0x7f0a0052
+int id action_search_coaches 0x7f0a0053
+int id action_settings 0x7f0a0051
+=======
 int drawable ic_active 0x7f020001
 int drawable ic_drawer 0x7f020002
 int drawable ic_launcher 0x7f020003
@@ -18,6 +33,7 @@ int drawable ic_user_photos_f 0x7f020005
 int drawable ic_user_photos_m 0x7f020006
 int drawable ic_user_photos_u 0x7f020007
 int id action_settings 0x7f0a0053
+>>>>>>> nat
 int id btnAdd 0x7f0a001e
 int id btnCheckIn 0x7f0a0034
 int id btnGoToAthleteList 0x7f0a0030
@@ -37,10 +53,19 @@ int id ivAthleteProfilePic 0x7f0a0003
 int id ivCoachIcon 0x7f0a004f
 int id ivCoachProfilePic 0x7f0a0021
 int id llAthleteNickName 0x7f0a0005
+<<<<<<< HEAD
+int id lvAthletes 0x7f0a0044
+int id lvCoaches 0x7f0a0045
+int id lvDrawer 0x7f0a0041
+int id lvSessionList 0x7f0a0040
+int id miCollapseAll 0x7f0a0055
+int id miExpandAll 0x7f0a0054
+=======
 int id lvAthletes 0x7f0a0046
 int id lvCoaches 0x7f0a0047
 int id lvDrawer 0x7f0a0043
 int id lvSessionList 0x7f0a0042
+>>>>>>> nat
 int id rlPrimaryParent 0x7f0a0014
 int id tvAthleteAge 0x7f0a0008
 int id tvAthleteCellPhone 0x7f0a000e
@@ -122,16 +147,21 @@ int layout session_list_item 0x7f030011
 int layout sublist_people 0x7f030012
 int menu athlete_list 0x7f090000
 int menu athlete_profile 0x7f090001
-int menu coach_list 0x7f090002
-int menu coach_profile 0x7f090003
-int menu login 0x7f090004
+int menu athletes 0x7f090002
+int menu coach_list 0x7f090003
+int menu coach_profile 0x7f090004
+int menu coaches 0x7f090005
+int menu login 0x7f090006
+int menu sessions 0x7f090007
 int string action_settings 0x7f060001
 int string app_name 0x7f060000
 int string check_in_button 0x7f060010
+int string collapse_all 0x7f06002b
 int string date_changable 0x7f06000c
 int string date_label 0x7f060008
 int string drawer_close 0x7f060025
 int string drawer_open 0x7f060024
+int string expand_all 0x7f06002a
 int string header 0x7f060015
 int string hello_world 0x7f060028
 int string location_changable 0x7f06000b

@@ -51,16 +51,25 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int drawer_shadow=0x7f020000;
-        public static final int ic_active=0x7f020001;
-        public static final int ic_drawer=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int ic_message=0x7f020004;
-        public static final int ic_user_photos_f=0x7f020005;
-        public static final int ic_user_photos_m=0x7f020006;
-        public static final int ic_user_photos_u=0x7f020007;
+        public static final int ic_action_search=0x7f020001;
+        public static final int ic_active=0x7f020002;
+        public static final int ic_collapse=0x7f020003;
+        public static final int ic_drawer=0x7f020004;
+        public static final int ic_expand=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
+        public static final int ic_message=0x7f020007;
+        public static final int ic_user_photos_f=0x7f020008;
+        public static final int ic_user_photos_m=0x7f020009;
+        public static final int ic_user_photos_u=0x7f02000a;
     }
     public static final class id {
+<<<<<<< HEAD
+        public static final int action_search_athletes=0x7f0a0052;
+        public static final int action_search_coaches=0x7f0a0053;
+        public static final int action_settings=0x7f0a0051;
+=======
         public static final int action_settings=0x7f0a0053;
+>>>>>>> nat
         public static final int btnAdd=0x7f0a001e;
         public static final int btnCheckIn=0x7f0a0034;
         public static final int btnGoToAthleteList=0x7f0a0030;
@@ -80,10 +89,19 @@ containing a value of this type.
         public static final int ivCoachIcon=0x7f0a004f;
         public static final int ivCoachProfilePic=0x7f0a0021;
         public static final int llAthleteNickName=0x7f0a0005;
+<<<<<<< HEAD
+        public static final int lvAthletes=0x7f0a0044;
+        public static final int lvCoaches=0x7f0a0045;
+        public static final int lvDrawer=0x7f0a0041;
+        public static final int lvSessionList=0x7f0a0040;
+        public static final int miCollapseAll=0x7f0a0055;
+        public static final int miExpandAll=0x7f0a0054;
+=======
         public static final int lvAthletes=0x7f0a0046;
         public static final int lvCoaches=0x7f0a0047;
         public static final int lvDrawer=0x7f0a0043;
         public static final int lvSessionList=0x7f0a0042;
+>>>>>>> nat
         public static final int rlPrimaryParent=0x7f0a0014;
         public static final int tvAthleteAge=0x7f0a0008;
         public static final int tvAthleteCellPhone=0x7f0a000e;
@@ -169,18 +187,23 @@ containing a value of this type.
     public static final class menu {
         public static final int athlete_list=0x7f090000;
         public static final int athlete_profile=0x7f090001;
-        public static final int coach_list=0x7f090002;
-        public static final int coach_profile=0x7f090003;
-        public static final int login=0x7f090004;
+        public static final int athletes=0x7f090002;
+        public static final int coach_list=0x7f090003;
+        public static final int coach_profile=0x7f090004;
+        public static final int coaches=0x7f090005;
+        public static final int login=0x7f090006;
+        public static final int sessions=0x7f090007;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int check_in_button=0x7f060010;
+        public static final int collapse_all=0x7f06002b;
         public static final int date_changable=0x7f06000c;
         public static final int date_label=0x7f060008;
         public static final int drawer_close=0x7f060025;
         public static final int drawer_open=0x7f060024;
+        public static final int expand_all=0x7f06002a;
         public static final int header=0x7f060015;
         public static final int hello_world=0x7f060028;
         public static final int location_changable=0x7f06000b;
