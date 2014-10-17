@@ -1,11 +1,16 @@
 package org.keenusa.connect.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.joda.time.DateTime;
 
-public class KeenProgram {
+public class KeenProgram implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3835920568930700515L;
 	private long remoteId;
 	private String name;
 	private DateTime activeFromDate;

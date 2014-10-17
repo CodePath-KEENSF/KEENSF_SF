@@ -1,6 +1,12 @@
 package org.keenusa.connect.activities;
 
+import java.util.List;
+
 import org.keenusa.connect.R;
+import org.keenusa.connect.models.remote.RemoteProgram;
+import org.keenusa.connect.models.remote.RemoteSession;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
@@ -26,62 +33,86 @@ public class LoginActivity extends Activity {
 
 		Button btnCheckIn = (Button) findViewById(R.id.btnCheckIn);
 		btnCheckIn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				openCheckIn();
 			}
 		});
-		
+
 		Button btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				openSessionAthleteCoachList();
 			}
 		});
 
-//		Button btnGoToCoachList = (Button) findViewById(R.id.btnGoToCoachList);
-//		btnGoToCoachList.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				openCoachList();
-//
-//			}
-//
-//		});
-//
-//		Button btnGoToAthleteList = (Button) findViewById(R.id.btnGoToAthleteList);
-//		btnGoToAthleteList.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				openAthleteList();
-//
-//			}
-//
-//		});
-//
-//		Button btnSessionDetails = (Button) findViewById(R.id.btnSessionDetails);
-//		btnSessionDetails.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				openSessionDetails();
-//			}
-//		});
-//		
-//		Button btnSessionList = (Button) findViewById(R.id.btnSessionList);
-//		btnSessionList.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				openSessionList();
-//			}
-//		});
-		
+		Button btnGetProgramList = (Button) findViewById(R.id.btnGoToCoachList);
+		btnGetProgramList.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
+				client.fetchProgramListData(new CivicoreDataResultListener<RemoteProgram>() {
+
+					@Override
+					public void onListResult(List<RemoteProgram> list) {
+						Toast.makeText(LoginActivity.this, "programs fetched " + list.size(), Toast.LENGTH_LONG).show();
+					}
+				});
+			}
+
+		});
+
+		Button btnCoachAttendanceList = (Button) findViewById(R.id.btnGoToAthleteList);
+		btnCoachAttendanceList.setEnabled(false);
+		btnCoachAttendanceList.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				openAthleteList();
+
+			}
+
+		});
+
+		Button btnProgramEnrolmentDetails = (Button) findViewById(R.id.btnSessionDetails);
+		btnProgramEnrolmentDetails.setEnabled(false);
+		btnProgramEnrolmentDetails.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
+				//				// fetch particular session data with supplied id of 2964
+				//				client.fetchSessionListData(2964L, new CivicoreDataResultListener<RemoteSession>() {
+				//
+				//					@Override
+				//					public void onListResult(List<RemoteSession> list) {
+				//						Toast.makeText(LoginActivity.this, "session fetched " + list.size(), Toast.LENGTH_LONG).show();
+				//					}
+				//				});
+			}
+		});
+
+		Button btnSessionList = (Button) findViewById(R.id.btnSessionList);
+		btnSessionList.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
+				client.fetchSessionListData(new CivicoreDataResultListener<RemoteSession>() {
+
+					@Override
+					public void onListResult(List<RemoteSession> list) {
+						Toast.makeText(LoginActivity.this, "sessions data fetched " + list.size(), Toast.LENGTH_LONG).show();
+						openSessionList();
+					}
+				});
+			}
+		});
+
 		return true;
 	}
 

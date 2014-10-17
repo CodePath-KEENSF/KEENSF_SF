@@ -7,6 +7,10 @@ import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.remote.RemoteAthleteList;
 import org.keenusa.connect.models.remote.RemoteCoachList;
+import org.keenusa.connect.models.remote.RemoteProgram;
+import org.keenusa.connect.models.remote.RemoteProgramList;
+import org.keenusa.connect.models.remote.RemoteSession;
+import org.keenusa.connect.models.remote.RemoteSessionList;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -29,9 +33,10 @@ public class KeenCivicoreClient {
 
 	public static final String VERSION_PARAMETER_KEY = "version";
 	public static final String REQUEST_STRING_PARAMETER_KEY = "api";
+	public static final String RECORD_ID_PARAMETER_KEY = "record_id";
 
 	public enum APIRequestCode {
-		COACH_LIST, ATHLETE_LIST
+		COACH_LIST, ATHLETE_LIST, SESSION_LIST, PROGRAM_LIST
 	};
 
 	public KeenCivicoreClient(Context context) {
@@ -56,6 +61,44 @@ public class KeenCivicoreClient {
 					RemoteCoachList coaches = serializer.read(RemoteCoachList.class, response);
 					if (listener != null) {
 						listener.onListResult(Coach.fromRemoteCoachList(coaches.getRemoteCoaches()));
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void fetchProgramListData(final CivicoreDataResultListener<RemoteProgram> listener) {
+
+		String url = buildURL(APIRequestCode.PROGRAM_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					response = response.replaceAll("<registrationConfirmation>", "<registrationConfirmation><![CDATA[");
+					response = response.replaceAll("</registrationConfirmation>", "]]></registrationConfirmation>");
+					response = response.replaceAll("<approvalEmailMessage>", "<approvalEmailMessage><![CDATA[");
+					response = response.replaceAll("</approvalEmailMessage>", "]]></approvalEmailMessage>");
+					RemoteProgramList remoteProgramList = serializer.read(RemoteProgramList.class, response);
+					if (listener != null) {
+						listener.onListResult(remoteProgramList.getRemotePrograms());
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
@@ -108,6 +151,40 @@ public class KeenCivicoreClient {
 
 	}
 
+	public void fetchSessionListData(final CivicoreDataResultListener<RemoteSession> listener) {
+
+		String url = buildURL(APIRequestCode.SESSION_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteSessionList remoteSessionList = serializer.read(RemoteSessionList.class, response);
+					if (listener != null) {
+						listener.onListResult(remoteSessionList.getRemoteSessions());
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
 	private String buildURL(APIRequestCode apiRequestCode) {
 
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
@@ -116,6 +193,11 @@ public class KeenCivicoreClient {
 		String apiJSONString = ApiRequestJSONStringBuilder.buildRequestJSONString(context, apiRequestCode, 1);
 
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+
+		//		if (remoteRecordId > 0) {
+		//			builder.appendQueryParameter(RECORD_ID_PARAMETER_KEY, String.valueOf(remoteRecordId));
+		//		}
+
 		String URL = builder.build().toString();
 
 		Log.i(LOG_TAG_URL, URL);

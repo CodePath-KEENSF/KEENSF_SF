@@ -15,7 +15,7 @@
         android:layout_above="@+id/btnGoToCoachList"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp"
-        android:text="Go to Athlete List" />
+        android:text="Get Coach Attendance List" />
 
     <Button
         android:id="@+id/btnGoToCoachList"
@@ -25,7 +25,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/btnGoToAthleteList"
         android:layout_marginBottom="50dp"
-        android:text="Go to Coach List" />
+        android:text="Get Program List" />
 
     <Button
         android:id="@+id/btnSessionDetails"
@@ -35,16 +35,17 @@
         android:layout_alignLeft="@+id/btnGoToAthleteList"
         android:layout_alignRight="@+id/btnGoToAthleteList"
         android:layout_marginBottom="16dp"
-        android:text="@string/session_details_button" />
+        android:text="Get Program Enrolment List" />
     
     <Button
         android:id="@+id/btnSessionList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnSessionDetails"
-        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/btnSessionDetails"
+        android:layout_alignRight="@+id/btnSessionDetails"
         android:layout_marginBottom="15dp"
-        android:text="@string/session_list_button" />
+        android:text="Get Session List" />
     
     <Button
         android:id="@+id/btnCheckIn"
