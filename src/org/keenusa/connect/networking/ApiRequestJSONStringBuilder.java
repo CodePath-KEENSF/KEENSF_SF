@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class ApiRequestJSONStringBuilder {
 
-	public static final String PAGE_SIZE = "1000";
+	public static final String PAGE_SIZE = "1200";
 
 	public static final String LOG_TAG_CLASS = ApiRequestJSONStringBuilder.class.getSimpleName();
 	public static final String API_KEY_PARAMETER_KEY = "key";
@@ -31,6 +31,10 @@ public class ApiRequestJSONStringBuilder {
 	public static final String ATHLETE_TABLE_NAME_VALUE = "youth";
 	public static final String SESSION_TABLE_NAME_VALUE = "classes_days";
 	public static final String PROGRAM_TABLE_NAME_VALUE = "classes";
+	public static final String AFFILIATE_TABLE_NAME_VALUE = "affiliates";
+	public static final String PROGRAM_ENROLMENT_TABLE_NAME_VALUE = "youth_classes";
+	public static final String ATHLETE_ATTENDANCE_TABLE_NAME_VALUE = "youth_days_attendance";
+	public static final String COACH_ATTENDANCE_TABLE_NAME_VALUE = "contacts_days_attendance";
 
 	private static final String[] COACH_FILEDS_LIST = { "firstName", "lastName", "middleName", "dob", "inactive", "gender", "emailAddress",
 			"cellPhone", "homePhone", "homeCity", "homeState", "homeZipCode", "foreignLanguage", "skillsExperience" };
@@ -41,6 +45,10 @@ public class ApiRequestJSONStringBuilder {
 			"newCoachesNeeded", "openToPublicRegistration", "returningCoachesNeeded" };
 	private static final String[] PROGRAM_FILEDS_LIST = { "address1", "address2", "approvalEmailMessage", "city", "classEndDate", "className",
 			"classStartDate", "generalProgramType", "registrationConfirmation", "state", "times", "zipCode" };
+	private static final String[] AFFILIATE_FILEDS_LIST = { "affiliateName", "contactName", "email", "website" };
+	private static final String[] PROGRAM_ENROLMENT_FILEDS_LIST = { "classes_id", "waitlist", "youth_id" };
+	private static final String[] ATHLETE_ATTENDANCE_FILEDS_LIST = { "attendance", "classes_days_id", "youth_id" };
+	private static final String[] COACH_ATTENDANCE_FILEDS_LIST = { "attendance", "classes_days_id", "comments", "contacts_id" };
 
 	public static String buildRequestJSONString(Context context, KeenCivicoreClient.APIRequestCode apiRequestCode, int page) {
 		SharedLoggedUserDetails sharedLoggedUserDetails = ((KeenConnectApp) context.getApplicationContext()).getSharedLoggedUserDetails();
@@ -68,6 +76,10 @@ public class ApiRequestJSONStringBuilder {
 		case ATHLETE_LIST:
 		case SESSION_LIST:
 		case PROGRAM_LIST:
+		case AFFILIATE_LIST:
+		case PROGRAM_ENROLMENT_LIST:
+		case ATHLETE_ATENDANCE_LIST:
+		case COACH_ATTENDANCE_LIST:
 			return SELECT_FUNCTION_VALUE;
 		}
 		return null;
@@ -83,6 +95,14 @@ public class ApiRequestJSONStringBuilder {
 			return SESSION_TABLE_NAME_VALUE;
 		case PROGRAM_LIST:
 			return PROGRAM_TABLE_NAME_VALUE;
+		case AFFILIATE_LIST:
+			return AFFILIATE_TABLE_NAME_VALUE;
+		case PROGRAM_ENROLMENT_LIST:
+			return PROGRAM_ENROLMENT_TABLE_NAME_VALUE;
+		case ATHLETE_ATENDANCE_LIST:
+			return ATHLETE_ATTENDANCE_TABLE_NAME_VALUE;
+		case COACH_ATTENDANCE_LIST:
+			return COACH_ATTENDANCE_TABLE_NAME_VALUE;
 		}
 		return null;
 	}
@@ -101,6 +121,18 @@ public class ApiRequestJSONStringBuilder {
 			break;
 		case PROGRAM_LIST:
 			fieldList = PROGRAM_FILEDS_LIST;
+			break;
+		case AFFILIATE_LIST:
+			fieldList = AFFILIATE_FILEDS_LIST;
+			break;
+		case PROGRAM_ENROLMENT_LIST:
+			fieldList = PROGRAM_ENROLMENT_FILEDS_LIST;
+			break;
+		case ATHLETE_ATENDANCE_LIST:
+			fieldList = ATHLETE_ATTENDANCE_FILEDS_LIST;
+			break;
+		case COACH_ATTENDANCE_LIST:
+			fieldList = COACH_ATTENDANCE_FILEDS_LIST;
 			break;
 		}
 		if (fieldList != null) {

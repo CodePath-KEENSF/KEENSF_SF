@@ -3,8 +3,9 @@ package org.keenusa.connect.activities;
 import java.util.List;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.models.remote.RemoteAffiliate;
 import org.keenusa.connect.models.remote.RemoteProgram;
-import org.keenusa.connect.models.remote.RemoteSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
@@ -85,14 +86,14 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
-				//				// fetch particular session data with supplied id of 2964
-				//				client.fetchSessionListData(2964L, new CivicoreDataResultListener<RemoteSession>() {
-				//
-				//					@Override
-				//					public void onListResult(List<RemoteSession> list) {
-				//						Toast.makeText(LoginActivity.this, "session fetched " + list.size(), Toast.LENGTH_LONG).show();
-				//					}
-				//				});
+				// fetch particular session data with supplied id of 2964
+				client.fetchAffiliateListData(new CivicoreDataResultListener<RemoteAffiliate>() {
+
+					@Override
+					public void onListResult(List<RemoteAffiliate> list) {
+						Toast.makeText(LoginActivity.this, "affiliates fetched " + list.size(), Toast.LENGTH_LONG).show();
+					}
+				});
 			}
 		});
 
@@ -102,10 +103,10 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
-				client.fetchSessionListData(new CivicoreDataResultListener<RemoteSession>() {
+				client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
 
 					@Override
-					public void onListResult(List<RemoteSession> list) {
+					public void onListResult(List<KeenSession> list) {
 						Toast.makeText(LoginActivity.this, "sessions data fetched " + list.size(), Toast.LENGTH_LONG).show();
 						openSessionList();
 					}

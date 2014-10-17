@@ -5,11 +5,19 @@ import java.util.List;
 import org.apache.http.Header;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.Coach;
+import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.models.remote.RemoteAffiliate;
+import org.keenusa.connect.models.remote.RemoteAffiliateList;
+import org.keenusa.connect.models.remote.RemoteAthleteAttendance;
+import org.keenusa.connect.models.remote.RemoteAthleteAttendanceList;
 import org.keenusa.connect.models.remote.RemoteAthleteList;
+import org.keenusa.connect.models.remote.RemoteCoachAttendance;
+import org.keenusa.connect.models.remote.RemoteCoachAttendanceList;
 import org.keenusa.connect.models.remote.RemoteCoachList;
 import org.keenusa.connect.models.remote.RemoteProgram;
+import org.keenusa.connect.models.remote.RemoteProgramEnrolment;
+import org.keenusa.connect.models.remote.RemoteProgramEnrolmentList;
 import org.keenusa.connect.models.remote.RemoteProgramList;
-import org.keenusa.connect.models.remote.RemoteSession;
 import org.keenusa.connect.models.remote.RemoteSessionList;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -36,7 +44,7 @@ public class KeenCivicoreClient {
 	public static final String RECORD_ID_PARAMETER_KEY = "record_id";
 
 	public enum APIRequestCode {
-		COACH_LIST, ATHLETE_LIST, SESSION_LIST, PROGRAM_LIST
+		COACH_LIST, ATHLETE_LIST, SESSION_LIST, PROGRAM_LIST, PROGRAM_ENROLMENT_LIST, ATHLETE_ATENDANCE_LIST, COACH_ATTENDANCE_LIST, AFFILIATE_LIST
 	};
 
 	public KeenCivicoreClient(Context context) {
@@ -151,7 +159,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void fetchSessionListData(final CivicoreDataResultListener<RemoteSession> listener) {
+	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
 
 		String url = buildURL(APIRequestCode.SESSION_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -167,7 +175,143 @@ public class KeenCivicoreClient {
 					response = response.replaceAll("'", "&apos;");
 					RemoteSessionList remoteSessionList = serializer.read(RemoteSessionList.class, response);
 					if (listener != null) {
-						listener.onListResult(remoteSessionList.getRemoteSessions());
+						listener.onListResult(KeenSession.fromRemoteSessionList(remoteSessionList.getRemoteSessions()));
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<RemoteProgramEnrolment> listener) {
+
+		String url = buildURL(APIRequestCode.PROGRAM_ENROLMENT_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteProgramEnrolmentList remoteProgramEnrolmentList = serializer.read(RemoteProgramEnrolmentList.class, response);
+					if (listener != null) {
+						listener.onListResult(remoteProgramEnrolmentList.getRemoteProgramEnrolments());
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void fetchAthleteAttendanceListData(final CivicoreDataResultListener<RemoteAthleteAttendance> listener) {
+
+		String url = buildURL(APIRequestCode.ATHLETE_ATENDANCE_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteAthleteAttendanceList remoteAthleteAttendanceList = serializer.read(RemoteAthleteAttendanceList.class, response);
+					if (listener != null) {
+						listener.onListResult(remoteAthleteAttendanceList.getRemoteAthleteAttendances());
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void fetchCoachAttendanceListData(final CivicoreDataResultListener<RemoteCoachAttendance> listener) {
+
+		String url = buildURL(APIRequestCode.COACH_ATTENDANCE_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteCoachAttendanceList remoteCoachAttendanceList = serializer.read(RemoteCoachAttendanceList.class, response);
+					if (listener != null) {
+						listener.onListResult(remoteCoachAttendanceList.getRemoteCoachAttendances());
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.d("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void fetchAffiliateListData(final CivicoreDataResultListener<RemoteAffiliate> listener) {
+
+		String url = buildURL(APIRequestCode.AFFILIATE_LIST);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteAffiliateList remoteAffiliateList = serializer.read(RemoteAffiliateList.class, response);
+					if (listener != null) {
+						listener.onListResult(remoteAffiliateList.getRemoteAffiliates());
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
