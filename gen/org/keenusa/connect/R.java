@@ -63,13 +63,9 @@ containing a value of this type.
         public static final int ic_user_photos_u=0x7f02000a;
     }
     public static final class id {
-<<<<<<< HEAD
-        public static final int action_search_athletes=0x7f0a0052;
-        public static final int action_search_coaches=0x7f0a0053;
-        public static final int action_settings=0x7f0a0051;
-=======
+        public static final int action_search_athletes=0x7f0a0054;
+        public static final int action_search_coaches=0x7f0a0055;
         public static final int action_settings=0x7f0a0053;
->>>>>>> nat
         public static final int btnAdd=0x7f0a001e;
         public static final int btnCheckIn=0x7f0a0034;
         public static final int btnGoToAthleteList=0x7f0a0030;
@@ -89,19 +85,12 @@ containing a value of this type.
         public static final int ivCoachIcon=0x7f0a004f;
         public static final int ivCoachProfilePic=0x7f0a0021;
         public static final int llAthleteNickName=0x7f0a0005;
-<<<<<<< HEAD
-        public static final int lvAthletes=0x7f0a0044;
-        public static final int lvCoaches=0x7f0a0045;
-        public static final int lvDrawer=0x7f0a0041;
-        public static final int lvSessionList=0x7f0a0040;
-        public static final int miCollapseAll=0x7f0a0055;
-        public static final int miExpandAll=0x7f0a0054;
-=======
         public static final int lvAthletes=0x7f0a0046;
         public static final int lvCoaches=0x7f0a0047;
         public static final int lvDrawer=0x7f0a0043;
         public static final int lvSessionList=0x7f0a0042;
->>>>>>> nat
+        public static final int miCollapseAll=0x7f0a0057;
+        public static final int miExpandAll=0x7f0a0056;
         public static final int rlPrimaryParent=0x7f0a0014;
         public static final int tvAthleteAge=0x7f0a0008;
         public static final int tvAthleteCellPhone=0x7f0a000e;
@@ -219,11 +208,11 @@ containing a value of this type.
         public static final int no_skills_text=0x7f060023;
         public static final int num_athletes_label=0x7f060018;
         public static final int num_coaches_label=0x7f060019;
-        public static final int program_active_date=0x7f06002c;
+        public static final int program_active_date=0x7f06002e;
         public static final int program_name_changable=0x7f06000a;
         public static final int program_name_label=0x7f060006;
-        public static final int program_type=0x7f06002b;
-        public static final int program_type_label=0x7f06002a;
+        public static final int program_type=0x7f06002d;
+        public static final int program_type_label=0x7f06002c;
         public static final int search=0x7f060013;
         public static final int search_check_in=0x7f060014;
         public static final int session_changable=0x7f06000d;
