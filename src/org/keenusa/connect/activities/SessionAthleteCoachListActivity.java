@@ -1,13 +1,9 @@
 package org.keenusa.connect.activities;
 
-import java.util.List;
-
 import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AtheletsFragment;
 import org.keenusa.connect.fragments.CoachesFragment;
 import org.keenusa.connect.fragments.SessionsFragment;
-import org.keenusa.connect.models.Coach;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -141,7 +137,5 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		public CharSequence getPageTitle(int position) {
 			return "Page " + position;
 		}
-
 	}
-	
 }

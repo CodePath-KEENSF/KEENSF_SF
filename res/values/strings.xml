@@ -57,5 +57,8 @@
     <string name="title_activity_athlete_profile">Athlete Profile</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_session_athlete_coach_list">KEEN</string>
+    
+    <string name="expand_all">Expand All</string>
+    <string name="collapse_all">Collapse All</string>
 
 </resources>
