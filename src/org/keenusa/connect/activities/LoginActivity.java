@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.models.remote.RemoteAffiliate;
-import org.keenusa.connect.models.remote.RemoteProgram;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
@@ -47,53 +45,6 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				openSessionAthleteCoachList();
-			}
-		});
-
-		Button btnGetProgramList = (Button) findViewById(R.id.btnGoToCoachList);
-		btnGetProgramList.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
-				client.fetchProgramListData(new CivicoreDataResultListener<RemoteProgram>() {
-
-					@Override
-					public void onListResult(List<RemoteProgram> list) {
-						Toast.makeText(LoginActivity.this, "programs fetched " + list.size(), Toast.LENGTH_LONG).show();
-					}
-				});
-			}
-
-		});
-
-		Button btnCoachAttendanceList = (Button) findViewById(R.id.btnGoToAthleteList);
-		btnCoachAttendanceList.setEnabled(false);
-		btnCoachAttendanceList.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				openAthleteList();
-
-			}
-
-		});
-
-		Button btnProgramEnrolmentDetails = (Button) findViewById(R.id.btnSessionDetails);
-		btnProgramEnrolmentDetails.setEnabled(false);
-		btnProgramEnrolmentDetails.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
-				// fetch particular session data with supplied id of 2964
-				client.fetchAffiliateListData(new CivicoreDataResultListener<RemoteAffiliate>() {
-
-					@Override
-					public void onListResult(List<RemoteAffiliate> list) {
-						Toast.makeText(LoginActivity.this, "affiliates fetched " + list.size(), Toast.LENGTH_LONG).show();
-					}
-				});
 			}
 		});
 
@@ -147,17 +98,5 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void openCoachList() {
-		Intent i = new Intent(this, CoachListActivity.class);
-		startActivity(i);
-
-	}
-
-	private void openAthleteList() {
-		Intent i = new Intent(this, AthleteListActivity.class);
-		startActivity(i);
-
 	}
 }

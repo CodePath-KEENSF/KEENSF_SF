@@ -1,11 +1,15 @@
 package org.keenusa.connect.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.keenusa.connect.helpers.CivicoreDateStringParser;
+import org.keenusa.connect.helpers.CivicoreGeneralProgramTypeStringParser;
+import org.keenusa.connect.models.remote.RemoteProgram;
 
-public class KeenProgram implements Serializable{
+public class KeenProgram implements Serializable {
 
 	/**
 	 * 
@@ -17,6 +21,9 @@ public class KeenProgram implements Serializable{
 	private DateTime activeToDate;
 	private GeneralProgramType generalProgramType;
 	private String programTimes;
+	private String coachRegistrationConfirmationEmailText;
+	// probably we do not need this as it is sent on approval of a new coach, not sure why approval is for a program
+	private String coachApprovalConfirmationEmailText;
 	private Location location;
 	private List<Athlete> enrolledAthletes;
 
@@ -39,6 +46,47 @@ public class KeenProgram implements Serializable{
 		this.programTimes = programTimes;
 		this.location = location;
 		this.enrolledAthletes = enrolledAthletes;
+	}
+
+	public static KeenProgram fromRemoteProgram(RemoteProgram remoteProgram) {
+		KeenProgram keenProgram = null;
+		if (remoteProgram != null) {
+			keenProgram = new KeenProgram();
+			keenProgram.setRemoteId(Long.valueOf(remoteProgram.getRemoteId()));
+
+			Location location = new Location();
+			location.setAddress1(remoteProgram.getAddress1());
+			location.setAddress2(remoteProgram.getAddress2());
+			location.setCity(remoteProgram.getCity());
+			location.setZipCode(remoteProgram.getZipCode());
+			location.setState(remoteProgram.getState());
+			keenProgram.setLocation(location);
+
+			keenProgram.setName(remoteProgram.getClassName());
+			keenProgram.setActiveFromDate(CivicoreDateStringParser.parseDate(remoteProgram.getClassStartDate()));
+			keenProgram.setActiveToDate(CivicoreDateStringParser.parseDate(remoteProgram.getClassEndDate()));
+			keenProgram.setProgramTimes(remoteProgram.getTimes());
+			keenProgram.setGeneralProgramType(CivicoreGeneralProgramTypeStringParser.parseGenralProgramTypeString(remoteProgram
+					.getGeneralProgramType()));
+			keenProgram.setCoachApprovalConfirmationEmailText(remoteProgram.getApprovalEmailMessage());
+			keenProgram.setCoachRegistrationConfirmationEmailText(remoteProgram.getRegistrationConfirmation());
+		}
+		return keenProgram;
+	}
+
+	public static List<KeenProgram> fromRemoteProgramList(List<RemoteProgram> remoteProgramList) {
+		List<KeenProgram> programs = null;
+		if (remoteProgramList != null) {
+			programs = new ArrayList<KeenProgram>(remoteProgramList.size());
+			for (RemoteProgram remoteProgram : remoteProgramList) {
+				KeenProgram keenProgram = fromRemoteProgram(remoteProgram);
+				programs.add(keenProgram);
+			}
+
+		} else {
+			programs = new ArrayList<KeenProgram>();
+		}
+		return programs;
 	}
 
 	public long getRemoteId() {
@@ -103,6 +151,22 @@ public class KeenProgram implements Serializable{
 
 	public void setEnrolledAthletes(List<Athlete> enrolledAthletes) {
 		this.enrolledAthletes = enrolledAthletes;
+	}
+
+	public String getCoachRegistrationConfirmationEmailText() {
+		return coachRegistrationConfirmationEmailText;
+	}
+
+	public void setCoachRegistrationConfirmationEmailText(String coachRegistrationConfirmationEmailText) {
+		this.coachRegistrationConfirmationEmailText = coachRegistrationConfirmationEmailText;
+	}
+
+	public String getCoachApprovalConfirmationEmailText() {
+		return coachApprovalConfirmationEmailText;
+	}
+
+	public void setCoachApprovalConfirmationEmailText(String coachApprovalConfirmationEmailText) {
+		this.coachApprovalConfirmationEmailText = coachApprovalConfirmationEmailText;
 	}
 
 }

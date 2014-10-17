@@ -15,12 +15,12 @@ public class TestDataFactory {
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
 	private static TestDataFactory instance = new TestDataFactory();
-	private Affliliate affliliate;
+	private Affiliate affliliate;
 	private Location contactLocation;
 	private Location programLocation;
 
 	private TestDataFactory() {
-		affliliate = new Affliliate(1, "KEEN SF", "Damien Chacona", "damien@keensf.com", "www.keensanfrancisco.org");
+		affliliate = new Affiliate(1, "KEEN SF", "Damien Chacona", "damien@keensf.com", "www.keensanfrancisco.org");
 		contactLocation = new Location("San Francisco", "94102", "CA", "", "");
 		programLocation = new Location("San Francisco", "94105", "CA", "Embarcadero YMCA", "169 Steuart Street");
 	}
@@ -206,7 +206,7 @@ public class TestDataFactory {
 		return athleteAttendanceList;
 	}
 
-	public Affliliate getAffliliate() {
+	public Affiliate getAffliliate() {
 		return affliliate;
 
 	}

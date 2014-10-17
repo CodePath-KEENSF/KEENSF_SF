@@ -3,19 +3,19 @@ package org.keenusa.connect.networking;
 import java.util.List;
 
 import org.apache.http.Header;
+import org.keenusa.connect.models.Affiliate;
 import org.keenusa.connect.models.Athlete;
+import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.Coach;
+import org.keenusa.connect.models.CoachAttendance;
+import org.keenusa.connect.models.KeenProgram;
+import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.models.remote.RemoteAffiliate;
 import org.keenusa.connect.models.remote.RemoteAffiliateList;
-import org.keenusa.connect.models.remote.RemoteAthleteAttendance;
 import org.keenusa.connect.models.remote.RemoteAthleteAttendanceList;
 import org.keenusa.connect.models.remote.RemoteAthleteList;
-import org.keenusa.connect.models.remote.RemoteCoachAttendance;
 import org.keenusa.connect.models.remote.RemoteCoachAttendanceList;
 import org.keenusa.connect.models.remote.RemoteCoachList;
-import org.keenusa.connect.models.remote.RemoteProgram;
-import org.keenusa.connect.models.remote.RemoteProgramEnrolment;
 import org.keenusa.connect.models.remote.RemoteProgramEnrolmentList;
 import org.keenusa.connect.models.remote.RemoteProgramList;
 import org.keenusa.connect.models.remote.RemoteSessionList;
@@ -86,7 +86,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void fetchProgramListData(final CivicoreDataResultListener<RemoteProgram> listener) {
+	public void fetchProgramListData(final CivicoreDataResultListener<KeenProgram> listener) {
 
 		String url = buildURL(APIRequestCode.PROGRAM_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -106,7 +106,7 @@ public class KeenCivicoreClient {
 					response = response.replaceAll("</approvalEmailMessage>", "]]></approvalEmailMessage>");
 					RemoteProgramList remoteProgramList = serializer.read(RemoteProgramList.class, response);
 					if (listener != null) {
-						listener.onListResult(remoteProgramList.getRemotePrograms());
+						listener.onListResult(KeenProgram.fromRemoteProgramList(remoteProgramList.getRemotePrograms()));
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
@@ -193,7 +193,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<RemoteProgramEnrolment> listener) {
+	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<KeenProgramEnrolment> listener) {
 
 		String url = buildURL(APIRequestCode.PROGRAM_ENROLMENT_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -209,7 +209,8 @@ public class KeenCivicoreClient {
 					response = response.replaceAll("'", "&apos;");
 					RemoteProgramEnrolmentList remoteProgramEnrolmentList = serializer.read(RemoteProgramEnrolmentList.class, response);
 					if (listener != null) {
-						listener.onListResult(remoteProgramEnrolmentList.getRemoteProgramEnrolments());
+						listener.onListResult(KeenProgramEnrolment.fromRemoteProgramEnrolmentList(remoteProgramEnrolmentList
+								.getRemoteProgramEnrolments()));
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
@@ -227,7 +228,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void fetchAthleteAttendanceListData(final CivicoreDataResultListener<RemoteAthleteAttendance> listener) {
+	public void fetchAthleteAttendanceListData(final CivicoreDataResultListener<AthleteAttendance> listener) {
 
 		String url = buildURL(APIRequestCode.ATHLETE_ATENDANCE_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -243,7 +244,8 @@ public class KeenCivicoreClient {
 					response = response.replaceAll("'", "&apos;");
 					RemoteAthleteAttendanceList remoteAthleteAttendanceList = serializer.read(RemoteAthleteAttendanceList.class, response);
 					if (listener != null) {
-						listener.onListResult(remoteAthleteAttendanceList.getRemoteAthleteAttendances());
+						listener.onListResult(AthleteAttendance.fromRemoteAthleteAttendanceList(remoteAthleteAttendanceList
+								.getRemoteAthleteAttendances()));
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
@@ -261,7 +263,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void fetchCoachAttendanceListData(final CivicoreDataResultListener<RemoteCoachAttendance> listener) {
+	public void fetchCoachAttendanceListData(final CivicoreDataResultListener<CoachAttendance> listener) {
 
 		String url = buildURL(APIRequestCode.COACH_ATTENDANCE_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -277,7 +279,7 @@ public class KeenCivicoreClient {
 					response = response.replaceAll("'", "&apos;");
 					RemoteCoachAttendanceList remoteCoachAttendanceList = serializer.read(RemoteCoachAttendanceList.class, response);
 					if (listener != null) {
-						listener.onListResult(remoteCoachAttendanceList.getRemoteCoachAttendances());
+						listener.onListResult(CoachAttendance.fromRemoteCoachAttendanceList(remoteCoachAttendanceList.getRemoteCoachAttendances()));
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
@@ -295,7 +297,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void fetchAffiliateListData(final CivicoreDataResultListener<RemoteAffiliate> listener) {
+	public void fetchAffiliateListData(final CivicoreDataResultListener<Affiliate> listener) {
 
 		String url = buildURL(APIRequestCode.AFFILIATE_LIST);
 		client.get(url, new AsyncHttpResponseHandler() {
@@ -311,7 +313,7 @@ public class KeenCivicoreClient {
 					response = response.replaceAll("'", "&apos;");
 					RemoteAffiliateList remoteAffiliateList = serializer.read(RemoteAffiliateList.class, response);
 					if (listener != null) {
-						listener.onListResult(remoteAffiliateList.getRemoteAffiliates());
+						listener.onListResult(Affiliate.fromRemoteAffiliateList(remoteAffiliateList.getRemoteAffiliates()));
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());

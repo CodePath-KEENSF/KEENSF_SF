@@ -1,8 +1,13 @@
 package org.keenusa.connect.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AthleteAttendance implements Serializable{
+import org.keenusa.connect.helpers.CivicoreAthleteAttendanceStringParser;
+import org.keenusa.connect.models.remote.RemoteAthleteAttendance;
+
+public class AthleteAttendance implements Serializable {
 
 	/**
 	 * 
@@ -13,6 +18,8 @@ public class AthleteAttendance implements Serializable{
 	private Athlete athlete;
 	//no comments field in the remote table youth_days_attendance
 	private AttendanceValue attendanceValue;
+	// used locally
+	private String athleteFullName;
 
 	//attendance in remote source (lookup values) in the source id58 for youth
 	public enum AttendanceValue {
@@ -28,6 +35,38 @@ public class AthleteAttendance implements Serializable{
 		this.athlete = athlete;
 		this.remoteSessionId = remoteSessionId;
 		this.attendanceValue = attendanceValue;
+	}
+
+	public static AthleteAttendance fromRemoteAthleteAttendance(RemoteAthleteAttendance remoteAthleteAttendance) {
+		AthleteAttendance athleteAttendance = null;
+		if (remoteAthleteAttendance != null) {
+			athleteAttendance = new AthleteAttendance();
+			athleteAttendance.setRemoteId(Long.valueOf(remoteAthleteAttendance.getRemoteId()));
+			athleteAttendance.setAthleteFullName(remoteAthleteAttendance.getYouthName());
+
+			Athlete athlete = new Athlete();
+			athlete.setRemoteId(Long.valueOf(remoteAthleteAttendance.getYouthId()));
+			athleteAttendance.setAthlete(athlete);
+			athleteAttendance.setRemoteSessionId(Long.valueOf(remoteAthleteAttendance.getClassesDaysId()));
+			athleteAttendance.setAttendanceValue(CivicoreAthleteAttendanceStringParser.parseAthleteAttendanceString(remoteAthleteAttendance
+					.getAttendance()));
+		}
+		return athleteAttendance;
+	}
+
+	public static List<AthleteAttendance> fromRemoteAthleteAttendanceList(List<RemoteAthleteAttendance> remoteAthleteAttendanceList) {
+		List<AthleteAttendance> athleteAttendances = null;
+		if (remoteAthleteAttendanceList != null) {
+			athleteAttendances = new ArrayList<AthleteAttendance>(remoteAthleteAttendanceList.size());
+			for (RemoteAthleteAttendance remoteAthleteAttendance : remoteAthleteAttendanceList) {
+				AthleteAttendance athleteAttendance = fromRemoteAthleteAttendance(remoteAthleteAttendance);
+				athleteAttendances.add(athleteAttendance);
+			}
+
+		} else {
+			athleteAttendances = new ArrayList<AthleteAttendance>();
+		}
+		return athleteAttendances;
 	}
 
 	public AttendanceValue getAttendanceValue() {
@@ -60,6 +99,22 @@ public class AthleteAttendance implements Serializable{
 
 	public void setAthlete(Athlete athlete) {
 		this.athlete = athlete;
+	}
+
+	private String getAthleteFullName() {
+		return athleteFullName;
+	}
+
+	private void setAthleteFullName(String athleteFullName) {
+		this.athleteFullName = athleteFullName;
+	}
+
+	public String getAttendedAthleteFullName() {
+		if (getAthlete() != null && getAthlete().getFullName() != null && !getAthlete().getFullName().isEmpty()) {
+			return getAthlete().getFullName();
+		} else {
+			return getAthleteFullName();
+		}
 	}
 
 }

@@ -1,8 +1,13 @@
 package org.keenusa.connect.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CoachAttendance implements Serializable{
+import org.keenusa.connect.helpers.CivicoreCoachAttendanceStringParser;
+import org.keenusa.connect.models.remote.RemoteCoachAttendance;
+
+public class CoachAttendance implements Serializable {
 
 	/**
 	 * 
@@ -14,6 +19,9 @@ public class CoachAttendance implements Serializable{
 	// mostly empty
 	private String comments;
 	private AttendanceValue attendanceValue;
+
+	// used locally
+	private String coachFullName;
 
 	// attendance in remote source (lookup values) in the source 106 for contacts
 	public enum AttendanceValue {
@@ -32,6 +40,39 @@ public class CoachAttendance implements Serializable{
 		this.attendanceValue = attendanceValue;
 	}
 
+	public static CoachAttendance fromRemoteCoachAttendance(RemoteCoachAttendance remoteCoachAttendance) {
+		CoachAttendance coachAttendance = null;
+		if (remoteCoachAttendance != null) {
+			coachAttendance = new CoachAttendance();
+			coachAttendance.setRemoteId(Long.valueOf(remoteCoachAttendance.getRemoteId()));
+			coachAttendance.setCoachFullName(remoteCoachAttendance.getContactName());
+
+			Coach coach = new Coach();
+			coach.setRemoteId(Long.valueOf(remoteCoachAttendance.getContactId()));
+			coachAttendance.setCoach(coach);
+
+			coachAttendance.setRemoteSessionId(Long.valueOf(remoteCoachAttendance.getClassesDaysId()));
+			coachAttendance.setAttendanceValue(CivicoreCoachAttendanceStringParser.parseCoachAttendanceString(remoteCoachAttendance.getAttendance()));
+			coachAttendance.setComments(remoteCoachAttendance.getComments());
+		}
+		return coachAttendance;
+	}
+
+	public static List<CoachAttendance> fromRemoteCoachAttendanceList(List<RemoteCoachAttendance> remoteCoachAttendanceList) {
+		List<CoachAttendance> coachAttendances = null;
+		if (remoteCoachAttendanceList != null) {
+			coachAttendances = new ArrayList<CoachAttendance>(remoteCoachAttendanceList.size());
+			for (RemoteCoachAttendance remoteCoachAttendance : remoteCoachAttendanceList) {
+				CoachAttendance coachAttendance = fromRemoteCoachAttendance(remoteCoachAttendance);
+				coachAttendances.add(coachAttendance);
+			}
+
+		} else {
+			coachAttendances = new ArrayList<CoachAttendance>();
+		}
+		return coachAttendances;
+	}
+
 	public AttendanceValue getAttendanceValue() {
 		return attendanceValue;
 	}
@@ -48,11 +89,11 @@ public class CoachAttendance implements Serializable{
 		this.remoteId = remoteId;
 	}
 
-	public Coach getCoachId() {
+	public Coach getCoach() {
 		return coach;
 	}
 
-	public void setCoachId(Coach coach) {
+	public void setCoach(Coach coach) {
 		this.coach = coach;
 	}
 
@@ -70,6 +111,22 @@ public class CoachAttendance implements Serializable{
 
 	public void setRemoteSessionId(long remoteSessionId) {
 		this.remoteSessionId = remoteSessionId;
+	}
+
+	private String getCoachFullName() {
+		return coachFullName;
+	}
+
+	private void setCoachFullName(String coachFullName) {
+		this.coachFullName = coachFullName;
+	}
+
+	public String getAttendedCoachFullName() {
+		if (getCoach() != null && getCoach().getFullName() != null && !getCoach().getFullName().isEmpty()) {
+			return getCoach().getFullName();
+		} else {
+			return getCoachFullName();
+		}
 	}
 
 }
