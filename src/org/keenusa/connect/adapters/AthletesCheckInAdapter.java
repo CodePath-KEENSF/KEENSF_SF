@@ -13,15 +13,18 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
-	TextView tvCoachCheckIn;
+	TextView tvAthleteCheckIn;
 	Button btnChkIn;
 	Button btnAbsent;
 	Button btnOthers;
+	Button btnAddAthlete;
+	EditText etSearchAthlete;
 	
 	public AthletesCheckInAdapter(Context context, ArrayList<AthleteAttendance> athleteList) {
 		super(context, android.R.layout.simple_list_item_1, athleteList);
@@ -32,16 +35,19 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 		final AthleteAttendance athlete = getItem(position);
 
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.check_in_items, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.athlete_check_in_items, parent, false);
 		}
-		tvCoachCheckIn = (TextView) convertView.findViewById(R.id.tvCoachCheckIn);
+		tvAthleteCheckIn = (TextView) convertView.findViewById(R.id.tvAthleteCheckIn);
 		btnChkIn = (Button) convertView.findViewById(R.id.btnChkIn);
 		btnAbsent = (Button) convertView.findViewById(R.id.btnAbsent);
 		btnOthers = (Button) convertView.findViewById(R.id.btnOthers);
-		ImageView ivCoachImageProfile = (ImageView) convertView.findViewById(R.id.ivCoachImageProfile);
+		btnAddAthlete = (Button) convertView.findViewById(R.id.btnAddAthlete);
+		ImageView ivAthleteImageProfile = (ImageView) convertView.findViewById(R.id.ivAthleteImageProfile);
+		etSearchAthlete = (EditText) convertView.findViewById(R.id.etSearchAthlete);
 		
 		
-		tvCoachCheckIn.setText(athlete.getAttendedAthleteFullName().toString());
+		
+		tvAthleteCheckIn.setText(athlete.getAttendedAthleteFullName().toString());
 //		ivCoachImageProfile.setImageResource(position);
 		btnChkIn.setOnClickListener(new OnClickListener() {
 			

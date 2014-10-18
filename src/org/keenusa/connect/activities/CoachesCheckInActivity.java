@@ -1,18 +1,13 @@
 package org.keenusa.connect.activities;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.CoachesCheckInAdapter;
-import org.keenusa.connect.adapters.CoachesSubListAdapter;
-import org.keenusa.connect.adapters.Headers;
-import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.models.TestDataFactory;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
@@ -20,19 +15,10 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class CoachesCheckInActivity extends Activity {
 

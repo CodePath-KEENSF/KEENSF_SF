@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 		Button btnChkIn;
 		Button btnAbsent;
 		Button btnOthers;
+		Button btnAddCoach;
+		EditText etCoachSearch;
 
 	public CoachesCheckInAdapter(Context context, ArrayList<CoachAttendance> coachList) {
 		super(context, android.R.layout.simple_list_item_1, coachList);
@@ -35,12 +38,14 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 		final CoachAttendance coach = getItem(position);
 
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.check_in_items, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.coach_check_in_items, parent, false);
 		}
-		tvCoachCheckIn = (TextView) convertView.findViewById(R.id.tvCoachCheckIn);
+		tvCoachCheckIn = (TextView) convertView.findViewById(R.id.tvAthleteCheckIn);
 		btnChkIn = (Button) convertView.findViewById(R.id.btnChkIn);
 		btnAbsent = (Button) convertView.findViewById(R.id.btnAbsent);
 		btnOthers = (Button) convertView.findViewById(R.id.btnOthers);
+		btnAddCoach = (Button) convertView.findViewById(R.id.btnAddCoach);
+		etCoachSearch = (EditText) convertView.findViewById(R.id.etCoachSearch);
 		ImageView ivCoachImageProfile = (ImageView) convertView.findViewById(R.id.ivCoachImageProfile);
 		
 		

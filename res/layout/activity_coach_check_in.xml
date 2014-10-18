@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
 
-   
     <ListView
         android:id="@+id/elvRegisteredPeople"
         android:layout_width="match_parent"
@@ -12,8 +11,29 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@+id/btnAddCoach" />
 
-   
+   <EditText
+         android:id="@+id/etCoachSearch"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentTop="true"
+         android:hint="Search for adding..."
+         android:ems="10" >
+
+         <requestFocus />
+     </EditText>
+
+     <Button
+         android:id="@+id/btnAddCoach"
+         style="?android:attr/buttonStyleSmall"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/editText1"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentTop="true"
+         android:layout_toRightOf="@+id/etCoachSearch"
+         android:text="Add" />
 
 </RelativeLayout>

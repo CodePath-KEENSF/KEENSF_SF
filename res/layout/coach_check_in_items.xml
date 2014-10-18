@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/ivCoachImageProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_user_photos_m" />
+
+    <Button
+        android:id="@+id/btnAbsent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnChkIn"
+        android:layout_alignBottom="@+id/btnChkIn"
+        android:layout_toRightOf="@+id/btnChkIn"
+        android:text="@string/absent_button" />
+
+    <Button
+        android:id="@+id/btnOthers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnAbsent"
+        android:layout_alignBottom="@+id/btnAbsent"
+        android:layout_toRightOf="@+id/btnAbsent"
+        android:text="@string/others_button" />
+
+    <TextView
+        android:id="@+id/tvAthleteCheckIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/coach_name" />
+
+    <Button
+        android:id="@+id/btnChkIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ivCoachImageProfile"
+        android:layout_marginLeft="30dp"
+        android:text="@string/check_in_button" />
+
+</RelativeLayout>
