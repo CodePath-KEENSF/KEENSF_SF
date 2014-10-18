@@ -2,23 +2,26 @@ package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AtheletsFragment;
+import org.keenusa.connect.fragments.UpdateAthleteProfileFragment;
 import org.keenusa.connect.listeners.OnEmailLongClickListener;
 import org.keenusa.connect.listeners.OnPhoneLongClickListener;
+import org.keenusa.connect.listeners.OnSmsIconClickListener;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.models.Parent;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AthleteProfileActivity extends Activity {
+public class AthleteProfileActivity extends FragmentActivity {
 
 	private TextView tvLastAttended;
 	private ImageView ivAthleteProfilePic;
@@ -29,15 +32,22 @@ public class AthleteProfileActivity extends Activity {
 	private TextView tvAthleteLanguageAtHome;
 	private TextView tvAthleteLocation;
 	private TextView tvAthleteCellPhone;
+	private ImageView ivAthleteCellPhoneMsg;
 	private TextView tvAthletePhone;
 	private TextView tvAthleteEmail;
 	private TextView tvAthleteParentFullNameRelationship;
 	private TextView tvAthleteParentCellPhone;
+	private ImageView ivAthleteParentCellPhoneMsg;
 	private TextView tvAthleteParentPhone;
 	private TextView tvAthleteParentEmail;
 
+	private MenuItem editMenuItem;
+
 	private OnPhoneLongClickListener onPhoneLongClickListener;
 	private OnEmailLongClickListener onEmailLongClickListener;
+	private OnSmsIconClickListener onSmsIconClickListener;
+
+	private Athlete athlete;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,31 +55,35 @@ public class AthleteProfileActivity extends Activity {
 		setContentView(R.layout.activity_athlete_profile);
 		onPhoneLongClickListener = new OnPhoneLongClickListener(this);
 		onEmailLongClickListener = new OnEmailLongClickListener(this);
+		onSmsIconClickListener = new OnSmsIconClickListener(this);
 
-		Intent i = getIntent();
-		Athlete athlete = (Athlete) i.getSerializableExtra(AtheletsFragment.ATHLETE_EXTRA_TAG);
 		setupViews();
-		populateViews(athlete);
+		Intent i = getIntent();
+		athlete = (Athlete) i.getSerializableExtra(AtheletsFragment.ATHLETE_EXTRA_TAG);
+		populateViews();
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.athlete_profile, menu);
+		editMenuItem = menu.findItem(R.id.action_edit);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_edit) {
+			showUpdateAthleteProfileDialog();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void showUpdateAthleteProfileDialog() {
+		DialogFragment newFragment = new UpdateAthleteProfileFragment(athlete);
+		newFragment.show(getSupportFragmentManager(), "updateAthleteProfileDialog");
 	}
 
 	private void setupViews() {
@@ -82,19 +96,19 @@ public class AthleteProfileActivity extends Activity {
 		tvAthleteAge = (TextView) findViewById(R.id.tvAthleteAge);
 		tvAthleteLanguageAtHome = (TextView) findViewById(R.id.tvAthleteLanguageAtHome);
 		tvAthleteLocation = (TextView) findViewById(R.id.tvAthleteLocation);
-
 		tvAthleteCellPhone = (TextView) findViewById(R.id.tvAthleteCellPhone);
-
+		ivAthleteCellPhoneMsg = (ImageView) findViewById(R.id.ivAthleteCellPhoneMsg);
 		tvAthletePhone = (TextView) findViewById(R.id.tvAthletePhone);
 		tvAthleteEmail = (TextView) findViewById(R.id.tvAthleteEmail);
-
 		tvAthleteParentFullNameRelationship = (TextView) findViewById(R.id.tvAthleteParentFullNameRelationship);
 		tvAthleteParentCellPhone = (TextView) findViewById(R.id.tvAthleteParentCellPhone);
+		ivAthleteParentCellPhoneMsg = (ImageView) findViewById(R.id.ivAthleteParentCellPhoneMsg);
 		tvAthleteParentPhone = (TextView) findViewById(R.id.tvAthleteParentPhone);
 		tvAthleteParentEmail = (TextView) findViewById(R.id.tvAthleteParentEmail);
+
 	}
 
-	private void populateViews(Athlete athlete) {
+	private void populateViews() {
 		//TODO tvLastAttended
 		if (athlete != null) {
 			// profile pic
@@ -122,7 +136,7 @@ public class AthleteProfileActivity extends Activity {
 			}
 
 			if (athlete.getNickName() != null && !athlete.getNickName().isEmpty()) {
-				tvAthleteNickName.setText("(" + athlete.getNickName() + ")");
+				tvAthleteNickName.setText(athlete.getNickName());
 			} else {
 				tvAthleteNickName.setVisibility(View.GONE);
 			}
@@ -138,9 +152,12 @@ public class AthleteProfileActivity extends Activity {
 			String mobile = athlete.getCellPhone();
 			if (mobile == null || mobile.isEmpty()) {
 				tvAthleteCellPhone.setEnabled(false);
+				ivAthleteCellPhoneMsg.setVisibility(View.GONE);
 				mobile = getResources().getString(R.string.no_mobile_text);
 				tvAthleteCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
 				tvAthleteCellPhone.setTypeface(null, Typeface.ITALIC);
+			} else {
+				ivAthleteCellPhoneMsg.setTag(mobile);
 			}
 			tvAthleteCellPhone.setText(mobile);
 
@@ -183,15 +200,19 @@ public class AthleteProfileActivity extends Activity {
 				String pmobile = parent.getCellPhone();
 				if (pmobile == null || pmobile.isEmpty()) {
 					tvAthleteParentCellPhone.setEnabled(false);
+					ivAthleteParentCellPhoneMsg.setVisibility(View.GONE);
 					pmobile = getResources().getString(R.string.no_mobile_text);
 					tvAthleteParentCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
 					tvAthleteParentCellPhone.setTypeface(null, Typeface.ITALIC);
+				} else {
+					ivAthleteParentCellPhoneMsg.setTag(pmobile);
 				}
 				tvAthleteParentCellPhone.setText(pmobile);
-				String pphone = parent.getPhone();
 
+				String pphone = parent.getPhone();
 				if (pphone == null || pphone.isEmpty()) {
 					tvAthleteParentPhone.setEnabled(false);
+
 					pphone = getResources().getString(R.string.no_phone_text);
 					tvAthleteParentPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
 					tvAthleteParentPhone.setTypeface(null, Typeface.ITALIC);
@@ -211,6 +232,7 @@ public class AthleteProfileActivity extends Activity {
 
 				setupOnPhoneLongClickListeners();
 				setupOnEmailLongClickListeners();
+				setupOnSmsIconLongClickListeners();
 			}
 		}
 
@@ -228,6 +250,11 @@ public class AthleteProfileActivity extends Activity {
 		tvAthleteEmail.setOnLongClickListener(onEmailLongClickListener);
 		tvAthleteParentEmail.setOnLongClickListener(onEmailLongClickListener);
 
+	}
+
+	private void setupOnSmsIconLongClickListeners() {
+		ivAthleteCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
+		ivAthleteParentCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
 	}
 
 }

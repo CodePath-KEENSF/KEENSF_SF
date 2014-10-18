@@ -51,18 +51,23 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int drawer_shadow=0x7f020000;
-        public static final int ic_action_search=0x7f020001;
-        public static final int ic_active=0x7f020002;
-        public static final int ic_collapse=0x7f020003;
-        public static final int ic_drawer=0x7f020004;
-        public static final int ic_expand=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
-        public static final int ic_message=0x7f020007;
-        public static final int ic_user_photos_f=0x7f020008;
-        public static final int ic_user_photos_m=0x7f020009;
-        public static final int ic_user_photos_u=0x7f02000a;
+        public static final int ic_action_edit=0x7f020001;
+        public static final int ic_action_search=0x7f020002;
+        public static final int ic_active=0x7f020003;
+        public static final int ic_collapse=0x7f020004;
+        public static final int ic_drawer=0x7f020005;
+        public static final int ic_expand=0x7f020006;
+        public static final int ic_language=0x7f020007;
+        public static final int ic_launcher=0x7f020008;
+        public static final int ic_location=0x7f020009;
+        public static final int ic_message=0x7f02000a;
+        public static final int ic_nick_name=0x7f02000b;
+        public static final int ic_user_photos_f=0x7f02000c;
+        public static final int ic_user_photos_m=0x7f02000d;
+        public static final int ic_user_photos_u=0x7f02000e;
     }
     public static final class id {
+<<<<<<< Updated upstream
         public static final int action_search_athletes=0x7f0a0056;
         public static final int action_search_coaches=0x7f0a0059;
         public static final int action_settings=0x7f0a0055;
@@ -155,10 +160,115 @@ containing a value of this type.
         public static final int tvSessionName=0x7f0a004d;
         public static final int tvSessionTime=0x7f0a004c;
         public static final int vpPager=0x7f0a002f;
+=======
+        public static final int action_edit=0x7f0a005f;
+        public static final int action_search_athletes=0x7f0a0060;
+        public static final int action_search_coaches=0x7f0a0063;
+        public static final int action_settings=0x7f0a005e;
+        public static final int btnAbsent=0x7f0a0041;
+        public static final int btnAdd=0x7f0a001d;
+        public static final int btnCancelAthleteProfileUpdate=0x7f0a0051;
+        public static final int btnCheckIn=0x7f0a002f;
+        public static final int btnChkIn=0x7f0a0042;
+        public static final int btnLogin=0x7f0a0030;
+        public static final int btnOthers=0x7f0a0043;
+        public static final int btnSaveAthleteProfileUpdate=0x7f0a0052;
+        public static final int drawer_layout=0x7f0a003c;
+        public static final int elvRegisteredPeople=0x7f0a001f;
+        public static final int etAthleteCellPhone=0x7f0a0049;
+        public static final int etAthleteEmail=0x7f0a004b;
+        public static final int etAthleteParentCellPhone=0x7f0a004d;
+        public static final int etAthleteParentEmail=0x7f0a004f;
+        public static final int etAthleteParentPhone=0x7f0a004e;
+        public static final int etAthletePhone=0x7f0a004a;
+        public static final int etSearch=0x7f0a001c;
+        public static final int flContainer=0x7f0a0000;
+        public static final int ivActiveIcon=0x7f0a0005;
+        public static final int ivAthleteCellPhoneMsg=0x7f0a000e;
+        public static final int ivAthleteIcon=0x7f0a0058;
+        public static final int ivAthleteParentCellPhoneMsg=0x7f0a0017;
+        public static final int ivAthleteProfilePic=0x7f0a0003;
+        public static final int ivCoachIcon=0x7f0a005a;
+        public static final int ivCoachImageProfile=0x7f0a0040;
+        public static final int ivCoachProfilePic=0x7f0a0020;
+        public static final int lvAthletes=0x7f0a0046;
+        public static final int lvCoaches=0x7f0a0047;
+        public static final int lvDrawer=0x7f0a003e;
+        public static final int lvSessionList=0x7f0a003d;
+        public static final int miAthletesAttendance=0x7f0a0062;
+        public static final int miCoachesAttendance=0x7f0a0061;
+        public static final int miCollapseAll=0x7f0a0065;
+        public static final int miExpandAll=0x7f0a0064;
+        public static final int rlAdditionalInfoTile=0x7f0a0007;
+        public static final int rlAthleteContactInfoTile=0x7f0a000b;
+        public static final int rlAthleteParentContactInfoTile=0x7f0a004c;
+        public static final int rlContactInfoUpdateButtonsTile=0x7f0a0050;
+        public static final int rlPrimaryParentTile=0x7f0a0013;
+        public static final int rlUpdateAthleteProfileForm=0x7f0a0048;
+        public static final int tvAthleteAge=0x7f0a0006;
+        public static final int tvAthleteCellPhone=0x7f0a000d;
+        public static final int tvAthleteCellPhoneLabel=0x7f0a000c;
+        public static final int tvAthleteEmail=0x7f0a0012;
+        public static final int tvAthleteEmailLabel=0x7f0a0011;
+        public static final int tvAthleteFullName=0x7f0a0004;
+        public static final int tvAthleteLanguageAtHome=0x7f0a0009;
+        public static final int tvAthleteLocation=0x7f0a000a;
+        public static final int tvAthleteName=0x7f0a003f;
+        public static final int tvAthleteNickName=0x7f0a0008;
+        public static final int tvAthleteParentCellPhone=0x7f0a0016;
+        public static final int tvAthleteParentCellPhoneLabel=0x7f0a0015;
+        public static final int tvAthleteParentEmail=0x7f0a001b;
+        public static final int tvAthleteParentEmailLabel=0x7f0a001a;
+        public static final int tvAthleteParentFullNameRelationship=0x7f0a0014;
+        public static final int tvAthleteParentPhone=0x7f0a0019;
+        public static final int tvAthleteParentPhoneLabel=0x7f0a0018;
+        public static final int tvAthletePhone=0x7f0a0010;
+        public static final int tvAthletePhoneLabel=0x7f0a000f;
+        public static final int tvCoachAge=0x7f0a0022;
+        public static final int tvCoachCellPhone=0x7f0a002a;
+        public static final int tvCoachCellPhoneLabel=0x7f0a0029;
+        public static final int tvCoachCheckIn=0x7f0a0044;
+        public static final int tvCoachEmail=0x7f0a002e;
+        public static final int tvCoachEmailLabel=0x7f0a002d;
+        public static final int tvCoachForeignLanguages=0x7f0a0024;
+        public static final int tvCoachForeignLanguagesLabel=0x7f0a0023;
+        public static final int tvCoachFullName=0x7f0a0021;
+        public static final int tvCoachLocation=0x7f0a0028;
+        public static final int tvCoachLocationLabel=0x7f0a0027;
+        public static final int tvCoachName=0x7f0a0045;
+        public static final int tvCoachPhone=0x7f0a002c;
+        public static final int tvCoachPhoneLabel=0x7f0a002b;
+        public static final int tvCoachSkills=0x7f0a0026;
+        public static final int tvCoachSkillsLabel=0x7f0a0025;
+        public static final int tvCoahesList=0x7f0a005d;
+        public static final int tvDate=0x7f0a0032;
+        public static final int tvDateLabel=0x7f0a0033;
+        public static final int tvHeader=0x7f0a001e;
+        public static final int tvHeading=0x7f0a0053;
+        public static final int tvLastAttended=0x7f0a0001;
+        public static final int tvLastAttendedLabel=0x7f0a0002;
+        public static final int tvLocation=0x7f0a0038;
+        public static final int tvLocationLabel=0x7f0a0039;
+        public static final int tvNumAthletes=0x7f0a0059;
+        public static final int tvNumCoaches=0x7f0a005b;
+        public static final int tvProgramActiveDate=0x7f0a003b;
+        public static final int tvProgramActiveDateLabel=0x7f0a003a;
+        public static final int tvProgramName=0x7f0a0034;
+        public static final int tvProgramNameLabel=0x7f0a0035;
+        public static final int tvProgramType=0x7f0a0036;
+        public static final int tvProgramTypeLabel=0x7f0a0037;
+        public static final int tvSequence=0x7f0a005c;
+        public static final int tvSessionDate=0x7f0a0054;
+        public static final int tvSessionLocation=0x7f0a0057;
+        public static final int tvSessionName=0x7f0a0056;
+        public static final int tvSessionTime=0x7f0a0055;
+        public static final int vpPager=0x7f0a0031;
+>>>>>>> Stashed changes
     }
     public static final class layout {
         public static final int activity_athlete_list=0x7f030000;
         public static final int activity_athlete_profile=0x7f030001;
+<<<<<<< Updated upstream
         public static final int activity_coach_check_in=0x7f030002;
         public static final int activity_coach_list=0x7f030003;
         public static final int activity_coach_profile=0x7f030004;
@@ -177,6 +287,28 @@ containing a value of this type.
         public static final int session_list_header=0x7f030011;
         public static final int session_list_item=0x7f030012;
         public static final int sublist_people=0x7f030013;
+=======
+        public static final int activity_check_in=0x7f030002;
+        public static final int activity_coach_check_in=0x7f030003;
+        public static final int activity_coach_list=0x7f030004;
+        public static final int activity_coach_profile=0x7f030005;
+        public static final int activity_login=0x7f030006;
+        public static final int activity_session_athlete_coach_list=0x7f030007;
+        public static final int activity_session_details=0x7f030008;
+        public static final int activity_session_list=0x7f030009;
+        public static final int athlete_list_item=0x7f03000a;
+        public static final int check_in_items=0x7f03000b;
+        public static final int coach_list_item=0x7f03000c;
+        public static final int drawer_nav_item=0x7f03000d;
+        public static final int fragment_athletes=0x7f03000e;
+        public static final int fragment_coaches=0x7f03000f;
+        public static final int fragment_sessions=0x7f030010;
+        public static final int fragment_update_athlete_profile=0x7f030011;
+        public static final int group_people=0x7f030012;
+        public static final int session_list_header=0x7f030013;
+        public static final int session_list_item=0x7f030014;
+        public static final int sublist_people=0x7f030015;
+>>>>>>> Stashed changes
     }
     public static final class menu {
         public static final int athlete_list=0x7f090000;
@@ -190,25 +322,35 @@ containing a value of this type.
         public static final int sessions=0x7f090008;
     }
     public static final class string {
-        public static final int absent_button=0x7f060032;
+        public static final int absent_button=0x7f060035;
+        public static final int action_edit=0x7f060026;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int athletesAttendance=0x7f060025;
+<<<<<<< Updated upstream
         public static final int athletes_registered=0x7f060037;
         public static final int athletes_registered_label=0x7f060036;
+=======
+        public static final int button_cancel_text=0x7f060027;
+        public static final int button_save_text=0x7f060028;
+>>>>>>> Stashed changes
         public static final int check_in_button=0x7f060010;
-        public static final int coach_name=0x7f060031;
+        public static final int coach_name=0x7f060034;
         public static final int coachesAttendance=0x7f060024;
+<<<<<<< Updated upstream
         public static final int coaches_registered=0x7f060035;
         public static final int coaches_registered_label=0x7f060034;
         public static final int collapse_all=0x7f06002d;
+=======
+        public static final int collapse_all=0x7f060030;
+>>>>>>> Stashed changes
         public static final int date_changable=0x7f06000c;
         public static final int date_label=0x7f060008;
-        public static final int drawer_close=0x7f060027;
-        public static final int drawer_open=0x7f060026;
-        public static final int expand_all=0x7f06002c;
+        public static final int drawer_close=0x7f06002a;
+        public static final int drawer_open=0x7f060029;
+        public static final int expand_all=0x7f06002f;
         public static final int header=0x7f060015;
-        public static final int hello_world=0x7f06002a;
+        public static final int hello_world=0x7f06002d;
         public static final int location_changable=0x7f06000b;
         public static final int location_label=0x7f060007;
         public static final int log_in_button=0x7f060011;
@@ -222,12 +364,12 @@ containing a value of this type.
         public static final int no_skills_text=0x7f060023;
         public static final int num_athletes_label=0x7f060018;
         public static final int num_coaches_label=0x7f060019;
-        public static final int others_button=0x7f060033;
-        public static final int program_active_date=0x7f060030;
+        public static final int others_button=0x7f060036;
+        public static final int program_active_date=0x7f060033;
         public static final int program_name_changable=0x7f06000a;
         public static final int program_name_label=0x7f060006;
-        public static final int program_type=0x7f06002f;
-        public static final int program_type_label=0x7f06002e;
+        public static final int program_type=0x7f060032;
+        public static final int program_type_label=0x7f060031;
         public static final int search=0x7f060013;
         public static final int search_check_in=0x7f060014;
         public static final int session_changable=0x7f06000d;
@@ -239,11 +381,11 @@ containing a value of this type.
         public static final int session_period_label=0x7f060009;
         public static final int session_time_label=0x7f06001a;
         public static final int title_activity_athlete_list=0x7f060004;
-        public static final int title_activity_athlete_profile=0x7f060029;
+        public static final int title_activity_athlete_profile=0x7f06002c;
         public static final int title_activity_check_in=0x7f06000f;
         public static final int title_activity_coach_list=0x7f060003;
-        public static final int title_activity_coach_profile=0x7f060028;
-        public static final int title_activity_session_athlete_coach_list=0x7f06002b;
+        public static final int title_activity_coach_profile=0x7f06002b;
+        public static final int title_activity_session_athlete_coach_list=0x7f06002e;
         public static final int title_activity_session_details=0x7f060005;
         public static final int title_activity_session_list=0x7f060002;
     }
