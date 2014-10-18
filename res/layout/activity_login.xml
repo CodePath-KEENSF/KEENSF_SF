@@ -7,24 +7,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.keenusa.connect.activities.LoginActivity" >
-
-   
-    
-    <Button
-        android:id="@+id/btnSessionList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="15dp"
-        android:text="Get Session List" />
     
     <Button
         android:id="@+id/btnCheckIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnSessionList"
-        android:layout_alignLeft="@+id/btnSessionList"
-        android:layout_alignRight="@+id/btnSessionList"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="15dp"
         android:text="@string/check_in_button" />
 

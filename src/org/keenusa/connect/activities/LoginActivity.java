@@ -48,23 +48,6 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		Button btnSessionList = (Button) findViewById(R.id.btnSessionList);
-		btnSessionList.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				KeenCivicoreClient client = new KeenCivicoreClient(LoginActivity.this);
-				client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
-
-					@Override
-					public void onListResult(List<KeenSession> list) {
-						Toast.makeText(LoginActivity.this, "sessions data fetched " + list.size(), Toast.LENGTH_LONG).show();
-						openSessionList();
-					}
-				});
-			}
-		});
-
 		return true;
 	}
 
@@ -73,18 +56,8 @@ public class LoginActivity extends Activity {
 		startActivity(i);
 	}
 
-	private void openSessionList() {
-		Intent i = new Intent(this, SessionListActivity.class);
-		startActivity(i);
-	}
-
 	protected void openCheckIn() {
 		Intent i = new Intent(this, CoachesCheckInActivity.class);
-		startActivity(i);
-	}
-
-	protected void openSessionDetails() {
-		Intent i = new Intent(this, SessionDetailsActivity.class);
 		startActivity(i);
 	}
 

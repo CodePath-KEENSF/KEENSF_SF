@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.keenusa.connect.R;
+import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
@@ -17,11 +18,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> implements StickyListHeadersAdapter{
-	
+public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession>
+		implements StickyListHeadersAdapter {
+
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 	public static final String DATE_FORMAT_LONG = "MMddyyyy";
-	
+
 	public static class ViewHolder {
 		TextView tvSessionName;
 		TextView tvSessionLocation;
@@ -42,6 +44,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		KeenSession session = getItem(position);
+		KeenProgram program = session.getProgram();
 
 		ViewHolder viewHolder;
 		if (convertView == null) {
@@ -65,17 +68,33 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		viewHolder.tvSessionName.setText(session.getProgram().getName());
-		
-		viewHolder.tvSessionLocation.setText(session.getProgram().getLocation()
-				.getCity()
-				+ ", " + session.getProgram().getLocation().getState());
-		
-		viewHolder.tvNumAthletes.setText(session.getRegisteredAthleteCount() + "");
-		
+		if (program != null && program.getName() != null) {
+			viewHolder.tvSessionName.setText(session.getProgram().getName());
+		} else {
+			viewHolder.tvSessionName.setText("Dummy Program");
+		}
+
+		if (program != null && program.getLocation() != null
+				&& program.getLocation().getCity() != null
+				&& program.getLocation().getState() != null) {
+			viewHolder.tvSessionLocation.setText(session.getProgram()
+					.getLocation().getCity()
+					+ ", " + session.getProgram().getLocation().getState());
+		} else {
+			viewHolder.tvSessionLocation.setText("San Francisco");
+		}
+
+		viewHolder.tvNumAthletes.setText(session.getRegisteredAthleteCount()
+				+ "");
+
 		viewHolder.tvNumCoaches.setText(session.getRegisteredCoachCount() + "");
-		
-		viewHolder.tvSessionTime.setText(session.getProgram().getProgramTimes());
+
+		if (program != null && program.getProgramTimes() != null) {
+			viewHolder.tvSessionTime.setText(session.getProgram()
+					.getProgramTimes());
+		} else {
+			viewHolder.tvSessionTime.setText("12pm - 1pm");
+		}
 
 		return convertView;
 	}
@@ -97,11 +116,16 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 		} else {
 			headerViewHolder = (HeaderViewHolder) convertView.getTag();
 		}
-		
-		DateTime dt = session.getDate();
-		String date = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH).format(dt.toDate());
-		headerViewHolder.tvSessionDate.setText(date);
-		
+
+		if(session.getDate() != null){
+			DateTime dt = session.getDate();
+			String date = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH)
+					.format(dt.toDate());
+			headerViewHolder.tvSessionDate.setText(date);
+		}else{
+			headerViewHolder.tvSessionDate.setText("01/01/2001");
+		}
+
 		return convertView;
 	}
 
@@ -109,8 +133,9 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 	public long getHeaderId(int position) {
 		KeenSession session = getItem(position);
 		DateTime dt = session.getDate();
-		String date = new SimpleDateFormat(DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
-		return(Long.parseLong(date));
+		String date = new SimpleDateFormat(DATE_FORMAT_LONG, Locale.ENGLISH)
+				.format(dt.toDate());
+		return (Long.parseLong(date));
 	}
 
 }

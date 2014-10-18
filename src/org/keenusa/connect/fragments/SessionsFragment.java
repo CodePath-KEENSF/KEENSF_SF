@@ -2,6 +2,7 @@ package org.keenusa.connect.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
@@ -9,10 +10,10 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.activities.SessionDetailsActivity;
 import org.keenusa.connect.adapters.StickySessionListItemAdapter;
 import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.models.TestDataFactory;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
-import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView.IAnimationExecutor;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.content.Intent;
@@ -48,7 +49,11 @@ public class SessionsFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		
+		sessionList = new ArrayList<KeenSession>();
 		setAdapter();
+		
+		fetchSessionList();
 	}
 
 	@Override
@@ -83,6 +88,18 @@ public class SessionsFragment extends Fragment {
         });
 	}
 
+	private void fetchSessionList() {
+		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
+
+			@Override
+			public void onListResult(List<KeenSession> list) {
+				sessionList.addAll(list);
+				expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
+			}
+		});
+	}
+
 	private void openSessionDetails(int pos) {
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
 		i.putExtra("session", sessionList.get(pos));
@@ -91,7 +108,7 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setAdapter() {
-		sessionList = new ArrayList<KeenSession>(TestDataFactory.getInstance().getSessionList());
+//		sessionList = (ArrayList<KeenSession>)TestDataFactory.getInstance().getSessionList();
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 	}
 
