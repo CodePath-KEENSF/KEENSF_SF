@@ -39,6 +39,9 @@
     <string name="no_skills_text">not specified</string>
     <string name="coachesAttendance">Coaches Check-In</string>
     <string name="athletesAttendance">Athletes Check-In</string>
+    <string name="action_edit">Edit record</string>
+    <string name="button_cancel_text">Cancel</string>
+    <string name="button_save_text">Save</string>
 
     <color name="color">#eee9e9</color>
 
@@ -61,7 +64,6 @@
     <string name="title_activity_session_athlete_coach_list">KEEN</string>
     <string name="expand_all">Expand All</string>
     <string name="collapse_all">Collapse All</string>
-
     <string name="program_type_label">Program Type:</string>
     <string name="program_type">Sample Program Type</string>
     <string name="program_active_date">Active Date:</string>
@@ -72,6 +74,5 @@
     <string name="coaches_registered">Sample numbers of registered coaches</string>
     <string name="athletes_registered_label">Registered Athletes</string>
     <string name="athletes_registered">Sample numbers of Athletes registered</string>
-
 
 </resources>
