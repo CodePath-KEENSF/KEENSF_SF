@@ -40,11 +40,11 @@
         android:text="@string/check_in_button" />  -->
 
     <TextView
-        android:id="@+id/tvAthleteCheckIn"
+        android:id="@+id/tvCoachCheckIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/ivCoachImageProfile"
         android:text="@string/coach_name" />
 
@@ -52,7 +52,7 @@
         android:id="@+id/spCheckInOptions"
         android:layout_width="100dp"
         android:layout_height="35dp"
-        android:layout_alignBottom="@+id/tvAthleteCheckIn"
+        android:layout_alignBottom="@+id/tvCoachCheckIn"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

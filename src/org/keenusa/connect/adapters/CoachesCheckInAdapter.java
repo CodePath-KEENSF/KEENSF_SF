@@ -24,9 +24,6 @@ import android.widget.Toast;
 public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 
 		TextView tvCoachCheckIn;
-//		Button btnChkIn;
-//		Button btnAbsent;
-//		Button btnOthers;
 		Button btnAddCoach;
 		EditText etCoachSearch;
 		Spinner spinner;
@@ -44,10 +41,7 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.coach_check_in_items, parent, false);
 		}
-		tvCoachCheckIn = (TextView) convertView.findViewById(R.id.tvAthleteCheckIn);
-//		btnChkIn = (Button) convertView.findViewById(R.id.btnChkIn);
-//		btnAbsent = (Button) convertView.findViewById(R.id.btnAbsent);
-//		btnOthers = (Button) convertView.findViewById(R.id.btnOthers);
+		tvCoachCheckIn = (TextView) convertView.findViewById(R.id.tvCoachCheckIn);
 		btnAddCoach = (Button) convertView.findViewById(R.id.btnAddCoach);
 		etCoachSearch = (EditText) convertView.findViewById(R.id.etCoachSearch);
 		ImageView ivCoachImageProfile = (ImageView) convertView.findViewById(R.id.ivCoachImageProfile);
@@ -72,28 +66,6 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 			}
  			
 		});
-//		ivCoachImageProfile.setImageResource(position);
-//		btnChkIn.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				Toast.makeText(getContext(), "Check-in " + coach.getAttendedCoachFullName().toString(), Toast.LENGTH_SHORT).show();
-//			}
-//		});;
-//		btnAbsent.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				Toast.makeText(getContext(), "Absent " + coach.getAttendedCoachFullName().toString(), Toast.LENGTH_SHORT).show();
-//			}
-//		});;
-//		btnOthers.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				Toast.makeText(getContext(), "Others " + coach.getComments().toString(), Toast.LENGTH_SHORT).show();
-//			}
-//		});;
 		return convertView;
 	}
 
