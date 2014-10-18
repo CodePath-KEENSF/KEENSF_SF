@@ -79,7 +79,7 @@ public class LoginActivity extends Activity {
 	}
 
 	protected void openCheckIn() {
-		Intent i = new Intent(this, CheckInActivity.class);
+		Intent i = new Intent(this, CoachesCheckInActivity.class);
 		startActivity(i);
 	}
 

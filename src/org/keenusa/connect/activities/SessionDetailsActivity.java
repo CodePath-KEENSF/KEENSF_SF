@@ -4,9 +4,12 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,4 +96,44 @@ public class SessionDetailsActivity extends FragmentActivity {
 //
 //		actionBar.addTab(athletes);
 //	}
+		private void openCoachCheckIn(KeenSession session2, KeenProgram program2) {
+			Intent i = new Intent(this, CoachesCheckInActivity.class);
+			i.putExtra("session", session2);
+			i.putExtra("program", program2);
+			startActivity(i);
+		}
+		
+		private void openAthleteCheckIn(KeenSession session2, KeenProgram program2) {
+			Intent i = new Intent(this, SessionDetailsActivity.class);
+			i.putExtra("session", session2);
+			i.putExtra("program", program2);
+			startActivity(i);
+		}
+		
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			// Inflate the menu; this adds items to the action bar if it is present.
+			getMenuInflater().inflate(R.menu.attendance, menu);
+			return true;
+		}
+		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle action bar item clicks here. The action bar will
+			// automatically handle clicks on the Home/Up button, so long
+			// as you specify a parent activity in AndroidManifest.xml.
+			int id = item.getItemId();
+			if (id == R.id.miCoachesAttendance) {
+				openCoachCheckIn(session, program);
+				
+			} else if (id == R.id.miAthletesAttendance) {
+				openAthleteCheckIn(session, program);
+				
+			}
+			return super.onOptionsItemSelected(item);
+		}
+
+		
+
+		
 }

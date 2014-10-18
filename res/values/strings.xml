@@ -37,6 +37,8 @@
     <string name="no_language_at_home_text">not specified</string>
     <string name="no_parent_relationship_text">not specified</string>
     <string name="no_skills_text">not specified</string>
+    <string name="coachesAttendance">Coaches Check-In</string>
+    <string name="athletesAttendance">Athletes Check-In</string>
 
     <color name="color">#eee9e9</color>
 
@@ -63,6 +65,9 @@
     <string name="program_type_label">Program Type:</string>
     <string name="program_type">Sample Program Type</string>
     <string name="program_active_date">Active Date:</string>
+    <string name="coach_name">Sample Coach Names</string>
+    <string name="absent_button">Absent</string>
+    <string name="others_button">Others</string>
 
 
 </resources>

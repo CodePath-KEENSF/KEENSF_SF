@@ -2,7 +2,7 @@ package org.keenusa.connect.helpers;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.AthleteListActivity;
-import org.keenusa.connect.activities.CheckInActivity;
+import org.keenusa.connect.activities.CoachesCheckInActivity;
 import org.keenusa.connect.activities.CoachListActivity;
 import org.keenusa.connect.activities.SessionListActivity;
 
@@ -78,7 +78,7 @@ public class KeenNavigationDrawer extends DrawerLayout {
 			intent = new Intent(getActivity(), SessionListActivity.class);
 			break;
 		case 1:
-			intent = new Intent(getActivity(), CheckInActivity.class);
+			intent = new Intent(getActivity(), CoachesCheckInActivity.class);
 			break;
 		case 2:
 			intent = new Intent(getActivity(), AthleteListActivity.class);

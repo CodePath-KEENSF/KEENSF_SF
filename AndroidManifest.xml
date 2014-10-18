@@ -45,7 +45,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activities.CheckInActivity"
+            android:name=".activities.CoachesCheckInActivity"
             android:label="@string/title_activity_check_in"
             android:screenOrientation="portrait" >
         </activity>
