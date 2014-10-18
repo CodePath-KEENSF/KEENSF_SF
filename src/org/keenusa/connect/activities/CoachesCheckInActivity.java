@@ -2,9 +2,10 @@ package org.keenusa.connect.activities;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.adapters.CheckInAdapter;
+import org.keenusa.connect.adapters.CoachesCheckInAdapter;
 import org.keenusa.connect.adapters.CoachesSubListAdapter;
 import org.keenusa.connect.adapters.Headers;
 import org.keenusa.connect.models.Coach;
@@ -12,6 +13,8 @@ import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.models.TestDataFactory;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -41,10 +44,10 @@ public class CoachesCheckInActivity extends Activity {
 	KeenProgram program;
 	
 	private ListView elvRegisteredPeople;
-	private Button search;
-	private EditText etSearch;
+//	private Button search;
+//	private EditText etSearch;
 	private ArrayList<CoachAttendance> coachList;
-	private CheckInAdapter coachCheckInAdapter;
+	private CoachesCheckInAdapter coachCheckInAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +75,24 @@ public class CoachesCheckInActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle(program.getName());
 		
-//		coachList.clear();
-		coachCheckInAdapter.notifyDataSetChanged();
+		KeenCivicoreClient client = new KeenCivicoreClient(getBaseContext());
+		coachCheckInAdapter.clear();
+		client.fetchCoachAttendanceListData(new CivicoreDataResultListener<CoachAttendance>() {
+			
+			@Override
+			public void onListResult(List<CoachAttendance> coachAttlist) {
+				coachList.addAll(coachAttlist);
+				coachCheckInAdapter.notifyDataSetChanged();
+			}
+			
+		});
+		
 	}
 
 	private void setView() {
 		elvRegisteredPeople = (ListView) findViewById(R.id.elvRegisteredPeople);
 		coachList = new ArrayList<CoachAttendance>();
-		coachCheckInAdapter = new CheckInAdapter(this, coachList);
+		coachCheckInAdapter = new CoachesCheckInAdapter(this, coachList);
 
 		elvRegisteredPeople.setAdapter(coachCheckInAdapter);
 		

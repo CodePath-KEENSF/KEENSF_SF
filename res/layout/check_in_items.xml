@@ -27,7 +27,7 @@
         android:layout_alignBaseline="@+id/btnAbsent"
         android:layout_alignBottom="@+id/btnAbsent"
         android:layout_toRightOf="@+id/btnAbsent"
-        android:text="Button" />
+        android:text="@string/others_button" />
 
     <TextView
         android:id="@+id/tvCoachCheckIn"
