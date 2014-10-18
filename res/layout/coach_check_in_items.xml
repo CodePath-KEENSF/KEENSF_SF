@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/ic_user_photos_m" />
 
-    <Button
+   <!--  <Button
         android:id="@+id/btnAbsent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,22 +29,30 @@
         android:layout_toRightOf="@+id/btnAbsent"
         android:text="@string/others_button" />
 
+    <Button
+        android:id="@+id/btnChkIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="122dp"
+        android:layout_marginLeft="24dp"
+        android:text="@string/check_in_button" />  -->
+
     <TextView
         android:id="@+id/tvAthleteCheckIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="17dp"
+        android:layout_toRightOf="@+id/ivCoachImageProfile"
         android:text="@string/coach_name" />
 
-    <Button
-        android:id="@+id/btnChkIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/ivCoachImageProfile"
-        android:layout_marginLeft="30dp"
-        android:text="@string/check_in_button" />
+    <Spinner
+        android:id="@+id/spCheckInOptions"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_alignBottom="@+id/tvAthleteCheckIn"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>
