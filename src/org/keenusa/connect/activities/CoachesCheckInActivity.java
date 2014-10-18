@@ -35,17 +35,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class CoachesCheckInActivity extends Activity {
-//	private LinkedHashMap<String, Headers> keen = new LinkedHashMap<String, Headers>();
-//	private ArrayList<Headers> coachesSubListArray = new ArrayList<Headers>();
-//	private CoachesSubListAdapter coachesSubListAdapter;
-//	private ExpandableListView elvCoaches;
-	Coach coach;
+
+	CoachAttendance coachAtt;
 	KeenSession session;
 	KeenProgram program;
 	
 	private ListView elvRegisteredPeople;
-//	private Button search;
-//	private EditText etSearch;
+
 	private ArrayList<CoachAttendance> coachList;
 	private CoachesCheckInAdapter coachCheckInAdapter;
 	
@@ -55,22 +51,13 @@ public class CoachesCheckInActivity extends Activity {
 		setContentView(R.layout.activity_coach_check_in);
 		setView();
 		getData();
-		
-		// TODO - fixing loading coach data to check-in
-//		loadCoachesData();
-//		elvCoaches = (ExpandableListView) findViewById(R.id.elvRegisteredPeople);
-//		coachesSubListAdapter = new CoachesSubListAdapter(CoachesCheckInActivity.this, coachesSubListArray);
-//		elvCoaches.setAdapter(coachesSubListAdapter);
-//		expandAll();
-//		Button search = (Button) findViewById(R.id.btnAdd);
-//		search.setOnClickListener(this);
-//		elvCoaches.setOnChildClickListener(coachItemClicked);
-//		elvCoaches.setOnGroupClickListener(coachGroupClicked);
+
 	}
 
 	private void getData() {
 		session = (KeenSession) getIntent().getSerializableExtra("session");
 		program = (KeenProgram) getIntent().getSerializableExtra("program");
+
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle(program.getName());
@@ -81,7 +68,11 @@ public class CoachesCheckInActivity extends Activity {
 			
 			@Override
 			public void onListResult(List<CoachAttendance> coachAttlist) {
-				coachList.addAll(coachAttlist);
+				for (CoachAttendance coachAtt : coachAttlist) {
+					if (coachAtt.getRemoteSessionId() == session.getRemoteId()) {
+						coachList.add(coachAtt);
+					}
+				}
 				coachCheckInAdapter.notifyDataSetChanged();
 			}
 			
