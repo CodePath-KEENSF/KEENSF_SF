@@ -1,10 +1,7 @@
 package org.keenusa.connect.adapters;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
-import org.joda.time.DateTime;
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.KeenSession;
 
@@ -17,8 +14,6 @@ import android.widget.TextView;
 
 public class SessionListItemAdapter extends ArrayAdapter<KeenSession> {
 
-	public static final String DATE_FORMAT = "MM/dd/yyyy";
-	
 	public static class ViewHolder {
 		TextView tvSessionName;
 		TextView tvSessionLocation;

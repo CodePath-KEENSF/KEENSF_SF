@@ -2,6 +2,7 @@ package org.keenusa.connect.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,6 +13,9 @@ import org.keenusa.connect.adapters.StickySessionListItemAdapter;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
+import org.keenusa.connect.utilities.GetNextDay;
+import org.keenusa.connect.utilities.KeenSessionComparator;
+import org.keenusa.connect.utilities.StringConstants;
 
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
@@ -29,8 +33,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class SessionsFragment extends Fragment {
-
-	public static final String DATE_FORMAT_LONG = "MMddyyyy";
 	
 	private ArrayList<KeenSession>sessionList;
 	
@@ -94,8 +96,11 @@ public class SessionsFragment extends Fragment {
 
 			@Override
 			public void onListResult(List<KeenSession> list) {
+				Collections.sort(list, Collections.reverseOrder(new KeenSessionComparator()));
 				sessionList.addAll(list);
 				expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
+				
+				setSessionListToCurrentDate();
 			}
 		});
 	}
@@ -125,7 +130,7 @@ public class SessionsFragment extends Fragment {
     	for(int i=0;i<sessionList.size();i++){
     		KeenSession session = sessionList.get(i);
     		DateTime dt = session.getDate();
-    		String date = new SimpleDateFormat(DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
+    		String date = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
     		expandableStickySessionList.expand(Long.parseLong(date));
     	}
 	}
@@ -134,7 +139,7 @@ public class SessionsFragment extends Fragment {
 		for(int i=0;i<sessionList.size();i++){
     		KeenSession session = sessionList.get(i);
     		DateTime dt = session.getDate();
-    		String date = new SimpleDateFormat(DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
+    		String date = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
     		expandableStickySessionList.collapse(Long.parseLong(date));
     	}
 	}
@@ -161,6 +166,20 @@ public class SessionsFragment extends Fragment {
 		}
 	}
 	
+	private void setSessionListToCurrentDate() {
+		int currentDateIndex = 0;
+		String nextSundayDateStr = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(GetNextDay.getNextSunday());
+		
+		for (KeenSession session : sessionList) {
+			String sessionDateStr = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(session.getDate().toDate());
+			if(nextSundayDateStr.equalsIgnoreCase(sessionDateStr)){
+				
+				expandableStickySessionList.setSelection(currentDateIndex);
+				break;
+			}
+			currentDateIndex = currentDateIndex + 1;
+		}
+	}
 
 
 	//	public void addAPIData(List<KeenSession> sessions) {
