@@ -31,14 +31,16 @@ public class SessionDetailsActivity extends FragmentActivity {
 			session = (KeenSession) getIntent().getSerializableExtra("session");
 			program = (KeenProgram) getIntent().getSerializableExtra("program");
 			
-			tvDate.setText(program.getActiveToDate().toString());
+			tvDate.setText(session.getDate().toString().substring(0, 10));
 			tvProgramName.setText(program.getName());
 			String address = /*program.getLocation().getAddress1() + */program.getLocation().getAddress2() + " " +
 					 program.getLocation().getCity() + " " + program.getLocation().getState() + " " + program.getLocation().getZipCode();
 			tvLocation.setText(address);
 			tvProgramType.setText(program.getGeneralProgramType().toString());
 			tvProgramActiveDate.setText(session.getProgram().getProgramTimes());
-			
+
+			Toast.makeText(this, "Selected Date " + session.getDate().toString(), Toast.LENGTH_SHORT).show();
+			Log.d("Selected Date ", session.getDate().toString());
 			Toast.makeText(this, "Class name " + program.getClass().toString(), Toast.LENGTH_SHORT).show();
 			Log.d("Class", program.getClass().toString());
 			Toast.makeText(this, "Name " + session.getProgram().getName().toString(), Toast.LENGTH_SHORT).show();
