@@ -42,13 +42,6 @@ public class SessionDetailsActivity extends FragmentActivity {
 			tvProgramType.setText(program.getGeneralProgramType().toString());
 			tvProgramActiveDate.setText(session.getProgram().getProgramTimes());
 
-			Toast.makeText(this, "Selected Date " + session.getDate().toString(), Toast.LENGTH_SHORT).show();
-			Log.d("Selected Date ", session.getDate().toString());
-			Toast.makeText(this, "Class name " + program.getClass().toString(), Toast.LENGTH_SHORT).show();
-			Log.d("Class", program.getClass().toString());
-			Toast.makeText(this, "Name " + session.getProgram().getName().toString(), Toast.LENGTH_SHORT).show();
-			Log.d("Name", session.getProgram().getName().toString());
-
 		}
 
 //		@SuppressWarnings("deprecation")

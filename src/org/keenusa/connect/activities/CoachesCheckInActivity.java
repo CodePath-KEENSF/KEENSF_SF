@@ -11,16 +11,21 @@ import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.models.TestDataFactory;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ListView;
@@ -38,7 +43,7 @@ public class CoachesCheckInActivity extends Activity {
 	private ListView elvRegisteredPeople;
 	private Button search;
 	private EditText etSearch;
-	private ArrayList<CoachAttendance> coachAttendance;
+	private ArrayList<CoachAttendance> coachList;
 	private CheckInAdapter coachCheckInAdapter;
 	
 	@Override
@@ -61,15 +66,34 @@ public class CoachesCheckInActivity extends Activity {
 	}
 
 	private void getData() {
-		elvRegisteredPeople.setAdapter(coachCheckInAdapter);
+		session = (KeenSession) getIntent().getSerializableExtra("session");
+		program = (KeenProgram) getIntent().getSerializableExtra("program");
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setTitle(program.getName());
+		
+//		coachList.clear();
+		coachCheckInAdapter.notifyDataSetChanged();
 	}
 
 	private void setView() {
-		coachAttendance = new ArrayList<CoachAttendance>();
-		coachCheckInAdapter = new CheckInAdapter(this, coachAttendance);
-		
-		
 		elvRegisteredPeople = (ListView) findViewById(R.id.elvRegisteredPeople);
+		coachList = new ArrayList<CoachAttendance>();
+		coachCheckInAdapter = new CheckInAdapter(this, coachList);
+
+		elvRegisteredPeople.setAdapter(coachCheckInAdapter);
+		
+		elvRegisteredPeople.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent i = new Intent(CoachesCheckInActivity.this, CoachProfileActivity.class);
+				startActivity(i);
+			}
+		});
+		
+		
 //		search = (Button) findViewById(R.id.btnAdd);
 //		etSearch = (EditText) findViewById(R.id.etSearch);
 	}

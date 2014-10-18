@@ -23,9 +23,10 @@ public class CheckInAdapter extends ArrayAdapter<CoachAttendance> {
 		Button btnOthers;
 
 	public CheckInAdapter(Context context, ArrayList<CoachAttendance> coachList) {
-		super(context, 0, coachList);
+		super(context, android.R.layout.simple_list_item_1, coachList);
 	}
-	
+
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CoachAttendance coach = getItem(position);
