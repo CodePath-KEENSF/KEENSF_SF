@@ -9,6 +9,7 @@ import org.keenusa.connect.listeners.OnSmsIconClickListener;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.models.Parent;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -20,8 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class AthleteProfileActivity extends FragmentActivity {
+public class AthleteProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Athlete> {
 
 	private TextView tvLastAttended;
 	private ImageView ivAthleteProfilePic;
@@ -31,8 +33,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 	private TextView tvAthleteAge;
 	private TextView tvAthleteLanguageAtHome;
 	private TextView tvAthleteLocation;
-	private TextView tvAthleteCellPhone;
-	private ImageView ivAthleteCellPhoneMsg;
 	private TextView tvAthletePhone;
 	private TextView tvAthleteEmail;
 	private TextView tvAthleteParentFullNameRelationship;
@@ -82,7 +82,7 @@ public class AthleteProfileActivity extends FragmentActivity {
 	}
 
 	private void showUpdateAthleteProfileDialog() {
-		DialogFragment newFragment = new UpdateAthleteProfileFragment(athlete);
+		DialogFragment newFragment = new UpdateAthleteProfileFragment(athlete, this);
 		newFragment.show(getSupportFragmentManager(), "updateAthleteProfileDialog");
 	}
 
@@ -96,8 +96,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 		tvAthleteAge = (TextView) findViewById(R.id.tvAthleteAge);
 		tvAthleteLanguageAtHome = (TextView) findViewById(R.id.tvAthleteLanguageAtHome);
 		tvAthleteLocation = (TextView) findViewById(R.id.tvAthleteLocation);
-		tvAthleteCellPhone = (TextView) findViewById(R.id.tvAthleteCellPhone);
-		ivAthleteCellPhoneMsg = (ImageView) findViewById(R.id.ivAthleteCellPhoneMsg);
 		tvAthletePhone = (TextView) findViewById(R.id.tvAthletePhone);
 		tvAthleteEmail = (TextView) findViewById(R.id.tvAthleteEmail);
 		tvAthleteParentFullNameRelationship = (TextView) findViewById(R.id.tvAthleteParentFullNameRelationship);
@@ -111,7 +109,7 @@ public class AthleteProfileActivity extends FragmentActivity {
 	private void populateViews() {
 		//TODO tvLastAttended
 		if (athlete != null) {
-			// profile pic
+
 			if (athlete.getGender() == ContactPerson.Gender.FEMALE) {
 				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_f);
 			} else if (athlete.getGender() == ContactPerson.Gender.MALE) {
@@ -148,18 +146,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 				tvAthleteLocation.setTypeface(null, Typeface.ITALIC);
 			}
 			tvAthleteLocation.setText(location);
-
-			String mobile = athlete.getCellPhone();
-			if (mobile == null || mobile.isEmpty()) {
-				tvAthleteCellPhone.setEnabled(false);
-				ivAthleteCellPhoneMsg.setVisibility(View.GONE);
-				mobile = getResources().getString(R.string.no_mobile_text);
-				tvAthleteCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvAthleteCellPhone.setTypeface(null, Typeface.ITALIC);
-			} else {
-				ivAthleteCellPhoneMsg.setTag(mobile);
-			}
-			tvAthleteCellPhone.setText(mobile);
 
 			String phone = athlete.getPhone();
 			if (phone == null || phone.isEmpty()) {
@@ -232,14 +218,13 @@ public class AthleteProfileActivity extends FragmentActivity {
 
 				setupOnPhoneLongClickListeners();
 				setupOnEmailLongClickListeners();
-				setupOnSmsIconLongClickListeners();
+				setupOnSmsIconClickListeners();
 			}
 		}
 
 	}
 
 	private void setupOnPhoneLongClickListeners() {
-		tvAthleteCellPhone.setOnLongClickListener(onPhoneLongClickListener);
 		tvAthletePhone.setOnLongClickListener(onPhoneLongClickListener);
 		tvAthleteParentCellPhone.setOnLongClickListener(onPhoneLongClickListener);
 		tvAthleteParentPhone.setOnLongClickListener(onPhoneLongClickListener);
@@ -252,9 +237,36 @@ public class AthleteProfileActivity extends FragmentActivity {
 
 	}
 
-	private void setupOnSmsIconLongClickListeners() {
-		ivAthleteCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
+	private void setupOnSmsIconClickListeners() {
 		ivAthleteParentCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
 	}
 
+	@Override
+	public void onUpdateResult(Athlete athleteDTO) {
+		if (athleteDTO != null) {
+			if (athleteDTO.getPhone() != null) {
+				athlete.setPhone(athleteDTO.getPhone());
+			}
+			if (athleteDTO.getEmail() != null) {
+				athlete.setEmail(athleteDTO.getEmail());
+			}
+			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getCellPhone() != null) {
+				athlete.getPrimaryParent().setCellPhone(athleteDTO.getPrimaryParent().getCellPhone());
+			}
+			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getPhone() != null) {
+				athlete.getPrimaryParent().setPhone(athleteDTO.getPrimaryParent().getPhone());
+			}
+			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getEmail() != null) {
+				athlete.getPrimaryParent().setEmail(athleteDTO.getPrimaryParent().getEmail());
+			}
+		}
+		populateViews();
+		Toast.makeText(this, "Athlete profile is updated", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onUpdateError() {
+		Toast.makeText(this, "Athlete profile update is failed", Toast.LENGTH_SHORT).show();
+
+	}
 }

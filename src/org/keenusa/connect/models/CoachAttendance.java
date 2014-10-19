@@ -25,7 +25,24 @@ public class CoachAttendance implements Serializable {
 
 	// attendance in remote source (lookup values) in the source 106 for contacts
 	public enum AttendanceValue {
-		REGISTERED, ATTENDED, CALLED_IN_ABSENCE, CANCELLED, NO_CALL_NO_SHOW
+		REGISTERED("Registered", 637), ATTENDED("Attended", 638), CALLED_IN_ABSENCE("Called in absence", 639), CANCELLED("Cancelled", 647), NO_CALL_NO_SHOW(
+				"No Call - No Show", 640);
+
+		private final String displayName;
+		private final int remoteKey;
+
+		private AttendanceValue(String displayName, int remoteKey) {
+			this.displayName = displayName;
+			this.remoteKey = remoteKey;
+		}
+
+		public String getDisplayName() {
+			return displayName;
+		}
+
+		public String getRemoteKeyString() {
+			return String.valueOf(remoteKey);
+		}
 	}
 
 	public CoachAttendance() {
