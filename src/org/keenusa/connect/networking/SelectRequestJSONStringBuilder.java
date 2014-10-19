@@ -11,11 +11,11 @@ import org.keenusa.connect.models.SharedLoggedUserDetails;
 import android.content.Context;
 import android.util.Log;
 
-public class ApiSelectRequestJSONStringBuilder {
+public class SelectRequestJSONStringBuilder {
 
 	public static final String PAGE_SIZE = "1200";
 
-	public static final String LOG_TAG_CLASS = ApiSelectRequestJSONStringBuilder.class.getSimpleName();
+	public static final String LOG_TAG_CLASS = SelectRequestJSONStringBuilder.class.getSimpleName();
 	public static final String API_KEY_PARAMETER_KEY = "key";
 	public static final String FUNCTION_PARAMETER_KEY = "function";
 	public static final String TABLE_NAME_PARAMETER_KEY = "tableName";

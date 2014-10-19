@@ -17,10 +17,10 @@ import org.keenusa.connect.models.remote.RemoteAthleteAttendanceList;
 import org.keenusa.connect.models.remote.RemoteAthleteList;
 import org.keenusa.connect.models.remote.RemoteCoachAttendanceList;
 import org.keenusa.connect.models.remote.RemoteCoachList;
+import org.keenusa.connect.models.remote.RemoteUpdateSuccessResult;
 import org.keenusa.connect.models.remote.RemoteProgramEnrolmentList;
 import org.keenusa.connect.models.remote.RemoteProgramList;
 import org.keenusa.connect.models.remote.RemoteSessionList;
-import org.keenusa.connect.models.remote.RemoteUpdateSuccessResult;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -46,7 +46,7 @@ public class KeenCivicoreClient {
 	public static final String REQUEST_STRING_PARAMETER_KEY = "api";
 
 	public enum APIRequestCode {
-		COACH_LIST, ATHLETE_LIST, SESSION_LIST, PROGRAM_LIST, PROGRAM_ENROLMENT_LIST, ATHLETE_ATENDANCE_LIST, COACH_ATTENDANCE_LIST, AFFILIATE_LIST, UPDATE_ATHLETE_PROFILE, UPDATE_COACH_PROFILE,
+		COACH_LIST, ATHLETE_LIST, SESSION_LIST, PROGRAM_LIST, PROGRAM_ENROLMENT_LIST, ATHLETE_ATENDANCE_LIST, COACH_ATTENDANCE_LIST, AFFILIATE_LIST, UPDATE_ATHLETE_PROFILE, UPDATE_COACH_PROFILE, UPDATE_ATHLETE_ATTENDANCE, UPDATE_COACH_ATTENDANCE, INSERT_ATHLETE_ATTENDANCE
 	};
 
 	public KeenCivicoreClient(Context context) {
@@ -402,7 +402,7 @@ public class KeenCivicoreClient {
 
 	public void updateCoachProfileRecord(final Coach coach, final CivicoreUpdateDataResultListener<Coach> listener) {
 
-		String url = buildUpdateCoachURL(APIRequestCode.UPDATE_ATHLETE_PROFILE, coach);
+		String url = buildUpdateCoachURL(APIRequestCode.UPDATE_COACH_PROFILE, coach);
 		client.get(url, new AsyncHttpResponseHandler() {
 
 			@Override
@@ -441,10 +441,136 @@ public class KeenCivicoreClient {
 
 	}
 
+	public void updateAfthetAttendanceRecord(final AthleteAttendance athleteAttendance,
+			final CivicoreUpdateDataResultListener<AthleteAttendance> listener) {
+
+		String url = buildUpdateAthleteAttendanceURL(APIRequestCode.UPDATE_ATHLETE_ATTENDANCE, athleteAttendance);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
+					if (listener != null) {
+						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == athleteAttendance.getRemoteId()) {
+							listener.onUpdateResult(athleteAttendance);
+						} else {
+							listener.onUpdateError();
+						}
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+					if (listener != null) {
+						listener.onUpdateError();
+					}
+
+				}
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.e("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void updateCoachAttendanceRecord(final CoachAttendance coachAttendance, final CivicoreUpdateDataResultListener<CoachAttendance> listener) {
+
+		String url = buildUpdateCoachAttendanceURL(APIRequestCode.UPDATE_COACH_ATTENDANCE, coachAttendance);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
+					if (listener != null) {
+						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == coachAttendance.getRemoteId()) {
+							listener.onUpdateResult(coachAttendance);
+						} else {
+							listener.onUpdateError();
+						}
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+					if (listener != null) {
+						listener.onUpdateError();
+					}
+
+				}
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.e("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	public void insertNewAfthetAttendanceRecord(final AthleteAttendance athleteAttendance,
+			final CivicoreUpdateDataResultListener<AthleteAttendance> listener) {
+
+		String url = buildInserAthleteAttendanceURL(APIRequestCode.INSERT_ATHLETE_ATTENDANCE, athleteAttendance);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteUpdateSuccessResult remoteInsertSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
+					if (listener != null) {
+						if (Long.valueOf(remoteInsertSuccessResult.getRemoteId()) > 0) {
+							athleteAttendance.setRemoteId(Long.valueOf(remoteInsertSuccessResult.getRemoteId()));
+							listener.onUpdateResult(athleteAttendance);
+						} else {
+							listener.onUpdateError();
+						}
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+					if (listener != null) {
+						listener.onUpdateError();
+					}
+
+				}
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.e("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
 	private String buildSelectURL(APIRequestCode apiRequestCode, int pageNumber) {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
-		String apiJSONString = ApiSelectRequestJSONStringBuilder.buildRequestJSONString(context, apiRequestCode, pageNumber);
+		String apiJSONString = SelectRequestJSONStringBuilder.buildRequestJSONString(context, apiRequestCode, pageNumber);
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 		Log.i(LOG_TAG_URL, URL);
@@ -454,7 +580,7 @@ public class KeenCivicoreClient {
 	private String buildUpdateAthleteURL(APIRequestCode apiRequestCode, Athlete athlete) {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
-		String apiJSONString = UpdateAthleteApiRequestJSONStringBuilder.buildRequestJSONString(context, athlete);
+		String apiJSONString = UpdateAthleteRequestJSONStringBuilder.buildRequestJSONString(context, athlete);
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 		Log.i(LOG_TAG_URL, URL);
@@ -464,7 +590,37 @@ public class KeenCivicoreClient {
 	private String buildUpdateCoachURL(APIRequestCode apiRequestCode, Coach coach) {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
-		String apiJSONString = UpdateCoachApiRequestJSONStringBuilder.buildRequestJSONString(context, coach);
+		String apiJSONString = UpdateCoachRequestJSONStringBuilder.buildRequestJSONString(context, coach);
+		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+		String URL = builder.build().toString();
+		Log.i(LOG_TAG_URL, URL);
+		return URL;
+	}
+
+	private String buildUpdateAthleteAttendanceURL(APIRequestCode apiRequestCode, AthleteAttendance athleteAttendance) {
+		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
+		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
+		String apiJSONString = UpdateAthleteAttendanceRequestJSONStringBuilder.buildRequestJSONString(context, athleteAttendance);
+		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+		String URL = builder.build().toString();
+		Log.i(LOG_TAG_URL, URL);
+		return URL;
+	}
+
+	private String buildInserAthleteAttendanceURL(APIRequestCode apiRequestCode, AthleteAttendance athleteAttendance) {
+		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
+		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
+		String apiJSONString = InsertAthleteAttendanceRequestJSONStringBuilder.buildRequestJSONString(context, athleteAttendance);
+		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+		String URL = builder.build().toString();
+		Log.i(LOG_TAG_URL, URL);
+		return URL;
+	}
+
+	private String buildUpdateCoachAttendanceURL(APIRequestCode apiRequestCode, CoachAttendance coachAttendance) {
+		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
+		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
+		String apiJSONString = UpdateCoachAttendanceRequestJSONStringBuilder.buildRequestJSONString(context, coachAttendance);
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 		Log.i(LOG_TAG_URL, URL);
