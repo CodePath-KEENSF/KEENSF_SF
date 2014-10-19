@@ -1,5 +1,6 @@
 package org.keenusa.connect.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.keenusa.connect.R;
@@ -9,6 +10,7 @@ import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.TestDataFactory;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
+import org.keenusa.connect.utilities.StringConstants;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,16 +23,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-import android.widget.Toast;
 
 public class CoachesFragment extends Fragment implements CivicoreDataResultListener<Coach>{
 
 	public static final String COACH_EXTRA_TAG = "COACH";
 	CoachListItemAdapter adapter;
+	List<Coach> coachList;
+	ListView lvCoaches;
 	
+	private LinearLayout llProgressBar;
+	private boolean bDataLoaded = false;
+	public String dummySearchString;
+
 	SearchView searchView;
 
 	// Creates a new fragment with given arguments
@@ -43,8 +51,10 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		bDataLoaded = false;
 		// placeholder. in reality parent activity should tell what coach list it is expecting e.g. full list or coaches for the session
-		adapter = new CoachListItemAdapter(getActivity(), TestDataFactory.getInstance().getCoachList());
+		coachList = TestDataFactory.getInstance().getCoachList();
+		adapter = new CoachListItemAdapter(getActivity(), coachList);
 		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
 		client.fetchCoachListData(this);
 	}
@@ -52,7 +62,12 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
-		ListView lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
+		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
+		if(!bDataLoaded){
+			llProgressBar.setVisibility(View.VISIBLE);	
+		}
+
+		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
 		lvCoaches.setOnItemClickListener(new OnItemClickListener() {
 
@@ -80,6 +95,11 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	@Override
 	public void onListResult(List<Coach> list) {
 		addAPIData(list);
+		coachList = list;
+		bDataLoaded = true;
+		if(llProgressBar != null){
+			llProgressBar.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -87,20 +107,49 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		inflater.inflate(R.menu.coaches, menu);
 		
 		MenuItem searchItem = menu.findItem(R.id.action_search_coaches);
-	    searchView = (SearchView) searchItem.getActionView();
-	    searchView.setOnQueryTextListener(new OnQueryTextListener() {
-	       @Override
-	       public boolean onQueryTextSubmit(String query) {
-	            // perform query here
-	    	   Toast.makeText(getActivity(), "Seach for Coaches", Toast.LENGTH_SHORT).show();
-	            return true;
-	       }
+		dummySearchString = StringConstants.DUMMY_SEARCH_STRING;
+		searchView = (SearchView) searchItem.getActionView();
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return true;
+			}
 
-	       @Override
-	       public boolean onQueryTextChange(String newText) {
-	           return false;
-	       }
-	   });
+			@Override
+			public boolean onQueryTextChange(String searchText) {
+				
+				if(dummySearchString == StringConstants.DUMMY_SEARCH_STRING){
+					if(!searchText.isEmpty()){
+						dummySearchString = "";
+						return true;
+					}
+				}
+				
+				dummySearchString = searchText;
+				ArrayList<Coach> tempCoachList = new ArrayList<Coach>();
+				int searchTextlength = searchText.length();
+
+				// Create the new arraylist for each search character
+				for (Coach coach : coachList) {
+					
+					String fullName = coach.getFirstName() + " " + coach.getLastName();
+					
+					if (searchTextlength <= coach.getFirstName().length()
+							|| searchTextlength <= coach.getLastName().length()) {
+						
+						if (fullName.toLowerCase()
+								.contains(searchText.toLowerCase())) {
+							tempCoachList.add(coach);
+						}
+					}
+				}
+
+				adapter = new CoachListItemAdapter(getActivity(), tempCoachList);
+				lvCoaches.setAdapter(adapter);
+
+				return true;
+			}
+		});
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 }

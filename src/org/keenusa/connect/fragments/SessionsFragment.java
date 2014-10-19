@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.SessionDetailsActivity;
 import org.keenusa.connect.adapters.StickySessionListItemAdapter;
+import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
@@ -31,13 +33,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 public class SessionsFragment extends Fragment {
-	
+	public String dummySearchString;
+	private SearchView searchView;
+
 	private ArrayList<KeenSession>sessionList;
+	private LinearLayout llProgressBar;
+	private boolean bDataLoaded = false;
 	
     // Sticky Header List View
-    private ExpandableStickyListHeadersListView expandableStickySessionList;
+    private ExpandableStickyListHeadersListView expandableStickySessionListView;
     private StickyListHeadersAdapter expandableStickySessionListAdapter;
 
 
@@ -70,7 +79,7 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setOnClickListeners() {
-		expandableStickySessionList.setOnItemClickListener(new OnItemClickListener() {
+		expandableStickySessionListView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int pos, long id) {
@@ -78,19 +87,20 @@ public class SessionsFragment extends Fragment {
 			}
 		});
 		
-		expandableStickySessionList.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+		expandableStickySessionListView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
             @Override
             public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
-                if(expandableStickySessionList.isHeaderCollapsed(headerId)){
-                	expandableStickySessionList.expand(headerId);
+                if(expandableStickySessionListView.isHeaderCollapsed(headerId)){
+                	expandableStickySessionListView.expand(headerId);
                 }else {
-                	expandableStickySessionList.collapse(headerId);
+                	expandableStickySessionListView.collapse(headerId);
                 }
             }
         });
 	}
 
 	private void fetchSessionList() {
+		bDataLoaded = false;
 		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
 		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
 
@@ -101,6 +111,10 @@ public class SessionsFragment extends Fragment {
 				expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 				
 				setSessionListToCurrentDate();
+				bDataLoaded = true;
+				if(llProgressBar != null){
+					llProgressBar.setVisibility(View.GONE);
+				}	
 			}
 		});
 	}
@@ -118,8 +132,13 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setViews(View v) {
-		expandableStickySessionList = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
-		expandableStickySessionList.setAdapter(expandableStickySessionListAdapter);
+		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarSessions);
+		if(!bDataLoaded){
+			llProgressBar.setVisibility(View.VISIBLE);
+		}
+		
+		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
+		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
 	}
 
 	public StickyListHeadersAdapter getAdapter() {
@@ -131,7 +150,7 @@ public class SessionsFragment extends Fragment {
     		KeenSession session = sessionList.get(i);
     		DateTime dt = session.getDate();
     		String date = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
-    		expandableStickySessionList.expand(Long.parseLong(date));
+    		expandableStickySessionListView.expand(Long.parseLong(date));
     	}
 	}
 
@@ -140,13 +159,69 @@ public class SessionsFragment extends Fragment {
     		KeenSession session = sessionList.get(i);
     		DateTime dt = session.getDate();
     		String date = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
-    		expandableStickySessionList.collapse(Long.parseLong(date));
+    		expandableStickySessionListView.collapse(Long.parseLong(date));
     	}
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.sessions, menu);
+		
+		MenuItem searchItem = menu.findItem(R.id.action_search_sessions);
+		dummySearchString = StringConstants.DUMMY_SEARCH_STRING;
+	    searchView = (SearchView) searchItem.getActionView();
+	    searchView.setOnQueryTextListener(new OnQueryTextListener() {
+	       @Override
+	       public boolean onQueryTextSubmit(String query) {
+	            return true;
+	       }
+
+	       @Override
+	       public boolean onQueryTextChange(String searchText) {
+	    	   
+				// Added as a work-around. the searchText was retaining values across fragment swiping
+	    	   	// with this condition, the value of searchText from another fragment is discarded
+				if(dummySearchString == StringConstants.DUMMY_SEARCH_STRING){
+					if(!searchText.isEmpty()){
+						dummySearchString = "";
+						return true;
+					}
+				}
+
+				dummySearchString = searchText;
+				ArrayList<KeenSession> tempSessionList = new ArrayList<KeenSession>();
+				int searchTextlength = searchText.length();
+
+				// separate words in search text
+				String[] searchWords = searchText.split(" "); 
+				
+				// Create the new arraylist for each search character
+				for (KeenSession session : sessionList) {
+					
+					boolean searchMatched = true;
+					
+					String fullName = getFullSessionName(session);
+					
+					for ( String searchWord : searchWords) {
+						if (!(fullName.toLowerCase()
+								.contains(searchWord.toLowerCase()))) {
+							searchMatched = false;
+							break;
+						}
+					}
+					if(searchMatched){
+						tempSessionList.add(session);	
+					}
+				}
+
+				expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), tempSessionList);
+				expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+				
+				setSearchListPosition(tempSessionList);
+
+				return true;
+	       }
+	   });
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -166,6 +241,53 @@ public class SessionsFragment extends Fragment {
 		}
 	}
 	
+	private String getFullSessionName(KeenSession session) {
+		KeenProgram program = session.getProgram();
+		
+		String name;
+		String date;
+		String location;
+		String time;
+		
+		if (program != null && program.getName() != null) {
+			name = session.getProgram().getName();
+		} else {
+			name = "Dummy Program";
+		}
+
+		if (program != null && program.getLocation() != null
+				&& program.getLocation().getCity() != null
+				&& program.getLocation().getState() != null) {
+			location = session.getProgram()
+					.getLocation().getCity()
+					+ ", " + session.getProgram().getLocation().getState();
+		} else {
+			location = "San Francisco";
+		}
+
+		if (program != null && program.getProgramTimes() != null) {
+			time = session.getProgram()
+					.getProgramTimes();
+		} else {
+			time = "12pm - 1pm";
+		}
+
+		if(session.getDate() != null){
+			DateTime dt = session.getDate();
+			date = new SimpleDateFormat(StringConstants.DATE_FORMAT, Locale.ENGLISH)
+					.format(dt.toDate());
+		}else{
+			date = "01/01/2001";
+		}
+
+		String fullName = name + " " 
+		+ time + " "
+		+ location + " " 
+		+ date;
+		
+		return fullName;
+	}
+
 	private void setSessionListToCurrentDate() {
 		int currentDateIndex = 0;
 		String nextSundayDateStr = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(GetNextDay.getNextSunday());
@@ -174,12 +296,37 @@ public class SessionsFragment extends Fragment {
 			String sessionDateStr = new SimpleDateFormat(StringConstants.DATE_FORMAT_LONG, Locale.ENGLISH).format(session.getDate().toDate());
 			if(nextSundayDateStr.equalsIgnoreCase(sessionDateStr)){
 				
-				expandableStickySessionList.setSelection(currentDateIndex);
+				expandableStickySessionListView.setSelection(currentDateIndex);
 				break;
 			}
 			currentDateIndex = currentDateIndex + 1;
 		}
 	}
+	
+	private void setSearchListPosition(ArrayList<KeenSession> tempSessionList){
+		int currentDateIndex = 0;
+		LocalDate today = new LocalDate();
+		String currentDateStr = new SimpleDateFormat(StringConstants.DATE_FORMAT_YEAR, Locale.ENGLISH).format(today.toDate());
+		long currentDate = Long.parseLong(currentDateStr);
+		long currentMax = 20000000;
+		
+		for (KeenSession session : tempSessionList) {
+			String sessionDateStr = new SimpleDateFormat(StringConstants.DATE_FORMAT_YEAR, Locale.ENGLISH).format(session.getDate().toDate());
+			long sessionDate = Long.parseLong(sessionDateStr);
+			
+			long dateDiff = Math.abs(sessionDate - currentDate); 
+			if(dateDiff <= currentMax){
+				currentMax = dateDiff;
+			}
+			else{
+				expandableStickySessionListView.setSelection(currentDateIndex - 1);
+				break;
+			}
+			currentDateIndex = currentDateIndex + 1;
+		}
+
+	}
+	
 
 
 	//	public void addAPIData(List<KeenSession> sessions) {
