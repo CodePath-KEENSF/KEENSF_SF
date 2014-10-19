@@ -50,7 +50,7 @@
 
     <Spinner
         android:id="@+id/spCheckInOptions"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="35dp"
         android:layout_alignBottom="@+id/tvCoachCheckIn"
         android:layout_alignParentRight="true"/>

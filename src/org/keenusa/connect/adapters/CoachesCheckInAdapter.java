@@ -88,18 +88,11 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 					coach.setAttendanceValue(CoachAttendance.AttendanceValue.CANCELLED);
 //					Toast.makeText(getContext(), item + " is Registered", Toast.LENGTH_SHORT).show();
 				} if (item.equals("NO_CALL_NO_SHOW")){
-<<<<<<< HEAD
 					coach.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
 //					Toast.makeText(getContext(), item + " is No call no show", Toast.LENGTH_SHORT).show();
 				} 	
-=======
-					coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
-				} if (item.equals("Options")){
-					coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
-				}		
->>>>>>> fb128332d4c026bade7f656922e714082d3e73f3
 			}
-
+			
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// TODO Auto-generated method stub
