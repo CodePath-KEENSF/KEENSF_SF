@@ -21,16 +21,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 public class AtheletsFragment extends Fragment implements
 		CivicoreDataResultListener<Athlete> {
 
 	public static final String ATHLETE_EXTRA_TAG = "ATHLETE";
 	AtheletListItemAdapter adapter;
+	private LinearLayout llProgressBar;
+	private boolean bDataLoaded = false;
 
 	private SearchView searchView;
 	
@@ -43,7 +46,9 @@ public class AtheletsFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setHasOptionsMenu(true);
+		bDataLoaded = false;
 		// placeholder. in reality parent activity should tell what athlete list
 		// it is expecting e.g. full list or athletes for the session
 		adapter = new AtheletListItemAdapter(getActivity(), TestDataFactory
@@ -56,6 +61,10 @@ public class AtheletsFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_athletes, container, false);
+		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarAthletes);
+		if(!bDataLoaded){
+			llProgressBar.setVisibility(View.VISIBLE);	
+		}
 		ListView lvAthletes = (ListView) v.findViewById(R.id.lvAthletes);
 		lvAthletes.setAdapter(adapter);
 		lvAthletes.setOnItemClickListener(new OnItemClickListener() {
@@ -85,6 +94,11 @@ public class AtheletsFragment extends Fragment implements
 	@Override
 	public void onListResult(List<Athlete> list) {
 		addAPIData(list);
+		
+		bDataLoaded = true;
+		if(llProgressBar != null){
+			llProgressBar.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

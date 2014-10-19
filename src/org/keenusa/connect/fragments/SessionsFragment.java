@@ -30,11 +30,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class SessionsFragment extends Fragment {
 	
 	private ArrayList<KeenSession>sessionList;
+	private LinearLayout llProgressBar;
+	private boolean bDataLoaded = false;
 	
     // Sticky Header List View
     private ExpandableStickyListHeadersListView expandableStickySessionList;
@@ -91,6 +94,7 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void fetchSessionList() {
+		bDataLoaded = false;
 		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
 		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
 
@@ -101,6 +105,10 @@ public class SessionsFragment extends Fragment {
 				expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 				
 				setSessionListToCurrentDate();
+				bDataLoaded = true;
+				if(llProgressBar != null){
+					llProgressBar.setVisibility(View.GONE);
+				}	
 			}
 		});
 	}
@@ -118,6 +126,11 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setViews(View v) {
+		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarSessions);
+		if(!bDataLoaded){
+			llProgressBar.setVisibility(View.VISIBLE);
+		}
+		
 		expandableStickySessionList = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
 		expandableStickySessionList.setAdapter(expandableStickySessionListAdapter);
 	}

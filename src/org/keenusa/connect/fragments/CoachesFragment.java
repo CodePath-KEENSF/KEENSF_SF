@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -30,7 +31,9 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 
 	public static final String COACH_EXTRA_TAG = "COACH";
 	CoachListItemAdapter adapter;
-	
+	private LinearLayout llProgressBar;
+	private boolean bDataLoaded = false;
+
 	SearchView searchView;
 
 	// Creates a new fragment with given arguments
@@ -43,6 +46,7 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		bDataLoaded = false;
 		// placeholder. in reality parent activity should tell what coach list it is expecting e.g. full list or coaches for the session
 		adapter = new CoachListItemAdapter(getActivity(), TestDataFactory.getInstance().getCoachList());
 		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
@@ -52,6 +56,11 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
+		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
+		if(!bDataLoaded){
+			llProgressBar.setVisibility(View.VISIBLE);	
+		}
+
 		ListView lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
 		lvCoaches.setOnItemClickListener(new OnItemClickListener() {
@@ -80,6 +89,11 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	@Override
 	public void onListResult(List<Coach> list) {
 		addAPIData(list);
+
+		bDataLoaded = true;
+		if(llProgressBar != null){
+			llProgressBar.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
