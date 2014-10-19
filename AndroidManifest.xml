@@ -50,6 +50,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".activities.AthleteCheckInActivity"
+            android:label="@string/title_activity_athlete_list"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".activities.SessionListActivity"
             android:label="@string/title_activity_session_list"
             android:screenOrientation="portrait" >

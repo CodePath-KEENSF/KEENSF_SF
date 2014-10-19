@@ -93,7 +93,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 		}
 		
 		private void openAthleteCheckIn(KeenSession session2, KeenProgram program2) {
-			Intent i = new Intent(this, SessionDetailsActivity.class);
+			Intent i = new Intent(this, AthleteCheckInActivity.class);
 			i.putExtra("session", session2);
 			i.putExtra("program", program2);
 			startActivity(i);

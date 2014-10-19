@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -27,7 +28,8 @@ public class CoachesCheckInActivity extends Activity {
 	KeenProgram program;
 	
 	private ListView elvRegisteredPeople;
-
+	private LinearLayout llProgressBar;
+	private boolean bDataLoaded = false;
 	private ArrayList<CoachAttendance> coachList;
 	private CoachesCheckInAdapter coachCheckInAdapter;
 	
@@ -47,7 +49,7 @@ public class CoachesCheckInActivity extends Activity {
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle(program.getName());
-		
+		bDataLoaded = false;
 		KeenCivicoreClient client = new KeenCivicoreClient(getBaseContext());
 		coachCheckInAdapter.clear();
 		client.fetchCoachAttendanceListData(new CivicoreDataResultListener<CoachAttendance>() {
@@ -58,6 +60,10 @@ public class CoachesCheckInActivity extends Activity {
 					if (coachAtt.getRemoteSessionId() == session.getRemoteId()) {
 						coachList.add(coachAtt);
 					}
+				}
+				bDataLoaded = true;
+				if(llProgressBar != null){
+					llProgressBar.setVisibility(View.GONE);
 				}
 				coachCheckInAdapter.notifyDataSetChanged();
 			}
@@ -70,7 +76,10 @@ public class CoachesCheckInActivity extends Activity {
 		elvRegisteredPeople = (ListView) findViewById(R.id.elvRegisteredPeople);
 		coachList = new ArrayList<CoachAttendance>();
 		coachCheckInAdapter = new CoachesCheckInAdapter(this, coachList);
-
+		llProgressBar = (LinearLayout) findViewById(R.id.llProgressBarSessions);
+		if(!bDataLoaded){
+			llProgressBar.setVisibility(View.VISIBLE);
+		}
 		elvRegisteredPeople.setAdapter(coachCheckInAdapter);
 		
 		elvRegisteredPeople.setOnItemClickListener(new OnItemClickListener() {

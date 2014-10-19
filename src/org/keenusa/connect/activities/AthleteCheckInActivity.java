@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -28,6 +29,8 @@ public class AthleteCheckInActivity extends Activity{
 	private ListView lvRegisteredAthletes;
 	private ArrayList<AthleteAttendance> athleteList;
 	private AthletesCheckInAdapter athleteCheckInAdapter;
+	private LinearLayout llProgressBar;
+	private boolean bDataLoaded = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +46,23 @@ public class AthleteCheckInActivity extends Activity{
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle(program.getName());
-		
+		bDataLoaded = false;
 		KeenCivicoreClient client = new KeenCivicoreClient(getBaseContext());
 		athleteCheckInAdapter.clear();
 		client.fetchAthleteAttendanceListData(new CivicoreDataResultListener<AthleteAttendance>() {
 			
 			@Override
 			public void onListResult(List<AthleteAttendance> athleteAttlist) {
-				for (AthleteAttendance athleteAttendance : athleteAttlist) {
-					if (athleteAttendance.getRemoteSessionId() == session.getRemoteId()) {
-						athleteList.add(athleteAttendance);
+				for (AthleteAttendance athleteAtt : athleteAttlist) {
+					if (athleteAtt.getRemoteSessionId() == session.getRemoteId()) {
+						athleteList.add(athleteAtt);
 					}
 				}
-				athleteCheckInAdapter.notifyAll();
+				bDataLoaded = true;
+				if(llProgressBar != null){
+					llProgressBar.setVisibility(View.GONE);
+				}
+				athleteCheckInAdapter.notifyDataSetChanged();
 			}
 			
 		});
@@ -66,7 +73,10 @@ public class AthleteCheckInActivity extends Activity{
 		lvRegisteredAthletes = (ListView) findViewById(R.id.lvRegisteredAthletes);
 		athleteList = new ArrayList<AthleteAttendance>();
 		athleteCheckInAdapter = new AthletesCheckInAdapter(this, athleteList);
-
+		llProgressBar = (LinearLayout) findViewById(R.id.llProgressBarSessions);
+		if(!bDataLoaded){
+			llProgressBar.setVisibility(View.VISIBLE);
+		}
 		lvRegisteredAthletes.setAdapter(athleteCheckInAdapter);
 		
 		lvRegisteredAthletes.setOnItemClickListener(new OnItemClickListener() {

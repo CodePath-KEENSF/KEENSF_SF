@@ -132,6 +132,7 @@
         android:layout_alignBaseline="@+id/tvAttCoaches"
         android:layout_alignBottom="@+id/tvAttCoaches"
         android:layout_toLeftOf="@+id/tvAttCoaches"
+        android:layout_marginTop="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:text="@string/coaches_registered_label" />

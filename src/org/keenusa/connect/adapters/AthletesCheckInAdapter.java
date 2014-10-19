@@ -22,10 +22,10 @@ import android.widget.Toast;
 
 public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 	TextView tvAthleteCheckIn;
-	Button btnAddAthlete;
-	EditText etSearchAthlete;
+//	Button btnAddAthlete;
+//	EditText etSearchAthlete;
 	Spinner spinner;
-	String[] options = {"Options", "ATTENDED", "CALLED_IN_ABSENCE", "NO_CALL_NO_SHOW"};
+	String[] options = {"ATTENDED", "CALLED_IN_ABSENCE", "NO_CALL_NO_SHOW"};
 	AthleteAttendance athleteAttendance;
 	
 	public AthletesCheckInAdapter(Context context, ArrayList<AthleteAttendance> athleteList) {
@@ -40,29 +40,41 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.athlete_check_in_items, parent, false);
 		}
 		tvAthleteCheckIn = (TextView) convertView.findViewById(R.id.tvAthleteCheckIn);
-		btnAddAthlete = (Button) convertView.findViewById(R.id.btnAddAthlete);
+//		btnAddAthlete = (Button) convertView.findViewById(R.id.btnAddAthlete);
 		ImageView ivAthleteImageProfile = (ImageView) convertView.findViewById(R.id.ivAthleteImageProfile);
-		etSearchAthlete = (EditText) convertView.findViewById(R.id.etSearchAthlete);
+//		etSearchAthlete = (EditText) convertView.findViewById(R.id.etSearchAthlete);
 		spinner = (Spinner) convertView.findViewById(R.id.spAthCheckInOptions);
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, options);
 		spinner.setAdapter(adapter);
 		
+		String result = athlete.getAttendanceValue().toString();
 		tvAthleteCheckIn.setText(athlete.getAttendedAthleteFullName().toString());
+		
+		// get current getAttendanceValue 
+		 		if (result.equals("ATTENDED")) {
+		 			spinner.setSelection(0);
+		 		} else if (result.equals("CALLED_IN_ABSENCE")) {
+		 			spinner.setSelection(1);
+		 		}  else if (result.equals("NO_CALL_NO_SHOW")) {
+		 			spinner.setSelection(2);
+		 		}
+		
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String item = parent.getItemAtPosition(position).toString();
 				if (item.equals("ATTENDED")){
-					athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
+					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
+//					Toast.makeText(getContext(), item + " is Attended", Toast.LENGTH_SHORT).show();
 				} if (item.equals("CALLED_IN_ABSENCE")){
-					athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
+					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
+//					Toast.makeText(getContext(), item + " is Called in absence", Toast.LENGTH_SHORT).show();
 				} if (item.equals("NO_CALL_NO_SHOW")){
-					athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
-				} if (item.equals("Options")){
-			
-				}	
+					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
+//					Toast.makeText(getContext(), item + " is No call no show", Toast.LENGTH_SHORT).show();
+				} 	
 			}
 
 			@Override
