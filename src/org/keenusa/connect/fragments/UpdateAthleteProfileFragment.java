@@ -1,8 +1,13 @@
 package org.keenusa.connect.fragments;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.helpers.CivicorePhoneNumberFormatConverter;
+import org.keenusa.connect.helpers.EmailAddressValidator;
+import org.keenusa.connect.helpers.PhoneNumberValidator;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.Parent;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -16,13 +21,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UpdateAthleteProfileFragment extends DialogFragment {
 
 	private TextView tvAthleteFullName;
 	private TextView tvAthleteParentFullNameRelationship;
 
-	private EditText etAthleteCellPhone;
 	private EditText etAthletePhone;
 	private EditText etAthleteEmail;
 
@@ -34,16 +39,20 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 	private Button btnSaveAthleteProfileUpdate;
 
 	private Athlete athlete;
+	KeenCivicoreClient client;
+	OnAthleteProfileUpdateListener onAthleteProfileUpdateListener;
 
 	public UpdateAthleteProfileFragment() {
 	}
 
-	public UpdateAthleteProfileFragment(Athlete athlete) {
+	public UpdateAthleteProfileFragment(Athlete athlete, OnAthleteProfileUpdateListener onAthleteProfileUpdateListener) {
 		this.athlete = athlete;
+		this.onAthleteProfileUpdateListener = onAthleteProfileUpdateListener;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		client = new KeenCivicoreClient(getActivity());
 		super.onCreate(savedInstanceState);
 	}
 
@@ -55,7 +64,6 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 		tvAthleteFullName = (TextView) view.findViewById(R.id.tvAthleteFullName);
 		tvAthleteParentFullNameRelationship = (TextView) view.findViewById(R.id.tvAthleteParentFullNameRelationship);
 
-		etAthleteCellPhone = (EditText) view.findViewById(R.id.etAthleteCellPhone);
 		etAthletePhone = (EditText) view.findViewById(R.id.etAthletePhone);
 		etAthleteEmail = (EditText) view.findViewById(R.id.etAthleteEmail);
 
@@ -87,7 +95,6 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 		});
 
 		PhoneNumberFormattingTextWatcher phoneNumberFormattingTextWatcher = new PhoneNumberFormattingTextWatcher();
-		etAthleteCellPhone.addTextChangedListener(phoneNumberFormattingTextWatcher);
 		etAthletePhone.addTextChangedListener(phoneNumberFormattingTextWatcher);
 		etAthleteParentCellPhone.addTextChangedListener(phoneNumberFormattingTextWatcher);
 		etAthleteParentPhone.addTextChangedListener(phoneNumberFormattingTextWatcher);
@@ -101,10 +108,7 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 	private void populateViews() {
 		if (athlete != null) {
 			tvAthleteFullName.setText(athlete.getFullName());
-			String mobile = athlete.getCellPhone();
-			if (mobile != null && !mobile.isEmpty()) {
-				etAthleteCellPhone.setText(mobile);
-			}
+
 			String phone = athlete.getPhone();
 			if (phone != null && !phone.isEmpty()) {
 				etAthletePhone.setText(phone);
@@ -151,13 +155,145 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 	}
 
 	public void updateAthleteProfileDetails(View view) {
-		// post update to API pass listener or wait for update processed here
-		closeInputFromWindow();
-		getDialog().dismiss();
+
+		if (isInputValid()) {
+			Athlete athleteDTO = null;
+
+			String phone = etAthletePhone.getText().toString().trim();
+			String email = etAthleteEmail.getText().toString().trim();
+			String pmobile = etAthleteParentCellPhone.getText().toString().trim();
+			String pphone = etAthleteParentPhone.getText().toString().trim();
+			String pemail = etAthleteParentEmail.getText().toString().trim();
+
+			if ((athlete.getPhone() != null && !athlete.getPhone().equals(phone)) || (athlete.getPhone() == null && !phone.isEmpty())) {
+				if (athleteDTO == null) {
+					athleteDTO = new Athlete();
+					athleteDTO.setRemoteId(athlete.getRemoteId());
+				}
+				athleteDTO.setPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(phone));
+			}
+			if ((athlete.getEmail() != null && !athlete.getEmail().equals(email)) || (athlete.getEmail() == null && !email.isEmpty())) {
+				if (athleteDTO == null) {
+					athleteDTO = new Athlete();
+					athleteDTO.setRemoteId(athlete.getRemoteId());
+
+				}
+				athleteDTO.setEmail(email);
+			}
+			if ((athlete.getPrimaryParent().getEmail() != null && !athlete.getPrimaryParent().getEmail().equals(pemail))
+					|| (athlete.getPrimaryParent().getEmail() == null && !pemail.isEmpty())) {
+				if (athleteDTO == null) {
+					athleteDTO = new Athlete();
+					athleteDTO.setRemoteId(athlete.getRemoteId());
+				}
+				if (athleteDTO.getPrimaryParent() == null) {
+					athleteDTO.setPrimaryParent(new Parent());
+				}
+				athleteDTO.getPrimaryParent().setEmail(pemail);
+			}
+			if ((athlete.getPrimaryParent().getCellPhone() != null && !athlete.getPrimaryParent().getCellPhone().equals(pmobile))
+					|| (athlete.getPrimaryParent().getCellPhone() == null && !pmobile.isEmpty())) {
+				if (athleteDTO == null) {
+					athleteDTO = new Athlete();
+					athleteDTO.setRemoteId(athlete.getRemoteId());
+				}
+				if (athleteDTO.getPrimaryParent() == null) {
+					athleteDTO.setPrimaryParent(new Parent());
+				}
+				athleteDTO.getPrimaryParent().setCellPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(pmobile));
+			}
+
+			if ((athlete.getPrimaryParent().getPhone() != null && !athlete.getPrimaryParent().getPhone().equals(pphone))
+					|| (athlete.getPrimaryParent().getPhone() == null && !pphone.isEmpty())) {
+				if (athleteDTO == null) {
+					athleteDTO = new Athlete();
+					athleteDTO.setRemoteId(athlete.getRemoteId());
+				}
+				if (athleteDTO.getPrimaryParent() == null) {
+					athleteDTO.setPrimaryParent(new Parent());
+				}
+				athleteDTO.getPrimaryParent().setPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(pphone));
+			}
+
+			if (athleteDTO != null) {
+
+				client.updateAfthetProfileRecord(athleteDTO, new CivicoreUpdateDataResultListener<Athlete>() {
+
+					@Override
+					public void onUpdateResult(Athlete athleteDTO) {
+						if (onAthleteProfileUpdateListener != null) {
+							if (athleteDTO != null) {
+								if (athleteDTO.getPhone() != null) {
+									athlete.setPhone(athleteDTO.getPhone());
+								}
+								if (athleteDTO.getEmail() != null) {
+									athlete.setEmail(athleteDTO.getEmail());
+								}
+								if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getCellPhone() != null) {
+									athlete.getPrimaryParent().setCellPhone(athleteDTO.getPrimaryParent().getCellPhone());
+								}
+								if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getPhone() != null) {
+									athlete.getPrimaryParent().setPhone(athleteDTO.getPrimaryParent().getPhone());
+								}
+								if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getEmail() != null) {
+									athlete.getPrimaryParent().setEmail(athleteDTO.getPrimaryParent().getEmail());
+								}
+							}
+							onAthleteProfileUpdateListener.OnAthleteProfileUpdate(athlete);
+
+						}
+					}
+
+					@Override
+					public void onUpdateError() {
+						onAthleteProfileUpdateListener.OnAthleteProfileUpdateError();
+
+					}
+				});
+			}
+			closeInputFromWindow();
+			getDialog().dismiss();
+		}
+	}
+
+	private boolean isInputValid() {
+		String phone = etAthletePhone.getText().toString().trim();
+		String email = etAthleteEmail.getText().toString().trim();
+		String pmobile = etAthleteParentCellPhone.getText().toString().trim();
+		String pphone = etAthleteParentPhone.getText().toString().trim();
+		String pemail = etAthleteParentEmail.getText().toString().trim();
+
+		if (!phone.isEmpty() && !PhoneNumberValidator.isValidPhoneNumber(phone)) {
+			Toast.makeText(getActivity(), "Athlete phone is invalid. It should be 10 digits long", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		if (!pmobile.isEmpty() && !PhoneNumberValidator.isValidPhoneNumber(pmobile)) {
+			Toast.makeText(getActivity(), "Parent mobile is invalid. It should be 10 digits long", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		if (!pphone.isEmpty() && !PhoneNumberValidator.isValidPhoneNumber(pphone)) {
+			Toast.makeText(getActivity(), "Parent phone is invalid. It should be 10 digits long", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		if (!email.isEmpty() && !EmailAddressValidator.isValidEmail(email)) {
+			Toast.makeText(getActivity(), "Email is invalid.", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		if (!pemail.isEmpty() && !EmailAddressValidator.isValidEmail(pemail)) {
+			Toast.makeText(getActivity(), "Parent email is invalid.", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		return true;
 	}
 
 	private void closeInputFromWindow() {
 		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+	}
+
+	public interface OnAthleteProfileUpdateListener {
+		public void OnAthleteProfileUpdate(Athlete athlete);
+
+		public void OnAthleteProfileUpdateError();
 	}
 
 }

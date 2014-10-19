@@ -11,11 +11,11 @@ import org.keenusa.connect.models.SharedLoggedUserDetails;
 import android.content.Context;
 import android.util.Log;
 
-public class ApiRequestJSONStringBuilder {
+public class ApiSelectRequestJSONStringBuilder {
 
 	public static final String PAGE_SIZE = "1200";
 
-	public static final String LOG_TAG_CLASS = ApiRequestJSONStringBuilder.class.getSimpleName();
+	public static final String LOG_TAG_CLASS = ApiSelectRequestJSONStringBuilder.class.getSimpleName();
 	public static final String API_KEY_PARAMETER_KEY = "key";
 	public static final String FUNCTION_PARAMETER_KEY = "function";
 	public static final String TABLE_NAME_PARAMETER_KEY = "tableName";
@@ -60,7 +60,7 @@ public class ApiRequestJSONStringBuilder {
 			jsonParams.put(PAGE_SIZE_PARAMETER_KEY, PAGE_SIZE);
 			jsonParams.put(FIELD_LIST_PARAMETER_KEY, getRequestFieldListValue(apiRequestCode));
 			jsonParams.put(TABLE_NAME_PARAMETER_KEY, getRequestTableNameFieldValue(apiRequestCode));
-			jsonParams.put(FUNCTION_PARAMETER_KEY, getRequestFunctionFieldValue(apiRequestCode));
+			jsonParams.put(FUNCTION_PARAMETER_KEY, SELECT_FUNCTION_VALUE);
 			jsonParams.put(API_KEY_PARAMETER_KEY, apiKey);
 
 		} catch (JSONException e) {
@@ -68,21 +68,6 @@ public class ApiRequestJSONStringBuilder {
 		}
 
 		return jsonParams.toString();
-	}
-
-	private static String getRequestFunctionFieldValue(KeenCivicoreClient.APIRequestCode apiRequestCode) {
-		switch (apiRequestCode) {
-		case COACH_LIST:
-		case ATHLETE_LIST:
-		case SESSION_LIST:
-		case PROGRAM_LIST:
-		case AFFILIATE_LIST:
-		case PROGRAM_ENROLMENT_LIST:
-		case ATHLETE_ATENDANCE_LIST:
-		case COACH_ATTENDANCE_LIST:
-			return SELECT_FUNCTION_VALUE;
-		}
-		return null;
 	}
 
 	private static String getRequestTableNameFieldValue(KeenCivicoreClient.APIRequestCode apiRequestCode) {

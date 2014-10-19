@@ -30,32 +30,10 @@
             android:layout_below="@id/tvAthleteFullName" >
 
             <TextView
-                android:id="@+id/tvAthleteCellPhoneLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Mobile" />
-
-            <EditText
-                android:id="@+id/etAthleteCellPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvAthleteCellPhoneLabel"
-                android:layout_below="@+id/tvAthleteCellPhoneLabel"
-                android:hint="000-000-0000"
-                android:inputType="phone"
-                android:maxLength="14"
-                android:textSize="20sp" />
-
-            <requestFocus />
-
-            <TextView
                 android:id="@+id/tvAthletePhoneLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/etAthleteCellPhone"
-                android:layout_below="@id/etAthleteCellPhone"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:text="Phone" />
 
             <EditText
@@ -68,6 +46,8 @@
                 android:inputType="phone"
                 android:maxLength="14"
                 android:textSize="20sp" />
+
+            <requestFocus />
 
             <TextView
                 android:id="@+id/tvAthleteEmailLabel"

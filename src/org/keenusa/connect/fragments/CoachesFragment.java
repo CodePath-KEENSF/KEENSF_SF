@@ -7,7 +7,6 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
 import org.keenusa.connect.models.Coach;
-import org.keenusa.connect.models.TestDataFactory;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.utilities.StringConstants;
@@ -28,13 +27,13 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
-public class CoachesFragment extends Fragment implements CivicoreDataResultListener<Coach>{
+public class CoachesFragment extends Fragment implements CivicoreDataResultListener<Coach> {
 
 	public static final String COACH_EXTRA_TAG = "COACH";
 	CoachListItemAdapter adapter;
 	List<Coach> coachList;
 	ListView lvCoaches;
-	
+
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
 	public String dummySearchString;
@@ -52,8 +51,7 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		bDataLoaded = false;
-		// placeholder. in reality parent activity should tell what coach list it is expecting e.g. full list or coaches for the session
-		coachList = TestDataFactory.getInstance().getCoachList();
+		coachList = new ArrayList<Coach>();
 		adapter = new CoachListItemAdapter(getActivity(), coachList);
 		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
 		client.fetchCoachListData(this);
@@ -63,8 +61,8 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
-		if(!bDataLoaded){
-			llProgressBar.setVisibility(View.VISIBLE);	
+		if (!bDataLoaded) {
+			llProgressBar.setVisibility(View.VISIBLE);
 		}
 
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
@@ -79,10 +77,10 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 
 			}
 		});
-		
+
 		return v;
 	}
-	
+
 	public CoachListItemAdapter getAdapter() {
 		return adapter;
 	}
@@ -97,7 +95,7 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		addAPIData(list);
 		coachList = list;
 		bDataLoaded = true;
-		if(llProgressBar != null){
+		if (llProgressBar != null) {
 			llProgressBar.setVisibility(View.GONE);
 		}
 	}
@@ -105,7 +103,7 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.coaches, menu);
-		
+
 		MenuItem searchItem = menu.findItem(R.id.action_search_coaches);
 		dummySearchString = StringConstants.DUMMY_SEARCH_STRING;
 		searchView = (SearchView) searchItem.getActionView();
@@ -117,28 +115,26 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 
 			@Override
 			public boolean onQueryTextChange(String searchText) {
-				
-				if(dummySearchString == StringConstants.DUMMY_SEARCH_STRING){
-					if(!searchText.isEmpty()){
+
+				if (dummySearchString == StringConstants.DUMMY_SEARCH_STRING) {
+					if (!searchText.isEmpty()) {
 						dummySearchString = "";
 						return true;
 					}
 				}
-				
+
 				dummySearchString = searchText;
 				ArrayList<Coach> tempCoachList = new ArrayList<Coach>();
 				int searchTextlength = searchText.length();
 
 				// Create the new arraylist for each search character
 				for (Coach coach : coachList) {
-					
+
 					String fullName = coach.getFirstName() + " " + coach.getLastName();
-					
-					if (searchTextlength <= coach.getFirstName().length()
-							|| searchTextlength <= coach.getLastName().length()) {
-						
-						if (fullName.toLowerCase()
-								.contains(searchText.toLowerCase())) {
+
+					if (searchTextlength <= coach.getFirstName().length() || searchTextlength <= coach.getLastName().length()) {
+
+						if (fullName.toLowerCase().contains(searchText.toLowerCase())) {
 							tempCoachList.add(coach);
 						}
 					}

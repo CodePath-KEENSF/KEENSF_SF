@@ -3,6 +3,7 @@ package org.keenusa.connect.activities;
 import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AtheletsFragment;
 import org.keenusa.connect.fragments.UpdateAthleteProfileFragment;
+import org.keenusa.connect.fragments.UpdateAthleteProfileFragment.OnAthleteProfileUpdateListener;
 import org.keenusa.connect.listeners.OnEmailLongClickListener;
 import org.keenusa.connect.listeners.OnPhoneLongClickListener;
 import org.keenusa.connect.listeners.OnSmsIconClickListener;
@@ -20,8 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class AthleteProfileActivity extends FragmentActivity {
+public class AthleteProfileActivity extends FragmentActivity implements OnAthleteProfileUpdateListener {
 
 	private TextView tvLastAttended;
 	private ImageView ivAthleteProfilePic;
@@ -31,8 +33,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 	private TextView tvAthleteAge;
 	private TextView tvAthleteLanguageAtHome;
 	private TextView tvAthleteLocation;
-	private TextView tvAthleteCellPhone;
-	private ImageView ivAthleteCellPhoneMsg;
 	private TextView tvAthletePhone;
 	private TextView tvAthleteEmail;
 	private TextView tvAthleteParentFullNameRelationship;
@@ -82,7 +82,7 @@ public class AthleteProfileActivity extends FragmentActivity {
 	}
 
 	private void showUpdateAthleteProfileDialog() {
-		DialogFragment newFragment = new UpdateAthleteProfileFragment(athlete);
+		DialogFragment newFragment = new UpdateAthleteProfileFragment(athlete, this);
 		newFragment.show(getSupportFragmentManager(), "updateAthleteProfileDialog");
 	}
 
@@ -96,8 +96,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 		tvAthleteAge = (TextView) findViewById(R.id.tvAthleteAge);
 		tvAthleteLanguageAtHome = (TextView) findViewById(R.id.tvAthleteLanguageAtHome);
 		tvAthleteLocation = (TextView) findViewById(R.id.tvAthleteLocation);
-		tvAthleteCellPhone = (TextView) findViewById(R.id.tvAthleteCellPhone);
-		ivAthleteCellPhoneMsg = (ImageView) findViewById(R.id.ivAthleteCellPhoneMsg);
 		tvAthletePhone = (TextView) findViewById(R.id.tvAthletePhone);
 		tvAthleteEmail = (TextView) findViewById(R.id.tvAthleteEmail);
 		tvAthleteParentFullNameRelationship = (TextView) findViewById(R.id.tvAthleteParentFullNameRelationship);
@@ -148,18 +146,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 				tvAthleteLocation.setTypeface(null, Typeface.ITALIC);
 			}
 			tvAthleteLocation.setText(location);
-
-			String mobile = athlete.getCellPhone();
-			if (mobile == null || mobile.isEmpty()) {
-				tvAthleteCellPhone.setEnabled(false);
-				ivAthleteCellPhoneMsg.setVisibility(View.GONE);
-				mobile = getResources().getString(R.string.no_mobile_text);
-				tvAthleteCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvAthleteCellPhone.setTypeface(null, Typeface.ITALIC);
-			} else {
-				ivAthleteCellPhoneMsg.setTag(mobile);
-			}
-			tvAthleteCellPhone.setText(mobile);
 
 			String phone = athlete.getPhone();
 			if (phone == null || phone.isEmpty()) {
@@ -239,7 +225,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 	}
 
 	private void setupOnPhoneLongClickListeners() {
-		tvAthleteCellPhone.setOnLongClickListener(onPhoneLongClickListener);
 		tvAthletePhone.setOnLongClickListener(onPhoneLongClickListener);
 		tvAthleteParentCellPhone.setOnLongClickListener(onPhoneLongClickListener);
 		tvAthleteParentPhone.setOnLongClickListener(onPhoneLongClickListener);
@@ -253,8 +238,20 @@ public class AthleteProfileActivity extends FragmentActivity {
 	}
 
 	private void setupOnSmsIconLongClickListeners() {
-		ivAthleteCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
 		ivAthleteParentCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
 	}
 
+	@Override
+	public void OnAthleteProfileUpdate(Athlete athlete) {
+		this.athlete = athlete;
+		populateViews();
+		Toast.makeText(this, "Athlete profile is updated", Toast.LENGTH_SHORT).show();
+
+	}
+
+	@Override
+	public void OnAthleteProfileUpdateError() {
+		Toast.makeText(this, "Athlete profile update is failed", Toast.LENGTH_SHORT).show();
+
+	}
 }

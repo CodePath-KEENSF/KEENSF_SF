@@ -121,37 +121,10 @@
             android:layout_below="@id/rlAdditionalInfoTile" >
 
             <TextView
-                android:id="@+id/tvAthleteCellPhoneLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Mobile" />
-
-            <TextView
-                android:id="@+id/tvAthleteCellPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvAthleteCellPhoneLabel"
-                android:layout_below="@+id/tvAthleteCellPhoneLabel"
-                android:text="650-000-0000"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/ivAthleteCellPhoneMsg"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/tvAthleteCellPhone"
-                android:src="@drawable/ic_message" />
-
-            <TextView
                 android:id="@+id/tvAthletePhoneLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvAthleteCellPhoneLabel"
-                android:layout_below="@id/tvAthleteCellPhone"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:text="Phone" />
 
             <TextView
