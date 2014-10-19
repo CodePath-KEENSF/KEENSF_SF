@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.AthleteAttendance;
+import org.keenusa.connect.models.CoachAttendance;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,7 +25,8 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 	Button btnAddAthlete;
 	EditText etSearchAthlete;
 	Spinner spinner;
-	String[] options = {"Check-In", "Absent", "Others"};
+	String[] options = {"Options", "ATTENDED", "CALLED_IN_ABSENCE", "NO_CALL_NO_SHOW"};
+	AthleteAttendance athleteAttendance;
 	
 	public AthletesCheckInAdapter(Context context, ArrayList<AthleteAttendance> athleteList) {
 		super(context, android.R.layout.simple_list_item_1, athleteList);
@@ -51,8 +53,16 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				int pos = spinner.getSelectedItemPosition();
-				
+				String item = parent.getItemAtPosition(position).toString();
+				if (item.equals("ATTENDED")){
+					athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
+				} if (item.equals("CALLED_IN_ABSENCE")){
+					athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
+				} if (item.equals("NO_CALL_NO_SHOW")){
+					athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
+				} if (item.equals("Options")){
+			
+				}	
 			}
 
 			@Override
