@@ -400,6 +400,47 @@ public class KeenCivicoreClient {
 
 	}
 
+	public void updateCoachProfileRecord(final Coach coach, final CivicoreUpdateDataResultListener<Coach> listener) {
+
+		String url = buildUpdateCoachURL(APIRequestCode.UPDATE_ATHLETE_PROFILE, coach);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
+					if (listener != null) {
+						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == coach.getRemoteId()) {
+							listener.onUpdateResult(coach);
+						} else {
+							listener.onUpdateError();
+						}
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+					if (listener != null) {
+						listener.onUpdateError();
+					}
+
+				}
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.e("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
 	private String buildSelectURL(APIRequestCode apiRequestCode, int pageNumber) {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
@@ -414,6 +455,16 @@ public class KeenCivicoreClient {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
 		String apiJSONString = UpdateAthleteApiRequestJSONStringBuilder.buildRequestJSONString(context, athlete);
+		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+		String URL = builder.build().toString();
+		Log.i(LOG_TAG_URL, URL);
+		return URL;
+	}
+
+	private String buildUpdateCoachURL(APIRequestCode apiRequestCode, Coach coach) {
+		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
+		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
+		String apiJSONString = UpdateCoachApiRequestJSONStringBuilder.buildRequestJSONString(context, coach);
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 		Log.i(LOG_TAG_URL, URL);

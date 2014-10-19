@@ -90,27 +90,29 @@
                 android:drawablePadding="5dp"
                 android:text="Sammy" />
 
-            <TextView
-                android:id="@+id/tvAthleteLanguageAtHome"
+             <TextView
+                android:id="@+id/tvAthleteLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/tvAthleteNickName"
                 android:layout_below="@id/tvAthleteNickName"
                 android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="5dp"
+                android:text="San Francisco, CA 9400" />
+            
+            <TextView
+                android:id="@+id/tvAthleteLanguageAtHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tvAthleteLocation"
+                android:layout_below="@id/tvAthleteLocation"
+                android:layout_marginTop="5dp"
                 android:drawableLeft="@drawable/ic_language"
                 android:drawablePadding="5dp"
                 android:text="German" />
 
-            <TextView
-                android:id="@+id/tvAthleteLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvAthleteLanguageAtHome"
-                android:layout_below="@id/tvAthleteLanguageAtHome"
-                android:layout_marginTop="5dp"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawablePadding="5dp"
-                android:text="San Francisco, CA 9400" />
+           
         </RelativeLayout>
 
         <RelativeLayout

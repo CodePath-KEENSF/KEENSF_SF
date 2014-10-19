@@ -40,12 +40,12 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 
 	private Athlete athlete;
 	KeenCivicoreClient client;
-	OnAthleteProfileUpdateListener onAthleteProfileUpdateListener;
+	CivicoreUpdateDataResultListener<Athlete> onAthleteProfileUpdateListener;
 
 	public UpdateAthleteProfileFragment() {
 	}
 
-	public UpdateAthleteProfileFragment(Athlete athlete, OnAthleteProfileUpdateListener onAthleteProfileUpdateListener) {
+	public UpdateAthleteProfileFragment(Athlete athlete, CivicoreUpdateDataResultListener<Athlete> onAthleteProfileUpdateListener) {
 		this.athlete = athlete;
 		this.onAthleteProfileUpdateListener = onAthleteProfileUpdateListener;
 	}
@@ -216,40 +216,9 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			}
 
 			if (athleteDTO != null) {
-
-				client.updateAfthetProfileRecord(athleteDTO, new CivicoreUpdateDataResultListener<Athlete>() {
-
-					@Override
-					public void onUpdateResult(Athlete athleteDTO) {
-						if (onAthleteProfileUpdateListener != null) {
-							if (athleteDTO != null) {
-								if (athleteDTO.getPhone() != null) {
-									athlete.setPhone(athleteDTO.getPhone());
-								}
-								if (athleteDTO.getEmail() != null) {
-									athlete.setEmail(athleteDTO.getEmail());
-								}
-								if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getCellPhone() != null) {
-									athlete.getPrimaryParent().setCellPhone(athleteDTO.getPrimaryParent().getCellPhone());
-								}
-								if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getPhone() != null) {
-									athlete.getPrimaryParent().setPhone(athleteDTO.getPrimaryParent().getPhone());
-								}
-								if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getEmail() != null) {
-									athlete.getPrimaryParent().setEmail(athleteDTO.getPrimaryParent().getEmail());
-								}
-							}
-							onAthleteProfileUpdateListener.OnAthleteProfileUpdate(athlete);
-
-						}
-					}
-
-					@Override
-					public void onUpdateError() {
-						onAthleteProfileUpdateListener.OnAthleteProfileUpdateError();
-
-					}
-				});
+				client.updateAfthetProfileRecord(athleteDTO, onAthleteProfileUpdateListener);
+			} else {
+				Toast.makeText(getActivity(), "Nothing is changed", Toast.LENGTH_LONG).show();
 			}
 			closeInputFromWindow();
 			getDialog().dismiss();
@@ -288,12 +257,6 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 
 	private void closeInputFromWindow() {
 		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-	}
-
-	public interface OnAthleteProfileUpdateListener {
-		public void OnAthleteProfileUpdate(Athlete athlete);
-
-		public void OnAthleteProfileUpdateError();
 	}
 
 }

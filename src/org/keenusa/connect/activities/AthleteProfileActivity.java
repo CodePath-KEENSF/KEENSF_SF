@@ -3,13 +3,13 @@ package org.keenusa.connect.activities;
 import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AtheletsFragment;
 import org.keenusa.connect.fragments.UpdateAthleteProfileFragment;
-import org.keenusa.connect.fragments.UpdateAthleteProfileFragment.OnAthleteProfileUpdateListener;
 import org.keenusa.connect.listeners.OnEmailLongClickListener;
 import org.keenusa.connect.listeners.OnPhoneLongClickListener;
 import org.keenusa.connect.listeners.OnSmsIconClickListener;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.models.Parent;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AthleteProfileActivity extends FragmentActivity implements OnAthleteProfileUpdateListener {
+public class AthleteProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Athlete> {
 
 	private TextView tvLastAttended;
 	private ImageView ivAthleteProfilePic;
@@ -109,7 +109,7 @@ public class AthleteProfileActivity extends FragmentActivity implements OnAthlet
 	private void populateViews() {
 		//TODO tvLastAttended
 		if (athlete != null) {
-			// profile pic
+
 			if (athlete.getGender() == ContactPerson.Gender.FEMALE) {
 				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_f);
 			} else if (athlete.getGender() == ContactPerson.Gender.MALE) {
@@ -218,7 +218,7 @@ public class AthleteProfileActivity extends FragmentActivity implements OnAthlet
 
 				setupOnPhoneLongClickListeners();
 				setupOnEmailLongClickListeners();
-				setupOnSmsIconLongClickListeners();
+				setupOnSmsIconClickListeners();
 			}
 		}
 
@@ -237,20 +237,35 @@ public class AthleteProfileActivity extends FragmentActivity implements OnAthlet
 
 	}
 
-	private void setupOnSmsIconLongClickListeners() {
+	private void setupOnSmsIconClickListeners() {
 		ivAthleteParentCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
 	}
 
 	@Override
-	public void OnAthleteProfileUpdate(Athlete athlete) {
-		this.athlete = athlete;
+	public void onUpdateResult(Athlete athleteDTO) {
+		if (athleteDTO != null) {
+			if (athleteDTO.getPhone() != null) {
+				athlete.setPhone(athleteDTO.getPhone());
+			}
+			if (athleteDTO.getEmail() != null) {
+				athlete.setEmail(athleteDTO.getEmail());
+			}
+			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getCellPhone() != null) {
+				athlete.getPrimaryParent().setCellPhone(athleteDTO.getPrimaryParent().getCellPhone());
+			}
+			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getPhone() != null) {
+				athlete.getPrimaryParent().setPhone(athleteDTO.getPrimaryParent().getPhone());
+			}
+			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getEmail() != null) {
+				athlete.getPrimaryParent().setEmail(athleteDTO.getPrimaryParent().getEmail());
+			}
+		}
 		populateViews();
 		Toast.makeText(this, "Athlete profile is updated", Toast.LENGTH_SHORT).show();
-
 	}
 
 	@Override
-	public void OnAthleteProfileUpdateError() {
+	public void onUpdateError() {
 		Toast.makeText(this, "Athlete profile update is failed", Toast.LENGTH_SHORT).show();
 
 	}
