@@ -5,11 +5,13 @@
         android:id="@+id/miCoachesAttendance"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_coach"
         android:title="@string/coachesAttendance"/>
 	
 	<item
         android:id="@+id/miAthletesAttendance"
         android:orderInCategory="100"
         android:showAsAction="always"
+        android:icon="@drawable/ic_athlete"
         android:title="@string/athletesAttendance"/>
 </menu>

@@ -60,6 +60,7 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,int position, long id) {
 				String item = parent.getItemAtPosition(position).toString();
+//				Toast.makeText(getContext(), "Item selected is " + item, Toast.LENGTH_SHORT).show();
 				if (item.equals("REGISTERED")){
 					coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.REGISTERED);
 				} if (item.equals("ATTENDED")){
@@ -71,7 +72,7 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 				} if (item.equals("NO_CALL_NO_SHOW")){
 					coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
 				} if (item.equals("Options")){
-					
+					coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
 				}		
 			}
 
