@@ -1,10 +1,13 @@
 package org.keenusa.connect.activities;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.keenusa.connect.R;
+import org.keenusa.connect.models.Athlete;
+import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
@@ -129,7 +132,36 @@ public class SessionDetailsActivity extends FragmentActivity {
 			} else if (id == R.id.miAthletesAttendance) {
 				openAthleteCheckIn(session, program);
 				
+			}else if (id == R.id.miSendSms){
+//				String phone = "4802523507,";
+//				String phone = "";
+//				List<Athlete> enrolledAthletes = program.getEnrolledAthletes();
+//				for(Athlete athlete: program.getEnrolledAthletes()){
+//					if(athlete.getCellPhone() != null){
+//						phone = phone + athlete.getCellPhone();	
+//					}
+//				}
+
+//				for(CoachAttendance coachAtt: session.getCoachAttendance()){
+//					if(coachAtt.getCoach().getCellPhone() != null){
+//						phone = phone + coachAtt.getCoach().getCellPhone();	
+//					}
+//				}
+//				
+//				if (phone != null && !phone.isEmpty()) {
+//					// TODO change for actual phone string
+//					Log.i("SMS_INTENT", "SMS is to be initialted to " + phone);
+//					Intent i = new Intent(Intent.ACTION_VIEW);
+//					i.putExtra("address", phone);
+//					i.putExtra("sms_body", "Heylo");
+//					i.setType("vnd.android-dir/mms-sms");
+//					startActivity(i);
+//				} else {
+//					Toast.makeText(getBaseContext(), "Can not send sms. The phone number is invalid", Toast.LENGTH_SHORT).show();
+//				}
+//
 			}
+			
 			return super.onOptionsItemSelected(item);
 		}
 
