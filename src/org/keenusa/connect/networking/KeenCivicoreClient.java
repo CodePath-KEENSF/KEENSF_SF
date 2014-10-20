@@ -146,50 +146,47 @@ public class KeenCivicoreClient {
 	}
 
 	// TODO running session list fetch asynchronously crashes Sessions fragment because it expects populated session list in order to be created
-	//	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
-	//		String url = buildSelectURL(APIRequestCode.SESSION_LIST, 1);
-	//		client.get(url, new CiviCoreXMLResponseHandler<RemoteSessionList>(RemoteSessionList.class) {
-	//			@Override
-	//			public void onDataReceived(RemoteSessionList result) {
-	//				if (listener != null) {
-	//					listener.onListResult(KeenSession.fromRemoteSessionList(result.getRemoteSessions()));
-	//				}
-	//			}
-	//		});
-	//	}
-
+//		public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
+//			String url = buildSelectURL(APIRequestCode.SESSION_LIST, 1);
+//			client.get(url, new CustomXMLHttpResponseHandler<RemoteSessionList>(RemoteSessionList.class) {
+//				@Override
+//				public void onDataReceived(RemoteSessionList result) {
+//					if (listener != null) {
+//						listener.onListResult(KeenSession.fromRemoteSessionList(result.getRemoteSessions()));
+//					}
+//				}
+//			});
+//		}
+		
 	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
-
 		String url = buildSelectURL(APIRequestCode.SESSION_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteSessionList>(RemoteSessionList.class) {
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				Log.d("RESPONSE", new String(arg2));
-				Serializer serializer = new Persister();
-
-				try {
-					String response = new String(arg2);
-					response = response.replaceAll("&", "&amp;");
-					response = response.replaceAll("'", "&apos;");
-					RemoteSessionList remoteSessionList = serializer.read(RemoteSessionList.class, response);
-					if (listener != null) {
-						listener.onListResult(KeenSession.fromRemoteSessionList(remoteSessionList.getRemoteSessions()));
-					}
-				} catch (Exception e) {
-					Log.e(LOG_TAG_CLASS, e.toString());
+			public void onDataReceived(RemoteSessionList result) {
+				if (listener != null) {
+					listener.onListResult(KeenSession.fromRemoteSessionList(result.getRemoteSessions()));
 				}
-
+			}
+			
+			@Override
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
-
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
+				
 			}
-
 		});
-
 	}
 
 	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<KeenProgramEnrolment> listener) {
