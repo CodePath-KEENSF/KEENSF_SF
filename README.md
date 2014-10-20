@@ -95,6 +95,7 @@ The initial set of epics is listed below:
 Walkthrough of all users stories:
 
 ![Video Walkthrough](KeenSF.gif)
+![Video Walkthrough](keen_app_demo.gif)
 
 GIF created with [LiceCap]
 
