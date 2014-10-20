@@ -3,7 +3,6 @@ package org.keenusa.connect.networking;
 import java.util.List;
 
 import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.keenusa.connect.models.Affiliate;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
@@ -17,10 +16,10 @@ import org.keenusa.connect.models.remote.RemoteAthleteAttendanceList;
 import org.keenusa.connect.models.remote.RemoteAthleteList;
 import org.keenusa.connect.models.remote.RemoteCoachAttendanceList;
 import org.keenusa.connect.models.remote.RemoteCoachList;
-import org.keenusa.connect.models.remote.RemoteUpdateSuccessResult;
 import org.keenusa.connect.models.remote.RemoteProgramEnrolmentList;
 import org.keenusa.connect.models.remote.RemoteProgramList;
 import org.keenusa.connect.models.remote.RemoteSessionList;
+import org.keenusa.connect.models.remote.RemoteUpdateSuccessResult;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -30,7 +29,6 @@ import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.ResponseHandlerInterface;
 
 public class KeenCivicoreClient {
 
@@ -55,131 +53,110 @@ public class KeenCivicoreClient {
 	}
 
 	public void fetchCoachListData(final CivicoreDataResultListener<Coach> listener) {
-
 		String url = buildSelectURL(APIRequestCode.COACH_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
-			public void onSuccess(int arg0, Header[] arg1, List<Coach> coachList) {
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteCoachList>(RemoteCoachList.class) {
+			@Override
+			public void onDataReceived(RemoteCoachList result) {
 				if (listener != null) {
-					listener.onListResult(coachList);
+					listener.onListResult(Coach.fromRemoteCoachList(result.getRemoteCoaches()));
 				}
-
 			}
 
 			@Override
-			public void onSuccess(final int arg0, final Header[] arg1, final byte[] arg2) {
-				Runnable parser = new Runnable() {
-
-					@Override
-					public void run() {
-						Log.d("RESPONSE", new String(arg2));
-						Serializer serializer = new Persister();
-
-						try {
-							String response = new String(arg2);
-							response = response.replaceAll("&", "&amp;");
-							response = response.replaceAll("'", "&apos;");
-							final RemoteCoachList coaches = serializer.read(RemoteCoachList.class, response);
-
-							postRunnable(new Runnable() {
-
-								@Override
-								public void run() {
-									onSuccess(arg0, arg1, Coach.fromRemoteCoachList(coaches.getRemoteCoaches()));
-
-								}
-							});
-						} catch (Exception e) {
-							Log.e(LOG_TAG_CLASS, e.toString());
-						}
-					}
-				};
-				new Thread(parser).start();
-
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 
 			}
-
 		});
-
 	}
 
 	public void fetchProgramListData(final CivicoreDataResultListener<KeenProgram> listener) {
-
 		String url = buildSelectURL(APIRequestCode.PROGRAM_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteProgramList>(RemoteProgramList.class) {
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				Log.d("RESPONSE", new String(arg2));
-				Serializer serializer = new Persister();
-
-				try {
-					String response = new String(arg2);
-					response = response.replaceAll("&", "&amp;");
-					response = response.replaceAll("'", "&apos;");
-					response = response.replaceAll("<registrationConfirmation>", "<registrationConfirmation><![CDATA[");
-					response = response.replaceAll("</registrationConfirmation>", "]]></registrationConfirmation>");
-					response = response.replaceAll("<approvalEmailMessage>", "<approvalEmailMessage><![CDATA[");
-					response = response.replaceAll("</approvalEmailMessage>", "]]></approvalEmailMessage>");
-					RemoteProgramList remoteProgramList = serializer.read(RemoteProgramList.class, response);
-					if (listener != null) {
-						listener.onListResult(KeenProgram.fromRemoteProgramList(remoteProgramList.getRemotePrograms()));
-					}
-				} catch (Exception e) {
-					Log.e(LOG_TAG_CLASS, e.toString());
+			public void onDataReceived(RemoteProgramList result) {
+				if (listener != null) {
+					listener.onListResult(KeenProgram.fromRemoteProgramList(result.getRemotePrograms()));
 				}
-
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
-
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
-		});
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 
+			}
+		});
 	}
 
 	public void fetchAthleteListData(final CivicoreDataResultListener<Athlete> listener) {
-
 		String url = buildSelectURL(APIRequestCode.ATHLETE_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteAthleteList>(RemoteAthleteList.class) {
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				Log.d("RESPONSE", new String(arg2));
-				Serializer serializer = new Persister();
-
-				try {
-					String response = new String(arg2);
-					response = response.replaceAll("&", "&amp;");
-					response = response.replaceAll("'", "&apos;");
-
-					RemoteAthleteList athletes = serializer.read(RemoteAthleteList.class, response);
-					if (listener != null) {
-						listener.onListResult(Athlete.fromRemoteAthleteList(athletes.getRemoteAthletes()));
-					}
-				} catch (Exception e) {
-					Log.e(LOG_TAG_CLASS, e.toString());
+			public void onDataReceived(RemoteAthleteList result) {
+				if (listener != null) {
+					listener.onListResult(Athlete.fromRemoteAthleteList(result.getRemoteAthletes()));
 				}
-
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
-
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
-		});
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 
+			}
+		});
 	}
+
+	// TODO running session list fetch asynchronously crashes Sessions fragment because it expects populated session list in order to be created
+	//	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
+	//		String url = buildSelectURL(APIRequestCode.SESSION_LIST, 1);
+	//		client.get(url, new CiviCoreXMLResponseHandler<RemoteSessionList>(RemoteSessionList.class) {
+	//			@Override
+	//			public void onDataReceived(RemoteSessionList result) {
+	//				if (listener != null) {
+	//					listener.onListResult(KeenSession.fromRemoteSessionList(result.getRemoteSessions()));
+	//				}
+	//			}
+	//		});
+	//	}
 
 	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
 
@@ -216,147 +193,127 @@ public class KeenCivicoreClient {
 	}
 
 	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<KeenProgramEnrolment> listener) {
-
 		String url = buildSelectURL(APIRequestCode.PROGRAM_ENROLMENT_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteProgramEnrolmentList>(RemoteProgramEnrolmentList.class) {
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				Log.d("RESPONSE", new String(arg2));
-				Serializer serializer = new Persister();
-
-				try {
-					String response = new String(arg2);
-					response = response.replaceAll("&", "&amp;");
-					response = response.replaceAll("'", "&apos;");
-					RemoteProgramEnrolmentList remoteProgramEnrolmentList = serializer.read(RemoteProgramEnrolmentList.class, response);
-					if (listener != null) {
-						listener.onListResult(KeenProgramEnrolment.fromRemoteProgramEnrolmentList(remoteProgramEnrolmentList
-								.getRemoteProgramEnrolments()));
-					}
-				} catch (Exception e) {
-					Log.e(LOG_TAG_CLASS, e.toString());
+			public void onDataReceived(RemoteProgramEnrolmentList result) {
+				if (listener != null) {
+					listener.onListResult(KeenProgramEnrolment.fromRemoteProgramEnrolmentList(result.getRemoteProgramEnrolments()));
 				}
-
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
-
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
-		});
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 
+			}
+		});
 	}
 
 	public void fetchAthleteAttendanceListData(final CivicoreDataResultListener<AthleteAttendance> listener) {
-
 		String url = buildSelectURL(APIRequestCode.ATHLETE_ATENDANCE_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteAthleteAttendanceList>(RemoteAthleteAttendanceList.class) {
 			@Override
-			public void onPostProcessResponse(ResponseHandlerInterface instance, HttpResponse response) {
-				// TODO Auto-generated method stub
-				super.onPostProcessResponse(instance, response);
-			}
-
-			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				Log.d("RESPONSE", new String(arg2));
-				Serializer serializer = new Persister();
-
-				try {
-					String response = new String(arg2);
-					response = response.replaceAll("&", "&amp;");
-					response = response.replaceAll("'", "&apos;");
-					RemoteAthleteAttendanceList remoteAthleteAttendanceList = serializer.read(RemoteAthleteAttendanceList.class, response);
-					if (listener != null) {
-						listener.onListResult(AthleteAttendance.fromRemoteAthleteAttendanceList(remoteAthleteAttendanceList
-								.getRemoteAthleteAttendances()));
-					}
-				} catch (Exception e) {
-					Log.e(LOG_TAG_CLASS, e.toString());
+			public void onDataReceived(RemoteAthleteAttendanceList result) {
+				if (listener != null) {
+					listener.onListResult(AthleteAttendance.fromRemoteAthleteAttendanceList(result.getRemoteAthleteAttendances()));
 				}
-
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
-
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
-		});
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 
+			}
+		});
 	}
 
 	public void fetchCoachAttendanceListData(final CivicoreDataResultListener<CoachAttendance> listener) {
-
 		String url = buildSelectURL(APIRequestCode.COACH_ATTENDANCE_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteCoachAttendanceList>(RemoteCoachAttendanceList.class) {
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				Log.d("RESPONSE", new String(arg2));
-				Serializer serializer = new Persister();
-
-				try {
-					String response = new String(arg2);
-					response = response.replaceAll("&", "&amp;");
-					response = response.replaceAll("'", "&apos;");
-					RemoteCoachAttendanceList remoteCoachAttendanceList = serializer.read(RemoteCoachAttendanceList.class, response);
-					if (listener != null) {
-						listener.onListResult(CoachAttendance.fromRemoteCoachAttendanceList(remoteCoachAttendanceList.getRemoteCoachAttendances()));
-					}
-				} catch (Exception e) {
-					Log.e(LOG_TAG_CLASS, e.toString());
+			public void onDataReceived(RemoteCoachAttendanceList result) {
+				if (listener != null) {
+					listener.onListResult(CoachAttendance.fromRemoteCoachAttendanceList(result.getRemoteCoachAttendances()));
 				}
-
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
-
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
-		});
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 
+			}
+		});
 	}
 
 	public void fetchAffiliateListData(final CivicoreDataResultListener<Affiliate> listener) {
-
 		String url = buildSelectURL(APIRequestCode.AFFILIATE_LIST, 1);
-		client.get(url, new AsyncHttpResponseHandler() {
-
+		client.get(url, new CustomXMLHttpResponseHandler<RemoteAffiliateList>(RemoteAffiliateList.class) {
 			@Override
-			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-				Log.d("RESPONSE", new String(arg2));
-				Serializer serializer = new Persister();
-
-				try {
-					String response = new String(arg2);
-					response = response.replaceAll("&", "&amp;");
-					response = response.replaceAll("'", "&apos;");
-					RemoteAffiliateList remoteAffiliateList = serializer.read(RemoteAffiliateList.class, response);
-					if (listener != null) {
-						listener.onListResult(Affiliate.fromRemoteAffiliateList(remoteAffiliateList.getRemoteAffiliates()));
-					}
-				} catch (Exception e) {
-					Log.e(LOG_TAG_CLASS, e.toString());
+			public void onDataReceived(RemoteAffiliateList result) {
+				if (listener != null) {
+					listener.onListResult(Affiliate.fromRemoteAffiliateList(result.getRemoteAffiliates()));
 				}
-
 			}
 
 			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-				Log.d("RESPONSE", arg3.toString());
-
+			public void onXMLProcessingError(Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 			}
 
-		});
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable throwable) {
+				if (listener != null) {
+					listener.onListResultError();
+				}
+				Log.e(LOG_TAG_CLASS, throwable.toString());
+				super.onXMLProcessingError(throwable);
 
+			}
+		});
 	}
 
 	public void updateAfthetProfileRecord(final Athlete athlete, final CivicoreUpdateDataResultListener<Athlete> listener) {
@@ -376,15 +333,15 @@ public class KeenCivicoreClient {
 					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
 					if (listener != null) {
 						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == athlete.getRemoteId()) {
-							listener.onUpdateResult(athlete);
+							listener.onRecordUpdateResult(athlete);
 						} else {
-							listener.onUpdateError();
+							listener.onRecordUpdateError();
 						}
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
 					if (listener != null) {
-						listener.onUpdateError();
+						listener.onRecordUpdateError();
 					}
 
 				}
@@ -417,15 +374,15 @@ public class KeenCivicoreClient {
 					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
 					if (listener != null) {
 						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == coach.getRemoteId()) {
-							listener.onUpdateResult(coach);
+							listener.onRecordUpdateResult(coach);
 						} else {
-							listener.onUpdateError();
+							listener.onRecordUpdateError();
 						}
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
 					if (listener != null) {
-						listener.onUpdateError();
+						listener.onRecordUpdateError();
 					}
 
 				}
@@ -459,15 +416,15 @@ public class KeenCivicoreClient {
 					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
 					if (listener != null) {
 						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == athleteAttendance.getRemoteId()) {
-							listener.onUpdateResult(athleteAttendance);
+							listener.onRecordUpdateResult(athleteAttendance);
 						} else {
-							listener.onUpdateError();
+							listener.onRecordUpdateError();
 						}
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
 					if (listener != null) {
-						listener.onUpdateError();
+						listener.onRecordUpdateError();
 					}
 
 				}
@@ -500,15 +457,15 @@ public class KeenCivicoreClient {
 					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
 					if (listener != null) {
 						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == coachAttendance.getRemoteId()) {
-							listener.onUpdateResult(coachAttendance);
+							listener.onRecordUpdateResult(coachAttendance);
 						} else {
-							listener.onUpdateError();
+							listener.onRecordUpdateError();
 						}
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
 					if (listener != null) {
-						listener.onUpdateError();
+						listener.onRecordUpdateError();
 					}
 
 				}
@@ -543,15 +500,15 @@ public class KeenCivicoreClient {
 					if (listener != null) {
 						if (Long.valueOf(remoteInsertSuccessResult.getRemoteId()) > 0) {
 							athleteAttendance.setRemoteId(Long.valueOf(remoteInsertSuccessResult.getRemoteId()));
-							listener.onUpdateResult(athleteAttendance);
+							listener.onRecordUpdateResult(athleteAttendance);
 						} else {
-							listener.onUpdateError();
+							listener.onRecordUpdateError();
 						}
 					}
 				} catch (Exception e) {
 					Log.e(LOG_TAG_CLASS, e.toString());
 					if (listener != null) {
-						listener.onUpdateError();
+						listener.onRecordUpdateError();
 					}
 
 				}
@@ -629,11 +586,13 @@ public class KeenCivicoreClient {
 
 	public interface CivicoreDataResultListener<T> {
 		public void onListResult(List<T> list);
+
+		public void onListResultError();
 	}
 
 	public interface CivicoreUpdateDataResultListener<T> {
-		public void onUpdateResult(T object);
+		public void onRecordUpdateResult(T object);
 
-		public void onUpdateError();
+		public void onRecordUpdateError();
 	}
 }

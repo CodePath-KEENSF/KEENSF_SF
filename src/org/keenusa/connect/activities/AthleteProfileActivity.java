@@ -12,7 +12,6 @@ import org.keenusa.connect.models.Parent;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -142,8 +141,7 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 			String location = athlete.getLocation().getLocationString();
 			if (location == null || location.isEmpty()) {
 				location = getResources().getString(R.string.no_location_text);
-				tvAthleteLocation.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvAthleteLocation.setTypeface(null, Typeface.ITALIC);
+				tvAthleteLocation.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
 			}
 			tvAthleteLocation.setText(location);
 
@@ -151,8 +149,9 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 			if (phone == null || phone.isEmpty()) {
 				tvAthletePhone.setEnabled(false);
 				phone = getResources().getString(R.string.no_phone_text);
-				tvAthletePhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvAthletePhone.setTypeface(null, Typeface.ITALIC);
+				tvAthletePhone.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+			} else {
+				tvAthletePhone.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 			}
 			tvAthletePhone.setText(phone);
 
@@ -160,16 +159,16 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 			if (email == null || email.isEmpty()) {
 				tvAthleteEmail.setEnabled(false);
 				email = getResources().getString(R.string.no_email_text);
-				tvAthleteEmail.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvAthleteEmail.setTypeface(null, Typeface.ITALIC);
+				tvAthleteEmail.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+			} else {
+				tvAthleteEmail.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 			}
 			tvAthleteEmail.setText(email);
 
 			String languageAtHome = athlete.getPrimaryLanguage();
 			if (languageAtHome == null || languageAtHome.isEmpty()) {
 				languageAtHome = getResources().getString(R.string.no_language_at_home_text);
-				tvAthleteLanguageAtHome.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvAthleteLanguageAtHome.setTypeface(null, Typeface.ITALIC);
+				tvAthleteLanguageAtHome.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
 			}
 			tvAthleteLanguageAtHome.setText(languageAtHome);
 
@@ -188,9 +187,10 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 					tvAthleteParentCellPhone.setEnabled(false);
 					ivAthleteParentCellPhoneMsg.setVisibility(View.GONE);
 					pmobile = getResources().getString(R.string.no_mobile_text);
-					tvAthleteParentCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-					tvAthleteParentCellPhone.setTypeface(null, Typeface.ITALIC);
+					tvAthleteParentCellPhone.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
 				} else {
+					tvAthleteParentCellPhone.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
+					ivAthleteParentCellPhoneMsg.setVisibility(View.VISIBLE);
 					ivAthleteParentCellPhoneMsg.setTag(pmobile);
 				}
 				tvAthleteParentCellPhone.setText(pmobile);
@@ -200,8 +200,9 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 					tvAthleteParentPhone.setEnabled(false);
 
 					pphone = getResources().getString(R.string.no_phone_text);
-					tvAthleteParentPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-					tvAthleteParentPhone.setTypeface(null, Typeface.ITALIC);
+					tvAthleteParentPhone.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+				} else {
+					tvAthleteParentPhone.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 				}
 				tvAthleteParentPhone.setText(pphone);
 
@@ -209,10 +210,9 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 				if (pemail == null || pemail.isEmpty()) {
 					tvAthleteParentEmail.setEnabled(false);
 					pemail = getResources().getString(R.string.no_email_text);
-					tvAthleteParentEmail.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-					tvAthleteParentEmail.setTypeface(null, Typeface.ITALIC);
+					tvAthleteParentEmail.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
 				} else {
-					tvAthleteParentEmail.setTag(pemail);
+					tvAthleteParentEmail.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 				}
 				tvAthleteParentEmail.setText(pemail);
 
@@ -242,7 +242,7 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	}
 
 	@Override
-	public void onUpdateResult(Athlete athleteDTO) {
+	public void onRecordUpdateResult(Athlete athleteDTO) {
 		if (athleteDTO != null) {
 			if (athleteDTO.getPhone() != null) {
 				athlete.setPhone(athleteDTO.getPhone());
@@ -265,7 +265,7 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	}
 
 	@Override
-	public void onUpdateError() {
+	public void onRecordUpdateError() {
 		Toast.makeText(this, "Athlete profile update is failed", Toast.LENGTH_SHORT).show();
 
 	}

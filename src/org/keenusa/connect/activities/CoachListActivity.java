@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class CoachListActivity extends FragmentActivity implements CivicoreDataResultListener<Coach> {
 
@@ -55,6 +56,12 @@ public class CoachListActivity extends FragmentActivity implements CivicoreDataR
 	@Override
 	public void onListResult(List<Coach> list) {
 		coachesFragment.addAPIData(list);
+	}
+
+	@Override
+	public void onListResultError() {
+		Toast.makeText(this, "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
+
 	}
 
 }

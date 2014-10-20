@@ -17,21 +17,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class AthleteCheckInActivity extends Activity{
+public class AthleteCheckInActivity extends Activity {
 	AthleteAttendance athleteAtt;
 	KeenSession session;
 	KeenProgram program;
-	
+
 	private ListView lvRegisteredAthletes;
 	private ArrayList<AthleteAttendance> athleteList;
 	private AthletesCheckInAdapter athleteCheckInAdapter;
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,18 +40,18 @@ public class AthleteCheckInActivity extends Activity{
 		setView();
 		getData();
 	}
-	
+
 	private void getData() {
 		session = (KeenSession) getIntent().getSerializableExtra("session");
 		program = (KeenProgram) getIntent().getSerializableExtra("program");
-		
+
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle(program.getName());
 		bDataLoaded = false;
 		KeenCivicoreClient client = new KeenCivicoreClient(getBaseContext());
 		athleteCheckInAdapter.clear();
 		client.fetchAthleteAttendanceListData(new CivicoreDataResultListener<AthleteAttendance>() {
-			
+
 			@Override
 			public void onListResult(List<AthleteAttendance> athleteAttlist) {
 				for (AthleteAttendance athleteAtt : athleteAttlist) {
@@ -59,14 +60,20 @@ public class AthleteCheckInActivity extends Activity{
 					}
 				}
 				bDataLoaded = true;
-				if(llProgressBar != null){
+				if (llProgressBar != null) {
 					llProgressBar.setVisibility(View.GONE);
 				}
 				athleteCheckInAdapter.notifyDataSetChanged();
 			}
-			
+
+			@Override
+			public void onListResultError() {
+				Toast.makeText(AthleteCheckInActivity.this, "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
+
+			}
+
 		});
-		
+
 	}
 
 	private void setView() {
@@ -74,16 +81,15 @@ public class AthleteCheckInActivity extends Activity{
 		athleteList = new ArrayList<AthleteAttendance>();
 		athleteCheckInAdapter = new AthletesCheckInAdapter(this, athleteList);
 		llProgressBar = (LinearLayout) findViewById(R.id.llProgressBarSessions);
-		if(!bDataLoaded){
+		if (!bDataLoaded) {
 			llProgressBar.setVisibility(View.VISIBLE);
 		}
 		lvRegisteredAthletes.setAdapter(athleteCheckInAdapter);
-		
+
 		lvRegisteredAthletes.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent i = new Intent(AthleteCheckInActivity.this, AthleteProfileActivity.class);
 				startActivity(i);
 			}
