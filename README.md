@@ -40,58 +40,6 @@ The initial set of epics is listed below:
 20.	Athlete’s parent/guardian user should be able to **_login to KEEN MOBILE, view upcoming sessions, notify about absence and update own contact info_**.
 
 
-
-**User Stories**
-
-1. Login page
-
- 1.1. User needs to login at the first page
-
- 1.2. Keep login session until user logout.
-
-2. List out available sessions
-
- 2.1. Option to select: Coach option
-
- 2.2. Option to select: Register Coach for available sessions
-
- 2.3. Option to select: Register Athelets for available sessions
-
- 2.4. Auto-Notification (1 day ahead)
-
-   2.4.1. send out SMS to Coach
-   
-   2.4.2. send out SMS to Atheletes
-  
-   2.4.3. notify User (no need SMS or email) -- just app notification
-
- 2.5. Option to select: Session option
-   
-   2.5.1. Option to select: Send out Cancelling session
-   
-   2.5.2. Option to select: Check-in Coach for the session
-   
-   2.5.3. Option to select: Check-in Athletes for the session
-   
-   2.5.4. Option to select: Mark athletes as "Absent" for the session if miss the session
-  
-   2.5.5. Option to select: Send out new sessions available.
-
-3. Data Warehouse
-
- 3.1. Coach
-  
-   3.1.1. Update Coach profile
-   
-   3.1.2. List out all registered sessions belong to the Coach
-
- 3.2. Atheletes
-   
-   3.2.1. Update Atheletes profile
-  
-   3.2.2 List out all registered sessions belong to the Atheletes
-
-
 Walkthrough of all users stories:
 
 ![Video Walkthrough](KeenSF.gif)
