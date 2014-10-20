@@ -1,11 +1,6 @@
 package org.keenusa.connect.activities;
 
-import java.util.List;
-
 import org.keenusa.connect.R;
-import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
