@@ -116,6 +116,10 @@ public class SessionsFragment extends Fragment {
 					@Override
 					public void onListResult(List<KeenSession> list) {
 						sessionList.addAll(list);
+						bDataLoaded = true;
+						if (llProgressBar != null) {
+							llProgressBar.setVisibility(View.GONE);
+						}
 						// Received both session list and program list
 						// Get the location and time information from program associated with the given session
 						getSessionInfoFromProgramList();
@@ -125,10 +129,6 @@ public class SessionsFragment extends Fragment {
 						expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 
 						setSessionListToCurrentDate();
-						bDataLoaded = true;
-						if (llProgressBar != null) {
-							llProgressBar.setVisibility(View.GONE);
-						}
 					}
 
 					@Override
