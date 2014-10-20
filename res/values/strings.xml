@@ -75,5 +75,6 @@
     <string name="athletes_registered_label">Registered Athletes</string>
     <string name="athletes_registered">Sample numbers of Athletes registered</string>
     <string name="athlete_name">Sample Athlete Name</string>
+    <string name="api_key_label">API Key</string>
 
 </resources>

@@ -17,23 +17,8 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.login, menu);
-
-		Button btnCheckIn = (Button) findViewById(R.id.btnCheckIn);
-		btnCheckIn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				openCheckIn();
-			}
-		});
-
-		Button btnLogin = (Button) findViewById(R.id.btnLogin);
+		
+		Button btnLogin = (Button) findViewById(R.id.btnApiLogin);
 		btnLogin.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -41,17 +26,19 @@ public class LoginActivity extends Activity {
 				openSessionAthleteCoachList();
 			}
 		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.login, menu);
+
 
 		return true;
 	}
 
 	private void openSessionAthleteCoachList() {
 		Intent i = new Intent(this, SessionAthleteCoachListActivity.class);
-		startActivity(i);
-	}
-
-	protected void openCheckIn() {
-		Intent i = new Intent(this, CoachesCheckInActivity.class);
 		startActivity(i);
 	}
 
