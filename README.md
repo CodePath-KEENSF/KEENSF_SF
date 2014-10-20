@@ -90,3 +90,12 @@ The initial set of epics is listed below:
    3.2.1. Update Atheletes profile
   
    3.2.2 List out all registered sessions belong to the Atheletes
+
+
+Walkthrough of all users stories:
+
+![Video Walkthrough](KeenSF.gif)
+
+GIF created with [LiceCap]
+
+[LiceCap]:www.cockos.com/licecap/
