@@ -4,17 +4,15 @@ import java.util.ArrayList;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.AthleteAttendance;
-import org.keenusa.connect.models.CoachAttendance;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,14 +20,15 @@ import android.widget.Toast;
 
 public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 	TextView tvAthleteCheckIn;
-//	Button btnAddAthlete;
-//	EditText etSearchAthlete;
 	Spinner spinner;
 	String[] options = {"ATTENDED", "CALLED_IN_ABSENCE", "NO_CALL_NO_SHOW"};
-	AthleteAttendance athleteAttendance;
+	AthleteAttendance athlete;
+	Context context;
+	KeenCivicoreClient client;
 	
 	public AthletesCheckInAdapter(Context context, ArrayList<AthleteAttendance> athleteList) {
 		super(context, android.R.layout.simple_list_item_1, athleteList);
+		client = new KeenCivicoreClient(context);
 	}
 	
 	@Override
@@ -40,9 +39,7 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.athlete_check_in_items, parent, false);
 		}
 		tvAthleteCheckIn = (TextView) convertView.findViewById(R.id.tvAthleteCheckIn);
-//		btnAddAthlete = (Button) convertView.findViewById(R.id.btnAddAthlete);
 		ImageView ivAthleteImageProfile = (ImageView) convertView.findViewById(R.id.ivAthleteImageProfile);
-//		etSearchAthlete = (EditText) convertView.findViewById(R.id.etSearchAthlete);
 		spinner = (Spinner) convertView.findViewById(R.id.spAthCheckInOptions);
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, options);
@@ -67,13 +64,13 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 				String item = parent.getItemAtPosition(position).toString();
 				if (item.equals("ATTENDED")){
 					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
-//					Toast.makeText(getContext(), item + " is Attended", Toast.LENGTH_SHORT).show();
+					updateRecord(item);
 				} if (item.equals("CALLED_IN_ABSENCE")){
 					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
-//					Toast.makeText(getContext(), item + " is Called in absence", Toast.LENGTH_SHORT).show();
+					updateRecord(item);
 				} if (item.equals("NO_CALL_NO_SHOW")){
 					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
-//					Toast.makeText(getContext(), item + " is No call no show", Toast.LENGTH_SHORT).show();
+					updateRecord(item);
 				} 	
 			}
 
@@ -84,5 +81,21 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 			}
 		});
 		return convertView;
+	}
+
+	public void updateRecord(String item) {
+		client.updateAfthetAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+			
+			@Override
+			public void onRecordUpdateResult(AthleteAttendance object) {
+				Toast.makeText(getContext(), "Updated to " + object.getAttendanceValue(), Toast.LENGTH_SHORT).show();
+			}
+			
+			@Override
+			public void onRecordUpdateError() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }
