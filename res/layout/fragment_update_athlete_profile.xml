@@ -8,18 +8,18 @@
     <RelativeLayout
         android:id="@+id/rlUpdateAthleteProfileForm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+        android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/tvAthleteFullName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:background="@color/main_theme_color"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="Sam Jetti Smith"
+            android:textColor="@color/main_theme_text_color"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -27,7 +27,10 @@
             android:id="@+id/rlAthleteContactInfoTile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvAthleteFullName" >
+            android:layout_below="@id/tvAthleteFullName"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin" >
 
             <TextView
                 android:id="@+id/tvAthletePhoneLabel"
@@ -76,7 +79,9 @@
             android:layout_alignLeft="@id/rlAthleteContactInfoTile"
             android:layout_alignParentRight="true"
             android:layout_below="@id/rlAthleteContactInfoTile"
-            android:layout_marginTop="10dp" >
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin" >
 
             <TextView
                 android:id="@+id/tvAthleteParentFullNameRelationship"
@@ -84,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="Elissa Smith - mother"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -151,7 +156,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rlAthleteParentContactInfoTile"
-            android:layout_marginTop="10dp" >
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin" >
 
             <Button
                 android:id="@+id/btnCancelAthleteProfileUpdate"

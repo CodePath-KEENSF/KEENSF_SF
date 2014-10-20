@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 public class AtheletsFragment extends Fragment implements CivicoreDataResultListener<Athlete> {
 
@@ -98,6 +99,12 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 		if (llProgressBar != null) {
 			llProgressBar.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void onListResultError() {
+		Toast.makeText(getActivity(), "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
+
 	}
 
 	@Override

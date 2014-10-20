@@ -136,8 +136,7 @@
                 android:layout_alignLeft="@id/tvAthletePhoneLabel"
                 android:layout_below="@+id/tvAthletePhoneLabel"
                 android:text="650-000-0000"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="20sp" />
+               style="@style/TextView.ActiveContact.Keen" />
 
             <TextView
                 android:id="@+id/tvAthleteEmailLabel"
@@ -155,8 +154,7 @@
                 android:layout_alignLeft="@id/tvAthleteEmailLabel"
                 android:layout_below="@id/tvAthleteEmailLabel"
                 android:text="someone@mail.com"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="20sp" />
+                style="@style/TextView.ActiveContact.Keen" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -194,8 +192,7 @@
                 android:layout_alignLeft="@+id/tvAthleteParentCellPhoneLabel"
                 android:layout_below="@id/tvAthleteParentCellPhoneLabel"
                 android:text="650-000-0000"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="20sp" />
+               style="@style/TextView.ActiveContact.Keen" />
 
             <ImageView
                 android:id="@+id/ivAthleteParentCellPhoneMsg"
@@ -221,8 +218,7 @@
                 android:layout_alignLeft="@id/tvAthleteParentPhoneLabel"
                 android:layout_below="@id/tvAthleteParentPhoneLabel"
                 android:text="650-000-0000"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="20sp" />
+                style="@style/TextView.ActiveContact.Keen" />
 
             <TextView
                 android:id="@+id/tvAthleteParentEmailLabel"
@@ -240,8 +236,7 @@
                 android:layout_alignLeft="@id/tvAthleteParentEmailLabel"
                 android:layout_below="@id/tvAthleteParentEmailLabel"
                 android:text="someone@mail.com"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="20sp" />
+                style="@style/TextView.ActiveContact.Keen" />
         </RelativeLayout>
     </RelativeLayout>
 

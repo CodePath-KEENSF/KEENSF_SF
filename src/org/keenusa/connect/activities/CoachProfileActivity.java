@@ -11,7 +11,6 @@ import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -125,8 +124,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 			String location = coach.getLocation().getLocationString();
 			if (location == null || location.isEmpty()) {
 				location = getResources().getString(R.string.no_location_text);
-				tvCoachLocation.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachLocation.setTypeface(null, Typeface.ITALIC);
+				tvCoachLocation.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
 			}
 			tvCoachLocation.setText(location);
 
@@ -135,9 +133,10 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 				tvCoachCellPhone.setEnabled(false);
 				ivCoachCellPhoneMsg.setVisibility(View.GONE);
 				mobile = getResources().getString(R.string.no_mobile_text);
-				tvCoachCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachCellPhone.setTypeface(null, Typeface.ITALIC);
+				tvCoachCellPhone.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
 			} else {
+				tvCoachCellPhone.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
+				ivCoachCellPhoneMsg.setVisibility(View.VISIBLE);
 				ivCoachCellPhoneMsg.setTag(mobile);
 			}
 			tvCoachCellPhone.setText(mobile);
@@ -146,8 +145,9 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 			if (phone == null || phone.isEmpty()) {
 				tvCoachPhone.setEnabled(false);
 				phone = getResources().getString(R.string.no_phone_text);
-				tvCoachPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachPhone.setTypeface(null, Typeface.ITALIC);
+				tvCoachPhone.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+			} else {
+				tvCoachPhone.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 			}
 			tvCoachPhone.setText(phone);
 
@@ -155,24 +155,23 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 			if (email == null || email.isEmpty()) {
 				tvCoachEmail.setEnabled(false);
 				email = getResources().getString(R.string.no_email_text);
-				tvCoachEmail.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachEmail.setTypeface(null, Typeface.ITALIC);
+				tvCoachEmail.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+			} else {
+				tvCoachEmail.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 			}
 			tvCoachEmail.setText(email);
 
 			String foreignLanguages = coach.getForeignLanguages();
 			if (foreignLanguages == null || foreignLanguages.isEmpty()) {
 				foreignLanguages = getResources().getString(R.string.no_foreign_languages_text);
-				tvCoachForeignLanguages.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachForeignLanguages.setTypeface(null, Typeface.ITALIC);
+				tvCoachForeignLanguages.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
 			}
 			tvCoachForeignLanguages.setText(foreignLanguages);
 
 			String skills = coach.getSkillsExperience();
 			if (skills == null || skills.isEmpty()) {
 				skills = getResources().getString(R.string.no_skills_text);
-				tvCoachSkills.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachSkills.setTypeface(null, Typeface.ITALIC);
+				tvCoachSkills.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
 			}
 			tvCoachSkills.setText(skills);
 			setupOnPhoneLongClickListeners();
@@ -197,7 +196,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 	}
 
 	@Override
-	public void onUpdateResult(Coach coachDTO) {
+	public void onRecordUpdateResult(Coach coachDTO) {
 		if (coachDTO != null) {
 			if (coachDTO.getPhone() != null) {
 				coach.setPhone(coachDTO.getPhone());
@@ -214,7 +213,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 	}
 
 	@Override
-	public void onUpdateError() {
+	public void onRecordUpdateError() {
 		Toast.makeText(this, "Coach profile update is failed", Toast.LENGTH_SHORT).show();
 
 	}

@@ -36,6 +36,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 public class SessionsFragment extends Fragment {
 	public String dummySearchString;
@@ -115,6 +116,11 @@ public class SessionsFragment extends Fragment {
 				if(llProgressBar != null){
 					llProgressBar.setVisibility(View.GONE);
 				}	
+			}
+			
+			@Override
+			public void onListResultError() {
+				Toast.makeText(SessionsFragment.this.getActivity(), "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
