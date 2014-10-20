@@ -7,21 +7,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="org.keenusa.connect.activities.LoginActivity" >
 
-    <TextView
-        android:id="@+id/tvApiKey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/etApiKey"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:text="@string/api_key_label" />
-
     <EditText
         android:id="@+id/etApiKey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:ems="10" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:ems="15"
+        android:gravity="center"
+        android:hint="Please enter your API key" >
 
         <requestFocus />
     </EditText>
@@ -32,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/etApiKey"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="@string/log_in_button"/>
+        android:layout_marginTop="26dp"
+        android:text="@string/log_in_button" />
 
 </RelativeLayout>

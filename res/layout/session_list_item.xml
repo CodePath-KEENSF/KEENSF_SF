@@ -3,66 +3,86 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/tvSessionName"
+    <RelativeLayout
+        android:id="@+id/rlSessionDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="@string/session_name_label"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_toLeftOf="@+id/rlParticipantCounts" >
 
-    <TextView
-        android:id="@+id/tvSessionTime"
+        <TextView
+            android:id="@+id/tvSessionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:text="@string/session_name_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/secondary_theme_color" />
+
+        <TextView
+            android:id="@+id/tvSessionTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvSessionName"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/session_time_label"
+            android:textColor="@color/main_theme_color"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSessionLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvSessionTime"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/session_location_label" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlParticipantCounts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvSessionName"
-        android:text="@string/session_time_label" />
+        android:layout_alignBottom="@id/rlSessionDetails"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
 
-    <TextView
-        android:id="@+id/tvSessionLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvSessionTime"
-        android:text="@string/session_location_label" />
+        <TextView
+            android:id="@+id/tvNumAthletes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:drawableLeft="@drawable/ic_nick_name"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="0dp"
+            android:paddingTop="10dp"
+            android:text="@string/num_athletes_label"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <ImageView
-        android:id="@+id/ivAthleteIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvSessionLocation"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_launcher" />
-
-    <TextView
-        android:id="@+id/tvNumAthletes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ivAthleteIcon"
-        android:layout_alignTop="@+id/ivAthleteIcon"
-        android:layout_toRightOf="@+id/ivAthleteIcon"
-        android:text="@string/num_athletes_label"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <ImageView
-        android:id="@+id/ivCoachIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignBottom="@+id/tvNumAthletes"
-        android:layout_alignTop="@+id/tvNumAthletes"
-        android:layout_toRightOf="@+id/tvNumAthletes"
-        android:src="@drawable/ic_launcher" />
-
-    <TextView
-        android:id="@+id/tvNumCoaches"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ivCoachIcon"
-        android:layout_alignTop="@+id/ivCoachIcon"
-        android:layout_toRightOf="@+id/ivCoachIcon"
-        android:text="@string/num_coaches_label"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/tvNumCoaches"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tvNumAthletes"
+            android:drawableLeft="@drawable/ic_keen_kid_logo"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/num_coaches_label"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
 
 </RelativeLayout>
