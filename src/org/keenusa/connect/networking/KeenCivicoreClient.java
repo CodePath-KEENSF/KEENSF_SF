@@ -44,7 +44,7 @@ public class KeenCivicoreClient {
 	public static final String REQUEST_STRING_PARAMETER_KEY = "api";
 
 	public enum APIRequestCode {
-		COACH_LIST, ATHLETE_LIST, SESSION_LIST, PROGRAM_LIST, PROGRAM_ENROLMENT_LIST, ATHLETE_ATENDANCE_LIST, COACH_ATTENDANCE_LIST, AFFILIATE_LIST, UPDATE_ATHLETE_PROFILE, UPDATE_COACH_PROFILE, UPDATE_ATHLETE_ATTENDANCE, UPDATE_COACH_ATTENDANCE, INSERT_ATHLETE_ATTENDANCE
+		COACH_LIST, ATHLETE_LIST, SESSION_LIST, PROGRAM_LIST, PROGRAM_ENROLMENT_LIST, ATHLETE_ATENDANCE_LIST, COACH_ATTENDANCE_LIST, AFFILIATE_LIST, UPDATE_ATHLETE_PROFILE, UPDATE_COACH_PROFILE, UPDATE_ATHLETE_ATTENDANCE, UPDATE_COACH_ATTENDANCE, INSERT_ATHLETE_ATTENDANCE, INSERT_COACH_ATTENDANCE
 	};
 
 	public KeenCivicoreClient(Context context) {
@@ -398,7 +398,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void updateAfthetAttendanceRecord(final AthleteAttendance athleteAttendance,
+	public void updateAthleteAttendanceRecord(final AthleteAttendance athleteAttendance,
 			final CivicoreUpdateDataResultListener<AthleteAttendance> listener) {
 
 		String url = buildUpdateAthleteAttendanceURL(APIRequestCode.UPDATE_ATHLETE_ATTENDANCE, athleteAttendance);
@@ -481,7 +481,7 @@ public class KeenCivicoreClient {
 
 	}
 
-	public void insertNewAfthetAttendanceRecord(final AthleteAttendance athleteAttendance,
+	public void insertNewAthleteAttendanceRecord(final AthleteAttendance athleteAttendance,
 			final CivicoreUpdateDataResultListener<AthleteAttendance> listener) {
 
 		String url = buildInserAthleteAttendanceURL(APIRequestCode.INSERT_ATHLETE_ATTENDANCE, athleteAttendance);
@@ -501,6 +501,49 @@ public class KeenCivicoreClient {
 						if (Long.valueOf(remoteInsertSuccessResult.getRemoteId()) > 0) {
 							athleteAttendance.setRemoteId(Long.valueOf(remoteInsertSuccessResult.getRemoteId()));
 							listener.onRecordUpdateResult(athleteAttendance);
+						} else {
+							listener.onRecordUpdateError();
+						}
+					}
+				} catch (Exception e) {
+					Log.e(LOG_TAG_CLASS, e.toString());
+					if (listener != null) {
+						listener.onRecordUpdateError();
+					}
+
+				}
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				Log.e("RESPONSE", arg3.toString());
+
+			}
+
+		});
+
+	}
+
+	// looks like api allows duplicated attendances to be inserted - should be very careful about using the method: check that not a duplicate before posting
+	public void insertNewCoachAttendanceRecord(final CoachAttendance coachAttendance, final CivicoreUpdateDataResultListener<CoachAttendance> listener) {
+
+		String url = buildInserCoachAttendanceURL(APIRequestCode.INSERT_COACH_ATTENDANCE, coachAttendance);
+		client.get(url, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				Log.d("RESPONSE", new String(arg2));
+				Serializer serializer = new Persister();
+
+				try {
+					String response = new String(arg2);
+					response = response.replaceAll("&", "&amp;");
+					response = response.replaceAll("'", "&apos;");
+					RemoteUpdateSuccessResult remoteInsertSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
+					if (listener != null) {
+						if (Long.valueOf(remoteInsertSuccessResult.getRemoteId()) > 0) {
+							coachAttendance.setRemoteId(Long.valueOf(remoteInsertSuccessResult.getRemoteId()));
+							listener.onRecordUpdateResult(coachAttendance);
 						} else {
 							listener.onRecordUpdateError();
 						}
@@ -568,6 +611,16 @@ public class KeenCivicoreClient {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
 		String apiJSONString = InsertAthleteAttendanceRequestJSONStringBuilder.buildRequestJSONString(context, athleteAttendance);
+		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
+		String URL = builder.build().toString();
+		Log.i(LOG_TAG_URL, URL);
+		return URL;
+	}
+
+	private String buildInserCoachAttendanceURL(APIRequestCode apiRequestCode, CoachAttendance coachAttendance) {
+		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
+		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
+		String apiJSONString = InsertCoachAttendanceRequestJSONStringBuilder.buildRequestJSONString(context, coachAttendance);
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 		Log.i(LOG_TAG_URL, URL);
