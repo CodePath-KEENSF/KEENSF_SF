@@ -133,12 +133,6 @@ public class SessionsFragment extends Fragment {
 
 					@Override
 					public void onListResultError() {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onListResultError() {
 						Toast.makeText(SessionsFragment.this.getActivity(), "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
 					}
 				});
