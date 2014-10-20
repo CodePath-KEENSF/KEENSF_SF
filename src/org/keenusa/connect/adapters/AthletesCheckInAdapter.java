@@ -33,7 +33,7 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final AthleteAttendance athlete = getItem(position);
+		athlete = getItem(position);
 
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.athlete_check_in_items, parent, false);
@@ -84,7 +84,7 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 	}
 
 	public void updateRecord(String item) {
-		client.updateAfthetAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+		client.updateAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
 			
 			@Override
 			public void onRecordUpdateResult(AthleteAttendance object) {
