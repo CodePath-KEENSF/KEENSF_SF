@@ -3,8 +3,10 @@ package org.keenusa.connect.fragments;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -42,8 +44,10 @@ public class SessionsFragment extends Fragment {
 	private SearchView searchView;
 
 	private ArrayList<KeenSession>sessionList;
+	private ArrayList<KeenProgram>programList;
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
+	private HashMap<Long, KeenProgram> sessionProgramMap = new HashMap<Long, KeenProgram>();
 	
     // Sticky Header List View
     private ExpandableStickyListHeadersListView expandableStickySessionListView;
@@ -62,9 +66,10 @@ public class SessionsFragment extends Fragment {
 		setHasOptionsMenu(true);
 		
 		sessionList = new ArrayList<KeenSession>();
+		programList = new ArrayList<KeenProgram>();
 		setAdapter();
 		
-		fetchSessionList();
+		fetchProgramSessionList();
 	}
 
 	@Override
@@ -99,26 +104,60 @@ public class SessionsFragment extends Fragment {
         });
 	}
 
-	private void fetchSessionList() {
+	private void fetchProgramSessionList() {
 		bDataLoaded = false;
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
+		
+		KeenCivicoreClient clientProgram = new KeenCivicoreClient(getActivity());
+		clientProgram.fetchProgramListData(new CivicoreDataResultListener<KeenProgram>() {
 
 			@Override
-			public void onListResult(List<KeenSession> list) {
-				Collections.sort(list, Collections.reverseOrder(new KeenSessionComparator()));
-				sessionList.addAll(list);
-				expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
-				
-				setSessionListToCurrentDate();
-				bDataLoaded = true;
-				if(llProgressBar != null){
-					llProgressBar.setVisibility(View.GONE);
-				}	
+			public void onListResult(List<KeenProgram> list) {
+				KeenCivicoreClient clientSession = new KeenCivicoreClient(getActivity());
+				clientSession.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
+
+					@Override
+					public void onListResult(List<KeenSession> list) {
+						sessionList.addAll(list);
+						// Received both session list and program list
+						// Get the location and time information from program associated with the given session
+						getSessionInfoFromProgramList();
+						
+						Collections.sort(sessionList, Collections.reverseOrder(new KeenSessionComparator()));
+						
+						expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
+						
+						setSessionListToCurrentDate();
+						bDataLoaded = true;
+						if(llProgressBar != null){
+							llProgressBar.setVisibility(View.GONE);
+						}	
+					}
+				});
+
+				programList.addAll(list);
+				for (KeenProgram program : programList){
+					sessionProgramMap.put(program.getRemoteId(), program);
+				}
+
+
 			}
 		});
+		
+		
+
 	}
 
+	private void getSessionInfoFromProgramList(){
+		
+		for (KeenSession session : sessionList){
+			KeenProgram program;
+			program = (KeenProgram)sessionProgramMap.get(session.getProgram().getRemoteId());
+			if(program != null){
+				session.setProgram(program);
+			}
+		}
+	}
+	
 	private void openSessionDetails(int pos) {
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
 		i.putExtra("session", sessionList.get(pos));

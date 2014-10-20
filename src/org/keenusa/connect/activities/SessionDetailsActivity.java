@@ -40,8 +40,22 @@ public class SessionDetailsActivity extends FragmentActivity {
 			tvDate.setText(formamtDate(session.getDate()));
 			tvProgramName.setText(program.getName());
 			if (program.getLocation() != null) {
-				String address = program.getLocation().getAddress2() + " " +
-						 program.getLocation().getCity() + " " + program.getLocation().getState() + " " + program.getLocation().getZipCode();
+				String address = "";
+				if(program.getLocation().getAddress1() != null){
+					address = address + program.getLocation().getAddress1() + " ";
+				}
+				if(program.getLocation().getAddress2() != null){
+					address = address + program.getLocation().getAddress2() + " ";
+				}
+				if(program.getLocation().getCity() != null){
+					address = address + program.getLocation().getCity() + " ";
+				}
+				if(program.getLocation().getState() != null){
+					address = address + program.getLocation().getState() + " ";
+				}
+				if(program.getLocation().getZipCode() != null){
+					address = address + program.getLocation().getZipCode() + " ";
+				}
 				tvLocation.setText(address);
 			} else {
 				tvLocation.setText("No Address");

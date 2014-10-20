@@ -4,15 +4,6 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/tvSessionTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/session_time_label" />
-
-    <TextView
         android:id="@+id/tvSessionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,11 +12,19 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/tvSessionLocation"
+        android:id="@+id/tvSessionTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvSessionName"
+        android:text="@string/session_time_label" />
+
+    <TextView
+        android:id="@+id/tvSessionLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvSessionTime"
         android:text="@string/session_location_label" />
 
     <ImageView
