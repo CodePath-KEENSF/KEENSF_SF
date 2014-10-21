@@ -8,6 +8,7 @@ import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
+import org.keenusa.connect.models.KeenDataRepository;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
@@ -52,12 +53,28 @@ public class KeenCivicoreClient {
 		this.context = context;
 	}
 
-	public void fetchCoachListData(final CivicoreDataResultListener<Coach> listener) {
+	public void fetchCoachListData(final CivicoreDataResultListener<Coach> listener){
+		fetchCoachListData(listener, false);
+	}
+
+	public void fetchCoachListData(final CivicoreDataResultListener<Coach> listener, boolean forceNetworkRequest) {
+		
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getCoachList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getCoachList());
+					return;
+				}
+			}
+		}
+		
 		String url = buildSelectURL(APIRequestCode.COACH_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteCoachList>(RemoteCoachList.class) {
 			@Override
 			public void onDataReceived(RemoteCoachList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setCoachList(Coach.fromRemoteCoachList(result.getRemoteCoaches()));
 					listener.onListResult(Coach.fromRemoteCoachList(result.getRemoteCoaches()));
 				}
 			}
@@ -83,12 +100,28 @@ public class KeenCivicoreClient {
 		});
 	}
 
-	public void fetchProgramListData(final CivicoreDataResultListener<KeenProgram> listener) {
+	public void fetchProgramListData(final CivicoreDataResultListener<KeenProgram> listener){
+		fetchProgramListData(listener, false);
+	}
+
+	public void fetchProgramListData(final CivicoreDataResultListener<KeenProgram> listener, boolean forceNetworkRequest) {
+		
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getKeenProgramList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getKeenProgramList());
+					return;
+				}
+			}
+		}
+
 		String url = buildSelectURL(APIRequestCode.PROGRAM_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteProgramList>(RemoteProgramList.class) {
 			@Override
 			public void onDataReceived(RemoteProgramList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setKeenProgramList(KeenProgram.fromRemoteProgramList(result.getRemotePrograms()));
 					listener.onListResult(KeenProgram.fromRemoteProgramList(result.getRemotePrograms()));
 				}
 			}
@@ -114,12 +147,28 @@ public class KeenCivicoreClient {
 		});
 	}
 
-	public void fetchAthleteListData(final CivicoreDataResultListener<Athlete> listener) {
+	public void fetchAthleteListData(final CivicoreDataResultListener<Athlete> listener){
+		fetchAthleteListData(listener, false);
+	}
+
+	public void fetchAthleteListData(final CivicoreDataResultListener<Athlete> listener, boolean forceNetworkRequest) {
+		
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getAthleteList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getAthleteList());
+					return;
+				}
+			}
+		}
+
 		String url = buildSelectURL(APIRequestCode.ATHLETE_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteAthleteList>(RemoteAthleteList.class) {
 			@Override
 			public void onDataReceived(RemoteAthleteList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setAthleteList(Athlete.fromRemoteAthleteList(result.getRemoteAthletes()));
 					listener.onListResult(Athlete.fromRemoteAthleteList(result.getRemoteAthletes()));
 				}
 			}
@@ -145,25 +194,28 @@ public class KeenCivicoreClient {
 		});
 	}
 
-	// TODO running session list fetch asynchronously crashes Sessions fragment because it expects populated session list in order to be created
-//		public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
-//			String url = buildSelectURL(APIRequestCode.SESSION_LIST, 1);
-//			client.get(url, new CustomXMLHttpResponseHandler<RemoteSessionList>(RemoteSessionList.class) {
-//				@Override
-//				public void onDataReceived(RemoteSessionList result) {
-//					if (listener != null) {
-//						listener.onListResult(KeenSession.fromRemoteSessionList(result.getRemoteSessions()));
-//					}
-//				}
-//			});
-//		}
+	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener){
+		fetchSessionListData(listener, false);
+	}
+	
+	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener, boolean forceNetworkRequest) {
+
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getKeenSessionList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getKeenSessionList());
+					return;
+				}
+			}
+		}
 		
-	public void fetchSessionListData(final CivicoreDataResultListener<KeenSession> listener) {
 		String url = buildSelectURL(APIRequestCode.SESSION_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteSessionList>(RemoteSessionList.class) {
 			@Override
 			public void onDataReceived(RemoteSessionList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setKeenSessionList(KeenSession.fromRemoteSessionList(result.getRemoteSessions()));
 					listener.onListResult(KeenSession.fromRemoteSessionList(result.getRemoteSessions()));
 				}
 			}
@@ -188,13 +240,29 @@ public class KeenCivicoreClient {
 			}
 		});
 	}
+	
+	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<KeenProgramEnrolment> listener){
+		fetchProgramEnrolmentListData(listener, false);
+	}
 
-	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<KeenProgramEnrolment> listener) {
+	public void fetchProgramEnrolmentListData(final CivicoreDataResultListener<KeenProgramEnrolment> listener, boolean forceNetworkRequest) {
+		
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getProgramEnrolmentList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getProgramEnrolmentList());
+					return;
+				}
+			}
+		}
+
 		String url = buildSelectURL(APIRequestCode.PROGRAM_ENROLMENT_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteProgramEnrolmentList>(RemoteProgramEnrolmentList.class) {
 			@Override
 			public void onDataReceived(RemoteProgramEnrolmentList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setProgramEnrolmentList(KeenProgramEnrolment.fromRemoteProgramEnrolmentList(result.getRemoteProgramEnrolments()));
 					listener.onListResult(KeenProgramEnrolment.fromRemoteProgramEnrolmentList(result.getRemoteProgramEnrolments()));
 				}
 			}
@@ -220,12 +288,28 @@ public class KeenCivicoreClient {
 		});
 	}
 
-	public void fetchAthleteAttendanceListData(final CivicoreDataResultListener<AthleteAttendance> listener) {
+	public void fetchAthleteAttendanceListData(final CivicoreDataResultListener<AthleteAttendance> listener){
+		fetchAthleteAttendanceListData(listener, false);
+	}
+
+	public void fetchAthleteAttendanceListData(final CivicoreDataResultListener<AthleteAttendance> listener, boolean forceNetworkRequest) {
+		
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getAthleteAttendanceList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getAthleteAttendanceList());
+					return;
+				}
+			}
+		}
+
 		String url = buildSelectURL(APIRequestCode.ATHLETE_ATENDANCE_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteAthleteAttendanceList>(RemoteAthleteAttendanceList.class) {
 			@Override
 			public void onDataReceived(RemoteAthleteAttendanceList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setAthleteAttendanceList(AthleteAttendance.fromRemoteAthleteAttendanceList(result.getRemoteAthleteAttendances()));
 					listener.onListResult(AthleteAttendance.fromRemoteAthleteAttendanceList(result.getRemoteAthleteAttendances()));
 				}
 			}
@@ -251,12 +335,28 @@ public class KeenCivicoreClient {
 		});
 	}
 
-	public void fetchCoachAttendanceListData(final CivicoreDataResultListener<CoachAttendance> listener) {
+	public void fetchCoachAttendanceListData(final CivicoreDataResultListener<CoachAttendance> listener){
+		fetchCoachAttendanceListData(listener, false);
+	}
+
+	public void fetchCoachAttendanceListData(final CivicoreDataResultListener<CoachAttendance> listener, boolean forceNetworkRequest) {
+		
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getCoachAttendanceList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getCoachAttendanceList());
+					return;
+				}
+			}
+		}
+
 		String url = buildSelectURL(APIRequestCode.COACH_ATTENDANCE_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteCoachAttendanceList>(RemoteCoachAttendanceList.class) {
 			@Override
 			public void onDataReceived(RemoteCoachAttendanceList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setCoachAttendanceList(CoachAttendance.fromRemoteCoachAttendanceList(result.getRemoteCoachAttendances()));
 					listener.onListResult(CoachAttendance.fromRemoteCoachAttendanceList(result.getRemoteCoachAttendances()));
 				}
 			}
@@ -282,12 +382,28 @@ public class KeenCivicoreClient {
 		});
 	}
 
-	public void fetchAffiliateListData(final CivicoreDataResultListener<Affiliate> listener) {
+	public void fetchAffiliateListData(final CivicoreDataResultListener<Affiliate> listener){
+		fetchAffiliateListData(listener, false);
+	}
+
+	public void fetchAffiliateListData(final CivicoreDataResultListener<Affiliate> listener, boolean forceNetworkRequest) {
+		
+		if(forceNetworkRequest == false){
+			KeenDataRepository keenDataRepository = KeenDataRepository.getInstance();
+			if(keenDataRepository.getAffiliateList() != null){
+				if (listener != null) {
+					listener.onListResult(keenDataRepository.getAffiliateList());
+					return;
+				}
+			}
+		}
+
 		String url = buildSelectURL(APIRequestCode.AFFILIATE_LIST, 1);
 		client.get(url, new CustomXMLHttpResponseHandler<RemoteAffiliateList>(RemoteAffiliateList.class) {
 			@Override
 			public void onDataReceived(RemoteAffiliateList result) {
 				if (listener != null) {
+					KeenDataRepository.getInstance().setAffiliateList(Affiliate.fromRemoteAffiliateList(result.getRemoteAffiliates()));
 					listener.onListResult(Affiliate.fromRemoteAffiliateList(result.getRemoteAffiliates()));
 				}
 			}
