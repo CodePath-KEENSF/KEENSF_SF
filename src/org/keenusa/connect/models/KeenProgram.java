@@ -153,6 +153,13 @@ public class KeenProgram implements Serializable {
 		this.enrolledAthletes = enrolledAthletes;
 	}
 
+	public void addEnrolledAthletes(Athlete enrolledAthletes) {
+		if(this.enrolledAthletes == null){
+			this.enrolledAthletes = new ArrayList<Athlete>();
+		}
+		this.enrolledAthletes.add(enrolledAthletes);
+	}
+
 	public String getCoachRegistrationConfirmationEmailText() {
 		return coachRegistrationConfirmationEmailText;
 	}

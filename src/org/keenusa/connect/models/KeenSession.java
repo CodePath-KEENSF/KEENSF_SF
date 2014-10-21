@@ -198,8 +198,22 @@ public class KeenSession implements Serializable {
 		this.athleteAttendance = athleteAttendance;
 	}
 
+	public void addAthleteAttendance(AthleteAttendance athleteAttendance) {
+		if(this.athleteAttendance == null){
+			this.athleteAttendance = new ArrayList<AthleteAttendance>();
+		}
+		this.athleteAttendance.add(athleteAttendance);
+	}
+
 	public List<CoachAttendance> getCoachAttendance() {
 		return coachAttendance;
+	}
+
+	public void addCoachAttendance(CoachAttendance coachAttendance) {
+		if(this.coachAttendance == null){
+			this.coachAttendance = new ArrayList<CoachAttendance>();
+		}
+		this.coachAttendance.add(coachAttendance);
 	}
 
 	public void setCoachAttendance(List<CoachAttendance> coachAttendance) {
