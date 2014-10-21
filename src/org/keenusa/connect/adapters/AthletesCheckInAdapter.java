@@ -1,6 +1,7 @@
 package org.keenusa.connect.adapters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.AthleteAttendance;
@@ -21,8 +22,8 @@ import android.widget.Toast;
 public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 	TextView tvAthleteCheckIn;
 	Spinner spinner;
-	String[] options = {"ATTENDED", "CALLED_IN_ABSENCE", "NO_CALL_NO_SHOW"};
-	AthleteAttendance athlete;
+	String[] options = {"","ATTENDED", "CALLED_IN_ABSENCE", "NO_CALL_NO_SHOW"};
+
 	Context context;
 	KeenCivicoreClient client;
 	
@@ -33,7 +34,7 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		athlete = getItem(position);
+		final AthleteAttendance athlete = getItem(position);
 
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.athlete_check_in_items, parent, false);
@@ -45,34 +46,23 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, options);
 		spinner.setAdapter(adapter);
 		
-		String result = athlete.getAttendanceValue().toString();
+		AthleteAttendance.AttendanceValue attendanceValue = athlete.getAttendanceValue();
+		String result = attendanceValue == null ? "" : attendanceValue.toString();
 		tvAthleteCheckIn.setText(athlete.getAttendedAthleteFullName().toString());
 		
 		// get current getAttendanceValue 
-		 		if (result.equals("ATTENDED")) {
-		 			spinner.setSelection(0);
-		 		} else if (result.equals("CALLED_IN_ABSENCE")) {
-		 			spinner.setSelection(1);
-		 		}  else if (result.equals("NO_CALL_NO_SHOW")) {
-		 			spinner.setSelection(2);
-		 		}
-		
+		spinner.setSelection(Arrays.asList(options).indexOf(result), false);
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String item = parent.getItemAtPosition(position).toString();
-				if (item.equals("ATTENDED")){
-					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
-					updateRecord(item);
-				} if (item.equals("CALLED_IN_ABSENCE")){
-					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
-					updateRecord(item);
-				} if (item.equals("NO_CALL_NO_SHOW")){
-					athlete.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
-					updateRecord(item);
-				} 	
-			}
+				if (position == 0) { return; }
+				AthleteAttendance.AttendanceValue athleteAttendance = athlete.getAttendanceValue();
+				AthleteAttendance.AttendanceValue attendanceValue = AthleteAttendance.AttendanceValue.valueOf(options[position]);
+				if (athleteAttendance == attendanceValue) { return; }
+				athlete.setAttendanceValue(attendanceValue);
+				updateRecord(athlete);
+ 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
@@ -83,12 +73,12 @@ public class AthletesCheckInAdapter extends ArrayAdapter<AthleteAttendance> {
 		return convertView;
 	}
 
-	public void updateRecord(String item) {
+	public void updateRecord(AthleteAttendance athlete) {
 		client.updateAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
 			
 			@Override
 			public void onRecordUpdateResult(AthleteAttendance object) {
-				Toast.makeText(getContext(), "Updated to " + object.getAttendanceValue(), Toast.LENGTH_SHORT).show();
+				
 			}
 			
 			@Override
