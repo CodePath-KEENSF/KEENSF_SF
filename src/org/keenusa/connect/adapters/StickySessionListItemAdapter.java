@@ -11,15 +11,13 @@ import org.keenusa.connect.models.KeenSession;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession>
-		implements StickyListHeadersAdapter {
+public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> implements StickyListHeadersAdapter {
 
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 	public static final String DATE_FORMAT_LONG = "MMddyyyy";
@@ -36,8 +34,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession>
 		TextView tvSessionDate;
 	}
 
-	public StickySessionListItemAdapter(Context context,
-			ArrayList<KeenSession> sessionList) {
+	public StickySessionListItemAdapter(Context context, ArrayList<KeenSession> sessionList) {
 		super(context, 0, sessionList);
 	}
 
@@ -48,20 +45,14 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession>
 
 		ViewHolder viewHolder;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(
-					R.layout.session_list_item, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.session_list_item, parent, false);
 
 			viewHolder = new ViewHolder();
-			viewHolder.tvSessionName = (TextView) convertView
-					.findViewById(R.id.tvSessionName);
-			viewHolder.tvSessionLocation = (TextView) convertView
-					.findViewById(R.id.tvSessionLocation);
-			viewHolder.tvNumAthletes = (TextView) convertView
-					.findViewById(R.id.tvNumAthletes);
-			viewHolder.tvNumCoaches = (TextView) convertView
-					.findViewById(R.id.tvNumCoaches);
-			viewHolder.tvSessionTime = (TextView) convertView
-					.findViewById(R.id.tvSessionTime);
+			viewHolder.tvSessionName = (TextView) convertView.findViewById(R.id.tvSessionName);
+			viewHolder.tvSessionLocation = (TextView) convertView.findViewById(R.id.tvSessionLocation);
+			viewHolder.tvNumAthletes = (TextView) convertView.findViewById(R.id.tvNumAthletes);
+			viewHolder.tvNumCoaches = (TextView) convertView.findViewById(R.id.tvNumCoaches);
+			viewHolder.tvSessionTime = (TextView) convertView.findViewById(R.id.tvSessionTime);
 
 			convertView.setTag(viewHolder);
 		} else {
@@ -74,24 +65,18 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession>
 			viewHolder.tvSessionName.setText("Dummy Program");
 		}
 
-		if (program != null && program.getLocation() != null
-				&& program.getLocation().getCity() != null
-				&& program.getLocation().getState() != null) {
-			viewHolder.tvSessionLocation.setText(session.getProgram()
-					.getLocation().getCity()
-					+ ", " + session.getProgram().getLocation().getState());
+		if (program != null && program.getLocation() != null && program.getLocation().getCity() != null && program.getLocation().getState() != null) {
+			viewHolder.tvSessionLocation.setText(session.getProgram().getLocation().getCity() + ", " + session.getProgram().getLocation().getState());
 		} else {
 			viewHolder.tvSessionLocation.setText("San Francisco");
 		}
 
-		viewHolder.tvNumAthletes.setText(session.getRegisteredAthleteCount()
-				+ "");
+		viewHolder.tvNumAthletes.setText(session.getRegisteredAthleteCount() + "");
 
 		viewHolder.tvNumCoaches.setText(session.getRegisteredCoachCount() + "");
 
 		if (program != null && program.getProgramTimes() != null) {
-			viewHolder.tvSessionTime.setText(session.getProgram()
-					.getProgramTimes());
+			viewHolder.tvSessionTime.setText(session.getProgram().getProgramTimes());
 		} else {
 			viewHolder.tvSessionTime.setText("12pm - 1pm");
 		}
@@ -101,29 +86,30 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession>
 
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
-		KeenSession session = getItem(position);
+		try {
+			KeenSession session = getItem(position);
 
-		HeaderViewHolder headerViewHolder;
-		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(
-					R.layout.session_list_header, parent, false);
+			HeaderViewHolder headerViewHolder;
+			if (convertView == null) {
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.session_list_header, parent, false);
 
-			headerViewHolder = new HeaderViewHolder();
-			headerViewHolder.tvSessionDate = (TextView) convertView
-					.findViewById(R.id.tvSessionDate);
+				headerViewHolder = new HeaderViewHolder();
+				headerViewHolder.tvSessionDate = (TextView) convertView.findViewById(R.id.tvSessionDate);
 
-			convertView.setTag(headerViewHolder);
-		} else {
-			headerViewHolder = (HeaderViewHolder) convertView.getTag();
-		}
+				convertView.setTag(headerViewHolder);
+			} else {
+				headerViewHolder = (HeaderViewHolder) convertView.getTag();
+			}
 
-		if(session.getDate() != null){
-			DateTime dt = session.getDate();
-			String date = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH)
-					.format(dt.toDate());
-			headerViewHolder.tvSessionDate.setText(date);
-		}else{
-			headerViewHolder.tvSessionDate.setText("01/01/2001");
+			if (session.getDate() != null) {
+				DateTime dt = session.getDate();
+				String date = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH).format(dt.toDate());
+				headerViewHolder.tvSessionDate.setText(date);
+			} else {
+				headerViewHolder.tvSessionDate.setText("01/01/2001");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return convertView;
@@ -131,11 +117,15 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession>
 
 	@Override
 	public long getHeaderId(int position) {
-		KeenSession session = getItem(position);
-		DateTime dt = session.getDate();
-		String date = new SimpleDateFormat(DATE_FORMAT_LONG, Locale.ENGLISH)
-				.format(dt.toDate());
-		return (Long.parseLong(date));
+		try {
+			KeenSession session = getItem(position);
+			DateTime dt = session.getDate();
+			String date = new SimpleDateFormat(DATE_FORMAT_LONG, Locale.ENGLISH).format(dt.toDate());
+			return (Long.parseLong(date));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 }
