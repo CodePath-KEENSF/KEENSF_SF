@@ -77,9 +77,9 @@
     <string name="athletes_registered">Athletes registered</string>
     <string name="athlete_name">Sample Athlete Name</string>
     <string name="api_key_label">API Key</string>
-    <string name="sms_label">sms</string>
+    <string name="sms_label">SMS</string>
     <string name="message_label">message</string>
-    <string name="email_label">email</string>
+    <string name="email_label">EMAIL</string>
     <string name="checkin_label">checkin</string>
     <string name="athlete_check_in_button">Athlete Check-In</string>
     <string name="coach_check_in_button">Coach Check-In</string>
@@ -88,5 +88,6 @@
     <string name="no_cancel_no_show_label">NCNS</string>
     <string name="registered_label">REG</string>
     <string name="cancel_label">CAN</string>
+    <string name="mass_message_done_button">Done</string>
 
 </resources>

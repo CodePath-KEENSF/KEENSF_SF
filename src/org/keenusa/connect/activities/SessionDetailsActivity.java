@@ -5,11 +5,14 @@ import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.keenusa.connect.R;
+import org.keenusa.connect.fragments.MassMessageFragment;
+import org.keenusa.connect.fragments.UpdateAthleteProfileFragment;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -147,13 +150,16 @@ public class SessionDetailsActivity extends FragmentActivity {
 				startActivity(checkinIntent);
 
 			}else if(item.getItemId() == R.id.miSendMessage){
-				// Open Dialog for mass messaging
-			}
+				showMassMessageDialog();			}
 			
 			return super.onOptionsItemSelected(item);
 		}
 
-		
+		private void showMassMessageDialog() {
+			DialogFragment newFragment = new MassMessageFragment();
+			newFragment.show(getSupportFragmentManager(), "Mass Message Dialog");
+		}
+
 
 		
 }
