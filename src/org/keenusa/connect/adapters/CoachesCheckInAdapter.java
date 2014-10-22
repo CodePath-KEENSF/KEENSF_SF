@@ -1,6 +1,7 @@
 package org.keenusa.connect.adapters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.CoachAttendance;
@@ -22,9 +23,8 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 
 		TextView tvCoachCheckIn;
 		Spinner spinner;
-		String[] options = {"REGISTERED", "ATTENDED", "CALLED_IN_ABSENCE", "CANCELLED", "NO_CALL_NO_SHOW"};
+		String[] options = {"","REGISTERED", "ATTENDED", "CALLED_IN_ABSENCE", "CANCELLED", "NO_CALL_NO_SHOW"};
 		
-		CoachAttendance coach;
 		Context context;
 		KeenCivicoreClient client;
 
@@ -33,10 +33,9 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 		client = new KeenCivicoreClient(context);
 	}
 
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		 coach = getItem(position);
+		 final CoachAttendance coach = getItem(position);
 
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.coach_check_in_items, parent, false);
@@ -48,62 +47,37 @@ public class CoachesCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, options);
 		spinner.setAdapter(adapter);
 
-		String result = coach.getAttendanceValue().toString();
+		CoachAttendance.AttendanceValue attendanceValue = coach.getAttendanceValue();
+		String result = attendanceValue == null ? "" : attendanceValue.toString();
  		tvCoachCheckIn.setText(coach.getAttendedCoachFullName().toString());
- 		// get current getAttendanceValue 
- 		if (result.equals("REGISTERED")) {
- 			spinner.setSelection(0);
- 		} else if (result.equals("ATTENDED")) {
- 			spinner.setSelection(1);
- 		} else if (result.equals("CALLED_IN_ABSENCE")) {
- 			spinner.setSelection(2);
- 		} else if (result.equals("CANCELLED")) {
- 			spinner.setSelection(3);
- 		} else if (result.equals("NO_CALL_NO_SHOW")) {
- 			spinner.setSelection(4);
- 		}
- 		
- 		Toast.makeText(getContext(), "Context is " + context, Toast.LENGTH_LONG).show();
- 		
+
+ 		spinner.setSelection(Arrays.asList(options).indexOf(result), false);	
  		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,int position, long id) {
-				String item = parent.getItemAtPosition(position).toString();
-				if (item.equals("REGISTERED")){
-					coach.setAttendanceValue(CoachAttendance.AttendanceValue.REGISTERED);
-					updateRecord(item);
-				} if (item.equals("ATTENDED")){
-					coach.setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED);
-					updateRecord(item);
-				} if (item.equals("CALLED_IN_ABSENCE")){
-					coach.setAttendanceValue(CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE);
-					updateRecord(item);
-				} if (item.equals("CANCELLED")){
-					coach.setAttendanceValue(CoachAttendance.AttendanceValue.CANCELLED);
-					updateRecord(item);
-				} if (item.equals("NO_CALL_NO_SHOW")){
-					coach.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
-					updateRecord(item);
-				} 	
+				if (position == 0) {return;}
+				CoachAttendance.AttendanceValue coachAttendance = coach.getAttendanceValue();
+				CoachAttendance.AttendanceValue attendanceValue = CoachAttendance.AttendanceValue.valueOf(options[position]);
+				if (coachAttendance == attendanceValue) { return; }
+				coach.setAttendanceValue(attendanceValue);
+				updateRecord(coach);
 			}
 			
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// TODO Auto-generated method stub
-				
 			}
- 			
 		});
 		return convertView;
 	}
 
-	public void updateRecord(String string) {
+	public void updateRecord(CoachAttendance coach) {
 		client.updateCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
 			
 			@Override
 			public void onRecordUpdateResult(CoachAttendance object) {
-				Toast.makeText(getContext(), "Updated to " + object.getAttendanceValue(), Toast.LENGTH_SHORT).show();
+				
 			}
 			
 			@Override

@@ -5,159 +5,145 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDateLabel"
-        android:layout_centerHorizontal="true"
-        android:text="@string/date_changable" />
-
-    <TextView
-        android:id="@+id/tvDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/date_label" />
-
-    <TextView
-        android:id="@+id/tvProgramName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvProgramNameLabel"
-        android:layout_alignBottom="@+id/tvProgramNameLabel"
-        android:layout_alignLeft="@+id/tvDateLabel"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/program_name_changable" />
-
-    <TextView
         android:id="@+id/tvProgramType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvProgramTypeLabel"
-        android:layout_alignBottom="@+id/tvProgramTypeLabel"
-        android:layout_alignLeft="@+id/tvProgramName"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/tvProgramName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:text="@string/program_type" />
 
     <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvLocationLabel"
-        android:layout_alignBottom="@+id/tvLocationLabel"
-        android:layout_alignLeft="@+id/tvProgramType"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/location_changable" />
-
-    <TextView
-        android:id="@+id/tvProgramTypeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvProgramNameLabel"
-        android:layout_below="@+id/tvProgramNameLabel"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/program_type_label" />
-
-    <TextView
-        android:id="@+id/tvProgramNameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvDate"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/program_name_label" />
-
-    <TextView
-        android:id="@+id/tvProgramActiveDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvProgramTypeLabel"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/session_period_label" />
-
-    <TextView
         android:id="@+id/tvProgramActiveDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvProgramActiveDateLabel"
-        android:layout_alignBottom="@+id/tvProgramActiveDateLabel"
-        android:layout_alignLeft="@+id/tvProgramType"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/tvProgramType"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:text="@string/session_changable" />
 
     <TextView
-        android:id="@+id/tvLocationLabel"
+        android:id="@+id/tvLocation1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvProgramActiveDateLabel"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/tvProgramActiveDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-        android:text="@string/location_label" />
+        android:textSize="12sp"
+        android:layout_gravity="center_vertical"
+        android:layout_centerInParent="true"
+        android:text="@string/location_changable" />
 
     <TextView
-        android:id="@+id/tvAttCoaches"
+        android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvLocation"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvLocation"
-        android:layout_marginTop="95dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/coaches_registered" />
-
-    <TextView
-        android:id="@+id/tvAttCoachesLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvAttCoaches"
-        android:layout_alignBottom="@+id/tvAttCoaches"
-        android:layout_toLeftOf="@+id/tvAttCoaches"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/coaches_registered_label" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="15dp"
+        android:text="@string/date_changable"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/tvAttAthletesLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvAttCoaches"
-        android:layout_marginTop="20dp"
+        android:layout_alignBaseline="@+id/tvAttCoachesLabel"
+        android:layout_alignBottom="@+id/tvAttCoachesLabel"
+        android:layout_alignParentRight="true"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:text="@string/athletes_registered_label" />
+
+    <Button
+        android:id="@+id/btnAthleteChkIn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvAttAthletes"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/btnCoachChkIn"
+        android:onClick="athleteCheckIn"
+        android:text="@string/athlete_check_in_button" />
+
+    <TextView
+        android:id="@+id/tvProgramName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:text="@string/program_name_changable"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvAttAthletes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvAttAthletesLabel"
-        android:layout_alignBottom="@+id/tvAttAthletesLabel"
-        android:layout_alignLeft="@+id/tvAttCoaches"
+        android:layout_alignBaseline="@+id/tvAttCoaches"
+        android:layout_alignBottom="@+id/tvAttCoaches"
+        android:layout_alignLeft="@+id/tvAttAthletesLabel"
         android:layout_alignParentRight="true"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:text="@string/coaches_registered" />
+
+    <TextView
+        android:id="@+id/tvLocation2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvLocation1"
+        android:layout_below="@+id/tvLocation1"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:textSize="12sp"
+        android:layout_gravity="center_vertical"
+        android:layout_centerInParent="true"
+        android:text="@string/location_changable" />
+
+    <TextView
+        android:id="@+id/tvAttCoachesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvLocation2"
+        android:layout_marginTop="40dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:text="@string/coaches_registered_label" />
+
+    <TextView
+        android:id="@+id/tvAttCoaches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvAttCoachesLabel"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:text="@string/coaches_registered" />
+
+    <Button
+        android:id="@+id/btnCoachChkIn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/tvAttCoachesLabel"
+        android:layout_below="@+id/tvAttCoaches"
+        android:layout_marginTop="26dp"
+        android:onClick="coachCheckIn"
+        android:text="@string/coach_check_in_button" />
 
 </RelativeLayout>

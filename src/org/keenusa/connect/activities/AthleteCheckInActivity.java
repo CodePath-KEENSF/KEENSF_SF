@@ -15,6 +15,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,10 +29,10 @@ public class AthleteCheckInActivity extends Activity {
 	KeenProgram program;
 
 	private ListView lvRegisteredAthletes;
-	private ArrayList<AthleteAttendance> athleteList;
-	private AthletesCheckInAdapter athleteCheckInAdapter;
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
+	private ArrayList<AthleteAttendance> athleteList;
+	private AthletesCheckInAdapter athleteCheckInAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class AthleteCheckInActivity extends Activity {
 				for (AthleteAttendance athleteAtt : athleteAttlist) {
 					if (athleteAtt.getRemoteSessionId() == session.getRemoteId()) {
 						athleteList.add(athleteAtt);
+						Log.d("COACHLIST", athleteAtt.getRemoteSessionId() + " " + athleteAtt.getRemoteId());
 					}
 				}
 				bDataLoaded = true;
@@ -69,11 +71,8 @@ public class AthleteCheckInActivity extends Activity {
 			@Override
 			public void onListResultError() {
 				Toast.makeText(AthleteCheckInActivity.this, "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
-
 			}
-
 		});
-
 	}
 
 	private void setView() {
