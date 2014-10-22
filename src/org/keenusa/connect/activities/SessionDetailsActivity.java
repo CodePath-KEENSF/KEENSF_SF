@@ -134,22 +134,20 @@ public class SessionDetailsActivity extends FragmentActivity {
 		
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.attendance, menu);
+			getMenuInflater().inflate(R.menu.session_details, menu);
 			return true;
 		}
 		
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
-			int id = item.getItemId();
-		/*	if (id == R.id.miCoachesAttendance) {
-				openCoachCheckIn(session, program);
-				
-			} else if (id == R.id.miAthletesAttendance) {
-				openAthleteCheckIn(session, program);
-				
-			}else */if (id == R.id.miSendSms){
-				
+			if (item.getItemId() == R.id.miCheckin){
+				// Start the check-in activity
+				Intent checkinIntent = new Intent(getBaseContext(), AthleteCoachCheckinActivity.class);
+				checkinIntent.putExtra("session", session);
+				startActivity(checkinIntent);
+
+			}else if(item.getItemId() == R.id.miSendMessage){
+				// Open Dialog for mass messaging
 			}
 			
 			return super.onOptionsItemSelected(item);

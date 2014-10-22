@@ -77,7 +77,9 @@
     <string name="athlete_name">Sample Athlete Name</string>
     <string name="api_key_label">API Key</string>
     <string name="sms_label">sms</string>
+    <string name="message_label">message</string>
     <string name="email_label">email</string>
+    <string name="checkin_label">checkin</string>
     <string name="athlete_check_in_button">Athlete Check-In</string>
     <string name="coach_check_in_button">Coach Check-In</string>
     <string name="attended_label">ATT</string>
