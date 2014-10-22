@@ -110,6 +110,28 @@ public class ProgramDAO {
 		return programId;
 	}
 
+	public long saveNewEmptyProgram(KeenProgram program) {
+
+		long programId = 0;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		KeenProgram dbProgram = getProgramByRemoteId(program.getRemoteId());
+		if (dbProgram == null) {
+			db.beginTransaction();
+			ContentValues values = new ContentValues();
+
+			values.put(ProgramTable.REMOTE_ID_COL_NAME, program.getRemoteId());
+			if (program.getName() != null) {
+				values.put(ProgramTable.NAME_COL_NAME, program.getName());
+			}
+			programId = db.insert(ProgramTable.TABLE_NAME, null, values);
+			db.setTransactionSuccessful();
+			db.endTransaction();
+		} else {
+			return dbProgram.getId();
+		}
+		return programId;
+	}
+
 	private boolean updateProgram(KeenProgram program) {
 		boolean transactionStatus = false;
 		SQLiteDatabase db = localDB.getWritableDatabase();

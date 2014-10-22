@@ -39,4 +39,14 @@
         android:layout_marginTop="26dp"
         android:text="@string/log_with_data_button" />
 
+    <TextView
+        android:id="@+id/tvProgressUpdates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignLeft="@+id/etApiKey"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/etApiKey"
+        android:layout_marginBottom="17dp" />
+
 </RelativeLayout>
