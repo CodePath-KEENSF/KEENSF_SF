@@ -4,6 +4,8 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AthleteCheckinFragment;
 import org.keenusa.connect.fragments.CoachCheckinFragment;
 import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.utilities.CheckinEditMode;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -15,6 +17,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class AthleteCoachCheckinActivity extends FragmentActivity implements TabListener{
 	
@@ -24,12 +30,18 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	private ActionBar actionBar;
 	
 	private KeenSession session;
+	KeenCivicoreClient client;
+	
+	AthleteCheckinFragment athleteCheckinFragment;
+	CoachCheckinFragment coachCheckinFragment;
+	boolean editMode = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_athlete_coach_checkin);
-		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		client = new KeenCivicoreClient(this);
 		getData();
 		setupFragmentPager();
 		setupTabs();
@@ -121,9 +133,11 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0: // Fragment # 0 - Athlete List
-				return AthleteCheckinFragment.newInstance(session);
+				athleteCheckinFragment = AthleteCheckinFragment.newInstance(session, client);
+				return athleteCheckinFragment;
 			case 1: // Fragment # 1 - Coach List
-				return CoachCheckinFragment.newInstance(session);
+				coachCheckinFragment = CoachCheckinFragment.newInstance(session, client);
+				return coachCheckinFragment;
 			default:
 				return null;
 			}
@@ -134,6 +148,61 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 		public CharSequence getPageTitle(int position) {
 			return "Page " + position;
 		}
+	}
+	
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		if(editMode == true){
+		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
+		    miSaveCheckin.setVisible(true);
+
+			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+			miEditCheckin.setVisible(false);
+		    return true;
+
+		}else{
+			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+			miEditCheckin.setVisible(true);
+
+		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
+		    miSaveCheckin.setVisible(false);
+
+		    CheckinEditMode.editMode = false;
+		    
+		    return true;
+	    }
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.check_in, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+	if (item.getItemId() == R.id.miEditCheckin){
+		editMode = true;
+		CheckinEditMode.editMode = true;
+		invalidateOptionsMenu();
+		return true;
+	}else if(item.getItemId() == R.id.miSaveCheckin){
+		editMode = false;
+		CheckinEditMode.editMode = false;
+		invalidateOptionsMenu();
+		postAttendance();
+		return true;		
+	}else if (item.getItemId() == android.R.id.home) {
+    	Log.d("temp", "finishing activity");
+        finish();
+        return true;
+    } else {
+        return super.onOptionsItemSelected(item);
+    }
+}
+
+	private void postAttendance() {
+		coachCheckinFragment.postAttendance();
 	}
 
 }

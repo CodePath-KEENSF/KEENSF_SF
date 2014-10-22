@@ -107,11 +107,7 @@ public class KeenSession implements Serializable {
 	public int getRegisteredCoachCount() {
 		int registeredCoachCount = 0;
 		if (coachAttendance != null) {
-			for (CoachAttendance attendance : coachAttendance) {
-				if (attendance.getAttendanceValue() == CoachAttendance.AttendanceValue.REGISTERED) {
-					registeredCoachCount++;
-				}
-			}
+			registeredCoachCount = coachAttendance.size();
 		} else {
 			registeredCoachCount = getNumberOfCoachesRegistered();
 		}

@@ -8,6 +8,7 @@ import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.utilities.CheckinEditMode;
 
 import android.content.Context;
 import android.util.Log;
@@ -75,7 +76,6 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 			if (coachAttendance.getCoach() != null) {
 				Coach coach = coachAttendance.getCoach();
 
-				Log.d("temp", coach.getGender() + "");
 				viewHolder.ivCoachProfilePic.setImageResource(0);
 				if (coach.getGender() == ContactPerson.Gender.FEMALE) {
 					viewHolder.ivCoachProfilePic
@@ -159,6 +159,10 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 			
 			@Override
 			public void onClick(View v) {
+				if(CheckinEditMode.editMode == false){
+					return;
+				}
+
 				TextView tvCoachRegistered = (TextView)v; 
 				tvCoachRegistered.setTextColor(getContext()
 						.getResources()
@@ -177,13 +181,16 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 						.getColor(android.R.color.darker_gray));
 				
 				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.REGISTERED);
 			}
 		});		
 		viewHolder.tvCoachAttended.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				if(CheckinEditMode.editMode == false){
+					return;
+				}
 				TextView tvCoachAttended = (TextView)v; 
 				tvCoachAttended.setTextColor(getContext()
 						.getResources()
@@ -210,6 +217,9 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 			
 			@Override
 			public void onClick(View v) {
+				if(CheckinEditMode.editMode == false){
+					return;
+				}
 				TextView tvCoachAbsent = (TextView)v; 
 				tvCoachAbsent.setTextColor(getContext()
 						.getResources()
@@ -228,7 +238,7 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 						.getColor(android.R.color.darker_gray));
 				
 				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE);
 			}
 		});
 		
@@ -236,6 +246,10 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 			
 			@Override
 			public void onClick(View v) {
+				if(CheckinEditMode.editMode == false){
+					return;
+				}
+
 				TextView tvCoachCancelled = (TextView)v; 
 				tvCoachCancelled.setTextColor(getContext()
 						.getResources()
@@ -254,7 +268,7 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 						.getColor(android.R.color.darker_gray));
 				
 				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CANCELLED);
 			}
 		});
 		
@@ -262,6 +276,10 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 			
 			@Override
 			public void onClick(View v) {
+				if(CheckinEditMode.editMode == false){
+					return;
+				}
+
 				TextView tvCoachNCNS = (TextView)v; 
 				tvCoachNCNS.setTextColor(getContext()
 						.getResources()
@@ -280,7 +298,7 @@ public class CoachCheckInAdapter extends ArrayAdapter<CoachAttendance> {
 						.getColor(android.R.color.darker_gray));
 				
 				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
 			}
 		});
 		

@@ -8,6 +8,7 @@ import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.networking.KeenCivicoreClient;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,7 +38,7 @@ public class AthleteCheckinFragment extends Fragment {
 	private KeenSession session;
 
 	// Creates a new fragment with given arguments
-	public static AthleteCheckinFragment newInstance(KeenSession session) {
+	public static AthleteCheckinFragment newInstance(KeenSession session, KeenCivicoreClient client) {
 		AthleteCheckinFragment athleteCheckinFragment = new AthleteCheckinFragment();
 		athleteCheckinFragment.session = session;
 		return athleteCheckinFragment;

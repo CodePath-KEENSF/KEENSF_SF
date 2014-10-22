@@ -6,43 +6,53 @@ import java.util.List;
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.CoachCheckInAdapter;
 import org.keenusa.connect.models.CoachAttendance;
-import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
+import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
+import org.keenusa.connect.utilities.StringConstants;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 public class CoachCheckinFragment extends Fragment {
-	
+
 	public String dummySearchString;
 	private SearchView searchView;
 
 	private LinearLayout llProgressBarCoachCheckin;
 	private ListView lvCoachCheckin;
 	private CoachCheckInAdapter coachCheckInAdapter;
-	
+
 	private ArrayList<KeenSession> sessionList;
 	private List<CoachAttendance> coachAttendanceList;
-	
+	private List<CoachAttendance> coachAttendanceListOriginal;
+
 	private boolean bDataLoaded = false;
-	
+
 	private KeenSession session;
-	
+	KeenCivicoreClient client;
+
 	// Creates a new fragment with given arguments
-	public static CoachCheckinFragment newInstance(KeenSession session) {
+	public static CoachCheckinFragment newInstance(KeenSession session,
+			KeenCivicoreClient client) {
 		CoachCheckinFragment coachCheckinFragment = new CoachCheckinFragment();
 		coachCheckinFragment.session = session;
+		coachCheckinFragment.client = client;
 		return coachCheckinFragment;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,22 +73,37 @@ public class CoachCheckinFragment extends Fragment {
 
 	private void fetchEnrolledCoachList() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	private void setAdapter(){
-		if(session.getCoachAttendance() == null){
+	private void setAdapter() {
+		if (session.getCoachAttendance() == null) {
 			coachAttendanceList = new ArrayList<CoachAttendance>();
-		}else{
+		} else {
 			coachAttendanceList = session.getCoachAttendance();
 		}
-		coachCheckInAdapter = new CoachCheckInAdapter(getActivity(), coachAttendanceList);
-		
+
+		coachAttendanceListOriginal = new ArrayList<CoachAttendance>();
+
+		for (int i = 0; i < coachAttendanceList.size(); i++) {
+
+			coachAttendanceListOriginal.add(new CoachAttendance());
+
+			coachAttendanceListOriginal.get(i).setAttendanceValue(
+					coachAttendanceList.get(i).getAttendanceValue());
+
+		}
+
+		coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
+				coachAttendanceList);
+
 	}
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_coach_checkin, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.fragment_coach_checkin, container,
+				false);
 
 		setViews(v);
 
@@ -89,11 +114,12 @@ public class CoachCheckinFragment extends Fragment {
 
 	private void setOnClickListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void setViews(View v) {
-		llProgressBarCoachCheckin = (LinearLayout)v.findViewById(R.id.llProgressBarCoachCheckin);
+		llProgressBarCoachCheckin = (LinearLayout) v
+				.findViewById(R.id.llProgressBarCoachCheckin);
 		if (!bDataLoaded) {
 			llProgressBarCoachCheckin.setVisibility(View.VISIBLE);
 		}
@@ -103,16 +129,15 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	private void fetchSessionList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
 		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
 
 			@Override
 			public void onListResult(List<KeenSession> list) {
 				sessionList.clear();
 				sessionList.addAll(list);
-				
+
 				for (KeenSession fetchedSession : sessionList) {
-					if(fetchedSession.getRemoteId() == session.getRemoteId()){
+					if (fetchedSession.getRemoteId() == session.getRemoteId()) {
 						fetchedSession = session;
 					}
 				}
@@ -124,4 +149,88 @@ public class CoachCheckinFragment extends Fragment {
 
 		});
 	}
+
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.coach_checkin, menu);
+
+		MenuItem searchItem = menu.findItem(R.id.action_search_coaches_checkin);
+		dummySearchString = StringConstants.DUMMY_SEARCH_STRING;
+		searchView = (SearchView) searchItem.getActionView();
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String searchText) {
+
+				if (dummySearchString == StringConstants.DUMMY_SEARCH_STRING) {
+					if (!searchText.isEmpty()) {
+						dummySearchString = "";
+						return true;
+					}
+				}
+
+				dummySearchString = searchText;
+				ArrayList<CoachAttendance> tempCoachAttendanceList = new ArrayList<CoachAttendance>();
+				int searchTextlength = searchText.length();
+
+				// Create the new arraylist for each search character
+				for (CoachAttendance coachAttendance : coachAttendanceList) {
+
+					String fullName = coachAttendance.getCoach()
+							.getFirstLastName();
+
+					if (searchTextlength <= coachAttendance.getCoach()
+							.getFirstName().length()
+							|| searchTextlength <= coachAttendance.getCoach()
+									.getLastName().length()) {
+
+						if (fullName.toLowerCase().contains(
+								searchText.toLowerCase())) {
+							tempCoachAttendanceList.add(coachAttendance);
+						}
+					}
+				}
+
+				coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
+						tempCoachAttendanceList);
+				lvCoachCheckin.setAdapter(coachCheckInAdapter);
+
+				return true;
+			}
+		});
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	public void postAttendance() {
+		for (int i = 0; i < coachAttendanceList.size(); i++) {
+			if (coachAttendanceListOriginal.get(i) != null) {
+				if (coachAttendanceListOriginal.get(i).getAttendanceValue() != coachAttendanceList
+						.get(i).getAttendanceValue()) {
+					
+					updateRecord(coachAttendanceList.get(i));
+				}
+			}
+		}
+	}
+
+	public void updateRecord(CoachAttendance coach) {
+		client.updateCoachAttendanceRecord(coach,
+				new CivicoreUpdateDataResultListener<CoachAttendance>() {
+
+					@Override
+					public void onRecordUpdateResult(CoachAttendance object) {
+						Log.d("temp", "attendance posted");
+					}
+
+					@Override
+					public void onRecordUpdateError() {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
 }
