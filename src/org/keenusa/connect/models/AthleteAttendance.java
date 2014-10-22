@@ -120,7 +120,7 @@ public class AthleteAttendance implements Serializable {
 		return athleteFullName;
 	}
 
-	private void setAthleteFullName(String athleteFullName) {
+	public void setAthleteFullName(String athleteFullName) {
 		this.athleteFullName = athleteFullName;
 	}
 

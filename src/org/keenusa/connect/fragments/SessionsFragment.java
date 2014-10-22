@@ -46,6 +46,7 @@ import android.widget.SearchView.OnQueryTextListener;
 public class SessionsFragment extends Fragment {
 	public static final int NUM_SESSION_FETCHES = 7;
 	public int currentFetch = 0;
+
 	public String dummySearchString;
 	private SearchView searchView;
 
@@ -60,6 +61,7 @@ public class SessionsFragment extends Fragment {
 	private HashMap<Long, KeenProgram> sessionProgramMap = new HashMap<Long, KeenProgram>();
 	private HashMap<Long, KeenSession> sessionMap = new HashMap<Long, KeenSession>();
 	private HashMap<String, Athlete> sessionAthleteMap = new HashMap<String, Athlete>();
+	private HashMap<Long, Athlete> sessionAthleteIdMap = new HashMap<Long, Athlete>();
 	private HashMap<String, Coach> sessionCoachMap = new HashMap<String, Coach>();
 	
 	private LinearLayout llProgressBar;
@@ -188,6 +190,7 @@ public class SessionsFragment extends Fragment {
 			public void onListResult(List<AthleteAttendance> list) {
 				athleteAttendanceList.clear();
 				athleteAttendanceList.addAll(list);
+				formatAthleteAttendanceNames();
 				monitorFetches();
 			}
 
@@ -227,7 +230,8 @@ public class SessionsFragment extends Fragment {
 				athleteList.clear();
 				athleteList.addAll(list);
 				for (Athlete athlete : athleteList) {
-					sessionAthleteMap.put(athlete.getFullName(), athlete);
+					sessionAthleteMap.put(athlete.getFirstLastName(), athlete);
+					sessionAthleteIdMap.put(athlete.getRemoteId(), athlete);
 				}
 				monitorFetches();
 			}
@@ -332,6 +336,7 @@ public class SessionsFragment extends Fragment {
 			program = (KeenProgram) sessionProgramMap.get(programEnrolment.getProgram().getRemoteId());
 			if (program != null) {
 				programEnrolment.setProgram(program);
+				programEnrolment.setAthlete(sessionAthleteIdMap.get(programEnrolment.getAthlete().getRemoteId()));
 				program.addEnrolledAthletes(programEnrolment.getAthlete());
 			}
 		}
@@ -358,7 +363,6 @@ public class SessionsFragment extends Fragment {
 	private void connectSessionWithAthleteAttendance() {
 
 		for(AthleteAttendance athleteatt : athleteAttendanceList){
-
 			KeenSession session;
 			session = (KeenSession) sessionMap.get(athleteatt.getRemoteSessionId());
 			if(session != null){
@@ -373,7 +377,35 @@ public class SessionsFragment extends Fragment {
 		}
 	}
 	
+	private void formatAthleteAttendanceNames(){
+		for(AthleteAttendance athleteatt : athleteAttendanceList){
+			String LastName="";
+			String FirstName="";
+			String fullName;
+			String athleteName = athleteatt.getAttendedAthleteFullName();
+			String[] nameWord = athleteName.split(",");
+
+			if(nameWord[0] != null){
+				LastName = nameWord[0];
+			}
+
+			if(nameWord[1] != null){
+				FirstName = nameWord[1];
+				FirstName = FirstName.substring(FirstName.indexOf(' ')+1, FirstName.length());
+				FirstName = FirstName + " ";
+			}
+
+			fullName = FirstName + LastName;
+			athleteatt.setAthleteFullName(fullName);
+		}
+	}
+	
 	private void openSessionDetails(int pos) {
+		
+//		Intent i = new Intent(getActivity(), AthleteCoachCheckinActivity.class);
+//		i.putExtra("session", sessionList.get(pos));
+//		startActivity(i);
+
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
 		i.putExtra("session", sessionList.get(pos));
 		i.putExtra("program", sessionList.get(pos).getProgram());

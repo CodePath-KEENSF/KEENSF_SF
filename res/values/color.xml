@@ -5,5 +5,7 @@
     <color name="secondary_theme_color">#7170B3</color>
     <color name="main_theme_text_color">#ffffff</color>
     <color name="no_data_message_text_color">#C0C0C0</color>
-
+    <color name="tag1">#00000000</color>
+    <color name="tag2">#00000000</color>
+    
 </resources>

@@ -78,5 +78,10 @@
     <string name="api_key_label">API Key</string>
     <string name="sms_label">sms</string>
     <string name="email_label">email</string>
+    <string name="attended_label">ATT</string>
+    <string name="absent_label">ABS</string>
+    <string name="no_cancel_no_show_label">NCNS</string>
+    <string name="registered_label">REG</string>
+    <string name="cancel_label">CAN</string>
 
 </resources>
