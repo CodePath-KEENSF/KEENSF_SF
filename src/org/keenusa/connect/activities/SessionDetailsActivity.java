@@ -1,28 +1,26 @@
 package org.keenusa.connect.activities;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.keenusa.connect.R;
-import org.keenusa.connect.models.Athlete;
-import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SessionDetailsActivity extends FragmentActivity {
-	private TextView tvProgramNameLabel, tvLocationLabel, tvDateLabel, tvProgramTypeLabel, tvProgramActiveDateLabel, tvAttCoachesLabel, tvAttAthletesLabel;
-	private TextView tvProgramName, tvLocation, tvDate, tvProgramType, tvProgramActiveDate, tvAttCoaches, tvAttAthletes;
+//	private TextView tvProgramNameLabel, tvLocationLabel, tvDateLabel, tvProgramTypeLabel, tvProgramActiveDateLabel, tvAttCoachesLabel, tvAttAthletesLabel;
+	private TextView tvProgramName, tvLocation1, tvLocation2, tvDate, tvProgramType, tvProgramActiveDate, tvAttCoaches, tvAttAthletes;
+	private Button btnCoachChkIn, btnAthleteChkIn;
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
 		KeenSession session;
@@ -37,31 +35,38 @@ public class SessionDetailsActivity extends FragmentActivity {
 		}
 
 		private void setData() {
+			String address = "";
 			session = (KeenSession) getIntent().getSerializableExtra("session");
 			program = (KeenProgram) getIntent().getSerializableExtra("program");
 			
-			tvDate.setText(formamtDate(session.getDate()));
+			tvDate.setText("Session Date: " + formamtDate(session.getDate()));
 			tvProgramName.setText(program.getName());
 			if (program.getLocation() != null) {
-				String address = "";
-				if(program.getLocation().getAddress1() != null){
-					address = address + program.getLocation().getAddress1() + " ";
+				address = "";
+				if (program.getLocation().getAddress1() != null) {
+					address += program.getLocation().getAddress1() + " ";
 				}
+				tvLocation2.setText(address);
+			} else {
+				tvLocation2.setText(address);
+			}
+			if (program.getLocation() != null) {
+				address = "";
 				if(program.getLocation().getAddress2() != null){
-					address = address + program.getLocation().getAddress2() + " ";
+					address += program.getLocation().getAddress2() + " ";
 				}
 				if(program.getLocation().getCity() != null){
-					address = address + program.getLocation().getCity() + " ";
+					address += program.getLocation().getCity() + " ";
 				}
 				if(program.getLocation().getState() != null){
-					address = address + program.getLocation().getState() + " ";
+					address += program.getLocation().getState() + " ";
 				}
 				if(program.getLocation().getZipCode() != null){
-					address = address + program.getLocation().getZipCode() + " ";
+					address += program.getLocation().getZipCode() + " ";
 				}
-				tvLocation.setText(address);
+				tvLocation1.setText(address);
 			} else {
-				tvLocation.setText("No Address");
+				tvLocation1.setText("No Address");
 			}
 			if (program.getGeneralProgramType() != null) {
 				tvProgramType.setText(program.getGeneralProgramType().toString());
@@ -85,21 +90,32 @@ public class SessionDetailsActivity extends FragmentActivity {
 		}
 
 		private void setView() {
-			tvProgramNameLabel = (TextView) findViewById(R.id.tvProgramNameLabel);
-			tvLocationLabel = (TextView) findViewById(R.id.tvLocationLabel);
-			tvDateLabel = (TextView) findViewById(R.id.tvDateLabel);
-			tvProgramActiveDateLabel = (TextView) findViewById(R.id.tvProgramActiveDateLabel);
-			tvProgramTypeLabel = (TextView) findViewById(R.id.tvProgramTypeLabel);
-			tvAttCoachesLabel = (TextView) findViewById(R.id.tvAttCoachesLabel);
-			tvAttAthletesLabel = (TextView) findViewById(R.id.tvAttAthletesLabel);
+//			tvProgramNameLabel = (TextView) findViewById(R.id.tvProgramNameLabel);
+//			tvLocationLabel = (TextView) findViewById(R.id.tvLocationLabel);
+//			tvDateLabel = (TextView) findViewById(R.id.tvDateLabel);
+//			tvProgramActiveDateLabel = (TextView) findViewById(R.id.tvProgramActiveDateLabel);
+//			tvProgramTypeLabel = (TextView) findViewById(R.id.tvProgramTypeLabel);
+//			tvAttCoachesLabel = (TextView) findViewById(R.id.tvAttCoachesLabel);
+//			tvAttAthletesLabel = (TextView) findViewById(R.id.tvAttAthletesLabel);
+			btnCoachChkIn = (Button) findViewById(R.id.btnCoachChkIn);
+			btnAthleteChkIn = (Button) findViewById(R.id.btnAthleteChkIn);
 			
 			tvProgramName = (TextView) findViewById(R.id.tvProgramName);
-			tvLocation = (TextView) findViewById(R.id.tvLocation);
+			tvLocation1 = (TextView) findViewById(R.id.tvLocation1);
+			tvLocation2 = (TextView) findViewById(R.id.tvLocation2);
 			tvDate = (TextView) findViewById(R.id.tvDate);
 			tvProgramActiveDate = (TextView) findViewById(R.id.tvProgramActiveDate);
 			tvProgramType = (TextView) findViewById(R.id.tvProgramType);
 			tvAttCoaches = (TextView) findViewById(R.id.tvAttCoaches);
 			tvAttAthletes = (TextView) findViewById(R.id.tvAttAthletes);
+		}
+		
+		public void athleteCheckIn(View v) {
+			openAthleteCheckIn(session, program);
+		}
+		
+		public void coachCheckIn(View v) {
+			openCoachCheckIn(session, program);
 		}
 
 		private void openCoachCheckIn(KeenSession session2, KeenProgram program2) {
@@ -126,40 +142,14 @@ public class SessionDetailsActivity extends FragmentActivity {
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			int id = item.getItemId();
-			if (id == R.id.miCoachesAttendance) {
+		/*	if (id == R.id.miCoachesAttendance) {
 				openCoachCheckIn(session, program);
 				
 			} else if (id == R.id.miAthletesAttendance) {
 				openAthleteCheckIn(session, program);
 				
-			}else if (id == R.id.miSendSms){
-//				String phone = "4802523507,";
-//				String phone = "";
-//				List<Athlete> enrolledAthletes = program.getEnrolledAthletes();
-//				for(Athlete athlete: program.getEnrolledAthletes()){
-//					if(athlete.getCellPhone() != null){
-//						phone = phone + athlete.getCellPhone();	
-//					}
-//				}
-
-//				for(CoachAttendance coachAtt: session.getCoachAttendance()){
-//					if(coachAtt.getCoach().getCellPhone() != null){
-//						phone = phone + coachAtt.getCoach().getCellPhone();	
-//					}
-//				}
-//				
-//				if (phone != null && !phone.isEmpty()) {
-//					// TODO change for actual phone string
-//					Log.i("SMS_INTENT", "SMS is to be initialted to " + phone);
-//					Intent i = new Intent(Intent.ACTION_VIEW);
-//					i.putExtra("address", phone);
-//					i.putExtra("sms_body", "Heylo");
-//					i.setType("vnd.android-dir/mms-sms");
-//					startActivity(i);
-//				} else {
-//					Toast.makeText(getBaseContext(), "Can not send sms. The phone number is invalid", Toast.LENGTH_SHORT).show();
-//				}
-//
+			}else */if (id == R.id.miSendSms){
+				
 			}
 			
 			return super.onOptionsItemSelected(item);

@@ -71,12 +71,14 @@
     <string name="absent_button">Absent</string>
     <string name="others_button">Others</string>
     <string name="coaches_registered_label">Registered Coaches</string>
-    <string name="coaches_registered">Sample numbers of registered coaches</string>
+    <string name="coaches_registered">registered coaches</string>
     <string name="athletes_registered_label">Registered Athletes</string>
-    <string name="athletes_registered">Sample numbers of Athletes registered</string>
+    <string name="athletes_registered">Athletes registered</string>
     <string name="athlete_name">Sample Athlete Name</string>
     <string name="api_key_label">API Key</string>
     <string name="sms_label">sms</string>
     <string name="email_label">email</string>
+    <string name="athlete_check_in_button">Athlete Check-In</string>
+    <string name="coach_check_in_button">Coach Check-In</string>
 
 </resources>
