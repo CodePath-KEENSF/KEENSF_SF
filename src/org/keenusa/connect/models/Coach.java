@@ -9,8 +9,6 @@ import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreGenderStringParser;
 import org.keenusa.connect.models.remote.RemoteCoach;
 
-import android.util.Log;
-
 public class Coach extends ContactPerson {
 
 	private long remoteId;
@@ -44,10 +42,6 @@ public class Coach extends ContactPerson {
 		Coach coach = null;
 		if (remoteCoach != null) {
 			coach = new Coach();
-			if (remoteCoach.getDateOfbirth() != null) {
-				Log.d("DOB", remoteCoach.getDateOfbirth() + " " + remoteCoach.getFirstName() + " " + remoteCoach.getLastName());
-			}
-
 			coach.setRemoteId(Long.valueOf(remoteCoach.getRemoteId()));
 			coach.setFirstName(remoteCoach.getFirstName());
 			coach.setLastName(remoteCoach.getLastName());

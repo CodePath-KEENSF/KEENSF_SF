@@ -83,7 +83,7 @@ public class SessionDAO {
 			if (p != null) {
 				programId = p.getId();
 			} else {
-				programId = programDAO.saveNewProgram(session.getProgram());
+				programId = programDAO.saveNewEmptyProgram(session.getProgram());
 			}
 			values.put(SessionTable.PROGRAM_ID_COL_NAME, programId);
 			values.put(SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME, session.getNumberOfNewCoachesNeeded());
@@ -99,40 +99,6 @@ public class SessionDAO {
 		}
 		return sessionId;
 	}
-
-	//	public long saveNewEmptySession(KeenSession session) {
-	//
-	//		long sessionId = 0;
-	//		SQLiteDatabase db = localDB.getWritableDatabase();
-	//		KeenSession dbSession = getSessionByRemoteId(session.getRemoteId());
-	//		if (dbSession == null) {
-	//			db.beginTransaction();
-	//			ContentValues values = new ContentValues();
-	//			values.put(SessionTable.REMOTE_ID_COL_NAME, session.getRemoteId());
-	//			values.put(SessionTable.REMOTE_CREATED_COL_NAME, session.getRemoteCreateTimestamp());
-	//			values.put(SessionTable.REMOTE_UPDATED_COL_NAME, session.getRemoteUpdatedTimestamp());
-	//			values.put(SessionTable.SESSION_DATE_COL_NAME, session.getDate().getMillis());
-	//			KeenProgram p = programDAO.getProgramByRemoteId(session.getProgram().getRemoteId());
-	//			long programId = 0;
-	//			if (p != null) {
-	//				programId = p.getId();
-	//			} else {
-	//				programId = programDAO.saveNewProgram(session.getProgram());
-	//			}
-	//			values.put(SessionTable.PROGRAM_ID_COL_NAME, programId);
-	//			values.put(SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME, session.getNumberOfNewCoachesNeeded());
-	//			values.put(SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, session.getNumberOfReturningCoachesNeeded());
-	//			values.put(SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME, (session.isOpenToPublicRegistration() ? 1 : 0));
-	//			sessionId = db.insert(SessionTable.TABLE_NAME, null, values);
-	//			db.setTransactionSuccessful();
-	//			db.endTransaction();
-	//		} else if (dbSession.getRemoteUpdatedTimestamp() < session.getRemoteUpdatedTimestamp()) {
-	//			// more recent version of the session
-	//			session.setId(dbSession.getId());
-	//			updateSession(session);
-	//		}
-	//		return sessionId;
-	//	}
 
 	private boolean updateSession(KeenSession session) {
 
