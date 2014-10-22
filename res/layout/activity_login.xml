@@ -29,5 +29,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
         android:text="@string/log_in_button" />
+    
+    <Button
+        android:id="@+id/btnLoginWithDataLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnApiLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="@string/log_with_data_button" />
 
 </RelativeLayout>

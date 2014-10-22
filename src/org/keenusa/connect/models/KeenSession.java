@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreSessionOpenToRegStringParser;
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.models.remote.RemoteSession;
 
 public class KeenSession implements Serializable {
@@ -15,9 +16,12 @@ public class KeenSession implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5601978164288806597L;
+	private long id;
 	private long remoteId;
 	private DateTime date;
 	private KeenProgram program;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	private boolean openToPublicRegistration;
 	private int numberOfNewCoachesNeeded;
@@ -73,6 +77,8 @@ public class KeenSession implements Serializable {
 			if (remoteSession.getReturningCoachesNeeded() != null) {
 				keenSession.setNumberOfReturningCoachesNeeded(Integer.valueOf(remoteSession.getReturningCoachesNeeded()));
 			}
+			keenSession.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteSession.getCreated()).getMillis());
+			keenSession.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteSession.getUpdated()).getMillis());
 			keenSession.setOpenToPublicRegistration(CivicoreSessionOpenToRegStringParser.parseSessionOpenToRegString(remoteSession
 					.getOpenToPublicRegistration()));
 		}
@@ -195,7 +201,7 @@ public class KeenSession implements Serializable {
 	}
 
 	public void addAthleteAttendance(AthleteAttendance athleteAttendance) {
-		if(this.athleteAttendance == null){
+		if (this.athleteAttendance == null) {
 			this.athleteAttendance = new ArrayList<AthleteAttendance>();
 		}
 		this.athleteAttendance.add(athleteAttendance);
@@ -206,7 +212,7 @@ public class KeenSession implements Serializable {
 	}
 
 	public void addCoachAttendance(CoachAttendance coachAttendance) {
-		if(this.coachAttendance == null){
+		if (this.coachAttendance == null) {
 			this.coachAttendance = new ArrayList<CoachAttendance>();
 		}
 		this.coachAttendance.add(coachAttendance);
@@ -230,6 +236,30 @@ public class KeenSession implements Serializable {
 
 	public void setNumberOfNewCoachesNeeded(int numberOfNewCoachesNeeded) {
 		this.numberOfNewCoachesNeeded = numberOfNewCoachesNeeded;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

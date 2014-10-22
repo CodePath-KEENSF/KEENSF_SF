@@ -1,6 +1,7 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.networking.RemoteDataLoader;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,30 +25,20 @@ public class LoginActivity extends Activity {
 				openSessionAthleteCoachList();
 			}
 		});
-	}
 
-	//	@Override
-	//	public boolean onCreateOptionsMenu(Menu menu) {
-	//		// Inflate the menu; this adds items to the action bar if it is present.
-	//		getMenuInflater().inflate(R.menu.login, menu);
-	//
-	//		return true;
-	//	}
+		Button btnLoginWithDataLoad = (Button) findViewById(R.id.btnLoginWithDataLoad);
+		btnLoginWithDataLoad.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				new RemoteDataLoader(LoginActivity.this).start();
+			}
+		});
+	}
 
 	private void openSessionAthleteCoachList() {
 		Intent i = new Intent(this, SessionAthleteCoachListActivity.class);
 		startActivity(i);
 	}
 
-	//	@Override
-	//	public boolean onOptionsItemSelected(MenuItem item) {
-	//		// Handle action bar item clicks here. The action bar will
-	//		// automatically handle clicks on the Home/Up button, so long
-	//		// as you specify a parent activity in AndroidManifest.xml.
-	//		int id = item.getItemId();
-	//		if (id == R.id.action_settings) {
-	//			return true;
-	//		}
-	//		return super.onOptionsItemSelected(item);
-	//	}
 }

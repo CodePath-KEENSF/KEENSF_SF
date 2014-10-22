@@ -93,7 +93,7 @@
     <style name="Button.Keen" parent="@android:Widget.Holo.Button">
         <item name="android:background">@drawable/keen_btn_default_holo_light</item>
         <item name="android:height">48dip</item>
-        <item name="android:width">100dip</item>
+        <item name="android:width">135dp</item>
         <item name="android:textColor">@color/main_theme_text_color</item>
     </style>
 
