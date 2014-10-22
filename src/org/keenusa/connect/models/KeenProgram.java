@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreGeneralProgramTypeStringParser;
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.models.remote.RemoteProgram;
 
 public class KeenProgram implements Serializable {
@@ -15,6 +16,7 @@ public class KeenProgram implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3835920568930700515L;
+	private long id;
 	private long remoteId;
 	private String name;
 	private DateTime activeFromDate;
@@ -26,6 +28,8 @@ public class KeenProgram implements Serializable {
 	private String coachApprovalConfirmationEmailText;
 	private Location location;
 	private List<Athlete> enrolledAthletes;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	//in remote source lookup 15
 	public enum GeneralProgramType {
@@ -70,6 +74,8 @@ public class KeenProgram implements Serializable {
 					.getGeneralProgramType()));
 			keenProgram.setCoachApprovalConfirmationEmailText(remoteProgram.getApprovalEmailMessage());
 			keenProgram.setCoachRegistrationConfirmationEmailText(remoteProgram.getRegistrationConfirmation());
+			keenProgram.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteProgram.getCreated()).getMillis());
+			keenProgram.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteProgram.getUpdated()).getMillis());
 		}
 		return keenProgram;
 	}
@@ -154,7 +160,7 @@ public class KeenProgram implements Serializable {
 	}
 
 	public void addEnrolledAthletes(Athlete enrolledAthletes) {
-		if(this.enrolledAthletes == null){
+		if (this.enrolledAthletes == null) {
 			this.enrolledAthletes = new ArrayList<Athlete>();
 		}
 		this.enrolledAthletes.add(enrolledAthletes);
@@ -174,6 +180,30 @@ public class KeenProgram implements Serializable {
 
 	public void setCoachApprovalConfirmationEmailText(String coachApprovalConfirmationEmailText) {
 		this.coachApprovalConfirmationEmailText = coachApprovalConfirmationEmailText;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
 	}
 
 }

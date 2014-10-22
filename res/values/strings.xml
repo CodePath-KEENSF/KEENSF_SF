@@ -19,6 +19,7 @@
     <string name="title_activity_check_in">CheckInActivity</string>
     <string name="check_in_button">Check-In</string>
     <string name="log_in_button">Login</string>
+    <string name="log_with_data_button">Login (Load)</string>
     <string name="session_list_button">Session List</string>
     <string name="search">Search</string>
     <string name="search_check_in">Enter name ....</string>
