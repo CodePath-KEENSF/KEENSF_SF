@@ -9,42 +9,51 @@ import org.keenusa.connect.adapters.CoachListItemAdapter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
-import org.keenusa.connect.utilities.StringConstants;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
-public class CoachesFragment extends Fragment implements CivicoreDataResultListener<Coach> {
+public class AddCoachToCheckinFragment extends DialogFragment implements CivicoreDataResultListener<Coach>{
 
 	public static final String COACH_EXTRA_TAG = "COACH";
+	
 	private CoachListItemAdapter adapter;
 	private List<Coach> coachList;
 	private ListView lvCoaches;
+	private EditText etAddCoach;
 
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
-	public String dummySearchString;
+	private KeenCivicoreClient client;
 
 	SearchView searchView;
 
-	// Creates a new fragment with given arguments
-	public static CoachesFragment newInstance() {
-		CoachesFragment coachesFragment = new CoachesFragment();
-		return coachesFragment;
+	public AddCoachToCheckinFragment() {
+		// Empty constructor required for DialogFragment
+	}
+
+	public interface AddCoachDialogListener {
+		void onFinishAddDialog(Coach coach);
 	}
 
 	@Override
@@ -59,29 +68,67 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
-		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View v = inflater.inflate(R.layout.fragment_coaches_add, container, false);
+		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoachesAdd);
 		if (!bDataLoaded) {
 			llProgressBar.setVisibility(View.VISIBLE);
 		}
 
-		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
+		lvCoaches = (ListView) v.findViewById(R.id.lvCoachesAdd);
 		lvCoaches.setAdapter(adapter);
 		lvCoaches.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent i = new Intent(getActivity(), CoachProfileActivity.class);
-				i.putExtra(COACH_EXTRA_TAG, adapter.getItem(position));
-				startActivity(i);
-
+				AddCoachDialogListener listner = (AddCoachDialogListener) getActivity();
+				listner.onFinishAddDialog(adapter.getItem(position));
+				dismiss();
 			}
 		});
 
+		etAddCoach = (EditText)v.findViewById(R.id.etAddCoach);
+		etAddCoach.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+			}
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+			}
+
+			public void afterTextChanged(Editable arg0) {
+				
+				ArrayList<Coach> tempCoachList = new ArrayList<Coach>();
+				int searchTextlength = etAddCoach.getText().length();
+
+				// Create the new arraylist for each search character
+				for (Coach coach : coachList) {
+
+					String fullName = coach.getFirstName() + " " + coach.getLastName();
+
+					if (searchTextlength <= coach.getFirstName().length() || searchTextlength <= coach.getLastName().length()) {
+
+						if (fullName.toLowerCase().contains(etAddCoach.getText().toString().toLowerCase())) {
+							tempCoachList.add(coach);
+						}
+					}
+				}
+
+				adapter = new CoachListItemAdapter(getActivity(), tempCoachList);
+				lvCoaches.setAdapter(adapter);
+			}
+
+		});
+		
+		getDialog().getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		return v;
 	}
-
+	
 	public CoachListItemAdapter getAdapter() {
 		return adapter;
 	}
@@ -104,15 +151,12 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	@Override
 	public void onListResultError() {
 		Toast.makeText(getActivity(), "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
-
 	}
 
-	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.coaches, menu);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search_coaches);
-		dummySearchString = StringConstants.DUMMY_SEARCH_STRING;
 		searchView = (SearchView) searchItem.getActionView();
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 			@Override
@@ -122,37 +166,10 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 
 			@Override
 			public boolean onQueryTextChange(String searchText) {
-
-				if (dummySearchString == StringConstants.DUMMY_SEARCH_STRING) {
-					if (!searchText.isEmpty()) {
-						dummySearchString = "";
-						return true;
-					}
-				}
-
-				dummySearchString = searchText;
-				ArrayList<Coach> tempCoachList = new ArrayList<Coach>();
-				int searchTextlength = searchText.length();
-
-				// Create the new arraylist for each search character
-				for (Coach coach : coachList) {
-
-					String fullName = coach.getFirstName() + " " + coach.getLastName();
-
-					if (searchTextlength <= coach.getFirstName().length() || searchTextlength <= coach.getLastName().length()) {
-
-						if (fullName.toLowerCase().contains(searchText.toLowerCase())) {
-							tempCoachList.add(coach);
-						}
-					}
-				}
-
-				adapter = new CoachListItemAdapter(getActivity(), tempCoachList);
-				lvCoaches.setAdapter(adapter);
-
 				return true;
 			}
 		});
 		super.onCreateOptionsMenu(menu, inflater);
 	}
+
 }

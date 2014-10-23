@@ -6,6 +6,7 @@ import java.util.List;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachCheckinAdapter;
+import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
@@ -219,6 +220,9 @@ public class CoachCheckinFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.miSendMessageCoaches) {
 			showMassMessageDialog();
+		}else if(item.getItemId() == R.id.miAddCoaches){
+			DialogFragment newFragment = new AddCoachToCheckinFragment();
+			newFragment.show(getActivity().getSupportFragmentManager(), "Add Coach");
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -258,6 +262,12 @@ public class CoachCheckinFragment extends Fragment {
 
 					}
 				});
+	}
+
+	public void addCoach(Coach coach) {
+		coachAttendanceList.add(new CoachAttendance());
+		coachAttendanceList.get(coachAttendanceList.size() - 1).setCoach(coach);
+		coachCheckInAdapter.notifyDataSetChanged();
 	}
 
 }

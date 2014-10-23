@@ -1,8 +1,10 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.fragments.AddCoachToCheckinFragment.AddCoachDialogListener;
 import org.keenusa.connect.fragments.AthleteCheckinFragment;
 import org.keenusa.connect.fragments.CoachCheckinFragment;
+import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.utilities.CheckinEditMode;
@@ -22,7 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class AthleteCoachCheckinActivity extends FragmentActivity implements TabListener{
+public class AthleteCoachCheckinActivity extends FragmentActivity implements TabListener, AddCoachDialogListener{
 	
 	private FragmentPagerAdapter adapterViewPager;
 	private ViewPager vpPagerCheckin;
@@ -204,6 +206,12 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	private void postAttendance() {
 		coachCheckinFragment.postAttendance();
 		athleteCheckinFragment.postAttendance();
+	}
+
+	@Override
+	public void onFinishAddDialog(Coach coach) {
+		coachCheckinFragment.addCoach(coach);
+		
 	}
 
 }
