@@ -1,6 +1,10 @@
 package org.keenusa.connect.data;
 
+import org.keenusa.connect.data.tables.AffiliateTable;
+import org.keenusa.connect.data.tables.AthleteTable;
+import org.keenusa.connect.data.tables.CoachTable;
 import org.keenusa.connect.data.tables.LocationTable;
+import org.keenusa.connect.data.tables.ProgramEnrollmentTable;
 import org.keenusa.connect.data.tables.ProgramTable;
 import org.keenusa.connect.data.tables.SessionTable;
 
@@ -39,14 +43,27 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 	}
 
 	private void createTables(SQLiteDatabase db) {
-		db.execSQL(SessionTable.getCreateSQL());
+		db.execSQL(AffiliateTable.getCreateSQL());
+		db.execSQL(AthleteTable.getCreateSQL());
+		db.execSQL(CoachTable.getCreateSQL());
 		db.execSQL(ProgramTable.getCreateSQL());
+		db.execSQL(SessionTable.getCreateSQL());
+		db.execSQL(ProgramEnrollmentTable.getCreateSQL());
+		// TODO delete
 		db.execSQL(LocationTable.getCreateSQL());
 	}
 
 	private void dropTables(SQLiteDatabase db) {
+		db.execSQL(AffiliateTable.getDropTableSQL());
+		db.execSQL(AthleteTable.getDropTableSQL());
+		db.execSQL(CoachTable.getDropTableSQL());
+		db.execSQL(ProgramTable.getDropTableSQL());
 		db.execSQL(SessionTable.getDropTableSQL());
+		db.execSQL(ProgramEnrollmentTable.getDropTableSQL());
+
+		// TODO delete
 		db.execSQL(LocationTable.getDropTableSQL());
+
 	}
 
 }

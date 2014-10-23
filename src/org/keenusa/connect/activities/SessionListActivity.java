@@ -1,12 +1,12 @@
 package org.keenusa.connect.activities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.SessionListItemAdapter;
+import org.keenusa.connect.data.SessionDAO;
 import org.keenusa.connect.helpers.KeenNavigationDrawer;
 import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.models.TestDataFactory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,12 +25,12 @@ public class SessionListActivity extends Activity {
 
 	// Main Session List View
 	private ListView lvSessionList;
-	private ArrayList<KeenSession>sessionList;
+	private List<KeenSession> sessionList;
 	private SessionListItemAdapter sessionListAdapter;
-	
+
 	// Navigation Drawer
 	private KeenNavigationDrawer dlDrawer;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,8 +44,7 @@ public class SessionListActivity extends Activity {
 	private void setOnClickListeners() {
 		lvSessionList.setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> adapter, View view,
-					int pos, long id) {
+			public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
 				openSessionDetails(pos);
 			}
 		});
@@ -54,25 +53,25 @@ public class SessionListActivity extends Activity {
 	private void openSessionDetails(int pos) {
 		Intent i = new Intent(this, SessionDetailsActivity.class);
 		i.putExtra("Program Name", sessionList.get(pos));
-		Toast.makeText(SessionListActivity.this, "Program name" + sessionList.get(pos) , Toast.LENGTH_SHORT).show();
+		Toast.makeText(SessionListActivity.this, "Program name" + sessionList.get(pos), Toast.LENGTH_SHORT).show();
 		startActivity(i);
 	}
 
 	private void setAdapter() {
-		sessionList = new ArrayList<KeenSession>(TestDataFactory.getInstance().getSessionList());
+		SessionDAO sessionDAO = new SessionDAO(this);
+		sessionList = sessionDAO.getKeenSessionList();
 		sessionListAdapter = new SessionListItemAdapter(this, sessionList);
 		lvSessionList.setAdapter(sessionListAdapter);
 	}
 
 	private void getViews() {
-		lvSessionList = (ListView)findViewById(R.id.lvSessionList);
+		lvSessionList = (ListView) findViewById(R.id.lvSessionList);
 		dlDrawer = (KeenNavigationDrawer) findViewById(R.id.drawer_layout);
 	}
-	
+
 	private void setNavigationDrawer() {
 		// Setup drawer view
-		dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), 
-                     R.layout.drawer_nav_item);
+		dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), R.layout.drawer_nav_item);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreGenderStringParser;
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.models.remote.RemoteCoach;
 
 public class Coach extends ContactPerson {
@@ -19,9 +20,8 @@ public class Coach extends ContactPerson {
 	private Location location;
 	private String foreignLanguages;
 	private String skillsExperience;
-
-	private String sequence = "";
-	private String name = "";
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	public Coach() {
 		super();
@@ -64,6 +64,8 @@ public class Coach extends ContactPerson {
 			coach.setGender(CivicoreGenderStringParser.parseGenderString(remoteCoach.getGender()));
 			coach.setForeignLanguages(remoteCoach.getForeignLanguage());
 			coach.setSkillsExperience(remoteCoach.getSkillsExperience());
+			coach.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteCoach.getCreated()).getMillis());
+			coach.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteCoach.getUpdated()).getMillis());
 		}
 		return coach;
 	}
@@ -119,22 +121,6 @@ public class Coach extends ContactPerson {
 		this.isActive = isActive;
 	}
 
-	public String getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getForeignLanguages() {
 		return foreignLanguages;
 	}
@@ -149,6 +135,22 @@ public class Coach extends ContactPerson {
 
 	public void setSkillsExperience(String skillsExperience) {
 		this.skillsExperience = skillsExperience;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
 	}
 
 }

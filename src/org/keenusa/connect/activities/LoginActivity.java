@@ -41,7 +41,8 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onDataLoaderResult() {
-						// TODO Auto-generated method stub
+						Intent i = new Intent(LoginActivity.this, SessionListActivity.class);
+						startActivity(i);
 
 					}
 

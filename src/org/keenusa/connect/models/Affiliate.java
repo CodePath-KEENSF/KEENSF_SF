@@ -3,6 +3,7 @@ package org.keenusa.connect.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.models.remote.RemoteAffiliate;
 
 public class Affiliate {
@@ -13,6 +14,8 @@ public class Affiliate {
 	private String contactName;
 	private String email;
 	private String website;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	public Affiliate() {
 	}
@@ -34,6 +37,8 @@ public class Affiliate {
 			affiliate.setEmail(remoteAffiliate.getEmail());
 			affiliate.setContactName(remoteAffiliate.getContactName());
 			affiliate.setWebsite(remoteAffiliate.getWebsite());
+			affiliate.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteAffiliate.getCreated()).getMillis());
+			affiliate.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteAffiliate.getUpdated()).getMillis());
 		}
 		return affiliate;
 	}
@@ -91,6 +96,22 @@ public class Affiliate {
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
 	}
 
 }

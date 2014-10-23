@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.helpers.CivicoreWaitlistStringParser;
 import org.keenusa.connect.models.remote.RemoteProgramEnrolment;
 
@@ -18,6 +19,8 @@ public class KeenProgramEnrolment implements Serializable {
 	private Athlete athlete;
 	private boolean isInWaitlist;
 	private String athleteFullName;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	public KeenProgramEnrolment() {
 	}
@@ -46,6 +49,8 @@ public class KeenProgramEnrolment implements Serializable {
 			program.setRemoteId(Long.valueOf(remoteProgramEnrolment.getClassesId()));
 			program.setName(remoteProgramEnrolment.getClassesName());
 			programEnrolment.setProgram(program);
+			programEnrolment.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteProgramEnrolment.getCreated()).getMillis());
+			programEnrolment.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteProgramEnrolment.getUpdated()).getMillis());
 
 		}
 		return programEnrolment;
@@ -112,6 +117,22 @@ public class KeenProgramEnrolment implements Serializable {
 		} else {
 			return getAthleteFullName();
 		}
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
 	}
 
 }

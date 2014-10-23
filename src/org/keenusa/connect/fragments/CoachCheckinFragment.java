@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
-import org.keenusa.connect.adapters.CoachCheckinAdapter;
+import org.keenusa.connect.adapters.CoachCheckInAdapter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenSession;
@@ -26,22 +26,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class CoachCheckinFragment extends Fragment {
 
 	public static final String COACH_EXTRA_TAG = "COACH";
-	
+
 	public String dummySearchString;
 	private SearchView searchView;
 
 	private LinearLayout llProgressBarCoachCheckin;
 	private ListView lvCoachCheckin;
-	private CoachCheckinAdapter coachCheckInAdapter;
+	private CoachCheckInAdapter coachCheckInAdapter;
 
 	private ArrayList<KeenSession> sessionList;
 	private List<CoachAttendance> coachAttendanceList;
@@ -53,8 +53,7 @@ public class CoachCheckinFragment extends Fragment {
 	KeenCivicoreClient client;
 
 	// Creates a new fragment with given arguments
-	public static CoachCheckinFragment newInstance(KeenSession session,
-			KeenCivicoreClient client) {
+	public static CoachCheckinFragment newInstance(KeenSession session, KeenCivicoreClient client) {
 		CoachCheckinFragment coachCheckinFragment = new CoachCheckinFragment();
 		coachCheckinFragment.session = session;
 		coachCheckinFragment.client = client;
@@ -73,10 +72,8 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_coach_checkin, container,
-				false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.fragment_coach_checkin, container, false);
 
 		setViews(v);
 
@@ -84,7 +81,6 @@ public class CoachCheckinFragment extends Fragment {
 
 		return v;
 	}
-
 
 	private void removeProgressBars() {
 		bDataLoaded = true;
@@ -106,15 +102,13 @@ public class CoachCheckinFragment extends Fragment {
 
 			coachAttendanceListOriginal.add(new CoachAttendance());
 
-			coachAttendanceListOriginal.get(i).setAttendanceValue(
-					coachAttendanceList.get(i).getAttendanceValue());
+			coachAttendanceListOriginal.get(i).setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
 
 		}
 	}
 
 	private void setAdapter() {
-		coachCheckInAdapter = new CoachCheckinAdapter(getActivity(),
-				coachAttendanceList);
+		coachCheckInAdapter = new CoachCheckInAdapter(getActivity(), coachAttendanceList);
 	}
 
 	private void setOnClickListeners() {
@@ -131,8 +125,7 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	private void setViews(View v) {
-		llProgressBarCoachCheckin = (LinearLayout) v
-				.findViewById(R.id.llProgressBarCoachCheckin);
+		llProgressBarCoachCheckin = (LinearLayout) v.findViewById(R.id.llProgressBarCoachCheckin);
 		if (!bDataLoaded) {
 			llProgressBarCoachCheckin.setVisibility(View.VISIBLE);
 		}
@@ -192,23 +185,18 @@ public class CoachCheckinFragment extends Fragment {
 				// Create the new arraylist for each search character
 				for (CoachAttendance coachAttendance : coachAttendanceList) {
 
-					String fullName = coachAttendance.getCoach()
-							.getFirstLastName();
+					String fullName = coachAttendance.getCoach().getFirstLastName();
 
-					if (searchTextlength <= coachAttendance.getCoach()
-							.getFirstName().length()
-							|| searchTextlength <= coachAttendance.getCoach()
-									.getLastName().length()) {
+					if (searchTextlength <= coachAttendance.getCoach().getFirstName().length()
+							|| searchTextlength <= coachAttendance.getCoach().getLastName().length()) {
 
-						if (fullName.toLowerCase().contains(
-								searchText.toLowerCase())) {
+						if (fullName.toLowerCase().contains(searchText.toLowerCase())) {
 							tempCoachAttendanceList.add(coachAttendance);
 						}
 					}
 				}
 
-				coachCheckInAdapter = new CoachCheckinAdapter(getActivity(),
-						tempCoachAttendanceList);
+				coachCheckInAdapter = new CoachCheckInAdapter(getActivity(), tempCoachAttendanceList);
 				lvCoachCheckin.setAdapter(coachCheckInAdapter);
 
 				return true;
@@ -220,7 +208,7 @@ public class CoachCheckinFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.miSendMessageCoaches) {
 			showMassMessageDialog();
-		}else if(item.getItemId() == R.id.miAddCoaches){
+		} else if (item.getItemId() == R.id.miAddCoaches) {
 			DialogFragment newFragment = new AddCoachToCheckinFragment();
 			newFragment.show(getActivity().getSupportFragmentManager(), "Add Coach");
 		}
@@ -229,17 +217,15 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	private void showMassMessageDialog() {
-		DialogFragment newFragment = new MassMessageFragment(
-				null, coachAttendanceList);
+		DialogFragment newFragment = new MassMessageFragment(null, coachAttendanceList);
 		newFragment.show(getActivity().getSupportFragmentManager(), "Mass Message Dialog");
 	}
 
 	public void postAttendance() {
 		for (int i = 0; i < coachAttendanceList.size(); i++) {
 			if (coachAttendanceListOriginal.get(i) != null) {
-				if (coachAttendanceListOriginal.get(i).getAttendanceValue() != coachAttendanceList
-						.get(i).getAttendanceValue()) {
-					
+				if (coachAttendanceListOriginal.get(i).getAttendanceValue() != coachAttendanceList.get(i).getAttendanceValue()) {
+
 					updateRecord(coachAttendanceList.get(i));
 				}
 			}
@@ -248,20 +234,19 @@ public class CoachCheckinFragment extends Fragment {
 
 	public void updateRecord(CoachAttendance coach) {
 		coach.setRemoteId(123);
-		client.updateCoachAttendanceRecord(coach,
-				new CivicoreUpdateDataResultListener<CoachAttendance>() {
+		client.updateCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
 
-					@Override
-					public void onRecordUpdateResult(CoachAttendance object) {
-						Log.d("temp", "attendance posted");
-					}
+			@Override
+			public void onRecordUpdateResult(CoachAttendance object) {
+				Log.d("temp", "attendance posted");
+			}
 
-					@Override
-					public void onRecordUpdateError() {
-						Log.d("temp", "attendance post error");
+			@Override
+			public void onRecordUpdateError() {
+				Log.d("temp", "attendance post error");
 
-					}
-				});
+			}
+		});
 	}
 
 	public void addCoach(Coach coach) {

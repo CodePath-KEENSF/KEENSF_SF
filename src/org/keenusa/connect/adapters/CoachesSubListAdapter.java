@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class CoachesSubListAdapter extends BaseExpandableListAdapter {
 	private Context context;
 	private ArrayList<Headers> coachesSubListArray;
-	
+
 	public CoachesSubListAdapter(Context context, ArrayList<Headers> coachesSubListArray) {
 		this.context = context;
 		this.coachesSubListArray = coachesSubListArray;
@@ -67,7 +67,7 @@ public class CoachesSubListAdapter extends BaseExpandableListAdapter {
 			LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = layoutInflater.inflate(R.layout.group_people, null);
 		}
-		
+
 		TextView heading = (TextView) convertView.findViewById(R.id.tvHeading);
 		heading.setText(header.getName().trim());
 		return convertView;
@@ -80,11 +80,11 @@ public class CoachesSubListAdapter extends BaseExpandableListAdapter {
 			LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = layoutInflater.inflate(R.layout.sublist_people, null);
 		}
-		
-		TextView tvSequence = (TextView) convertView.findViewById(R.id.tvSequence);
-		tvSequence.setText(coachesList.getSequence().trim() + ") ");
-		TextView tvCoahesList = (TextView) convertView.findViewById(R.id.tvCoahesList);
-		tvCoahesList.setText(coachesList.getName().trim());
+
+		//		TextView tvSequence = (TextView) convertView.findViewById(R.id.tvSequence);
+		//		tvSequence.setText(coachesList.getSequence().trim() + ") ");
+		//		TextView tvCoahesList = (TextView) convertView.findViewById(R.id.tvCoahesList);
+		//		tvCoahesList.setText(coachesList.getName().trim());
 		return null;
 	}
 
