@@ -203,6 +203,7 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 
 	private void postAttendance() {
 		coachCheckinFragment.postAttendance();
+		athleteCheckinFragment.postAttendance();
 	}
 
 }

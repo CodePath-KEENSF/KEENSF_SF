@@ -16,7 +16,7 @@
     <string name="date_changable">Sample Date</string>
     <string name="session_changable">Sample Session</string>
     <string name="session_details_button">Session Details</string>
-    <string name="title_activity_check_in">CheckInActivity</string>
+    <string name="title_activity_check_in">Check-In</string>
     <string name="check_in_button">Check-In</string>
     <string name="log_in_button">Login</string>
     <string name="log_with_data_button">Login (Load)</string>

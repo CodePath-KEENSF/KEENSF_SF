@@ -8,5 +8,11 @@
         android:orderInCategory="5"
         android:showAsAction="always"
         android:title="Search"/>
+    <item
+        android:id="@+id/miSendMessageCoaches"
+        android:icon="@drawable/ic_send_message"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        android:title="@string/message_label"/>
 
 </menu>

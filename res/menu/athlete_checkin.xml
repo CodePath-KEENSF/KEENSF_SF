@@ -9,4 +9,11 @@
         android:showAsAction="always"
         android:title="Search"/>
 
+    <item
+        android:id="@+id/miSendMessageAthletes"
+        android:icon="@drawable/ic_send_message"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        android:title="@string/message_label"/>
+
 </menu>

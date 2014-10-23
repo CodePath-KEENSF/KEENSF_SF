@@ -31,6 +31,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -146,6 +147,7 @@ public class SessionsFragment extends Fragment {
 				programList.clear();
 				programList.addAll(list);
 				for (KeenProgram program : programList) {
+					Log.d("temp", program.getName());
 					sessionProgramMap.put(program.getRemoteId(), program);
 				}
 				monitorFetches();

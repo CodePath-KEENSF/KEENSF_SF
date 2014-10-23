@@ -1,10 +1,12 @@
 package org.keenusa.connect.fragments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.AthleteCheckinAdapter;
+import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
@@ -13,6 +15,7 @@ import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResul
 import org.keenusa.connect.utilities.StringConstants;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +41,7 @@ public class AthleteCheckinFragment extends Fragment {
 	private ArrayList<KeenSession> sessionList;
 	private List<AthleteAttendance> athleteAttendanceList;
 	private List<AthleteAttendance> athleteAttendanceListOriginal;
+	private HashMap<String, Athlete> AthleteAttendanceMap = new HashMap<String, Athlete>();
 
 	private boolean bDataLoaded = false;
 
@@ -91,10 +95,19 @@ public class AthleteCheckinFragment extends Fragment {
 			athleteAttendanceList = session.getAthleteAttendance();
 		}
 		
-//		for (int i = 0; i < session.getProgram().getEnrolledAthletes().size(); i++) {
-//		sessionAttendance.get(i).enrolledAthlete = session.getProgram().getEnrolledAthletes().get(i);
-//	}
-
+		// Add existing athletes in hash map
+		for(AthleteAttendance athleteAttendance: athleteAttendanceList){
+			AthleteAttendanceMap.put(athleteAttendance.getAthlete().getFirstLastName(), athleteAttendance.getAthlete());
+		}
+			
+		for(Athlete athlete: session.getProgram().getEnrolledAthletes()){
+			if(AthleteAttendanceMap.get(athlete.getFirstLastName()) == null){
+				athleteAttendanceList.add(new AthleteAttendance());
+				AthleteAttendance athleteAttendance = athleteAttendanceList.get(athleteAttendanceList.size() - 1);
+				athleteAttendance.setAthlete(athlete);
+				athleteAttendance.setRemoteSessionId(session.getRemoteId());
+			}
+		}
 
 		athleteAttendanceListOriginal = new ArrayList<AthleteAttendance>();
 
@@ -206,6 +219,20 @@ public class AthleteCheckinFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.miSendMessageAthletes) {
+			showMassMessageDialog();
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void showMassMessageDialog() {
+		DialogFragment newFragment = new MassMessageFragment(
+				session.getProgram().getEnrolledAthletes(), null);
+		newFragment.show(getActivity().getSupportFragmentManager(), "Mass Message Dialog");
+	}
+
 	public void postAttendance() {
 		for (int i = 0; i < athleteAttendanceList.size(); i++) {
 			if (athleteAttendanceListOriginal.get(i) != null) {
@@ -229,7 +256,7 @@ public class AthleteCheckinFragment extends Fragment {
 
 					@Override
 					public void onRecordUpdateError() {
-						// TODO Auto-generated method stub
+						Log.d("temp", "attendance post error");
 
 					}
 				});

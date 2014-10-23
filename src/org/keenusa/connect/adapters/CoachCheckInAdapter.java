@@ -120,7 +120,7 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 			} else if (attendanceValue == CoachAttendance.AttendanceValue.CANCELLED || attendanceValue == CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE) {
 				viewHolder.tvCoachCancelled.setTextColor(getContext()
 						.getResources()
-						.getColor(android.R.color.holo_red_dark));
+						.getColor(android.R.color.holo_orange_dark));
 				viewHolder.tvCoachCancelled.setTypeface(null, Typeface.BOLD);
 			}
 		}
@@ -199,7 +199,7 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 				TextView tvCoachCancelled = (TextView)v; 
 				tvCoachCancelled.setTextColor(getContext()
 						.getResources()
-						.getColor(android.R.color.holo_red_dark));
+						.getColor(android.R.color.holo_orange_dark));
 				tvCoachCancelled.setTypeface(null, Typeface.BOLD);
 				
 				ViewHolder viewHolder = (ViewHolder)v.getTag(R.color.tag2);
