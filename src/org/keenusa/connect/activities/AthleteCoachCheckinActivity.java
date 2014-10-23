@@ -195,7 +195,6 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 		postAttendance();
 		return true;		
 	}else if (item.getItemId() == android.R.id.home) {
-    	Log.d("temp", "finishing activity");
         finish();
         return true;
     } else {

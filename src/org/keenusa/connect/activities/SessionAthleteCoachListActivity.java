@@ -31,7 +31,13 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		setupFragmentPager();
 		setupTabs();
 	}
-	
+
+//	close the app on back button press?	
+//	@Override
+//	public void onBackPressed() {
+//		finish();
+//	}
+
 	private void setupTabs() {
 		
 		Tab tabFirst;

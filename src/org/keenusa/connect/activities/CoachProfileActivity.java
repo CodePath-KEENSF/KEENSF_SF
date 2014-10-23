@@ -47,6 +47,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coach_profile);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		onPhoneLongClickListener = new OnPhoneLongClickListener(this);
 		onEmailLongClickListener = new OnEmailLongClickListener(this);
 		onSmsIconClickListener = new OnSmsIconClickListener(this);
@@ -71,6 +72,9 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 		if (id == R.id.action_edit) {
 			showUpdateCoachProfileDialog();
 			return true;
+		}else if (item.getItemId() == android.R.id.home) {
+	        finish();
+	        return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

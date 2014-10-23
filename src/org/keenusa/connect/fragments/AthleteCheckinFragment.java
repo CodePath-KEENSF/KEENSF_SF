@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.activities.AthleteProfileActivity;
 import org.keenusa.connect.adapters.AthleteCheckinAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
@@ -14,6 +15,7 @@ import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListe
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 import org.keenusa.connect.utilities.StringConstants;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -24,13 +26,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class AthleteCheckinFragment extends Fragment {
 
+	public static final String ATHLETE_EXTRA_TAG = "ATHLETE";
+	
 	public String dummySearchString;
 	private SearchView searchView;
 
@@ -128,8 +134,16 @@ public class AthleteCheckinFragment extends Fragment {
 	}
 
 	private void setOnClickListeners() {
-		// TODO Auto-generated method stub
+		lvAthleteCheckin.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent i = new Intent(getActivity(), AthleteProfileActivity.class);
+				i.putExtra(ATHLETE_EXTRA_TAG, athleteCheckInAdapter.getItem(position).getAthlete());
+				startActivity(i);
+
+			}
+		});
 	}
 
 	private void setViews(View v) {
