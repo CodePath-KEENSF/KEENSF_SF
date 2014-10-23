@@ -11,7 +11,7 @@ import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.utilities.CheckinEditMode;
 
 import android.content.Context;
-import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,19 +20,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
+public class CoachCheckInAdapterAllAtt extends ArrayAdapter<CoachAttendance> {
 
 	private KeenCivicoreClient client;
 
 	public static class ViewHolder {
 		ImageView ivCoachProfilePic;
 		TextView tvCoachName;
+		TextView tvCoachRegistered;
 		TextView tvCoachAttended;
 		TextView tvCoachAbsent;
 		TextView tvCoachCancelled;
+		TextView tvCoachNCNS;
 	}
 
-	public CoachCheckinAdapter(Context context, List<CoachAttendance> objects) {
+	public CoachCheckInAdapterAllAtt(Context context, List<CoachAttendance> objects) {
 		super(context, 0, objects);
 		client = new KeenCivicoreClient(context);
 	}
@@ -52,12 +54,16 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 					.findViewById(R.id.ivCoachProfilePic);
 			viewHolder.tvCoachName = (TextView) convertView
 					.findViewById(R.id.tvCoachName);
+			viewHolder.tvCoachRegistered = (TextView) convertView
+					.findViewById(R.id.tvCoachRegistered);
 			viewHolder.tvCoachAttended = (TextView) convertView
 					.findViewById(R.id.tvCoachAttended);
 			viewHolder.tvCoachAbsent = (TextView) convertView
 					.findViewById(R.id.tvCoachAbsent);
 			viewHolder.tvCoachCancelled = (TextView) convertView
 					.findViewById(R.id.tvCoachCancelled);
+			viewHolder.tvCoachNCNS = (TextView) convertView
+					.findViewById(R.id.tvCoachNCNS);
 
 			convertView.setTag(viewHolder);
 		} else {
@@ -86,6 +92,9 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 						.getFirstLastName());
 			}
 
+			viewHolder.tvCoachRegistered.setTag(R.color.tag1, coachAttendance);
+			viewHolder.tvCoachRegistered.setTag(R.color.tag2, viewHolder);
+			
 			viewHolder.tvCoachAttended.setTag(R.color.tag1, coachAttendance);
 			viewHolder.tvCoachAttended.setTag(R.color.tag2, viewHolder);
 			
@@ -94,6 +103,12 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 
 			viewHolder.tvCoachCancelled.setTag(R.color.tag1, coachAttendance);
 			viewHolder.tvCoachCancelled.setTag(R.color.tag2, viewHolder);
+
+			viewHolder.tvCoachNCNS.setTag(R.color.tag1, coachAttendance);
+			viewHolder.tvCoachNCNS.setTag(R.color.tag2, viewHolder);
+
+			viewHolder.tvCoachRegistered.setTextColor(getContext()
+					.getResources().getColor(android.R.color.darker_gray));
 
 			viewHolder.tvCoachAttended.setTextColor(getContext().getResources()
 					.getColor(android.R.color.darker_gray));
@@ -104,34 +119,71 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 			viewHolder.tvCoachCancelled.setTextColor(getContext()
 					.getResources().getColor(android.R.color.darker_gray));
 
+			viewHolder.tvCoachNCNS.setTextColor(getContext().getResources()
+					.getColor(android.R.color.darker_gray));
+
 			AttendanceValue attendanceValue = coachAttendance
 					.getAttendanceValue();
 
-			if (attendanceValue == CoachAttendance.AttendanceValue.ATTENDED) {
+			if (attendanceValue == CoachAttendance.AttendanceValue.REGISTERED) {
+				viewHolder.tvCoachRegistered.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.holo_blue_dark));
+			} else if (attendanceValue == CoachAttendance.AttendanceValue.ATTENDED) {
 				viewHolder.tvCoachAttended.setTextColor(getContext()
 						.getResources()
 						.getColor(android.R.color.holo_green_dark));
-				viewHolder.tvCoachAttended.setTypeface(null, Typeface.BOLD);
-			} else if (attendanceValue == CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW) {
+			} else if (attendanceValue == CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE) {
 				viewHolder.tvCoachAbsent.setTextColor(getContext()
 						.getResources()
 						.getColor(android.R.color.holo_red_dark));
-				viewHolder.tvCoachAbsent.setTypeface(null, Typeface.BOLD);
-			} else if (attendanceValue == CoachAttendance.AttendanceValue.CANCELLED || attendanceValue == CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE) {
+			} else if (attendanceValue == CoachAttendance.AttendanceValue.CANCELLED) {
 				viewHolder.tvCoachCancelled.setTextColor(getContext()
 						.getResources()
 						.getColor(android.R.color.holo_red_dark));
-				viewHolder.tvCoachCancelled.setTypeface(null, Typeface.BOLD);
+			} else if (attendanceValue == CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW) {
+				viewHolder.tvCoachNCNS.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.holo_red_dark));
 			}
 		}
 
 		setOnClickListeners(convertView, viewHolder);
-
+		// TODO Auto-generated method stub
 		return convertView;
 	}
 
 	public void setOnClickListeners(View convertView, ViewHolder viewHolder) {
 		
+		viewHolder.tvCoachRegistered.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(CheckinEditMode.editMode == false){
+					return;
+				}
+
+				TextView tvCoachRegistered = (TextView)v; 
+				tvCoachRegistered.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.holo_blue_dark));
+				
+				ViewHolder viewHolder = (ViewHolder)v.getTag(R.color.tag2);
+
+				viewHolder.tvCoachAttended.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachAbsent.setTextColor(getContext().getResources()
+						.getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachCancelled.setTextColor(getContext()
+						.getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachNCNS.setTextColor(getContext().getResources()
+						.getColor(android.R.color.darker_gray));
+				
+				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.REGISTERED);
+			}
+		});		
 		viewHolder.tvCoachAttended.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -143,17 +195,18 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 				tvCoachAttended.setTextColor(getContext()
 						.getResources()
 						.getColor(android.R.color.holo_green_dark));
-				tvCoachAttended.setTypeface(null, Typeface.BOLD);
 				
 				ViewHolder viewHolder = (ViewHolder)v.getTag(R.color.tag2);
 
+				viewHolder.tvCoachRegistered.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.darker_gray));
 				viewHolder.tvCoachAbsent.setTextColor(getContext().getResources()
 						.getColor(android.R.color.darker_gray));
 				viewHolder.tvCoachCancelled.setTextColor(getContext()
 						.getResources().getColor(android.R.color.darker_gray));
-				
-				viewHolder.tvCoachAbsent.setTypeface(null, Typeface.NORMAL);
-				viewHolder.tvCoachCancelled.setTypeface(null, Typeface.NORMAL);
+				viewHolder.tvCoachNCNS.setTextColor(getContext().getResources()
+						.getColor(android.R.color.darker_gray));
 				
 				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
 				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED);
@@ -171,20 +224,21 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 				tvCoachAbsent.setTextColor(getContext()
 						.getResources()
 						.getColor(android.R.color.holo_red_dark));
-				tvCoachAbsent.setTypeface(null, Typeface.BOLD);
 				
 				ViewHolder viewHolder = (ViewHolder)v.getTag(R.color.tag2);
 
+				viewHolder.tvCoachRegistered.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.darker_gray));
 				viewHolder.tvCoachAttended.setTextColor(getContext().getResources()
 						.getColor(android.R.color.darker_gray));
 				viewHolder.tvCoachCancelled.setTextColor(getContext()
 						.getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachNCNS.setTextColor(getContext().getResources()
+						.getColor(android.R.color.darker_gray));
 				
-				viewHolder.tvCoachAttended.setTypeface(null, Typeface.NORMAL);
-				viewHolder.tvCoachCancelled.setTypeface(null, Typeface.NORMAL);
-
 				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE);
 			}
 		});
 		
@@ -200,21 +254,53 @@ public class CoachCheckinAdapter extends ArrayAdapter<CoachAttendance> {
 				tvCoachCancelled.setTextColor(getContext()
 						.getResources()
 						.getColor(android.R.color.holo_red_dark));
-				tvCoachCancelled.setTypeface(null, Typeface.BOLD);
 				
 				ViewHolder viewHolder = (ViewHolder)v.getTag(R.color.tag2);
 
+				viewHolder.tvCoachRegistered.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.darker_gray));
 				viewHolder.tvCoachAttended.setTextColor(getContext().getResources()
 						.getColor(android.R.color.darker_gray));
 				viewHolder.tvCoachAbsent.setTextColor(getContext()
 						.getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachNCNS.setTextColor(getContext().getResources()
+						.getColor(android.R.color.darker_gray));
 				
-				viewHolder.tvCoachAttended.setTypeface(null, Typeface.NORMAL);
-				viewHolder.tvCoachAbsent.setTypeface(null, Typeface.NORMAL);
-
 				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
 				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CANCELLED);
 			}
 		});
+		
+		viewHolder.tvCoachNCNS.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(CheckinEditMode.editMode == false){
+					return;
+				}
+
+				TextView tvCoachNCNS = (TextView)v; 
+				tvCoachNCNS.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.holo_red_dark));
+				
+				ViewHolder viewHolder = (ViewHolder)v.getTag(R.color.tag2);
+
+				viewHolder.tvCoachRegistered.setTextColor(getContext()
+						.getResources()
+						.getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachAttended.setTextColor(getContext().getResources()
+						.getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachAbsent.setTextColor(getContext()
+						.getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvCoachCancelled.setTextColor(getContext().getResources()
+						.getColor(android.R.color.darker_gray));
+				
+				CoachAttendance coachAttendance = (CoachAttendance)v.getTag(R.color.tag1);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
+			}
+		});
+		
 	}
 }

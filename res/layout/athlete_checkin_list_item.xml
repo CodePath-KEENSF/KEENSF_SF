@@ -25,7 +25,8 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:paddingTop="5dp"
-        android:text="Athlete Name" />
+        android:text="Athlete Name"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/llAthleteAttendance"
@@ -34,18 +35,28 @@
         android:layout_alignLeft="@+id/tvAthleteName"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvAthleteName"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp" >
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/tvAthleteAttended"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="2dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
             android:text="@string/attended_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tvAthleteCancelled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/cancel_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/darker_gray" />
 
@@ -54,19 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="2dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
             android:text="@string/absent_label"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/darker_gray" />
-
-        <TextView
-            android:id="@+id/tvAthleteNCNS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:padding="2dp"
-            android:text="@string/no_cancel_no_show_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>

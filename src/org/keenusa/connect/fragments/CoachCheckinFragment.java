@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.adapters.CoachCheckInAdapter;
+import org.keenusa.connect.adapters.CoachCheckinAdapter;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
@@ -33,7 +33,7 @@ public class CoachCheckinFragment extends Fragment {
 
 	private LinearLayout llProgressBarCoachCheckin;
 	private ListView lvCoachCheckin;
-	private CoachCheckInAdapter coachCheckInAdapter;
+	private CoachCheckinAdapter coachCheckInAdapter;
 
 	private ArrayList<KeenSession> sessionList;
 	private List<CoachAttendance> coachAttendanceList;
@@ -64,6 +64,20 @@ public class CoachCheckinFragment extends Fragment {
 		removeProgressBars();
 	}
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.fragment_coach_checkin, container,
+				false);
+
+		setViews(v);
+
+		setOnClickListeners();
+
+		return v;
+	}
+
+
 	private void removeProgressBars() {
 		bDataLoaded = true;
 		if (llProgressBarCoachCheckin != null) {
@@ -72,11 +86,6 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	private void fetchEnrolledCoachList() {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void setAdapter() {
 		if (session.getCoachAttendance() == null) {
 			coachAttendanceList = new ArrayList<CoachAttendance>();
 		} else {
@@ -93,23 +102,11 @@ public class CoachCheckinFragment extends Fragment {
 					coachAttendanceList.get(i).getAttendanceValue());
 
 		}
-
-		coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
-				coachAttendanceList);
-
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_coach_checkin, container,
-				false);
-
-		setViews(v);
-
-		setOnClickListeners();
-
-		return v;
+	private void setAdapter() {
+		coachCheckInAdapter = new CoachCheckinAdapter(getActivity(),
+				coachAttendanceList);
 	}
 
 	private void setOnClickListeners() {
@@ -194,7 +191,7 @@ public class CoachCheckinFragment extends Fragment {
 					}
 				}
 
-				coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
+				coachCheckInAdapter = new CoachCheckinAdapter(getActivity(),
 						tempCoachAttendanceList);
 				lvCoachCheckin.setAdapter(coachCheckInAdapter);
 
