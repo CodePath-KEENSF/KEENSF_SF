@@ -72,6 +72,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/btnCoachChkIn"
         android:onClick="athleteCheckIn"
+        android:visibility="gone"
         android:text="@string/athlete_check_in_button" />
 
     <TextView
@@ -144,6 +145,7 @@
         android:layout_below="@+id/tvAttCoaches"
         android:layout_marginTop="26dp"
         android:onClick="coachCheckIn"
+        android:visibility="gone"
         android:text="@string/coach_check_in_button" />
 
 </RelativeLayout>

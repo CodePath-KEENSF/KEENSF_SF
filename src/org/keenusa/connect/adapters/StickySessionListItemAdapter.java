@@ -6,15 +6,19 @@ import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.keenusa.connect.R;
+import org.keenusa.connect.activities.AthleteCoachCheckinActivity;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> implements StickyListHeadersAdapter {
@@ -28,6 +32,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 		TextView tvNumAthletes;
 		TextView tvNumCoaches;
 		TextView tvSessionTime;
+		RelativeLayout rlParticipantCounts;
 	}
 
 	public static class HeaderViewHolder {
@@ -53,12 +58,15 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvNumAthletes = (TextView) convertView.findViewById(R.id.tvNumAthletes);
 			viewHolder.tvNumCoaches = (TextView) convertView.findViewById(R.id.tvNumCoaches);
 			viewHolder.tvSessionTime = (TextView) convertView.findViewById(R.id.tvSessionTime);
+			viewHolder.rlParticipantCounts = (RelativeLayout)convertView.findViewById(R.id.rlParticipantCounts);
 
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
+		viewHolder.rlParticipantCounts.setTag(session);
+		
 		if (program != null && program.getName() != null) {
 			viewHolder.tvSessionName.setText(session.getProgram().getName());
 		} else {
@@ -80,6 +88,17 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 		} else {
 			viewHolder.tvSessionTime.setText("12pm - 1pm");
 		}
+		
+		viewHolder.rlParticipantCounts.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				KeenSession session = (KeenSession)v.getTag(); 
+				Intent i = new Intent(getContext(), AthleteCoachCheckinActivity.class);
+				i.putExtra("session", session);
+				getContext().startActivity(i);
+			}
+		});
 
 		return convertView;
 	}
