@@ -14,6 +14,7 @@ public class KeenProgramEnrolment implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 5486907615451742803L;
+	private long id;
 	private long remoteId;
 	private KeenProgram program;
 	private Athlete athlete;
@@ -133,6 +134,14 @@ public class KeenProgramEnrolment implements Serializable {
 
 	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
 		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

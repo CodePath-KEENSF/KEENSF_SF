@@ -3,6 +3,7 @@ package org.keenusa.connect.networking;
 import java.util.List;
 
 import org.keenusa.connect.data.ProgramDAO;
+import org.keenusa.connect.data.ProgramEnrollmentDAO;
 import org.keenusa.connect.data.SessionDAO;
 import org.keenusa.connect.models.Affiliate;
 import org.keenusa.connect.models.Athlete;
@@ -122,6 +123,10 @@ public class RemoteDataLoader extends Thread {
 		try {
 			keenProgramEnrolments = client.fetchProgramEnrolmentListData();
 			Log.i("DATA_LOAD", "Program enrolments fetched " + keenProgramEnrolments.size());
+			ProgramEnrollmentDAO enrollmentDAO = new ProgramEnrollmentDAO(context);
+			for (KeenProgramEnrolment enrollment : keenProgramEnrolments) {
+				enrollmentDAO.saveNewProgramEnrolment(enrollment);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
