@@ -406,10 +406,6 @@ public class SessionsFragment extends Fragment {
 	
 	private void openSessionDetails(int pos) {
 		
-//		Intent i = new Intent(getActivity(), AthleteCoachCheckinActivity.class);
-//		i.putExtra("session", sessionList.get(pos));
-//		startActivity(i);
-
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
 		i.putExtra("session", sessionList.get(pos));
 		i.putExtra("program", sessionList.get(pos).getProgram());
@@ -604,6 +600,21 @@ public class SessionsFragment extends Fragment {
 			currentDateIndex = currentDateIndex + 1;
 		}
 
+	}
+
+	public void updateSession(KeenSession newSession) {
+		KeenSession oldSession = (KeenSession)sessionMap.get(newSession.getRemoteId());
+		oldSession.setAthleteAttendance(newSession.getAthleteAttendance());
+		oldSession.setCoachAttendance(newSession.getCoachAttendance());
+		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
+		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+
+		for (int i=0;i<sessionList.size();i++){
+			if(sessionList.get(i).getRemoteId() == oldSession.getRemoteId()){
+				expandableStickySessionListView.setSelection(i);
+				break;
+			}
+		}
 	}
 
 	//	public void addAPIData(List<KeenSession> sessions) {

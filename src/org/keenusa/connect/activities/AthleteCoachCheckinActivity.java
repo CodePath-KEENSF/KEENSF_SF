@@ -8,10 +8,12 @@ import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.utilities.CheckinEditMode;
+import org.keenusa.connect.utilities.IntentCode;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 public class AthleteCoachCheckinActivity extends FragmentActivity implements TabListener, AddCoachDialogListener{
 	
@@ -185,22 +188,33 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-	if (item.getItemId() == R.id.miEditCheckin){
-//		CheckinEditMode.editMode = true;
-//		invalidateOptionsMenu();
-		return true;
-	}else if(item.getItemId() == R.id.miSaveCheckin){
-//		CheckinEditMode.editMode = false;
-//		invalidateOptionsMenu();
-		postAttendance();
-		return true;		
-	}else if (item.getItemId() == android.R.id.home) {
-        finish();
-        return true;
-    } else {
-        return super.onOptionsItemSelected(item);
-    }
-}
+		if (item.getItemId() == R.id.miEditCheckin){
+	//		CheckinEditMode.editMode = true;
+	//		invalidateOptionsMenu();
+			return true;
+		}else if(item.getItemId() == R.id.miSaveCheckin){
+	//		CheckinEditMode.editMode = false;
+	//		invalidateOptionsMenu();
+			postAttendance();
+			return true;		
+		}else if (item.getItemId() == android.R.id.home) {
+			UpdateSession();
+			return true;
+	    } else {
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+
+	public void onBackPressed() {
+		UpdateSession();
+	}
+
+	private void UpdateSession() {
+		Intent finishCheckinIntent = new Intent();
+		finishCheckinIntent.putExtra("session", session);
+		setResult(IntentCode.RESULT_OK, finishCheckinIntent);
+		finish();
+	}
 
 	private void postAttendance() {
 		coachCheckinFragment.postAttendance();

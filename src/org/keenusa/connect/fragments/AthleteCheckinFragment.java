@@ -256,6 +256,7 @@ public class AthleteCheckinFragment extends Fragment {
 							.get(i).getAttendanceValue()) {
 
 						updateRecord(athleteAttendanceList.get(i));
+						athleteAttendanceListOriginal.get(i).setAttendanceValue(athleteAttendanceList.get(i).getAttendanceValue());
 					}
 				}
 			} else { // new attendance records

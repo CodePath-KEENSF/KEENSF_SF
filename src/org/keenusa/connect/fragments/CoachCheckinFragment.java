@@ -8,6 +8,7 @@ import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachCheckInAdapter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
+import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
@@ -246,14 +247,18 @@ public class CoachCheckinFragment extends Fragment {
 				if (coachAttendanceListOriginal.get(i).getAttendanceValue() != coachAttendanceList.get(i).getAttendanceValue()) {
 
 						updateRecord(coachAttendanceList.get(i));
+						coachAttendanceListOriginal.get(i).setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
 					}
 				}
-			} else { // new attendance recors
+			} else { // new attendance records
 				coachAttendanceList.get(i).setRemoteSessionId(
-						coachAttendanceList.get(0).getRemoteSessionId());
+						session.getRemoteId());
 				addRecord(coachAttendanceList.get(i));
+				CoachAttendance addedCoachAttendance = new CoachAttendance();
+				addedCoachAttendance.setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
+				addedCoachAttendance.setCoach(coachAttendanceList.get(i).getCoach());
+				coachAttendanceListOriginal.add(addedCoachAttendance);
 			}
-
 		}
 	}
 
@@ -261,7 +266,7 @@ public class CoachCheckinFragment extends Fragment {
 		client.updateCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
 
 			@Override
-			public void onRecordUpdateResult(CoachAttendance object) {
+			public void onRecordUpdateResult(CoachAttendance updatedCoachAtt) {
 				Log.d("temp", "attendance posted");
 			}
 
@@ -296,8 +301,11 @@ public class CoachCheckinFragment extends Fragment {
 				return;
 			}
 		}
-		coachAttendanceList.add(new CoachAttendance());
-		coachAttendanceList.get(coachAttendanceList.size() - 1).setCoach(coach);
+		
+		CoachAttendance addedCoachAttendance = new CoachAttendance();
+		addedCoachAttendance.setAttendanceValue(AttendanceValue.REGISTERED);
+		addedCoachAttendance.setCoach(coach);
+		coachAttendanceList.add(addedCoachAttendance);
 		coachCheckInAdapter.notifyDataSetChanged();
 	}
 

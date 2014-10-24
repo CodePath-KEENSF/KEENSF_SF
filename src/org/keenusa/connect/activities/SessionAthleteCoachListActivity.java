@@ -4,17 +4,23 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.AtheletsFragment;
 import org.keenusa.connect.fragments.CoachesFragment;
 import org.keenusa.connect.fragments.SessionsFragment;
+import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.utilities.DebugInfo;
+import org.keenusa.connect.utilities.IntentCode;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.content.Intent;
 import android.os.Bundle;
+import android.service.textservice.SpellCheckerService.Session;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 
 public class SessionAthleteCoachListActivity extends FragmentActivity implements TabListener{
 
@@ -22,6 +28,8 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 	private ViewPager vpPager;
 	
 	private ActionBar actionBar;
+	
+	private SessionsFragment sessionsFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +118,7 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		});
 	}
 
-	public static class ListsPagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 3;
+	public class ListsPagerAdapter extends FragmentPagerAdapter {
 
 		public ListsPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -120,7 +127,7 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		// Returns total number of pages
 		@Override
 		public int getCount() {
-			return NUM_ITEMS;
+			return 3;
 		} 
 
 		// Returns the fragment to display for that page
@@ -128,7 +135,8 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0: // Fragment # 0 - Session List
-				return SessionsFragment.newInstance();
+				sessionsFragment = SessionsFragment.newInstance();
+				return sessionsFragment;
 			case 1: // Fragment # 1 - Athlete List
 				return AtheletsFragment.newInstance();
 			case 2: // Fragment # 2 - Coach List
@@ -143,5 +151,19 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		public CharSequence getPageTitle(int position) {
 			return "Page " + position;
 		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == IntentCode.RESULT_OK
+				&& requestCode == IntentCode.REQUEST_CODE) {
+			KeenSession session = (KeenSession)data.getSerializableExtra("session");
+			sessionsFragment.updateSession(session);
+			
+		} else if (resultCode == IntentCode.CHECK_IN_FAIL
+				&& requestCode == IntentCode.REQUEST_CODE) {
+			DebugInfo.showToast(this, "check-in failed");
+		}
+
 	}
 }
