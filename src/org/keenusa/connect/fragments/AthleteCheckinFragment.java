@@ -9,7 +9,6 @@ import org.keenusa.connect.activities.AthleteProfileActivity;
 import org.keenusa.connect.adapters.AthleteCheckinAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
-import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
@@ -98,6 +97,7 @@ public class AthleteCheckinFragment extends Fragment {
 	private void fetchEnrolledAthleteList() {
 		if (session.getAthleteAttendance() == null) {
 			athleteAttendanceList = new ArrayList<AthleteAttendance>();
+			session.setAthleteAttendance(athleteAttendanceList);
 		} else {
 			athleteAttendanceList = session.getAthleteAttendance();
 		}
@@ -261,9 +261,14 @@ public class AthleteCheckinFragment extends Fragment {
 				}
 			} else { // new attendance records
 				if(athleteAttendanceList.get(i).getAttendanceValue() != null){
-					athleteAttendanceList.get(i).setRemoteSessionId(
-							athleteAttendanceList.get(0).getRemoteSessionId());
+					athleteAttendanceList.get(i).setRemoteSessionId(session.getRemoteId());
 					addRecord(athleteAttendanceList.get(i));
+					
+					AthleteAttendance addedAthleteAttendance = new AthleteAttendance();
+					addedAthleteAttendance.setAttendanceValue(athleteAttendanceList.get(i).getAttendanceValue());
+					addedAthleteAttendance.setAthlete(athleteAttendanceList.get(i).getAthlete());
+					athleteAttendanceListOriginal.add(addedAthleteAttendance);
+
 				}
 			}
 
@@ -276,12 +281,12 @@ public class AthleteCheckinFragment extends Fragment {
 
 					@Override
 					public void onRecordUpdateResult(AthleteAttendance object) {
-						Log.d("temp", "attendance posted");
+						Log.d("temp", "attendance updated");
 					}
 
 					@Override
 					public void onRecordUpdateError() {
-						Log.d("temp", "attendance post error");
+						Log.d("temp", "attendance update error");
 
 					}
 				});
@@ -293,12 +298,12 @@ public class AthleteCheckinFragment extends Fragment {
 
 					@Override
 					public void onRecordUpdateResult(AthleteAttendance object) {
-						Log.d("temp", "attendance posted");
+						Log.d("temp", "attendance added");
 					}
 
 					@Override
 					public void onRecordUpdateError() {
-						Log.d("temp", "attendance post error");
+						Log.d("temp", "attendance add error");
 
 					}
 				});

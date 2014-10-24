@@ -94,6 +94,7 @@ public class CoachCheckinFragment extends Fragment {
 	private void fetchEnrolledCoachList() {
 		if (session.getCoachAttendance() == null) {
 			coachAttendanceList = new ArrayList<CoachAttendance>();
+			session.setCoachAttendance(coachAttendanceList);
 		} else {
 			coachAttendanceList = session.getCoachAttendance();
 		}
@@ -267,12 +268,12 @@ public class CoachCheckinFragment extends Fragment {
 
 			@Override
 			public void onRecordUpdateResult(CoachAttendance updatedCoachAtt) {
-				Log.d("temp", "attendance posted");
+				Log.d("temp", "attendance updated");
 			}
 
 			@Override
 			public void onRecordUpdateError() {
-				Log.d("temp", "attendance post error");
+				Log.d("temp", "attendance update error");
 
 			}
 		});
@@ -284,12 +285,12 @@ public class CoachCheckinFragment extends Fragment {
 
 					@Override
 					public void onRecordUpdateResult(CoachAttendance object) {
-						Log.d("temp", "attendance posted");
+						Log.d("temp", "attendance added");
 					}
 
 					@Override
 					public void onRecordUpdateError() {
-						Log.d("temp", "attendance post error");
+						Log.d("temp", "attendance add error");
 
 					}
 				});
