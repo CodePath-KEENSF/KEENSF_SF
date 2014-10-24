@@ -6,7 +6,6 @@ import java.util.Locale;
 import org.joda.time.DateTime;
 import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.MassMessageFragment;
-import org.keenusa.connect.fragments.UpdateAthleteProfileFragment;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 
@@ -25,11 +24,10 @@ public class SessionDetailsActivity extends FragmentActivity {
 	// private TextView tvProgramNameLabel, tvLocationLabel, tvDateLabel,
 	// tvProgramTypeLabel, tvProgramActiveDateLabel, tvAttCoachesLabel,
 	// tvAttAthletesLabel;
-	private TextView tvProgramName, tvLocation1, tvLocation2, tvDate, tvAttCoach, tvAttAthlete,
-			tvProgramType, tvProgramActiveDate, tvAttCoaches, tvAttAthletes;
+	private TextView tvProgramName, tvLocation, tvDate, tvAttCoach, tvAttAthlete, tvProgramType, tvProgramTimes, tvAttCoaches, tvAttAthletes;
 	private Button btnCoachChkIn, btnAthleteChkIn;
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
-	ProgressBar _progressBarCoach, _progressBarAthlete; 
+	ProgressBar _progressBarCoach, _progressBarAthlete;
 
 	KeenSession session;
 	KeenProgram program;
@@ -48,61 +46,38 @@ public class SessionDetailsActivity extends FragmentActivity {
 		session = (KeenSession) getIntent().getSerializableExtra("session");
 		program = (KeenProgram) getIntent().getSerializableExtra("program");
 
-		tvDate.setText("Session Date: " + formamtDate(session.getDate()));
+		tvDate.setText(formamtDate(session.getDate()));
 		tvProgramName.setText(program.getName());
 		if (program.getLocation() != null) {
-			address = "";
-			if (program.getLocation().getAddress1() != null) {
-				address += program.getLocation().getAddress1() + " ";
-			}
-			tvLocation2.setText(address);
+			tvLocation.setText(program.getLocation().getLocationString());
 		} else {
-			tvLocation2.setText(address);
-		}
-		if (program.getLocation() != null) {
-			address = "";
-			if (program.getLocation().getAddress2() != null) {
-				address += program.getLocation().getAddress2() + " ";
-			}
-			if (program.getLocation().getCity() != null) {
-				address += program.getLocation().getCity() + " ";
-			}
-			if (program.getLocation().getState() != null) {
-				address += program.getLocation().getState() + " ";
-			}
-			if (program.getLocation().getZipCode() != null) {
-				address += program.getLocation().getZipCode() + " ";
-			}
-			tvLocation1.setText(address);
-		} else {
-			tvLocation1.setText("No Address");
+			tvLocation.setVisibility(View.GONE);
 		}
 		if (program.getGeneralProgramType() != null) {
 			tvProgramType.setText(program.getGeneralProgramType().toString());
 		} else {
-			tvProgramType.setText("No Program Type");
+			tvProgramType.setVisibility(View.GONE);
 		}
 		if (session.getProgram().getProgramTimes() != null) {
-			tvProgramActiveDate.setText(session.getProgram().getProgramTimes());
+			tvProgramTimes.setText(session.getProgram().getProgramTimes());
 		} else {
-			tvProgramActiveDate.setText("12pm - 1pm");
+			tvProgramTimes.setVisibility(View.GONE);
 		}
-//		tvAttCoaches.setText(session.getRegisteredCoachCount() + "");
-//		tvAttAthletes.setText(session.getRegisteredAthleteCount() + "");
-		
+		//		tvAttCoaches.setText(session.getRegisteredCoachCount() + "");
+		//		tvAttAthletes.setText(session.getRegisteredAthleteCount() + "");
+
 		// TODO - fix java.lang.ClassCastException: android.widget.TextView cannot be cast to android.widget.ProgressBar
 
 		_progressBarCoach.setProgress(session.getRegisteredCoachCount());
-		tvAttCoach.setText(session.getRegisteredCoachCount()+"");
-		
+		tvAttCoach.setText(session.getRegisteredCoachCount() + "");
+
 		_progressBarAthlete.setProgress(session.getRegisteredAthleteCount());
 		tvAttAthlete.setText(session.getRegisteredAthleteCount() + "");
 	}
 
 	private CharSequence formamtDate(DateTime date) {
 		DateTime dateTime = session.getDate();
-		String result = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH)
-				.format(dateTime.toDate());
+		String result = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH).format(dateTime.toDate());
 		return result;
 	}
 
@@ -118,21 +93,20 @@ public class SessionDetailsActivity extends FragmentActivity {
 		// tvAttCoachesLabel = (TextView) findViewById(R.id.tvAttCoachesLabel);
 		// tvAttAthletesLabel = (TextView)
 		// findViewById(R.id.tvAttAthletesLabel);
-//		btnCoachChkIn = (Button) findViewById(R.id.btnCoachChkIn);
-//		btnAthleteChkIn = (Button) findViewById(R.id.btnAthleteChkIn);
+		//		btnCoachChkIn = (Button) findViewById(R.id.btnCoachChkIn);
+		//		btnAthleteChkIn = (Button) findViewById(R.id.btnAthleteChkIn);
 
 		tvProgramName = (TextView) findViewById(R.id.tvProgramName);
-		tvLocation1 = (TextView) findViewById(R.id.tvLocation1);
-		tvLocation2 = (TextView) findViewById(R.id.tvLocation2);
+		tvLocation = (TextView) findViewById(R.id.tvLocation);
 		tvDate = (TextView) findViewById(R.id.tvDate);
-		tvProgramActiveDate = (TextView) findViewById(R.id.tvProgramActiveDate);
+		tvProgramTimes = (TextView) findViewById(R.id.tvProgramTimes);
 		tvProgramType = (TextView) findViewById(R.id.tvProgramType);
 		_progressBarCoach = (ProgressBar) findViewById(R.id.cicularProgressBarCoach);
 		_progressBarAthlete = (ProgressBar) findViewById(R.id.cicularProgressBarAthlete);
 		tvAttCoach = (TextView) findViewById(R.id.tvAttCoach);
 		tvAttAthlete = (TextView) findViewById(R.id.tvAttAthlete);
-//		tvAttCoaches = (TextView) findViewById(R.id.tvAttCoaches);
-//		tvAttAthletes = (TextView) findViewById(R.id.tvAttAthletes);
+		//		tvAttCoaches = (TextView) findViewById(R.id.tvAttCoaches);
+		//		tvAttAthletes = (TextView) findViewById(R.id.tvAttAthletes);
 	}
 
 	public void athleteCheckIn(View v) {
@@ -167,24 +141,22 @@ public class SessionDetailsActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.miCheckin) {
 			// Start the check-in activity
-			Intent checkinIntent = new Intent(getBaseContext(),
-					AthleteCoachCheckinActivity.class);
+			Intent checkinIntent = new Intent(getBaseContext(), AthleteCoachCheckinActivity.class);
 			checkinIntent.putExtra("session", session);
 			startActivity(checkinIntent);
 
 		} else if (item.getItemId() == R.id.miSendMessage) {
 			showMassMessageDialog();
-		}else if (item.getItemId() == android.R.id.home) {
-	        finish();
-	        return true;
+		} else if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void showMassMessageDialog() {
-		DialogFragment newFragment = new MassMessageFragment(
-				program.getEnrolledAthletes(), session.getCoachAttendance());
+		DialogFragment newFragment = new MassMessageFragment(program.getEnrolledAthletes(), session.getCoachAttendance());
 		newFragment.show(getSupportFragmentManager(), "Mass Message Dialog");
 	}
 

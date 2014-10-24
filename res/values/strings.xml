@@ -14,7 +14,7 @@
     <string name="program_name_changable">Sample Program Name</string>
     <string name="location_changable">Sample Location</string>
     <string name="date_changable">Sample Date</string>
-    <string name="session_changable">Sample Session</string>
+    <string name="session_changable">1pm - 2pm</string>
     <string name="session_details_button">Session Details</string>
     <string name="title_activity_check_in">Check-In</string>
     <string name="check_in_button">Check-In</string>

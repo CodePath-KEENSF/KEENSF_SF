@@ -4,146 +4,172 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+    <ImageView
+        android:id="@+id/ivSessionBackgroundPic"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="15dp"
-        android:text="@string/date_changable"
-        android:textSize="10sp" />
-
-    <TextView
-        android:id="@+id/tvAttCoachesLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvAttAthletesLabel"
-        android:layout_alignBottom="@+id/tvAttAthletesLabel"
-        android:layout_alignLeft="@+id/cpbCoach"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/coaches_registered_label" />
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sports_two" />
 
     <RelativeLayout
-        android:id="@+id/cpbCoach"
-        android:layout_width="80dip"
-        android:layout_height="80dip"
-        android:layout_above="@+id/tvAttCoachesLabel"
-        android:layout_alignLeft="@+id/tvProgramName" >
-
-        <ProgressBar
-            android:id="@+id/cicularProgressBarCoach"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="80dip"
-            android:layout_height="80dip"
-            android:indeterminate="false"
-            android:progress="30"
-            android:progressDrawable="@drawable/progressbar" />
+        android:id="@+id/rlSessionDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivSessionBackgroundPic"
+        android:layout_alignParentTop="true"
+        android:background="@color/session_details_background_color" >
 
         <TextView
-            android:id="@+id/tvAttCoach"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="progress" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/cpbAthlete"
-        android:layout_width="80dip"
-        android:layout_height="80dip"
-        android:layout_alignRight="@+id/tvProgramName"
-        android:layout_alignTop="@+id/cpbCoach" >
-
-        <ProgressBar
-            android:id="@+id/cicularProgressBarAthlete"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="80dip"
-            android:layout_height="80dip"
-            android:indeterminate="false"
-            android:progress="30"
-            android:progressDrawable="@drawable/progressbar" />
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/date_changable"
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/tvAttAthlete"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvProgramName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="progress" />
+            android:layout_below="@+id/tvDate"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/program_name_changable"
+            android:textColor="@color/main_theme_color"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tvProgramType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProgramName"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/program_type"
+            android:textColor="@color/secondary_theme_color"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvProgramTimes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProgramType"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/session_changable"
+            android:textColor="@color/main_theme_text_color" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProgramTimes"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/location_changable"
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="12sp" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tvAttAthletesLabel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/rlParticipantCounts"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/cpbAthlete"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="19dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/athletes_registered_label" />
+        android:layout_below="@id/rlSessionDetails"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/tvLocation2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/cpbCoach"
-        android:layout_alignLeft="@+id/tvLocation1"
-        android:layout_marginBottom="48dp"
-        android:paddingBottom="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/location_changable"
-        android:textSize="12sp" />
+        <RelativeLayout
+            android:id="@+id/cpbCoach"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
 
-    <TextView
-        android:id="@+id/tvLocation1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvLocation2"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/location_changable"
-        android:textSize="12sp" />
+            <ProgressBar
+                android:id="@+id/cicularProgressBarCoach"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="80dip"
+                android:layout_height="80dip"
+                android:layout_centerHorizontal="true"
+                android:indeterminate="false"
+                android:progress="30"
+                android:progressDrawable="@drawable/progressbar" />
 
-    <TextView
-        android:id="@+id/tvProgramActiveDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvLocation1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/session_changable" />
+            <TextView
+                android:id="@+id/tvAttCoach"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/cicularProgressBarCoach"
+                android:layout_alignLeft="@id/cicularProgressBarCoach"
+                android:layout_alignRight="@id/cicularProgressBarCoach"
+                android:layout_alignTop="@+id/cicularProgressBarCoach"
+                android:gravity="center"
+                android:text="progress" />
 
-    <TextView
-        android:id="@+id/tvProgramType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvProgramActiveDate"
-        android:layout_marginBottom="25dp"
-        android:layout_toLeftOf="@+id/tvDate"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/program_type" />
+            <TextView
+                android:id="@+id/tvAttCoachesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/cicularProgressBarCoach"
+                android:layout_alignRight="@id/cicularProgressBarCoach"
+                android:layout_below="@id/cicularProgressBarCoach"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/coaches_registered_label" />
+        </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tvProgramName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvProgramType"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:text="@string/program_name_changable"
-        android:textSize="20sp" />
+        <RelativeLayout
+            android:id="@+id/cpbAthlete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <ProgressBar
+                android:id="@+id/cicularProgressBarAthlete"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="80dip"
+                android:layout_height="80dip"
+                android:layout_centerHorizontal="true"
+                android:indeterminate="false"
+                android:progress="30"
+                android:progressDrawable="@drawable/progressbar" />
+
+            <TextView
+                android:id="@+id/tvAttAthlete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/cicularProgressBarAthlete"
+                android:layout_alignLeft="@id/cicularProgressBarAthlete"
+                android:layout_alignRight="@id/cicularProgressBarAthlete"
+                android:layout_alignTop="@id/cicularProgressBarAthlete"
+                android:gravity="center"
+                android:text="progress" />
+
+            <TextView
+                android:id="@+id/tvAttAthletesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/cicularProgressBarAthlete"
+                android:layout_alignRight="@id/cicularProgressBarAthlete"
+                android:layout_below="@id/cicularProgressBarAthlete"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/athletes_registered_label" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
