@@ -9,6 +9,7 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.activities.AthleteCoachCheckinActivity;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.utilities.CheckinEditMode;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.content.Context;
@@ -94,6 +95,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			@Override
 			public void onClick(View v) {
 				KeenSession session = (KeenSession)v.getTag(); 
+				CheckinEditMode.editMode = true;
 				Intent i = new Intent(getContext(), AthleteCoachCheckinActivity.class);
 				i.putExtra("session", session);
 				getContext().startActivity(i);

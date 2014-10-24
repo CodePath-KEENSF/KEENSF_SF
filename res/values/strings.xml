@@ -82,6 +82,7 @@
     <string name="add_coach_label">Add Coach</string>
     <string name="email_label">EMAIL</string>
     <string name="checkin_label">checkin</string>
+    <string name="list_label">list of participants</string>
     <string name="athlete_check_in_button">Athlete Check-In</string>
     <string name="coach_check_in_button">Coach Check-In</string>
     <string name="attended_label">ATT</string>
@@ -90,5 +91,6 @@
     <string name="registered_label">REG</string>
     <string name="cancel_label">CAN</string>
     <string name="mass_message_done_button">Done</string>
+    <string name="mass_message_cancel_button">Cancel</string>
 
 </resources>

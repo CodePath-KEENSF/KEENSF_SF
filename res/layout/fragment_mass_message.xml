@@ -55,6 +55,6 @@
         android:layout_below="@+id/etMassMessage"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:text="@string/mass_message_done_button" />
+        android:text="@string/mass_message_cancel_button" />
 
 </RelativeLayout>

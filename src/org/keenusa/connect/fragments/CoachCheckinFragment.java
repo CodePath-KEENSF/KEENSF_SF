@@ -173,7 +173,6 @@ public class CoachCheckinFragment extends Fragment {
 	}
 	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		Log.d("temp", "onCfreate");
 		inflater.inflate(R.menu.coach_checkin, menu);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search_coaches_checkin);
@@ -223,7 +222,6 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d("temp", "OnSelect");
 		if (item.getItemId() == R.id.miSendMessageCoaches) {
 			showMassMessageDialog();
 		} else if (item.getItemId() == R.id.miAddCoaches) {

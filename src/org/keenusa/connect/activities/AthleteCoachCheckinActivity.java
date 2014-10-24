@@ -36,8 +36,7 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	
 	AthleteCheckinFragment athleteCheckinFragment;
 	CoachCheckinFragment coachCheckinFragment;
-	boolean editMode = false;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -154,21 +153,21 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		if(editMode == true){
+		if(CheckinEditMode.editMode == true){
 		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
 		    miSaveCheckin.setVisible(true);
 
-			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
-			miEditCheckin.setVisible(false);
+//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+//			miEditCheckin.setVisible(false);
 			
 			CheckinEditMode.editMode = true;
 			
 		    return true;
 
 		}else{
-			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
-			miEditCheckin.setVisible(true);
-
+//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+//			miEditCheckin.setVisible(true);
+//
 		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
 		    miSaveCheckin.setVisible(false);
 
@@ -187,14 +186,12 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 	if (item.getItemId() == R.id.miEditCheckin){
-		editMode = true;
-		CheckinEditMode.editMode = true;
-		invalidateOptionsMenu();
+//		CheckinEditMode.editMode = true;
+//		invalidateOptionsMenu();
 		return true;
 	}else if(item.getItemId() == R.id.miSaveCheckin){
-		editMode = false;
-		CheckinEditMode.editMode = false;
-		invalidateOptionsMenu();
+//		CheckinEditMode.editMode = false;
+//		invalidateOptionsMenu();
 		postAttendance();
 		return true;		
 	}else if (item.getItemId() == android.R.id.home) {

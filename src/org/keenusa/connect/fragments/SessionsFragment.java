@@ -147,7 +147,6 @@ public class SessionsFragment extends Fragment {
 				programList.clear();
 				programList.addAll(list);
 				for (KeenProgram program : programList) {
-					Log.d("temp", program.getName());
 					sessionProgramMap.put(program.getRemoteId(), program);
 				}
 				monitorFetches();

@@ -8,6 +8,7 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.fragments.MassMessageFragment;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.utilities.CheckinEditMode;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -139,8 +140,9 @@ public class SessionDetailsActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.miCheckin) {
+		if (item.getItemId() == R.id.miShowList) {
 			// Start the check-in activity
+			CheckinEditMode.editMode = false;
 			Intent checkinIntent = new Intent(getBaseContext(), AthleteCoachCheckinActivity.class);
 			checkinIntent.putExtra("session", session);
 			startActivity(checkinIntent);
