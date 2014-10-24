@@ -83,6 +83,15 @@
             android:paddingTop="10dp"
             android:text="@string/num_coaches_label"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ImageView
+            android:id="@+id/ivCheckin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvNumCoaches"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_checkin_drawable" />
+
     </RelativeLayout>
 
 </RelativeLayout>

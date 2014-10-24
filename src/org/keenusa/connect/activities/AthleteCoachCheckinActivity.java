@@ -160,6 +160,9 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 
 			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
 			miEditCheckin.setVisible(false);
+			
+			CheckinEditMode.editMode = true;
+			
 		    return true;
 
 		}else{

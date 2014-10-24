@@ -9,6 +9,7 @@ import org.keenusa.connect.activities.AthleteProfileActivity;
 import org.keenusa.connect.adapters.AthleteCheckinAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
+import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
@@ -27,10 +28,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class AthleteCheckinFragment extends Fragment {
@@ -101,6 +102,17 @@ public class AthleteCheckinFragment extends Fragment {
 			athleteAttendanceList = session.getAthleteAttendance();
 		}
 		
+		athleteAttendanceListOriginal = new ArrayList<AthleteAttendance>();
+
+		for (int i = 0; i < athleteAttendanceList.size(); i++) {
+
+			athleteAttendanceListOriginal.add(new AthleteAttendance());
+
+			athleteAttendanceListOriginal.get(i).setAttendanceValue(
+					athleteAttendanceList.get(i).getAttendanceValue());
+
+		}
+
 		// Add existing athletes in hash map
 		for(AthleteAttendance athleteAttendance: athleteAttendanceList){
 			AthleteAttendanceMap.put(athleteAttendance.getAthlete().getFirstLastName(), athleteAttendance.getAthlete());
@@ -113,17 +125,6 @@ public class AthleteCheckinFragment extends Fragment {
 				athleteAttendance.setAthlete(athlete);
 				athleteAttendance.setRemoteSessionId(session.getRemoteId());
 			}
-		}
-
-		athleteAttendanceListOriginal = new ArrayList<AthleteAttendance>();
-
-		for (int i = 0; i < athleteAttendanceList.size(); i++) {
-
-			athleteAttendanceListOriginal.add(new AthleteAttendance());
-
-			athleteAttendanceListOriginal.get(i).setAttendanceValue(
-					athleteAttendanceList.get(i).getAttendanceValue());
-
 		}
 	}
 
@@ -249,18 +250,44 @@ public class AthleteCheckinFragment extends Fragment {
 
 	public void postAttendance() {
 		for (int i = 0; i < athleteAttendanceList.size(); i++) {
-			if (athleteAttendanceListOriginal.get(i) != null) {
-				if (athleteAttendanceListOriginal.get(i).getAttendanceValue() != athleteAttendanceList
-						.get(i).getAttendanceValue()) {
-					
-					updateRecord(athleteAttendanceList.get(i));
+			if (i < athleteAttendanceListOriginal.size()) {
+				if (athleteAttendanceListOriginal.get(i) != null) {
+					if (athleteAttendanceListOriginal.get(i).getAttendanceValue() != athleteAttendanceList
+							.get(i).getAttendanceValue()) {
+
+						updateRecord(athleteAttendanceList.get(i));
+					}
+				}
+			} else { // new attendance records
+				if(athleteAttendanceList.get(i).getAttendanceValue() != null){
+					athleteAttendanceList.get(i).setRemoteSessionId(
+							athleteAttendanceList.get(0).getRemoteSessionId());
+					addRecord(athleteAttendanceList.get(i));
 				}
 			}
+
 		}
 	}
 
 	public void updateRecord(AthleteAttendance athlete) {
 		client.updateAthleteAttendanceRecord(athlete,
+				new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+
+					@Override
+					public void onRecordUpdateResult(AthleteAttendance object) {
+						Log.d("temp", "attendance posted");
+					}
+
+					@Override
+					public void onRecordUpdateError() {
+						Log.d("temp", "attendance post error");
+
+					}
+				});
+	}
+
+	public void addRecord(AthleteAttendance athlete) {
+		client.insertNewAthleteAttendanceRecord(athlete,
 				new CivicoreUpdateDataResultListener<AthleteAttendance>() {
 
 					@Override
