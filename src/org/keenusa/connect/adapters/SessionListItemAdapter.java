@@ -1,6 +1,6 @@
 package org.keenusa.connect.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.models.KeenSession;
@@ -22,8 +22,7 @@ public class SessionListItemAdapter extends ArrayAdapter<KeenSession> {
 		TextView tvSessionTime;
 	}
 
-	public SessionListItemAdapter(Context context,
-			ArrayList<KeenSession> sessionList) {
+	public SessionListItemAdapter(Context context, List<KeenSession> sessionList) {
 		super(context, 0, sessionList);
 	}
 
@@ -33,20 +32,14 @@ public class SessionListItemAdapter extends ArrayAdapter<KeenSession> {
 
 		ViewHolder viewHolder;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(
-					R.layout.session_list_item, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.session_list_item, parent, false);
 
 			viewHolder = new ViewHolder();
-			viewHolder.tvSessionName = (TextView) convertView
-					.findViewById(R.id.tvSessionName);
-			viewHolder.tvSessionLocation = (TextView) convertView
-					.findViewById(R.id.tvSessionLocation);
-			viewHolder.tvNumAthletes = (TextView) convertView
-					.findViewById(R.id.tvNumAthletes);
-			viewHolder.tvNumCoaches = (TextView) convertView
-					.findViewById(R.id.tvNumCoaches);
-			viewHolder.tvSessionTime = (TextView) convertView
-					.findViewById(R.id.tvSessionTime);
+			viewHolder.tvSessionName = (TextView) convertView.findViewById(R.id.tvSessionName);
+			viewHolder.tvSessionLocation = (TextView) convertView.findViewById(R.id.tvSessionLocation);
+			viewHolder.tvNumAthletes = (TextView) convertView.findViewById(R.id.tvNumAthletes);
+			viewHolder.tvNumCoaches = (TextView) convertView.findViewById(R.id.tvNumCoaches);
+			viewHolder.tvSessionTime = (TextView) convertView.findViewById(R.id.tvSessionTime);
 
 			convertView.setTag(viewHolder);
 		} else {
@@ -54,15 +47,13 @@ public class SessionListItemAdapter extends ArrayAdapter<KeenSession> {
 		}
 
 		viewHolder.tvSessionName.setText(session.getProgram().getName());
-		
-		viewHolder.tvSessionLocation.setText(session.getProgram().getLocation()
-				.getCity()
-				+ ", " + session.getProgram().getLocation().getState());
-		
+
+		viewHolder.tvSessionLocation.setText(session.getProgram().getLocation().getLocationString());
+
 		viewHolder.tvNumAthletes.setText(session.getRegisteredAthleteCount() + "");
-		
+
 		viewHolder.tvNumCoaches.setText(session.getRegisteredCoachCount() + "");
-		
+
 		viewHolder.tvSessionTime.setText(session.getProgram().getProgramTimes());
 
 		return convertView;

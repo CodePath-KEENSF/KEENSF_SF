@@ -31,7 +31,6 @@ public class RemoteDataLoader extends Thread {
 
 	@Override
 	public void run() {
-
 		loadAffiliate();
 		loadCoaches();
 		loadAthletes();
@@ -40,6 +39,12 @@ public class RemoteDataLoader extends Thread {
 		loadProgramEnrolments();
 		loadAthleteAttendances();
 		loadCoachAttendances();
+		postResult();
+	}
+
+	private void postResult() {
+		if (listener != null)
+			listener.onDataLoaderResult();
 
 	}
 

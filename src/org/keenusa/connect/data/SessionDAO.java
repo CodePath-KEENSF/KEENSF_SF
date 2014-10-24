@@ -4,23 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.keenusa.connect.data.tables.ProgramTable;
 import org.keenusa.connect.data.tables.SessionTable;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
+import org.keenusa.connect.models.Location;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 public class SessionDAO {
 
 	private KeenConnectDB localDB;
-	ProgramDAO programDAO;
-	String[] columnNames = { SessionTable.ID_COL_NAME, SessionTable.REMOTE_ID_COL_NAME, SessionTable.REMOTE_CREATED_COL_NAME,
-			SessionTable.REMOTE_UPDATED_COL_NAME, SessionTable.SESSION_DATE_COL_NAME, SessionTable.PROGRAM_ID_COL_NAME,
-			SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME, SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME,
-			SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME };
+	private ProgramDAO programDAO;
+
+	private static String JOINED_TABLES_STRING = SessionTable.TABLE_NAME + " INNER JOIN " + ProgramTable.TABLE_NAME + " ON "
+			+ SessionTable.TABLE_NAME + "." + SessionTable.PROGRAM_ID_COL_NAME + "=" + ProgramTable.TABLE_NAME + "." + ProgramTable.ID_COL_NAME;
+
+	String[] sessionListColumnNames = { SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME, SessionTable.REMOTE_ID_COL_NAME,
+			SessionTable.REMOTE_CREATED_COL_NAME, SessionTable.REMOTE_UPDATED_COL_NAME, SessionTable.SESSION_DATE_COL_NAME,
+			SessionTable.PROGRAM_ID_COL_NAME, SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME,
+			SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME, ProgramTable.NAME_COL_NAME,
+			ProgramTable.TIMES_COL_NAME, ProgramTable.REMOTE_ID_COL_NAME, ProgramTable.ADDRESS_ONE_COL_NAME, ProgramTable.ADDRESS_TWO_COL_NAME,
+			ProgramTable.CITY_COL_NAME, ProgramTable.STATE_COL_NAME, ProgramTable.ZIP_CODE_COL_NAME };
+
+	String[] sessionColumnNames = { SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME, SessionTable.REMOTE_ID_COL_NAME,
+			SessionTable.REMOTE_CREATED_COL_NAME, SessionTable.REMOTE_UPDATED_COL_NAME, SessionTable.SESSION_DATE_COL_NAME,
+			SessionTable.PROGRAM_ID_COL_NAME, SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME,
+			SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME };
 
 	public SessionDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
@@ -30,7 +44,10 @@ public class SessionDAO {
 	public List<KeenSession> getKeenSessionList() {
 		List<KeenSession> allSessions = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor sessionsCursor = db.query(SessionTable.TABLE_NAME, columnNames, null, null, null, null, null);
+		SQLiteQueryBuilder sqlBuilder = new SQLiteQueryBuilder();
+		sqlBuilder.setTables(JOINED_TABLES_STRING);
+		Cursor sessionsCursor = sqlBuilder.query(db, sessionListColumnNames, null, null, null, null, SessionTable.TABLE_NAME + "."
+				+ SessionTable.SESSION_DATE_COL_NAME + " DESC", null);
 
 		if (sessionsCursor.getCount() > 0) {
 			sessionsCursor.moveToFirst();
@@ -45,10 +62,11 @@ public class SessionDAO {
 	public KeenSession getSessionByRemoteId(long id) {
 		KeenSession session = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor sessionCursor = db.query(SessionTable.TABLE_NAME, columnNames, SessionTable.REMOTE_ID_COL_NAME + "=" + id, null, null, null, null);
+		Cursor sessionCursor = db.query(SessionTable.TABLE_NAME, sessionColumnNames, SessionTable.TABLE_NAME + "." + SessionTable.REMOTE_ID_COL_NAME
+				+ "=" + id, null, null, null, null);
 		if (sessionCursor.getCount() > 0) {
 			sessionCursor.moveToFirst();
-			session = createSessionFromCursor(sessionCursor);
+			session = createRichSessionFromCursor(sessionCursor);
 		}
 		sessionCursor.close();
 		return session;
@@ -57,10 +75,11 @@ public class SessionDAO {
 	public KeenSession getSessionById(long id) {
 		KeenSession session = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor sessionCursor = db.query(SessionTable.TABLE_NAME, columnNames, SessionTable.ID_COL_NAME + "=" + id, null, null, null, null);
+		Cursor sessionCursor = db.query(SessionTable.TABLE_NAME, sessionColumnNames, SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME + "="
+				+ id, null, null, null, null);
 		if (sessionCursor.getCount() > 0) {
 			sessionCursor.moveToFirst();
-			session = createSessionFromCursor(sessionCursor);
+			session = createRichSessionFromCursor(sessionCursor);
 		}
 		sessionCursor.close();
 		return session;
@@ -142,6 +161,43 @@ public class SessionDAO {
 		return sessions;
 	}
 
+	private KeenSession createRichSessionFromCursor(Cursor c) {
+		KeenSession session = null;
+		if (c.getPosition() >= 0) {
+			session = new KeenSession();
+			try {
+				session.setId(c.getLong(c.getColumnIndexOrThrow(SessionTable.ID_COL_NAME)));
+				session.setRemoteId(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_ID_COL_NAME)));
+				session.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_CREATED_COL_NAME)));
+				session.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_UPDATED_COL_NAME)));
+				session.setDate(new DateTime(c.getLong(c.getColumnIndexOrThrow(SessionTable.SESSION_DATE_COL_NAME))));
+
+				//				KeenProgram program = new KeenProgram();
+				//				program.setRemoteId(c.getLong(c.getColumnIndexOrThrow(ProgramTable.REMOTE_ID_COL_NAME)));
+				//				program.setName(c.getString(c.getColumnIndexOrThrow(ProgramTable.NAME_COL_NAME)));
+				//				program.setProgramTimes(c.getString(c.getColumnIndexOrThrow(ProgramTable.TIMES_COL_NAME)));
+				//
+				//				session.setProgram(program);
+				//				Location location = new Location();
+				//				location.setAddress1(c.getString(c.getColumnIndexOrThrow(LocationTable.ADDRESS_ONE_COL_NAME)));
+				//				location.setAddress2(c.getString(c.getColumnIndexOrThrow(LocationTable.ADDRESS_TWO_COL_NAME)));
+				//				location.setCity(c.getString(c.getColumnIndexOrThrow(LocationTable.CITY_COL_NAME)));
+				//				location.setState(c.getString(c.getColumnIndexOrThrow(LocationTable.STATE_COL_NAME)));
+				//				location.setZipCode(c.getString(c.getColumnIndexOrThrow(LocationTable.ZIP_CODE_COL_NAME)));
+				//				program.setLocation(location);
+
+				session.setNumberOfNewCoachesNeeded(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME)));
+				session.setNumberOfReturningCoachesNeeded(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME)));
+				boolean open = ((c.getInt(c.getColumnIndexOrThrow(SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME))) == 1 ? true : false);
+				session.setOpenToPublicRegistration(open);
+
+			} catch (IllegalArgumentException iax) {
+				session = null;
+			}
+		}
+		return session;
+	}
+
 	private KeenSession createSessionFromCursor(Cursor c) {
 		KeenSession session = null;
 		if (c.getPosition() >= 0) {
@@ -152,8 +208,21 @@ public class SessionDAO {
 				session.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_CREATED_COL_NAME)));
 				session.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_UPDATED_COL_NAME)));
 				session.setDate(new DateTime(c.getLong(c.getColumnIndexOrThrow(SessionTable.SESSION_DATE_COL_NAME))));
-				// TODO find program by remoteId if not found create one
-				//		values.put(SessionTable.SESSION_DATE_COL_NAME, session.getProgram().getId());
+
+				KeenProgram program = new KeenProgram();
+				program.setRemoteId(c.getLong(c.getColumnIndexOrThrow(ProgramTable.REMOTE_ID_COL_NAME)));
+				program.setName(c.getString(c.getColumnIndexOrThrow(ProgramTable.NAME_COL_NAME)));
+				program.setProgramTimes(c.getString(c.getColumnIndexOrThrow(ProgramTable.TIMES_COL_NAME)));
+				session.setProgram(program);
+
+				Location location = new Location();
+				location.setAddress1(c.getString(c.getColumnIndexOrThrow(ProgramTable.ADDRESS_ONE_COL_NAME)));
+				location.setAddress2(c.getString(c.getColumnIndexOrThrow(ProgramTable.ADDRESS_TWO_COL_NAME)));
+				location.setCity(c.getString(c.getColumnIndexOrThrow(ProgramTable.CITY_COL_NAME)));
+				location.setState(c.getString(c.getColumnIndexOrThrow(ProgramTable.STATE_COL_NAME)));
+				location.setZipCode(c.getString(c.getColumnIndexOrThrow(ProgramTable.ZIP_CODE_COL_NAME)));
+				program.setLocation(location);
+
 				session.setNumberOfNewCoachesNeeded(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME)));
 				session.setNumberOfReturningCoachesNeeded(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME)));
 				boolean open = ((c.getInt(c.getColumnIndexOrThrow(SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME))) == 1 ? true : false);
