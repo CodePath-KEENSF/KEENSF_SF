@@ -76,7 +76,7 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 				Intent i = new Intent(getActivity(), AthleteProfileActivity.class);
 				i.putExtra(ATHLETE_EXTRA_TAG, adapter.getItem(position));
 				startActivity(i);
-
+				getActivity().overridePendingTransition(R.anim.bottom_out, R.anim.top_in);
 			}
 		});
 		return v;

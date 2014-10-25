@@ -30,8 +30,17 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="@string/date_changable"
-            android:textColor="@color/main_theme_text_color"
-            android:textSize="15sp" />
+            android:textColor="@color/secondary_theme_color"
+            android:textSize="20sp" 
+            android:textStyle="bold"/>
+        
+        <LinearLayout
+	        android:id="@+id/controls"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="#7f000000"
+	        android:orientation="vertical"
+	        android:layout_gravity="bottom"/>
 
         <TextView
             android:id="@+id/tvProgramName"
@@ -44,7 +53,8 @@
             android:paddingRight="10dp"
             android:text="@string/program_name_changable"
             android:textColor="@color/main_theme_color"
-            android:textSize="25sp" />
+            android:textSize="25sp" 
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvProgramType"
@@ -57,7 +67,8 @@
             android:paddingRight="5dp"
             android:text="@string/program_type"
             android:textColor="@color/secondary_theme_color"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/tvProgramTimes"
@@ -68,8 +79,10 @@
             android:gravity="center"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:textStyle="bold"
+            android:textSize="15dp"
             android:text="@string/session_changable"
-            android:textColor="@color/main_theme_text_color" />
+            android:textColor="@color/default_color" />
 
         <TextView
             android:id="@+id/tvLocation"
@@ -81,14 +94,17 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/location_changable"
-            android:textColor="@color/main_theme_text_color"
-            android:textSize="12sp" />
+            android:textColor="@color/default_color"
+            android:textStyle="bold"
+            android:textSize="15sp" />
         
         <LinearLayout
         android:id="@+id/rlParticipantCounts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="330dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="15dp"
+        android:paddingTop="5dp"
         android:orientation="horizontal" >
 
         <RelativeLayout
@@ -129,6 +145,7 @@
                 android:textColor="@color/main_theme_text_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="@string/athletes_registered_label" />
 
         </RelativeLayout>    
@@ -171,6 +188,7 @@
                 android:textColor="@color/main_theme_text_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="@string/coaches_registered_label" />
         </RelativeLayout>
 
