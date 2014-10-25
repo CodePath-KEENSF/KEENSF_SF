@@ -152,7 +152,6 @@ public class ProgramDAO {
 		values.put(ProgramTable.TYPE_COL_NAME, program.getGeneralProgramType().toString());
 		values.put(ProgramTable.TIMES_COL_NAME, program.getProgramTimes());
 		values.put(ProgramTable.REGISTRATION_EMAL_TEXT_COL_NAME, program.getCoachRegistrationConfirmationEmailText());
-		db.update(ProgramTable.TABLE_NAME, values, ProgramTable.ID_COL_NAME + "=" + program.getId(), null);
 		if (program.getLocation() != null) {
 			values.put(ProgramTable.ADDRESS_ONE_COL_NAME, program.getLocation().getAddress1());
 			values.put(ProgramTable.ADDRESS_TWO_COL_NAME, program.getLocation().getAddress2());
@@ -160,6 +159,7 @@ public class ProgramDAO {
 			values.put(ProgramTable.STATE_COL_NAME, program.getLocation().getState());
 			values.put(ProgramTable.ZIP_CODE_COL_NAME, program.getLocation().getZipCode());
 		}
+		db.update(ProgramTable.TABLE_NAME, values, ProgramTable.ID_COL_NAME + "=" + program.getId(), null);
 		db.setTransactionSuccessful();
 		transactionStatus = true;
 		db.endTransaction();

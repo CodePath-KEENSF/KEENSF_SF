@@ -28,6 +28,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 	public static final String DATE_FORMAT_LONG = "MMddyyyy";
+	private Context context;
 
 	public static class ViewHolder {
 		TextView tvSessionName;
@@ -35,7 +36,8 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 		TextView tvNumAthletes;
 		TextView tvNumCoaches;
 		TextView tvSessionTime;
-		RelativeLayout rlParticipantCounts;
+		RelativeLayout rlCheckInAction;
+
 	}
 
 	public static class HeaderViewHolder {
@@ -44,6 +46,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 
 	public StickySessionListItemAdapter(Context context, ArrayList<KeenSession> sessionList) {
 		super(context, 0, sessionList);
+		this.context = context;
 	}
 
 	@Override
@@ -61,15 +64,15 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvNumAthletes = (TextView) convertView.findViewById(R.id.tvNumAthletes);
 			viewHolder.tvNumCoaches = (TextView) convertView.findViewById(R.id.tvNumCoaches);
 			viewHolder.tvSessionTime = (TextView) convertView.findViewById(R.id.tvSessionTime);
-			viewHolder.rlParticipantCounts = (RelativeLayout)convertView.findViewById(R.id.rlParticipantCounts);
+			viewHolder.rlCheckInAction = (RelativeLayout) convertView.findViewById(R.id.rlCheckInAction);
 
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		viewHolder.rlParticipantCounts.setTag(session);
-		
+		viewHolder.rlCheckInAction.setTag(session);
+
 		if (program != null && program.getName() != null) {
 			viewHolder.tvSessionName.setText(session.getProgram().getName());
 		} else {
@@ -82,25 +85,26 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvSessionLocation.setText("San Francisco");
 		}
 
-		viewHolder.tvNumAthletes.setText(session.getRegisteredAthleteCount() + "");
+		viewHolder.tvNumAthletes.setText(session.getNumberOfAthletesCheckedIn() + " / " + session.getRegisteredAthleteCount());
 
-		viewHolder.tvNumCoaches.setText(session.getRegisteredCoachCount() + "");
+		viewHolder.tvNumCoaches.setText(session.getNumberOfCoachesCheckedIn() + " / " + session.getRegisteredCoachCount() + "");
 
 		if (program != null && program.getProgramTimes() != null) {
 			viewHolder.tvSessionTime.setText(session.getProgram().getProgramTimes());
 		} else {
 			viewHolder.tvSessionTime.setText("12pm - 1pm");
 		}
-		
-		viewHolder.rlParticipantCounts.setOnClickListener(new OnClickListener() {
-			
+
+		viewHolder.rlCheckInAction.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				KeenSession session = (KeenSession)v.getTag(); 
+				KeenSession session = (KeenSession) v.getTag();
 				CheckinEditMode.editMode = true;
 				Intent checkinIntent = new Intent(getContext(), AthleteCoachCheckinActivity.class);
 				checkinIntent.putExtra("session", session);
-				((Activity)getContext()).startActivityForResult(checkinIntent, IntentCode.REQUEST_CODE);
+				((Activity) getContext()).startActivityForResult(checkinIntent, IntentCode.REQUEST_CODE);
+				((Activity) getContext()).overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
 

@@ -43,7 +43,7 @@ public class LoginActivity extends Activity {
 					public void onDataLoaderResult() {
 						Intent i = new Intent(LoginActivity.this, SessionListActivity.class);
 						startActivity(i);
-						
+
 					}
 
 					@Override
@@ -72,7 +72,7 @@ public class LoginActivity extends Activity {
 	private void openSessionAthleteCoachList() {
 		Intent i = new Intent(this, SessionAthleteCoachListActivity.class);
 		startActivity(i);
-		overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
+		overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
 
 }

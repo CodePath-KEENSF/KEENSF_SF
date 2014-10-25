@@ -7,7 +7,8 @@
         android:id="@+id/rlSessionDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/rlParticipantCounts" >
+        android:layout_toLeftOf="@+id/rlParticipantCounts"
+        android:layout_toRightOf="@+id/rlCheckInAction" >
 
         <TextView
             android:id="@+id/tvSessionName"
@@ -49,12 +50,33 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rlCheckInAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rlSessionDetails"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp" >
+
+        <ImageView
+            android:id="@+id/ivCheckin"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_checkin_drawable" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/rlParticipantCounts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/rlSessionDetails"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp" >
 
         <TextView
             android:id="@+id/tvNumAthletes"
@@ -62,8 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:drawableLeft="@drawable/ic_nick_name"
+            android:drawablePadding="5dp"
             android:gravity="center"
-            android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="0dp"
             android:paddingTop="10dp"
@@ -74,25 +96,15 @@
             android:id="@+id/tvNumCoaches"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tvNumAthletes"
+            android:layout_below="@id/tvNumAthletes"
             android:drawableLeft="@drawable/ic_keen_kid_logo"
+            android:drawablePadding="5dp"
             android:gravity="center"
-            android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="10dp"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:text="@string/num_coaches_label"
             android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <ImageView
-            android:id="@+id/ivCheckin"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:scaleType="fitXY"
-            android:layout_below="@+id/tvNumCoaches"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_checkin_drawable" />
-
     </RelativeLayout>
 
 </RelativeLayout>

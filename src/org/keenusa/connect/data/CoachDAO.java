@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.keenusa.connect.data.tables.AthleteTable;
-import org.keenusa.connect.models.Athlete;
+import org.keenusa.connect.data.tables.CoachTable;
+import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.models.Location;
-import org.keenusa.connect.models.Parent;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,211 +18,179 @@ public class CoachDAO {
 
 	private KeenConnectDB localDB;
 
-	String[] columnNames = { AthleteTable.ID_COL_NAME, AthleteTable.REMOTE_ID_COL_NAME, AthleteTable.REMOTE_CREATED_COL_NAME,
-			AthleteTable.REMOTE_UPDATED_COL_NAME, AthleteTable.FIRST_NAME_COL_NAME, AthleteTable.MIDDLE_NAME_COL_NAME,
-			AthleteTable.LAST_NAME_COL_NAME, AthleteTable.EMAIL_COL_NAME, AthleteTable.PHONE_COL_NAME, AthleteTable.GENDER_COL_NAME,
-			AthleteTable.NICKNAME_COL_NAME, AthleteTable.DOB_COL_NAME, AthleteTable.PRIMLANGUAGE_COL_NAME, AthleteTable.ACTIVE_COL_NAME,
-			AthleteTable.PARENT_MOBILE_COL_NAME, AthleteTable.PARENT_EMAIL_COL_NAME, AthleteTable.PARENT_PHONE_COL_NAME,
-			AthleteTable.PARENT_RELATIONSHIP_COL_NAME, AthleteTable.PARENT_FIRST_NAME_COL_NAME, AthleteTable.PARENT_LAST_NAME_COL_NAME,
-			AthleteTable.CITY_COL_NAME, AthleteTable.STATE_COL_NAME, AthleteTable.ZIPCODE_COL_NAME };
+	String[] columnNames = { CoachTable.ID_COL_NAME, CoachTable.REMOTE_ID_COL_NAME, CoachTable.REMOTE_CREATED_COL_NAME,
+			CoachTable.REMOTE_UPDATED_COL_NAME, CoachTable.FIRST_NAME_COL_NAME, CoachTable.MIDDLE_NAME_COL_NAME, CoachTable.LAST_NAME_COL_NAME,
+			CoachTable.EMAIL_COL_NAME, CoachTable.PHONE_COL_NAME, CoachTable.MOBILE_COL_NAME, CoachTable.GENDER_COL_NAME, CoachTable.DOB_COL_NAME,
+			CoachTable.LANGUAGES_COL_NAME, CoachTable.SKILLS_COL_NAME, CoachTable.ACTIVE_COL_NAME, CoachTable.CITY_COL_NAME,
+			CoachTable.STATE_COL_NAME, CoachTable.ZIPCODE_COL_NAME };
 
 	public CoachDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
 	}
 
-	public List<Athlete> getAthleteList() {
-		List<Athlete> allAthletes = null;
+	public List<Coach> getCoachList() {
+		List<Coach> allCoaches = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor athletesCursor = db.query(AthleteTable.TABLE_NAME, columnNames, null, null, null, null,
-				AthleteTable.REMOTE_CREATED_COL_NAME + " DESC", null);
+		Cursor coachsCursor = db
+				.query(CoachTable.TABLE_NAME, columnNames, null, null, null, null, CoachTable.REMOTE_CREATED_COL_NAME + " DESC", null);
 
-		if (athletesCursor.getCount() > 0) {
-			athletesCursor.moveToFirst();
-			allAthletes = createAthleteListFromCursor(athletesCursor);
+		if (coachsCursor.getCount() > 0) {
+			coachsCursor.moveToFirst();
+			allCoaches = createCoachListFromCursor(coachsCursor);
 		} else {
-			allAthletes = new ArrayList<Athlete>();
+			allCoaches = new ArrayList<Coach>();
 		}
-		athletesCursor.close();
-		return allAthletes;
+		coachsCursor.close();
+		return allCoaches;
 	}
 
-	public Athlete geAthleteByRemoteId(long id) {
-		Athlete athlete = null;
+	public Coach geCoachByRemoteId(long id) {
+		Coach coach = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor athleteCursor = db.query(AthleteTable.TABLE_NAME, columnNames, AthleteTable.REMOTE_ID_COL_NAME + "=" + id, null, null, null, null);
-		if (athleteCursor.getCount() > 0) {
-			athleteCursor.moveToFirst();
-			athlete = createAthleteFromCursor(athleteCursor);
+		Cursor coachCursor = db.query(CoachTable.TABLE_NAME, columnNames, CoachTable.REMOTE_ID_COL_NAME + "=" + id, null, null, null, null);
+		if (coachCursor.getCount() > 0) {
+			coachCursor.moveToFirst();
+			coach = createCoachFromCursor(coachCursor);
 		}
-		athleteCursor.close();
-		return athlete;
+		coachCursor.close();
+		return coach;
 	}
 
-	public Athlete getAthleteById(long id) {
-		Athlete athlete = null;
+	public Coach getCoachById(long id) {
+		Coach coach = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor athleteCursor = db.query(AthleteTable.TABLE_NAME, columnNames, AthleteTable.ID_COL_NAME + "=" + id, null, null, null, null);
-		if (athleteCursor.getCount() > 0) {
-			athleteCursor.moveToFirst();
-			athlete = createAthleteFromCursor(athleteCursor);
+		Cursor coachCursor = db.query(CoachTable.TABLE_NAME, columnNames, CoachTable.ID_COL_NAME + "=" + id, null, null, null, null);
+		if (coachCursor.getCount() > 0) {
+			coachCursor.moveToFirst();
+			coach = createCoachFromCursor(coachCursor);
 		}
-		athleteCursor.close();
-		return athlete;
+		coachCursor.close();
+		return coach;
 	}
 
-	public long saveNewAthlete(Athlete athlete) {
+	public long saveNewCoach(Coach coach) {
 
-		long athleteId = 0;
+		long coachId = 0;
 		SQLiteDatabase db = localDB.getWritableDatabase();
-		Athlete dbAthlete = geAthleteByRemoteId(athlete.getRemoteId());
-		if (dbAthlete == null) {
+		Coach dbCoach = geCoachByRemoteId(coach.getRemoteId());
+		if (dbCoach == null) {
 			db.beginTransaction();
 
 			ContentValues values = new ContentValues();
-			values.put(AthleteTable.REMOTE_ID_COL_NAME, athlete.getRemoteId());
-			values.put(AthleteTable.REMOTE_CREATED_COL_NAME, athlete.getRemoteCreateTimestamp());
-			values.put(AthleteTable.REMOTE_UPDATED_COL_NAME, athlete.getRemoteUpdatedTimestamp());
-			if (athlete.getFirstName() != null) {
-				values.put(AthleteTable.FIRST_NAME_COL_NAME, athlete.getFirstName());
+			values.put(CoachTable.REMOTE_ID_COL_NAME, coach.getRemoteId());
+			values.put(CoachTable.REMOTE_CREATED_COL_NAME, coach.getRemoteCreateTimestamp());
+			values.put(CoachTable.REMOTE_UPDATED_COL_NAME, coach.getRemoteUpdatedTimestamp());
+			if (coach.getFirstName() != null) {
+				values.put(CoachTable.FIRST_NAME_COL_NAME, coach.getFirstName());
 			}
-			if (athlete.getMiddleName() != null) {
-				values.put(AthleteTable.MIDDLE_NAME_COL_NAME, athlete.getMiddleName());
+			if (coach.getMiddleName() != null) {
+				values.put(CoachTable.MIDDLE_NAME_COL_NAME, coach.getMiddleName());
 			}
-			if (athlete.getLastName() != null) {
-				values.put(AthleteTable.LAST_NAME_COL_NAME, athlete.getLastName());
+			if (coach.getLastName() != null) {
+				values.put(CoachTable.LAST_NAME_COL_NAME, coach.getLastName());
 			}
-			if (athlete.getEmail() != null) {
-				values.put(AthleteTable.EMAIL_COL_NAME, athlete.getEmail());
+			if (coach.getEmail() != null) {
+				values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
 			}
-			if (athlete.getPhone() != null) {
-				values.put(AthleteTable.PHONE_COL_NAME, athlete.getPhone());
+			if (coach.getPhone() != null) {
+				values.put(CoachTable.PHONE_COL_NAME, coach.getPhone());
 			}
-
-			values.put(AthleteTable.GENDER_COL_NAME, athlete.getGender().toString());
-			if (athlete.getNickName() != null) {
-				values.put(AthleteTable.NICKNAME_COL_NAME, athlete.getNickName());
-			}
-			if (athlete.getDateOfBirth() != null) {
-				values.put(AthleteTable.DOB_COL_NAME, athlete.getDateOfBirth().getMillis());
+			if (coach.getCellPhone() != null) {
+				values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
 			}
 
-			if (athlete.getPrimaryLanguage() != null) {
-				values.put(AthleteTable.PRIMLANGUAGE_COL_NAME, athlete.getPrimaryLanguage());
+			values.put(CoachTable.GENDER_COL_NAME, coach.getGender().toString());
+
+			if (coach.getDateOfBirth() != null) {
+				values.put(CoachTable.DOB_COL_NAME, coach.getDateOfBirth().getMillis());
 			}
-			values.put(AthleteTable.ACTIVE_COL_NAME, (athlete.isActive() ? 1 : 0));
-			if (athlete.getPrimaryParent() != null) {
-				if (athlete.getPrimaryParent().getCellPhone() != null) {
-					values.put(AthleteTable.PARENT_MOBILE_COL_NAME, athlete.getPrimaryParent().getCellPhone());
-				}
-				if (athlete.getPrimaryParent().getPhone() != null) {
-					values.put(AthleteTable.PARENT_PHONE_COL_NAME, athlete.getPrimaryParent().getPhone());
-				}
-				if (athlete.getPrimaryParent().getEmail() != null) {
-					values.put(AthleteTable.PARENT_EMAIL_COL_NAME, athlete.getPrimaryParent().getEmail());
-				}
-				if (athlete.getPrimaryParent().getParentRelationship() != null) {
-					values.put(AthleteTable.PARENT_RELATIONSHIP_COL_NAME, athlete.getPrimaryParent().getParentRelationship().toString());
-				}
-				if (athlete.getPrimaryParent().getFirstName() != null) {
-					values.put(AthleteTable.PARENT_FIRST_NAME_COL_NAME, athlete.getPrimaryParent().getFirstName());
-				}
-				if (athlete.getPrimaryParent().getLastName() != null) {
-					values.put(AthleteTable.PARENT_LAST_NAME_COL_NAME, athlete.getPrimaryParent().getLastName());
-				}
+
+			if (coach.getForeignLanguages() != null) {
+				values.put(CoachTable.LANGUAGES_COL_NAME, coach.getForeignLanguages());
 			}
-			if (athlete.getLocation() != null) {
-				if (athlete.getLocation().getCity() != null) {
-					values.put(AthleteTable.CITY_COL_NAME, athlete.getLocation().getCity());
+			if (coach.getSkillsExperience() != null) {
+				values.put(CoachTable.SKILLS_COL_NAME, coach.getSkillsExperience());
+			}
+			values.put(CoachTable.ACTIVE_COL_NAME, (coach.isActive() ? 1 : 0));
+
+			if (coach.getLocation() != null) {
+				if (coach.getLocation().getCity() != null) {
+					values.put(CoachTable.CITY_COL_NAME, coach.getLocation().getCity());
 				}
-				if (athlete.getLocation().getState() != null) {
-					values.put(AthleteTable.STATE_COL_NAME, athlete.getLocation().getState());
+				if (coach.getLocation().getState() != null) {
+					values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getState());
 				}
-				if (athlete.getLocation().getZipCode() != null) {
-					values.put(AthleteTable.STATE_COL_NAME, athlete.getLocation().getZipCode());
+				if (coach.getLocation().getZipCode() != null) {
+					values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getZipCode());
 				}
 			}
 
-			athleteId = db.insert(AthleteTable.TABLE_NAME, null, values);
+			coachId = db.insert(CoachTable.TABLE_NAME, null, values);
 			db.setTransactionSuccessful();
 			db.endTransaction();
-		} else if (dbAthlete.getRemoteUpdatedTimestamp() < athlete.getRemoteUpdatedTimestamp()) {
-			// more recent version of the athlete - to be updated
-			athlete.setId(dbAthlete.getId());
-			updateAthlete(athlete);
+		} else if (dbCoach.getRemoteUpdatedTimestamp() < coach.getRemoteUpdatedTimestamp()) {
+			// more recent version of the Coach - to be updated
+			coach.setId(dbCoach.getId());
+			updateCoach(coach);
 		}
-		return athleteId;
+		return coachId;
 	}
 
-	private boolean updateAthlete(Athlete athlete) {
+	private boolean updateCoach(Coach coach) {
 
 		boolean transactionStatus = false;
 		SQLiteDatabase db = localDB.getWritableDatabase();
 		db.beginTransaction();
 		ContentValues values = new ContentValues();
 
-		values.put(AthleteTable.REMOTE_CREATED_COL_NAME, athlete.getRemoteCreateTimestamp());
-		values.put(AthleteTable.REMOTE_UPDATED_COL_NAME, athlete.getRemoteUpdatedTimestamp());
-		if (athlete.getFirstName() != null) {
-			values.put(AthleteTable.FIRST_NAME_COL_NAME, athlete.getFirstName());
+		values.put(CoachTable.REMOTE_CREATED_COL_NAME, coach.getRemoteCreateTimestamp());
+		values.put(CoachTable.REMOTE_UPDATED_COL_NAME, coach.getRemoteUpdatedTimestamp());
+		if (coach.getFirstName() != null) {
+			values.put(CoachTable.FIRST_NAME_COL_NAME, coach.getFirstName());
 		}
-		if (athlete.getMiddleName() != null) {
-			values.put(AthleteTable.MIDDLE_NAME_COL_NAME, athlete.getMiddleName());
+		if (coach.getMiddleName() != null) {
+			values.put(CoachTable.MIDDLE_NAME_COL_NAME, coach.getMiddleName());
 		}
-		if (athlete.getLastName() != null) {
-			values.put(AthleteTable.LAST_NAME_COL_NAME, athlete.getLastName());
+		if (coach.getLastName() != null) {
+			values.put(CoachTable.LAST_NAME_COL_NAME, coach.getLastName());
 		}
-		if (athlete.getEmail() != null) {
-			values.put(AthleteTable.EMAIL_COL_NAME, athlete.getEmail());
+		if (coach.getEmail() != null) {
+			values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
 		}
-		if (athlete.getPhone() != null) {
-			values.put(AthleteTable.PHONE_COL_NAME, athlete.getPhone());
+		if (coach.getPhone() != null) {
+			values.put(CoachTable.PHONE_COL_NAME, coach.getPhone());
 		}
-
-		values.put(AthleteTable.GENDER_COL_NAME, athlete.getGender().toString());
-		if (athlete.getNickName() != null) {
-			values.put(AthleteTable.NICKNAME_COL_NAME, athlete.getNickName());
-		}
-		if (athlete.getDateOfBirth() != null) {
-			values.put(AthleteTable.DOB_COL_NAME, athlete.getDateOfBirth().getMillis());
+		if (coach.getCellPhone() != null) {
+			values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
 		}
 
-		if (athlete.getPrimaryLanguage() != null) {
-			values.put(AthleteTable.PRIMLANGUAGE_COL_NAME, athlete.getPrimaryLanguage());
+		values.put(CoachTable.GENDER_COL_NAME, coach.getGender().toString());
+
+		if (coach.getDateOfBirth() != null) {
+			values.put(CoachTable.DOB_COL_NAME, coach.getDateOfBirth().getMillis());
 		}
-		values.put(AthleteTable.ACTIVE_COL_NAME, (athlete.isActive() ? 1 : 0));
-		if (athlete.getPrimaryParent() != null) {
-			if (athlete.getPrimaryParent().getCellPhone() != null) {
-				values.put(AthleteTable.PARENT_MOBILE_COL_NAME, athlete.getPrimaryParent().getCellPhone());
-			}
-			if (athlete.getPrimaryParent().getPhone() != null) {
-				values.put(AthleteTable.PARENT_PHONE_COL_NAME, athlete.getPrimaryParent().getPhone());
-			}
-			if (athlete.getPrimaryParent().getEmail() != null) {
-				values.put(AthleteTable.PARENT_EMAIL_COL_NAME, athlete.getPrimaryParent().getEmail());
-			}
-			if (athlete.getPrimaryParent().getParentRelationship() != null) {
-				values.put(AthleteTable.PARENT_RELATIONSHIP_COL_NAME, athlete.getPrimaryParent().getParentRelationship().toString());
-			}
-			if (athlete.getPrimaryParent().getFirstName() != null) {
-				values.put(AthleteTable.PARENT_FIRST_NAME_COL_NAME, athlete.getPrimaryParent().getFirstName());
-			}
-			if (athlete.getPrimaryParent().getLastName() != null) {
-				values.put(AthleteTable.PARENT_LAST_NAME_COL_NAME, athlete.getPrimaryParent().getLastName());
-			}
+
+		if (coach.getForeignLanguages() != null) {
+			values.put(CoachTable.LANGUAGES_COL_NAME, coach.getForeignLanguages());
 		}
-		if (athlete.getLocation() != null) {
-			if (athlete.getLocation().getCity() != null) {
-				values.put(AthleteTable.CITY_COL_NAME, athlete.getLocation().getCity());
+		if (coach.getSkillsExperience() != null) {
+			values.put(CoachTable.SKILLS_COL_NAME, coach.getSkillsExperience());
+		}
+		values.put(CoachTable.ACTIVE_COL_NAME, (coach.isActive() ? 1 : 0));
+
+		if (coach.getLocation() != null) {
+			if (coach.getLocation().getCity() != null) {
+				values.put(CoachTable.CITY_COL_NAME, coach.getLocation().getCity());
 			}
-			if (athlete.getLocation().getState() != null) {
-				values.put(AthleteTable.STATE_COL_NAME, athlete.getLocation().getState());
+			if (coach.getLocation().getState() != null) {
+				values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getState());
 			}
-			if (athlete.getLocation().getZipCode() != null) {
-				values.put(AthleteTable.STATE_COL_NAME, athlete.getLocation().getZipCode());
+			if (coach.getLocation().getZipCode() != null) {
+				values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getZipCode());
 			}
 		}
 
-		db.update(AthleteTable.TABLE_NAME, values, AthleteTable.ID_COL_NAME + "=" + athlete.getId(), null);
+		db.update(CoachTable.TABLE_NAME, values, CoachTable.ID_COL_NAME + "=" + coach.getId(), null);
 		db.setTransactionSuccessful();
 		transactionStatus = true;
 		db.endTransaction();
@@ -231,67 +198,56 @@ public class CoachDAO {
 
 	}
 
-	private List<Athlete> createAthleteListFromCursor(Cursor c) {
-		ArrayList<Athlete> athletes = new ArrayList<Athlete>(c.getCount());
+	private List<Coach> createCoachListFromCursor(Cursor c) {
+		ArrayList<Coach> coaches = new ArrayList<Coach>(c.getCount());
 		if (c.getCount() > 0) {
 			c.moveToFirst();
 			while (!c.isAfterLast()) {
-				Athlete athlete = createAthleteFromCursor(c);
-				if (athlete != null) {
-					athletes.add(athlete);
+				Coach coach = createCoachFromCursor(c);
+				if (coach != null) {
+					coaches.add(coach);
 				}
 				c.moveToNext();
 			}
 
 		}
-		return athletes;
+		return coaches;
 	}
 
-	private Athlete createAthleteFromCursor(Cursor c) {
-		Athlete athlete = null;
+	private Coach createCoachFromCursor(Cursor c) {
+		Coach coach = null;
 		if (c.getPosition() >= 0) {
-			athlete = new Athlete();
+			coach = new Coach();
 			try {
-				athlete.setId(c.getLong(c.getColumnIndexOrThrow(AthleteTable.ID_COL_NAME)));
-				athlete.setRemoteId(c.getLong(c.getColumnIndexOrThrow(AthleteTable.REMOTE_ID_COL_NAME)));
-				athlete.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(AthleteTable.REMOTE_CREATED_COL_NAME)));
-				athlete.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(AthleteTable.REMOTE_UPDATED_COL_NAME)));
-				athlete.setFirstName(c.getString(c.getColumnIndexOrThrow(AthleteTable.FIRST_NAME_COL_NAME)));
-				athlete.setMiddleName(c.getString(c.getColumnIndexOrThrow(AthleteTable.MIDDLE_NAME_COL_NAME)));
-				athlete.setLastName(c.getString(c.getColumnIndexOrThrow(AthleteTable.LAST_NAME_COL_NAME)));
-				athlete.setEmail(c.getString(c.getColumnIndexOrThrow(AthleteTable.EMAIL_COL_NAME)));
-				athlete.setPhone(c.getString(c.getColumnIndexOrThrow(AthleteTable.PHONE_COL_NAME)));
-				athlete.setGender(ContactPerson.Gender.valueOf(c.getString(c.getColumnIndexOrThrow(AthleteTable.GENDER_COL_NAME))));
-				athlete.setNickName(c.getString(c.getColumnIndexOrThrow(AthleteTable.NICKNAME_COL_NAME)));
-				long dob = c.getLong(c.getColumnIndexOrThrow(AthleteTable.DOB_COL_NAME));
+				coach.setId(c.getLong(c.getColumnIndexOrThrow(CoachTable.ID_COL_NAME)));
+				coach.setRemoteId(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_ID_COL_NAME)));
+				coach.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_CREATED_COL_NAME)));
+				coach.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_UPDATED_COL_NAME)));
+				coach.setFirstName(c.getString(c.getColumnIndexOrThrow(CoachTable.FIRST_NAME_COL_NAME)));
+				coach.setMiddleName(c.getString(c.getColumnIndexOrThrow(CoachTable.MIDDLE_NAME_COL_NAME)));
+				coach.setLastName(c.getString(c.getColumnIndexOrThrow(CoachTable.LAST_NAME_COL_NAME)));
+				coach.setEmail(c.getString(c.getColumnIndexOrThrow(CoachTable.EMAIL_COL_NAME)));
+				coach.setPhone(c.getString(c.getColumnIndexOrThrow(CoachTable.PHONE_COL_NAME)));
+				coach.setGender(ContactPerson.Gender.valueOf(c.getString(c.getColumnIndexOrThrow(CoachTable.GENDER_COL_NAME))));
+				coach.setCellPhone(c.getString(c.getColumnIndexOrThrow(CoachTable.MOBILE_COL_NAME)));
+				long dob = c.getLong(c.getColumnIndexOrThrow(CoachTable.DOB_COL_NAME));
 				if (dob != 0) {
-					athlete.setDateOfBirth(new DateTime(dob));
+					coach.setDateOfBirth(new DateTime(dob));
 				}
-				athlete.setPrimaryLanguage(c.getString(c.getColumnIndexOrThrow(AthleteTable.PRIMLANGUAGE_COL_NAME)));
-				boolean active = ((c.getInt(c.getColumnIndexOrThrow(AthleteTable.ACTIVE_COL_NAME))) == 1 ? true : false);
-				athlete.setActive(active);
-
-				Parent parent = new Parent();
-				parent.setFirstName(c.getString(c.getColumnIndexOrThrow(AthleteTable.PARENT_FIRST_NAME_COL_NAME)));
-				parent.setLastName(c.getString(c.getColumnIndexOrThrow(AthleteTable.PARENT_LAST_NAME_COL_NAME)));
-				parent.setCellPhone(c.getString(c.getColumnIndexOrThrow(AthleteTable.PARENT_MOBILE_COL_NAME)));
-				parent.setPhone(c.getString(c.getColumnIndexOrThrow(AthleteTable.PARENT_PHONE_COL_NAME)));
-				parent.setEmail(c.getString(c.getColumnIndexOrThrow(AthleteTable.PARENT_EMAIL_COL_NAME)));
-				String relationship = c.getString(c.getColumnIndexOrThrow(AthleteTable.PARENT_RELATIONSHIP_COL_NAME));
-				if (relationship != null) {
-					parent.setParentRelationship(Parent.ParentRelationship.valueOf(relationship));
-				}
-				athlete.setPrimaryParent(parent);
+				coach.setForeignLanguages(c.getString(c.getColumnIndexOrThrow(CoachTable.LANGUAGES_COL_NAME)));
+				coach.setSkillsExperience(c.getString(c.getColumnIndexOrThrow(CoachTable.SKILLS_COL_NAME)));
+				boolean active = ((c.getInt(c.getColumnIndexOrThrow(CoachTable.ACTIVE_COL_NAME))) == 1 ? true : false);
+				coach.setActive(active);
 				Location location = new Location();
-				location.setCity(c.getString(c.getColumnIndexOrThrow(AthleteTable.CITY_COL_NAME)));
-				location.setState(c.getString(c.getColumnIndexOrThrow(AthleteTable.STATE_COL_NAME)));
-				location.setZipCode(c.getString(c.getColumnIndexOrThrow(AthleteTable.ZIPCODE_COL_NAME)));
-				athlete.setLocation(location);
+				location.setCity(c.getString(c.getColumnIndexOrThrow(CoachTable.CITY_COL_NAME)));
+				location.setState(c.getString(c.getColumnIndexOrThrow(CoachTable.STATE_COL_NAME)));
+				location.setZipCode(c.getString(c.getColumnIndexOrThrow(CoachTable.ZIPCODE_COL_NAME)));
+				coach.setLocation(location);
 
 			} catch (IllegalArgumentException iax) {
-				athlete = null;
+				coach = null;
 			}
 		}
-		return athlete;
+		return coach;
 	}
 }

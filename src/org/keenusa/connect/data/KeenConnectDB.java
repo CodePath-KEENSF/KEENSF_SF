@@ -1,12 +1,15 @@
 package org.keenusa.connect.data;
 
 import org.keenusa.connect.data.tables.AffiliateTable;
+import org.keenusa.connect.data.tables.AthleteAttendanceTable;
 import org.keenusa.connect.data.tables.AthleteTable;
+import org.keenusa.connect.data.tables.CoachAttendanceTable;
 import org.keenusa.connect.data.tables.CoachTable;
-import org.keenusa.connect.data.tables.LocationTable;
 import org.keenusa.connect.data.tables.ProgramEnrollmentTable;
 import org.keenusa.connect.data.tables.ProgramTable;
 import org.keenusa.connect.data.tables.SessionTable;
+import org.keenusa.connect.models.AthleteAttendance;
+import org.keenusa.connect.models.CoachAttendance;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,6 +43,7 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 	}
 
 	private void createTriggers(SQLiteDatabase db) {
+		// increment number of athletes enrolled when new program enrollment record is inserted
 		StringBuilder sb = new StringBuilder();
 		sb.append("CREATE TRIGGER update_reg_ath_count AFTER INSERT ON ").append(ProgramEnrollmentTable.TABLE_NAME);
 		sb.append(" BEGIN ");
@@ -49,15 +53,64 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 		sb.append("; END;");
 		Log.e("TRIGGER", sb.toString());
 		db.execSQL(sb.toString());
+
+		// increment number of athletes checked in when new not registered athlete attendance record is inserted
+		sb = new StringBuilder();
+		sb.append("CREATE TRIGGER update_checked_ath_count AFTER INSERT ON ").append(AthleteAttendanceTable.TABLE_NAME);
+		sb.append(" WHEN ").append("new.").append(AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("<>'")
+				.append(AthleteAttendance.AttendanceValue.REGISTERED.toString()).append("'");
+		sb.append(" BEGIN ");
+		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME).append("=")
+				.append(SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME).append(" + 1");
+		sb.append(" WHERE ").append(SessionTable.ID_COL_NAME).append("=").append("new.").append(AthleteAttendanceTable.SESSION_ID_COL_NAME);
+		sb.append("; END;");
+		Log.e("TRIGGER", sb.toString());
+		db.execSQL(sb.toString());
+
+		// increment number of coaches registered when new coach attendance record is inserted
+		sb = new StringBuilder();
+		sb.append("CREATE TRIGGER update_registered_coach_count AFTER INSERT ON ").append(CoachAttendanceTable.TABLE_NAME);
+		sb.append(" BEGIN ");
+		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_COACHES_REGISTERED_COL_NAME).append("=")
+				.append(SessionTable.NUMBER_OF_COACHES_REGISTERED_COL_NAME).append(" + 1");
+		sb.append(" WHERE ").append(SessionTable.ID_COL_NAME).append("=").append("new.").append(CoachAttendanceTable.SESSION_ID_COL_NAME);
+		sb.append("; END;");
+		Log.e("TRIGGER", sb.toString());
+		db.execSQL(sb.toString());
+
+		// increment number of coaches checked in when new not registered coach attendance record is inserted
+		sb = new StringBuilder();
+		sb.append("CREATE TRIGGER update_checked_coach_count AFTER INSERT ON ").append(CoachAttendanceTable.TABLE_NAME);
+		sb.append(" WHEN ").append("new.").append(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("<>'")
+				.append(CoachAttendance.AttendanceValue.REGISTERED.toString()).append("'");
+		sb.append(" BEGIN ");
+		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME).append("=")
+				.append(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME).append(" + 1");
+		sb.append(" WHERE ").append(SessionTable.ID_COL_NAME).append("=").append("new.").append(CoachAttendanceTable.SESSION_ID_COL_NAME);
+		sb.append("; END;");
+		Log.e("TRIGGER", sb.toString());
+		db.execSQL(sb.toString());
+
+		// TODO decrement number of athletes checked in when attendance is updated to registered on athlete attendance record update
 		//		sb = new StringBuilder();
-		//		sb.append("CREATE TRIGGER update_reg_ath_count AFTER INSERT ON ").append(ProgramEnrollmentTable.TABLE_NAME);
+		//		sb.append("CREATE TRIGGER update_checked_coach_count AFTER UPDATE ON ").append(CoachAttendanceTable.TABLE_NAME);
+		//		sb.append(" WHEN ").append("new.").append(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("<>'")
+		//				.append(CoachAttendance.AttendanceValue.REGISTERED.toString()).append("'");
+		//		sb.append(" AND ").append("new.").append(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("<>'")
+		//		.append("old.").append(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME);
 		//		sb.append(" BEGIN ");
-		//		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME).append("=")
-		//				.append(SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME).append(" + 1");
-		//		sb.append(" WHERE ").append(SessionTable.PROGRAM_ID_COL_NAME).append("=").append("new.").append(ProgramEnrollmentTable.PROGRAM_ID_COL_NAME);
+		//		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME).append("=")
+		//				.append(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME).append(" + 1");
+		//		sb.append(" WHERE ").append(SessionTable.ID_COL_NAME).append("=").append("new.").append(CoachAttendanceTable.SESSION_ID_COL_NAME);
 		//		sb.append("; END;");
 		//		Log.e("TRIGGER", sb.toString());
 		//		db.execSQL(sb.toString());
+
+		// TODO increment number of athletes checked in when attendance is updated to other than registered on athlete attendance record update
+
+		// TODO decrement number of coaches checked in when attendance is updated to registered on coach attendance record update
+
+		// TODO increment number of coaches checked in when attendance is updated to other than registered on coach attendance record update
 
 	}
 
@@ -74,8 +127,8 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 		db.execSQL(ProgramTable.getCreateSQL());
 		db.execSQL(SessionTable.getCreateSQL());
 		db.execSQL(ProgramEnrollmentTable.getCreateSQL());
-		// TODO delete
-		db.execSQL(LocationTable.getCreateSQL());
+		db.execSQL(AthleteAttendanceTable.getCreateSQL());
+		db.execSQL(CoachAttendanceTable.getCreateSQL());
 	}
 
 	private void dropTables(SQLiteDatabase db) {
@@ -85,9 +138,8 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 		db.execSQL(ProgramTable.getDropTableSQL());
 		db.execSQL(SessionTable.getDropTableSQL());
 		db.execSQL(ProgramEnrollmentTable.getDropTableSQL());
-
-		// TODO delete
-		db.execSQL(LocationTable.getDropTableSQL());
+		db.execSQL(AthleteAttendanceTable.getDropTableSQL());
+		db.execSQL(CoachAttendanceTable.getDropTableSQL());
 
 	}
 

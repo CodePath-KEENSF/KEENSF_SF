@@ -20,6 +20,8 @@ public class CoachAttendance implements Serializable {
 	// mostly empty
 	private String comments;
 	private AttendanceValue attendanceValue;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	// used locally
 	private String coachFullName;
@@ -153,6 +155,22 @@ public class CoachAttendance implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
 	}
 
 }

@@ -15,7 +15,7 @@ public class ProgramEnrollmentDAO {
 
 	private KeenConnectDB localDB;
 	private ProgramDAO programDAO;
-	//	private AthleteDAO athleteDAO;
+	private AthleteDAO athleteDAO;
 
 	String[] columnNames = { ProgramEnrollmentTable.ID_COL_NAME, ProgramEnrollmentTable.REMOTE_ID_COL_NAME,
 			ProgramEnrollmentTable.REMOTE_CREATED_COL_NAME, ProgramEnrollmentTable.REMOTE_UPDATED_COL_NAME,
@@ -24,7 +24,7 @@ public class ProgramEnrollmentDAO {
 	public ProgramEnrollmentDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
 		programDAO = new ProgramDAO(context);
-		//		athleteDAO = new AthleteDAO(context);
+		athleteDAO = new AthleteDAO(context);
 	}
 
 	public List<KeenProgramEnrolment> getKeenProgramEnrollments(long programId) {
@@ -107,27 +107,6 @@ public class ProgramEnrollmentDAO {
 		return enrolmentId;
 	}
 
-	//	public long saveNewEmptyProgram(KeenProgram program) {
-	//
-	//		long programId = 0;
-	//		SQLiteDatabase db = localDB.getWritableDatabase();
-	//		KeenProgram dbProgram = getProgramByRemoteId(program.getRemoteId());
-	//		if (dbProgram == null) {
-	//			db.beginTransaction();
-	//			ContentValues values = new ContentValues();
-	//
-	//			values.put(ProgramTable.REMOTE_ID_COL_NAME, program.getRemoteId());
-	//			if (program.getName() != null) {
-	//				values.put(ProgramTable.NAME_COL_NAME, program.getName());
-	//			}
-	//			programId = db.insert(ProgramTable.TABLE_NAME, null, values);
-	//			db.setTransactionSuccessful();
-	//			db.endTransaction();
-	//		} else {
-	//			return dbProgram.getId();
-	//		}
-	//		return programId;
-	//	}
 	//
 	//	private boolean updateProgram(KeenProgram program) {
 	//		boolean transactionStatus = false;
@@ -174,9 +153,6 @@ public class ProgramEnrollmentDAO {
 	}
 
 	private KeenProgramEnrolment createProgramEnrollmentFromCursor(Cursor c) {
-		//		String[] columnNames = { ProgramEnrollmentTable.PROGRAM_ID_COL_NAME, ProgramEnrollmentTable.ATHLETE_ID_COL_NAME,
-		//				ProgramEnrollmentTable.WAITLIST_COL_NAME };
-
 		KeenProgramEnrolment enrollment = null;
 		if (c.getPosition() >= 0) {
 			enrollment = new KeenProgramEnrolment();
