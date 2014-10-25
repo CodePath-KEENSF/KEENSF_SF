@@ -94,23 +94,21 @@ public class SessionDetailsActivity extends FragmentActivity {
 
 	private void changeBackgroundImage(String name) {
 		if (name.equals("Sports 1")){
-			image.setImageResource(R.drawable.sport1);
+			image.setImageResource(R.drawable.sports1);
 		} else if (name.equals("Sports 2")) {
-			image.setImageResource(R.drawable.sport2);
+			image.setImageResource(R.drawable.sports2);
 		} else if (name.equals("Sports 1 & 2")) {
-			image.setImageResource(R.drawable.sport12);
-		} else if (name.equals("Basketball") || name.equals("Basketball Clinic - Hoops")) {
-			image.setImageResource(R.drawable.basketball);
+			image.setImageResource(R.drawable.sports1tennis);
+		} else if (name.equals("Basketball") || name.equals("Basketball Clinic - Hoops") || name.equals("Summer Family Pool Party or Basketball & Picnic")) {
+			image.setImageResource(R.drawable.basketballclinic);
 		} else if (name.equals("KEENquatics") || name.equals("KEENquatics - SWIM")) {
 			image.setImageResource(R.drawable.quatics);
 		} else if (name.equals("Summer Family Picnic & Games")) {
 			image.setImageResource(R.drawable.picnic);
 		} else if (name.equals("Kids Sports & Tennis - SFUHS")) {
-			image.setImageResource(R.drawable.kidssport);
+			image.setImageResource(R.drawable.sports1tennis);
 		} else if (name.equals("Kids and Young Adult Sports at YMCA") || name.equals("Kids Sports and Young Adult Sports - East Bay")) {
 			image.setImageResource(R.drawable.ymca);
-		} else if (name.equals("Basketball") || name.equals("Summer Family Pool Party or Basketball & Picnic")) {
-			image.setImageResource(R.drawable.basketball);
 		} else if (name.equals("Holiday Party 2012")) {
 			image.setImageResource(R.drawable.holidayparty);
 		} else if (name.equals("KEENGala: Pre-Event") || name.equals("KEENGala - Event Volunteer Shift 1") || name.equals("KEENGala - Event Volunteer Shift 2")) {
