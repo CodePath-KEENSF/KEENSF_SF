@@ -58,36 +58,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setView();
 		setData();
-//		applyBlur();
 	}
-
-//    private void applyBlur() {
-//		Bitmap tempbg = BitmapFactory.decodeResource(getResources(), R.drawable.sports_two);
-//		Bitmap final_Bitmap = BlurImage(tempbg);
-//	}
-//
-//    @SuppressLint("NewApi")
-//	Bitmap BlurImage(Bitmap input) {
-//		try {
-//			RenderScript rs = RenderScript.create(getApplicationContext());
-//			Allocation alloc = Allocation.createFromBitmap(rs, input);
-//			
-//			ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-//			blur.setRadius(21);
-//			blur.setInput(alloc);
-//			
-//			Bitmap result = Bitmap.createBitmap(input.getWidth(), input.getHeight(), Bitmap.Config.ARGB_8888);
-//			Allocation outAlloc = Allocation.createFromBitmap(rs, result);
-//			
-//			blur.forEach(outAlloc);
-//			outAlloc.copyTo(result);
-//			rs.destroy();
-//			
-//			return result;
-//		}catch (Exception e) {
-//			return input;
-//		}
-//	}
 
 	private void setData() {
 		String address = "";
@@ -112,17 +83,12 @@ public class SessionDetailsActivity extends FragmentActivity {
 		} else {
 			tvProgramTimes.setVisibility(View.GONE);
 		}
-		//		tvAttCoaches.setText(session.getRegisteredCoachCount() + "");
-		//		tvAttAthletes.setText(session.getRegisteredAthleteCount() + "");
-
-		// TODO - fix java.lang.ClassCastException: android.widget.TextView cannot be cast to android.widget.ProgressBar
 
 		_progressBarCoach.setProgress(session.getRegisteredCoachCount());
 		tvAttCoach.setText(session.getRegisteredCoachCount() + "");
 
 		_progressBarAthlete.setProgress(session.getRegisteredAthleteCount());
 		tvAttAthlete.setText(session.getRegisteredAthleteCount() + "");
-		
 		
 	}
 
@@ -159,20 +125,6 @@ public class SessionDetailsActivity extends FragmentActivity {
 	}
 
 	private void setView() {
-		// tvProgramNameLabel = (TextView)
-		// findViewById(R.id.tvProgramNameLabel);
-		// tvLocationLabel = (TextView) findViewById(R.id.tvLocationLabel);
-		// tvDateLabel = (TextView) findViewById(R.id.tvDateLabel);
-		// tvProgramActiveDateLabel = (TextView)
-		// findViewById(R.id.tvProgramActiveDateLabel);
-		// tvProgramTypeLabel = (TextView)
-		// findViewById(R.id.tvProgramTypeLabel);
-		// tvAttCoachesLabel = (TextView) findViewById(R.id.tvAttCoachesLabel);
-		// tvAttAthletesLabel = (TextView)
-		// findViewById(R.id.tvAttAthletesLabel);
-		//		btnCoachChkIn = (Button) findViewById(R.id.btnCoachChkIn);
-		//		btnAthleteChkIn = (Button) findViewById(R.id.btnAthleteChkIn);
-
 		tvProgramName = (TextView) findViewById(R.id.tvProgramName);
 		tvLocation = (TextView) findViewById(R.id.tvLocation);
 		tvDate = (TextView) findViewById(R.id.tvDate);
@@ -183,8 +135,6 @@ public class SessionDetailsActivity extends FragmentActivity {
 		tvAttCoach = (TextView) findViewById(R.id.tvAttCoach);
 		tvAttAthlete = (TextView) findViewById(R.id.tvAttAthlete);
 		image = (ImageView) findViewById(R.id.ivSessionBackgroundPic);
-		//		tvAttCoaches = (TextView) findViewById(R.id.tvAttCoaches);
-		//		tvAttAthletes = (TextView) findViewById(R.id.tvAttAthletes);
 	}
 
 	public void athleteCheckIn(View v) {
