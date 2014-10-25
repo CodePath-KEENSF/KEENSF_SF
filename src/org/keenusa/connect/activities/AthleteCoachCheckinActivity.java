@@ -9,6 +9,7 @@ import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.utilities.CheckinEditMode;
 import org.keenusa.connect.utilities.IntentCode;
+import org.keenusa.connect.utilities.PostCheckinUpdate;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -217,6 +218,7 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	}
 
 	private void postAttendance() {
+		PostCheckinUpdate.done = 0;
 		coachCheckinFragment.postAttendance();
 		athleteCheckinFragment.postAttendance();
 	}
@@ -224,7 +226,6 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	@Override
 	public void onFinishAddDialog(Coach coach) {
 		coachCheckinFragment.addCoach(coach);
-		
 	}
 
 }

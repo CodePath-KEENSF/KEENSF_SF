@@ -14,6 +14,8 @@ import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 import org.keenusa.connect.utilities.CheckinEditMode;
+import org.keenusa.connect.utilities.DebugInfo;
+import org.keenusa.connect.utilities.PostCheckinUpdate;
 import org.keenusa.connect.utilities.StringConstants;
 
 import android.content.Intent;
@@ -264,10 +266,15 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	public void updateRecord(CoachAttendance coach) {
+		PostCheckinUpdate.done++;
 		client.updateCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
 
 			@Override
 			public void onRecordUpdateResult(CoachAttendance updatedCoachAtt) {
+				PostCheckinUpdate.done--;
+				if(PostCheckinUpdate.done == 0){
+					DebugInfo.showToast(getActivity(), "Attendance Posted!");
+				}
 				Log.d("temp", "attendance updated");
 			}
 
@@ -280,11 +287,16 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	public void addRecord(CoachAttendance coach) {
+		PostCheckinUpdate.done++;
 		client.insertNewCoachAttendanceRecord(coach,
 				new CivicoreUpdateDataResultListener<CoachAttendance>() {
 
 					@Override
 					public void onRecordUpdateResult(CoachAttendance object) {
+						PostCheckinUpdate.done--;
+						if(PostCheckinUpdate.done == 0){
+							DebugInfo.showToast(getActivity(), "Attendance Posted!");
+						}
 						Log.d("temp", "attendance added");
 					}
 
@@ -297,8 +309,11 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	public void addCoach(Coach coach) {
+		int i = 0;
 		for(CoachAttendance coachAtt: coachAttendanceList){
+			i++;
 			if(coachAtt.getCoach().getFirstLastName().equals(coach.getFirstLastName())){
+				lvCoachCheckin.setSelection(i);
 				return;
 			}
 		}
