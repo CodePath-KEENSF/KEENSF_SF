@@ -12,6 +12,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class KeenConnectDB extends SQLiteOpenHelper {
 
@@ -35,11 +36,35 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		createTables(db);
+		createTriggers(db);
+	}
+
+	private void createTriggers(SQLiteDatabase db) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("CREATE TRIGGER update_reg_ath_count AFTER INSERT ON ").append(ProgramEnrollmentTable.TABLE_NAME);
+		sb.append(" BEGIN ");
+		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME).append("=")
+				.append(SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME).append(" + 1");
+		sb.append(" WHERE ").append(SessionTable.PROGRAM_ID_COL_NAME).append("=").append("new.").append(ProgramEnrollmentTable.PROGRAM_ID_COL_NAME);
+		sb.append("; END;");
+		Log.e("TRIGGER", sb.toString());
+		db.execSQL(sb.toString());
+		//		sb = new StringBuilder();
+		//		sb.append("CREATE TRIGGER update_reg_ath_count AFTER INSERT ON ").append(ProgramEnrollmentTable.TABLE_NAME);
+		//		sb.append(" BEGIN ");
+		//		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME).append("=")
+		//				.append(SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME).append(" + 1");
+		//		sb.append(" WHERE ").append(SessionTable.PROGRAM_ID_COL_NAME).append("=").append("new.").append(ProgramEnrollmentTable.PROGRAM_ID_COL_NAME);
+		//		sb.append("; END;");
+		//		Log.e("TRIGGER", sb.toString());
+		//		db.execSQL(sb.toString());
+
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		dropTables(db);
 		createTables(db);
+		createTriggers(db);
 	}
 
 	private void createTables(SQLiteDatabase db) {
@@ -64,6 +89,14 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 		// TODO delete
 		db.execSQL(LocationTable.getDropTableSQL());
 
+	}
+
+	// TODO proper sync should be implemented
+	public void cleanDB() {
+		SQLiteDatabase db = getWritableDatabase();
+		dropTables(db);
+		createTables(db);
+		createTriggers(db);
 	}
 
 }

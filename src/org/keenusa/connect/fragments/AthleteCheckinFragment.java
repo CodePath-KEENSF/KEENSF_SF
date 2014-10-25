@@ -13,6 +13,8 @@ import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
+import org.keenusa.connect.utilities.DebugInfo;
+import org.keenusa.connect.utilities.PostCheckinUpdate;
 import org.keenusa.connect.utilities.StringConstants;
 
 import android.content.Intent;
@@ -31,6 +33,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class AthleteCheckinFragment extends Fragment {
@@ -276,11 +279,16 @@ public class AthleteCheckinFragment extends Fragment {
 	}
 
 	public void updateRecord(AthleteAttendance athlete) {
+		PostCheckinUpdate.done++;
 		client.updateAthleteAttendanceRecord(athlete,
 				new CivicoreUpdateDataResultListener<AthleteAttendance>() {
 
 					@Override
 					public void onRecordUpdateResult(AthleteAttendance object) {
+						PostCheckinUpdate.done--;
+						if(PostCheckinUpdate.done == 0){
+							DebugInfo.showToast(getActivity(), "Attendance Posted!");
+						}
 						Log.d("temp", "attendance updated");
 					}
 
@@ -293,11 +301,16 @@ public class AthleteCheckinFragment extends Fragment {
 	}
 
 	public void addRecord(AthleteAttendance athlete) {
+		PostCheckinUpdate.done++;
 		client.insertNewAthleteAttendanceRecord(athlete,
 				new CivicoreUpdateDataResultListener<AthleteAttendance>() {
 
 					@Override
 					public void onRecordUpdateResult(AthleteAttendance object) {
+						PostCheckinUpdate.done--;
+						if(PostCheckinUpdate.done == 0){
+							DebugInfo.showToast(getActivity(), "Attendance Posted!");
+						}
 						Log.d("temp", "attendance added");
 					}
 

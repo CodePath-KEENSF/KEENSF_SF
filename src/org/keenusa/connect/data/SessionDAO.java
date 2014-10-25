@@ -27,7 +27,9 @@ public class SessionDAO {
 	String[] sessionListColumnNames = { SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME, SessionTable.REMOTE_ID_COL_NAME,
 			SessionTable.REMOTE_CREATED_COL_NAME, SessionTable.REMOTE_UPDATED_COL_NAME, SessionTable.SESSION_DATE_COL_NAME,
 			SessionTable.PROGRAM_ID_COL_NAME, SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME,
-			SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME, ProgramTable.NAME_COL_NAME,
+			SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME,
+			SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME, SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME,
+			SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME, SessionTable.NUMBER_OF_COACHES_REGISTERED_COL_NAME, ProgramTable.NAME_COL_NAME,
 			ProgramTable.TIMES_COL_NAME, ProgramTable.REMOTE_ID_COL_NAME, ProgramTable.ADDRESS_ONE_COL_NAME, ProgramTable.ADDRESS_TWO_COL_NAME,
 			ProgramTable.CITY_COL_NAME, ProgramTable.STATE_COL_NAME, ProgramTable.ZIP_CODE_COL_NAME };
 
@@ -228,11 +230,21 @@ public class SessionDAO {
 				boolean open = ((c.getInt(c.getColumnIndexOrThrow(SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME))) == 1 ? true : false);
 				session.setOpenToPublicRegistration(open);
 
+				session.setNumberOfAthletesRegistered(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME)));
+				session.setNumberOfAthletesCheckedIn(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME)));
+				session.setNumberOfCoachesRegistered(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_COACHES_REGISTERED_COL_NAME)));
+				session.setNumberOfCoachesCheckedIn(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME)));
+
 			} catch (IllegalArgumentException iax) {
 				session = null;
 			}
 		}
 		return session;
+	}
+
+	public void updateRegistrationAndAttendanceCounts() {
+		// TODO create triggers to populate counts
+
 	}
 
 }
