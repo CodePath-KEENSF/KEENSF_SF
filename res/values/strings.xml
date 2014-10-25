@@ -92,5 +92,6 @@
     <string name="cancel_label">CAN</string>
     <string name="mass_message_done_button">Done</string>
     <string name="mass_message_cancel_button">Cancel</string>
+    <string name="title_activity_splah_screen">SplahScreen</string>
 
 </resources>
