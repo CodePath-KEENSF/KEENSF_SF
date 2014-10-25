@@ -17,22 +17,22 @@ public class CoachTable {
 	public static final String DOB_COL_NAME = "coach_dob";
 	public static final String LANGUAGES_COL_NAME = "coach_languages";
 	public static final String SKILLS_COL_NAME = "coach_skills";
-	public static final String STATUS_COL_NAME = "athlete_status";
-	public static final String CITY_COL_NAME = "athlete_city";
-	public static final String STATE_COL_NAME = "athlete_state";
-	public static final String ZIPCODE_COL_NAME = "athlete_zipcode";
+	public static final String ACTIVE_COL_NAME = "coach_active";
+	public static final String CITY_COL_NAME = "coach_city";
+	public static final String STATE_COL_NAME = "coach_state";
+	public static final String ZIPCODE_COL_NAME = "coach_zipcode";
 
 	public static String getCreateSQL() {
 		return "CREATE TABLE " + TABLE_NAME + " (" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, " + REMOTE_ID_COL_NAME + " NUMBER, "
 				+ REMOTE_CREATED_COL_NAME + " NUMBER, " + REMOTE_UPDATED_COL_NAME + " NUMBER, " + FIRST_NAME_COL_NAME + " TEXT, "
 				+ MIDDLE_NAME_COL_NAME + " TEXT, " + LAST_NAME_COL_NAME + " TEXT, " + EMAIL_COL_NAME + " TEXT, " + PHONE_COL_NAME + " TEXT, "
 				+ MOBILE_COL_NAME + " TEXT, " + GENDER_COL_NAME + " TEXT, " + DOB_COL_NAME + " NUMBER, " + LANGUAGES_COL_NAME + " TEXT, "
-				+ STATUS_COL_NAME + " NUMBER, " + CITY_COL_NAME + " TEXT, " + STATE_COL_NAME + " TEXT, " + ZIPCODE_COL_NAME + " TEXT, "
+				+ ACTIVE_COL_NAME + " NUMBER, " + CITY_COL_NAME + " TEXT, " + STATE_COL_NAME + " TEXT, " + ZIPCODE_COL_NAME + " TEXT, "
 				+ SKILLS_COL_NAME + " TEXT);";
 	}
 
 	public static String getDropTableSQL() {
-		return "DROP TABLE IF EXIST " + TABLE_NAME + ";";
+		return "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	}
 
 }

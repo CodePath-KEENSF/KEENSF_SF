@@ -8,6 +8,7 @@ import org.keenusa.connect.models.remote.RemoteAffiliate;
 
 public class Affiliate {
 
+	private long id;
 	private long remoteId;
 	private String name;
 	// optional if want to display "about" or "info"
@@ -112,6 +113,14 @@ public class Affiliate {
 
 	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
 		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

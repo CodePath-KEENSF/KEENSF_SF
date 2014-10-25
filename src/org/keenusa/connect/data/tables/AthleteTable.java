@@ -16,7 +16,7 @@ public class AthleteTable {
 	public static final String NICKNAME_COL_NAME = "athlete_nickname";
 	public static final String DOB_COL_NAME = "athlete_dob";
 	public static final String PRIMLANGUAGE_COL_NAME = "athlete_language";
-	public static final String STATUS_COL_NAME = "athlete_status";
+	public static final String ACTIVE_COL_NAME = "athlete_active";
 	public static final String PARENT_MOBILE_COL_NAME = "parent_mobile";
 	public static final String PARENT_EMAIL_COL_NAME = "parent_email";
 	public static final String PARENT_PHONE_COL_NAME = "parent_phone";
@@ -32,13 +32,13 @@ public class AthleteTable {
 				+ REMOTE_CREATED_COL_NAME + " NUMBER, " + REMOTE_UPDATED_COL_NAME + " NUMBER, " + FIRST_NAME_COL_NAME + " TEXT, "
 				+ MIDDLE_NAME_COL_NAME + " TEXT, " + LAST_NAME_COL_NAME + " TEXT, " + EMAIL_COL_NAME + " TEXT, " + PHONE_COL_NAME + " TEXT, "
 				+ GENDER_COL_NAME + " TEXT, " + NICKNAME_COL_NAME + " TEXT, " + DOB_COL_NAME + " NUMBER, " + PRIMLANGUAGE_COL_NAME + " TEXT, "
-				+ STATUS_COL_NAME + " NUMBER, " + CITY_COL_NAME + " TEXT, " + STATE_COL_NAME + " TEXT, " + ZIPCODE_COL_NAME + " TEXT, "
+				+ ACTIVE_COL_NAME + " NUMBER, " + CITY_COL_NAME + " TEXT, " + STATE_COL_NAME + " TEXT, " + ZIPCODE_COL_NAME + " TEXT, "
 				+ PARENT_MOBILE_COL_NAME + " TEXT, " + PARENT_EMAIL_COL_NAME + " TEXT, " + PARENT_PHONE_COL_NAME + " TEXT, "
 				+ PARENT_RELATIONSHIP_COL_NAME + " TEXT, " + PARENT_FIRST_NAME_COL_NAME + " TEXT, " + PARENT_LAST_NAME_COL_NAME + " TEXT);";
 	}
 
 	public static String getDropTableSQL() {
-		return "DROP TABLE IF EXIST " + TABLE_NAME + ";";
+		return "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	}
 
 }

@@ -1,6 +1,5 @@
 package org.keenusa.connect.data.tables;
 
-
 public class LocationTable {
 
 	public static final String TABLE_NAME = "locations";
@@ -17,7 +16,7 @@ public class LocationTable {
 	}
 
 	public static String getDropTableSQL() {
-		return "DROP TABLE IF EXIST " + TABLE_NAME + ";";
+		return "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	}
 
 }

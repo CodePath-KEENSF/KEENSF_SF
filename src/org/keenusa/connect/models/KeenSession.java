@@ -27,10 +27,12 @@ public class KeenSession implements Serializable {
 	private int numberOfNewCoachesNeeded;
 	private int numberOfReturningCoachesNeeded;
 
-	// used only to store counts from Remote session model and used when attendance and/or program are null
-	private int numderOfRegisteredAthletes;
-	private int numberOfCoachesAttended;
+	private int numberOfAthletesRegistered;
 	private int numberOfCoachesRegistered;
+	private int numberOfAthletesCheckedIn;
+	private int numberOfCoachesCheckedIn;
+
+	private int numberOfCoachesAttended;
 
 	private List<AthleteAttendance> athleteAttendance;
 	private List<CoachAttendance> coachAttendance;
@@ -63,7 +65,7 @@ public class KeenSession implements Serializable {
 			program.setName(remoteSession.getClassesName());
 			keenSession.setProgram(program);
 			if (remoteSession.getAthletes() != null) {
-				keenSession.setNumderOfRegisteredAthletes(Integer.valueOf(remoteSession.getAthletes()));
+				keenSession.setNumberOfRegisteredAthletes(Integer.valueOf(remoteSession.getAthletes()));
 			}
 			if (remoteSession.getCoachesAttended() != null) {
 				keenSession.setNumberOfCoachesAttended(Integer.valueOf(remoteSession.getCoachesAttended()));
@@ -105,7 +107,7 @@ public class KeenSession implements Serializable {
 		if (program != null && program.getEnrolledAthletes() != null) {
 			registeredAthleteCount = program.getEnrolledAthletes().size();
 		} else {
-			registeredAthleteCount = getNumderOfRegisteredAthletes();
+			registeredAthleteCount = getNumberOfRegisteredAthletes();
 		}
 		return registeredAthleteCount;
 	}
@@ -136,8 +138,8 @@ public class KeenSession implements Serializable {
 		return attendedCoachCount;
 	}
 
-	private int getNumderOfRegisteredAthletes() {
-		return numderOfRegisteredAthletes;
+	public int getNumberOfRegisteredAthletes() {
+		return numberOfAthletesRegistered;
 	}
 
 	private int getNumberOfCoachesAttended() {
@@ -148,15 +150,15 @@ public class KeenSession implements Serializable {
 		return numberOfCoachesRegistered;
 	}
 
-	private void setNumderOfRegisteredAthletes(int numderOfRegisteredAthletes) {
-		this.numderOfRegisteredAthletes = numderOfRegisteredAthletes;
+	private void setNumberOfRegisteredAthletes(int numberOfRegisteredAthletes) {
+		this.numberOfAthletesRegistered = numberOfRegisteredAthletes;
 	}
 
 	private void setNumberOfCoachesAttended(int numberOfCoachesAttended) {
 		this.numberOfCoachesAttended = numberOfCoachesAttended;
 	}
 
-	private void setNumberOfCoachesRegistered(int numberOfCoachesRegistered) {
+	public void setNumberOfCoachesRegistered(int numberOfCoachesRegistered) {
 		this.numberOfCoachesRegistered = numberOfCoachesRegistered;
 	}
 
@@ -260,6 +262,30 @@ public class KeenSession implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public int getNumberOfAthletesCheckedIn() {
+		return numberOfAthletesCheckedIn;
+	}
+
+	public void setNumberOfAthletesCheckedIn(int numberOfAthletesCheckedIn) {
+		this.numberOfAthletesCheckedIn = numberOfAthletesCheckedIn;
+	}
+
+	public int getNumberOfCoachesCheckedIn() {
+		return numberOfCoachesCheckedIn;
+	}
+
+	public void setNumberOfCoachesCheckedIn(int numberOfCoachesCheckedIn) {
+		this.numberOfCoachesCheckedIn = numberOfCoachesCheckedIn;
+	}
+
+	public int getNumberOfAthletesRegistered() {
+		return numberOfAthletesRegistered;
+	}
+
+	public void setNumberOfAthletesRegistered(int numberOfAthletesRegistered) {
+		this.numberOfAthletesRegistered = numberOfAthletesRegistered;
 	}
 
 }
