@@ -21,10 +21,13 @@ public class AthleteAttendance implements Serializable {
 	private AttendanceValue attendanceValue;
 	// used locally
 	private String athleteFullName;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	//attendance in remote source (lookup values) in the source id58 for youth
 	public enum AttendanceValue {
-		ATTENDED("Attended", 413), CALLED_IN_ABSENCE("Called in absence", 414), NO_CALL_NO_SHOW("No Call - No Show", 422);
+		REGISTERED("Registered", 746), ATTENDED("Attended", 413), CALLED_IN_ABSENCE("Called in absence", 414), NO_CALL_NO_SHOW("No Call - No Show",
+				422);
 		private final String displayName;
 		private final int remoteKey;
 
@@ -139,6 +142,22 @@ public class AthleteAttendance implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
 	}
 
 }

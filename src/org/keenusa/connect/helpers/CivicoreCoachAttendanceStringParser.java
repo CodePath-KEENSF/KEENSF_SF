@@ -5,7 +5,7 @@ import org.keenusa.connect.models.CoachAttendance;
 public class CivicoreCoachAttendanceStringParser {
 
 	public static CoachAttendance.AttendanceValue parseCoachAttendanceString(String coachAttendance) {
-		CoachAttendance.AttendanceValue ca = null;
+		CoachAttendance.AttendanceValue ca = CoachAttendance.AttendanceValue.REGISTERED;
 		if (coachAttendance != null) {
 			if (coachAttendance.equalsIgnoreCase("attended")) {
 				ca = CoachAttendance.AttendanceValue.ATTENDED;

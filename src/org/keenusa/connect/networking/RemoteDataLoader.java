@@ -3,7 +3,10 @@ package org.keenusa.connect.networking;
 import java.util.List;
 
 import org.keenusa.connect.data.AffiliateDAO;
+import org.keenusa.connect.data.AthleteAttendanceDAO;
 import org.keenusa.connect.data.AthleteDAO;
+import org.keenusa.connect.data.CoachAttendanceDAO;
+import org.keenusa.connect.data.CoachDAO;
 import org.keenusa.connect.data.KeenConnectDB;
 import org.keenusa.connect.data.ProgramDAO;
 import org.keenusa.connect.data.ProgramEnrollmentDAO;
@@ -35,7 +38,8 @@ public class RemoteDataLoader extends Thread {
 
 	@Override
 	public void run() {
-		KeenConnectDB.getKeenConnectDB(context).cleanDB();
+		// TODO Check if Internet connection
+
 		loadAffiliate();
 		loadCoaches();
 		loadAthletes();
@@ -59,6 +63,8 @@ public class RemoteDataLoader extends Thread {
 		try {
 			affiliates = client.fetchAffiliateListData();
 			Log.i("DATA_LOAD", "Affiliate fetched " + affiliates.size());
+			// server is responsive data is available clean local db
+			KeenConnectDB.getKeenConnectDB(context).cleanDB();
 			AffiliateDAO affiliateDAO = new AffiliateDAO(context);
 			for (Affiliate affiliate : affiliates) {
 				affiliateDAO.saveNewAffiliate(affiliate);
@@ -75,10 +81,10 @@ public class RemoteDataLoader extends Thread {
 		try {
 			coaches = client.fetchCoachListData();
 			Log.i("DATA_LOAD", "Coaches fetched " + coaches.size());
-			//			AffiliateDAO affiliateDAO = new AffiliateDAO(context);
-			//			for (Affiliate affiliate : affiliates) {
-			//				affiliateDAO.saveNewAffiliate(affiliate);
-			//			}
+			CoachDAO coacheDAO = new CoachDAO(context);
+			for (Coach coach : coaches) {
+				coacheDAO.saveNewCoach(coach);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -155,10 +161,10 @@ public class RemoteDataLoader extends Thread {
 		try {
 			athleteAttendances = client.fetchAthleteAttendanceListData();
 			Log.i("DATA_LOAD", "Athlete attendances fetched " + athleteAttendances.size());
-			//			AffiliateDAO affiliateDAO = new AffiliateDAO(context);
-			//			for (Affiliate affiliate : affiliates) {
-			//				affiliateDAO.saveNewAffiliate(affiliate);
-			//			}
+			AthleteAttendanceDAO attendanceDAO = new AthleteAttendanceDAO(context);
+			for (AthleteAttendance attendance : athleteAttendances) {
+				attendanceDAO.saveNewAthleteAttendance(attendance);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -171,10 +177,10 @@ public class RemoteDataLoader extends Thread {
 		try {
 			coachAttendances = client.fetchCoachAttendanceListData();
 			Log.i("DATA_LOAD", "Coach attendances fetched " + coachAttendances.size());
-			//			AffiliateDAO affiliateDAO = new AffiliateDAO(context);
-			//			for (Affiliate affiliate : affiliates) {
-			//				affiliateDAO.saveNewAffiliate(affiliate);
-			//			}
+			CoachAttendanceDAO attendanceDAO = new CoachAttendanceDAO(context);
+			for (CoachAttendance attendance : coachAttendances) {
+				attendanceDAO.saveNewCoachAttendance(attendance);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
