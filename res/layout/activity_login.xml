@@ -2,39 +2,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="@drawable/keen_lauch_background"
     tools:context="org.keenusa.connect.activities.LoginActivity" >
 
-    <EditText
-        android:id="@+id/etApiKey"
+    <RelativeLayout
+        android:id="@+id/rlLoginDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:ems="15"
-        android:gravity="center"
-        android:hint="Please enter your API key" >
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/login_details_background_color"
+        android:padding="15dp" >
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/etUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="15dp"
+            android:ems="15"
+            android:gravity="center"
+            android:hint="username"
+            android:inputType="textNoSuggestions|textVisiblePassword" >
 
-    <Button
-        android:id="@+id/btnApiLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etApiKey"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-        android:text="@string/log_in_button" />
-    
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/etUserName"
+            android:layout_margin="15dp"
+            android:ems="15"
+            android:gravity="center"
+            android:hint="password"
+            android:inputType="textPassword" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btnApiLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etPassword"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:text="@string/log_in_button" />
+    </RelativeLayout>
+
     <Button
         android:id="@+id/btnLoginWithDataLoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnApiLogin"
+        android:layout_below="@+id/rlLoginDetails"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
         android:text="@string/log_with_data_button" />
@@ -43,10 +69,11 @@
         android:id="@+id/tvProgressUpdates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_alignLeft="@+id/etApiKey"
+        android:layout_alignLeft="@+id/rlLoginDetails"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/etApiKey"
-        android:layout_marginBottom="17dp" />
+        android:layout_alignRight="@+id/rlLoginDetails"
+        android:layout_marginBottom="17dp"
+        android:gravity="center"
+        android:textColor="@color/main_theme_text_color" />
 
 </RelativeLayout>
