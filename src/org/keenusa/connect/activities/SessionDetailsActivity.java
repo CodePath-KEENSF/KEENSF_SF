@@ -208,6 +208,12 @@ public class SessionDetailsActivity extends FragmentActivity {
 		i.putExtra("program", program2);
 		startActivity(i);
 	}
+	
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -223,6 +229,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 			Intent checkinIntent = new Intent(getBaseContext(), AthleteCoachCheckinActivity.class);
 			checkinIntent.putExtra("session", session);
 			startActivity(checkinIntent);
+			overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 
 		} else if (item.getItemId() == R.id.miSendMessage) {
 			showMassMessageDialog();

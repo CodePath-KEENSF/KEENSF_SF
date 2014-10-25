@@ -158,4 +158,7 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
+	public void onBackPressed() {
+		getActivity().overridePendingTransition(R.anim.bottom_out, R.anim.top_in);
+	}
 }

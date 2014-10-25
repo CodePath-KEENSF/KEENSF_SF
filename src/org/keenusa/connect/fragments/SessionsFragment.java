@@ -410,8 +410,9 @@ public class SessionsFragment extends Fragment {
 		i.putExtra("session", sessionList.get(pos));
 		i.putExtra("program", sessionList.get(pos).getProgram());
 		startActivity(i);
+		getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
-
+	
 	private void setAdapter() {
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 	}
