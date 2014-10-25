@@ -15,5 +15,12 @@
         android:orderInCategory="10"
         android:showAsAction="always"
         android:title="@string/message_label"/>
+    
+    <item
+        android:id="@+id/miCheckAllAthleteIn"
+        android:icon="@drawable/ic_check_all_in"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        android:title="@string/check_all_athlete"/>
 
 </menu>
