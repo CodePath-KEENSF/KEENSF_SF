@@ -133,6 +133,7 @@
                 android:layout_alignTop="@id/cicularProgressBarAthlete"
                 android:textColor="@color/main_theme_text_color"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="progress" />
 
             <TextView
@@ -176,6 +177,7 @@
                 android:layout_alignTop="@+id/cicularProgressBarCoach"
                 android:textColor="@color/main_theme_text_color"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="progress" />
 
             <TextView

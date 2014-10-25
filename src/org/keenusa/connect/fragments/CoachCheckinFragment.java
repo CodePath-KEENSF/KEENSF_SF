@@ -6,6 +6,7 @@ import java.util.List;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachCheckInAdapter;
+import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
@@ -34,6 +35,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class CoachCheckinFragment extends Fragment {
@@ -46,6 +49,7 @@ public class CoachCheckinFragment extends Fragment {
 	private LinearLayout llProgressBarCoachCheckin;
 	private ListView lvCoachCheckin;
 	private CoachCheckInAdapter coachCheckInAdapter;
+	private TextView tvCoachAttended;
 
 	private ArrayList<KeenSession> sessionList;
 	private List<CoachAttendance> coachAttendanceList;
@@ -139,6 +143,7 @@ public class CoachCheckinFragment extends Fragment {
 
 		lvCoachCheckin = (ListView) v.findViewById(R.id.lvCoachCheckin);
 		lvCoachCheckin.setAdapter(coachCheckInAdapter);
+		tvCoachAttended = (TextView) v.findViewById(R.id.tvCoachAttended);
 	}
 
 	private void fetchSessionList() {
@@ -232,9 +237,28 @@ public class CoachCheckinFragment extends Fragment {
 			DialogFragment newFragment = new AddCoachToCheckinFragment();
 			newFragment.show(getActivity().getSupportFragmentManager(),
 					"Add Coach");
-		}
+		} else if (item.getItemId() == R.id.miCheckAllCoachIn ) {
+			checkInAllCoaches();
+		} 
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void checkInAllCoaches() {
+		if (session.getCoachAttendance() == null) {
+			coachAttendanceList = new ArrayList<CoachAttendance>();
+			session.setCoachAttendance(coachAttendanceList);
+		} else {
+			coachAttendanceList = session.getCoachAttendance();
+		}
+		coachAttendanceListOriginal = new ArrayList<CoachAttendance>();
+		for (int i = 0; i < coachAttendanceList.size(); i++) {
+			coachAttendanceListOriginal.add(new CoachAttendance());
+			coachAttendanceListOriginal.get(i).setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
+			// TODO - Update TextView on UI to show all Athletes are set as "ATTENDED"
+//			tvCoachAttended.setText(coachAttendanceListOriginal.get(i).setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED));
+			Toast.makeText(getActivity(), coachAttendanceList.get(i).getAttendedCoachFullName() + " has set as " + coachAttendanceListOriginal.get(i).getAttendanceValue(), Toast.LENGTH_LONG).show();
+		}
 	}
 
 	private void showMassMessageDialog() {

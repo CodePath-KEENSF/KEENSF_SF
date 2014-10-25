@@ -33,8 +33,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class AthleteCheckinFragment extends Fragment {
 
@@ -46,6 +47,7 @@ public class AthleteCheckinFragment extends Fragment {
 	private LinearLayout llProgressBarAthleteCheckin;
 	private ListView lvAthleteCheckin;
 	private AthleteCheckinAdapter athleteCheckInAdapter;
+	private TextView tvAthleteAttended;
 
 	private ArrayList<KeenSession> sessionList;
 	private List<AthleteAttendance> athleteAttendanceList;
@@ -159,6 +161,7 @@ public class AthleteCheckinFragment extends Fragment {
 
 		lvAthleteCheckin = (ListView) v.findViewById(R.id.lvAthleteCheckin);
 		lvAthleteCheckin.setAdapter(athleteCheckInAdapter);
+		tvAthleteAttended = (TextView) v.findViewById(R.id.tvAthleteAttended);
 	}
 
 	private void fetchSessionList() {
@@ -240,9 +243,28 @@ public class AthleteCheckinFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.miSendMessageAthletes) {
 			showMassMessageDialog();
-		}
+		} if (item.getItemId() == R.id.miCheckAllAthleteIn) {
+			checkInAllAthletes();
+		} 
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void checkInAllAthletes() {
+		if (session.getAthleteAttendance() == null) {
+			athleteAttendanceList = new ArrayList<AthleteAttendance>();
+			session.setAthleteAttendance(athleteAttendanceList);
+		} else {
+			athleteAttendanceList = session.getAthleteAttendance();
+		}
+		athleteAttendanceListOriginal = new ArrayList<AthleteAttendance>();
+		for (int i = 0; i < athleteAttendanceList.size(); i++) {
+			athleteAttendanceListOriginal.add(new AthleteAttendance());
+			athleteAttendanceListOriginal.get(i).setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
+			// TODO - Update TextView on UI to show all Athletes are set as "ATTENDED"
+//			tvAthleteAttended.setText(athleteAttendanceListOriginal.get(i).setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED));
+			Toast.makeText(getActivity(), athleteAttendanceList.get(i).getAttendedAthleteFullName() + " has set as " + athleteAttendanceListOriginal.get(i).getAttendanceValue(), Toast.LENGTH_LONG).show();
+		}
 	}
 
 	private void showMassMessageDialog() {

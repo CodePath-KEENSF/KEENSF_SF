@@ -79,6 +79,8 @@
     <string name="api_key_label">API Key</string>
     <string name="sms_label">SMS</string>
     <string name="message_label">message</string>
+    <string name="check_all_athlete">check-in all athletes</string>
+    <string name="check_all_coaches">check-in all coaches</string>
     <string name="add_coach_label">Add Coach</string>
     <string name="email_label">EMAIL</string>
     <string name="checkin_label">checkin</string>

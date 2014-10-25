@@ -36,6 +36,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvAthleteName"
         android:paddingLeft="5dp"
+        android:paddingRight="0dp"
         android:orientation="horizontal" >
 
         <TextView
