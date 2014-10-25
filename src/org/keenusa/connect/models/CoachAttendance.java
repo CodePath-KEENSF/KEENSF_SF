@@ -13,6 +13,7 @@ public class CoachAttendance implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -9026136333954262937L;
+	private long id;
 	private long remoteId;
 	private long remoteSessionId;
 	private Coach coach;
@@ -144,6 +145,14 @@ public class CoachAttendance implements Serializable {
 		} else {
 			return getCoachFullName();
 		}
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

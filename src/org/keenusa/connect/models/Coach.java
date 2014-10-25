@@ -12,6 +12,7 @@ import org.keenusa.connect.models.remote.RemoteCoach;
 
 public class Coach extends ContactPerson {
 
+	private long id;
 	private long remoteId;
 	private DateTime dateOfBirth;
 	// status mostly empty in the source
@@ -22,6 +23,8 @@ public class Coach extends ContactPerson {
 	private String skillsExperience;
 	private long remoteCreateTimestamp;
 	private long remoteUpdatedTimestamp;
+	private int numberOfSessionsAttended;
+	private DateTime dateLastAttended;
 
 	public Coach() {
 		super();
@@ -151,6 +154,34 @@ public class Coach extends ContactPerson {
 
 	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
 		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public int getNumberOfSessionsAttended() {
+		return numberOfSessionsAttended;
+	}
+
+	public void setNumberOfSessionsAttended(int numberOfSessionsAttended) {
+		this.numberOfSessionsAttended = numberOfSessionsAttended;
+	}
+
+	public DateTime getDateLastAttended() {
+		return dateLastAttended;
+	}
+
+	public void setDateLastAttended(DateTime dateLastAttended) {
+		this.dateLastAttended = dateLastAttended;
 	}
 
 }

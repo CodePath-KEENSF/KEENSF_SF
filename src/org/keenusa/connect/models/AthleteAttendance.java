@@ -13,6 +13,7 @@ public class AthleteAttendance implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 5486907615451742803L;
+	private long id;
 	private long remoteId;
 	private long remoteSessionId;
 	private Athlete athlete;
@@ -130,6 +131,14 @@ public class AthleteAttendance implements Serializable {
 		} else {
 			return getAthleteFullName();
 		}
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

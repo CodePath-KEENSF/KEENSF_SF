@@ -13,6 +13,7 @@ import org.keenusa.connect.models.remote.RemoteAthlete;
 
 public class Athlete extends ContactPerson {
 
+	private long id;
 	private long remoteId;
 	// can be empty in the source but present in recent records
 	private String nickName;
@@ -25,6 +26,8 @@ public class Athlete extends ContactPerson {
 	private Parent primaryParent;
 	private long remoteCreateTimestamp;
 	private long remoteUpdatedTimestamp;
+	private int numberOfSessionsAttended;
+	private DateTime dateLastAttended;
 
 	public Athlete() {
 		super();
@@ -173,6 +176,30 @@ public class Athlete extends ContactPerson {
 
 	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
 		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public int getNumberOfSessionsAttended() {
+		return numberOfSessionsAttended;
+	}
+
+	public void setNumberOfSessionsAttended(int numberOfSessionsAttended) {
+		this.numberOfSessionsAttended = numberOfSessionsAttended;
+	}
+
+	public DateTime getDateLastAttended() {
+		return dateLastAttended;
+	}
+
+	public void setDateLastAttended(DateTime dateLastAttended) {
+		this.dateLastAttended = dateLastAttended;
 	};
 
 }

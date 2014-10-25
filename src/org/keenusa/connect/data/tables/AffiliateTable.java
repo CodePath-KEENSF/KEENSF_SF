@@ -19,7 +19,7 @@ public class AffiliateTable {
 	}
 
 	public static String getDropTableSQL() {
-		return "DROP TABLE IF EXIST " + TABLE_NAME + ";";
+		return "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
 	}
 
 }
