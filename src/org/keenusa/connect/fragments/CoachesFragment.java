@@ -6,8 +6,8 @@ import java.util.List;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
+import org.keenusa.connect.data.CoachDAO;
 import org.keenusa.connect.models.Coach;
-import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.utilities.StringConstants;
 
@@ -54,17 +54,19 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		bDataLoaded = false;
 		coachList = new ArrayList<Coach>();
 		adapter = new CoachListItemAdapter(getActivity(), coachList);
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchCoachListData(this);
+		CoachDAO coachDAO = new CoachDAO(getActivity());
+		adapter.addAll(coachDAO.getCoachList());
+		//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+		//		client.fetchCoachListData(this);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
-		if (!bDataLoaded) {
-			llProgressBar.setVisibility(View.VISIBLE);
-		}
+		//		if (!bDataLoaded) {
+		//			llProgressBar.setVisibility(View.VISIBLE);
+		//		}
 
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
@@ -75,6 +77,7 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 				Intent i = new Intent(getActivity(), CoachProfileActivity.class);
 				i.putExtra(COACH_EXTRA_TAG, adapter.getItem(position));
 				startActivity(i);
+				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
 			}
 		});
@@ -155,8 +158,8 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		});
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-	
+
 	public void onBackPressed() {
-		getActivity().overridePendingTransition(R.anim.bottom_out, R.anim.top_in);
+		getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

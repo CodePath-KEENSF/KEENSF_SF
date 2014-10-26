@@ -86,9 +86,9 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvSessionLocation.setText("San Francisco");
 		}
 
-		viewHolder.tvNumAthletes.setText(session.getNumberOfAthletesCheckedIn() + " / " + session.getRegisteredAthleteCount());
+		viewHolder.tvNumAthletes.setText(session.getCheckedInAthleteCount() + " / " + session.getRegisteredAthleteCount());
 
-		viewHolder.tvNumCoaches.setText(session.getNumberOfCoachesCheckedIn() + " / " + session.getRegisteredCoachCount() + "");
+		viewHolder.tvNumCoaches.setText(session.getCheckedInCoachCount() + " / " + session.getRegisteredCoachCount() + "");
 
 		if (program != null && program.getProgramTimes() != null) {
 			viewHolder.tvSessionTime.setText(session.getProgram().getProgramTimes());
@@ -156,6 +156,5 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			return 0;
 		}
 	}
-	
 
 }

@@ -50,9 +50,9 @@ public class SessionListItemAdapter extends ArrayAdapter<KeenSession> {
 
 		viewHolder.tvSessionLocation.setText(session.getProgram().getLocation().getLocationString());
 
-		viewHolder.tvNumAthletes.setText(session.getNumberOfAthletesCheckedIn() + " / " + session.getRegisteredAthleteCount());
+		viewHolder.tvNumAthletes.setText(session.getCheckedInAthleteCount() + " / " + session.getRegisteredAthleteCount());
 
-		viewHolder.tvNumCoaches.setText(session.getNumberOfCoachesCheckedIn() + " / " + session.getRegisteredCoachCount());
+		viewHolder.tvNumCoaches.setText(session.getCheckedInCoachCount() + " / " + session.getRegisteredCoachCount());
 
 		viewHolder.tvSessionTime.setText(session.getProgram().getProgramTimes());
 

@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class SyncSelectRequestJSONStringBuilder {
 
-	public static final String PAGE_SIZE = "1200";
+	public static final String PAGE_SIZE = "2000";
 
 	public static final String LOG_TAG_CLASS = SyncSelectRequestJSONStringBuilder.class.getSimpleName();
 	public static final String API_KEY_PARAMETER_KEY = "key";

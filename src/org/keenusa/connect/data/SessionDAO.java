@@ -6,6 +6,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.keenusa.connect.data.tables.ProgramTable;
 import org.keenusa.connect.data.tables.SessionTable;
+import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.models.Location;
@@ -20,6 +21,9 @@ public class SessionDAO {
 
 	private KeenConnectDB localDB;
 	private ProgramDAO programDAO;
+	private ProgramEnrollmentDAO programEnrollmentDAO;
+	private AthleteAttendanceDAO athleteAttendanceDAO;
+	private CoachAttendanceDAO coachAttendanceDAO;
 
 	private static String JOINED_TABLES_STRING = SessionTable.TABLE_NAME + " INNER JOIN " + ProgramTable.TABLE_NAME + " ON "
 			+ SessionTable.TABLE_NAME + "." + SessionTable.PROGRAM_ID_COL_NAME + "=" + ProgramTable.TABLE_NAME + "." + ProgramTable.ID_COL_NAME;
@@ -33,14 +37,13 @@ public class SessionDAO {
 			ProgramTable.TIMES_COL_NAME, ProgramTable.REMOTE_ID_COL_NAME, ProgramTable.ADDRESS_ONE_COL_NAME, ProgramTable.ADDRESS_TWO_COL_NAME,
 			ProgramTable.CITY_COL_NAME, ProgramTable.STATE_COL_NAME, ProgramTable.ZIP_CODE_COL_NAME };
 
-	String[] sessionColumnNames = { SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME, SessionTable.REMOTE_ID_COL_NAME,
-			SessionTable.REMOTE_CREATED_COL_NAME, SessionTable.REMOTE_UPDATED_COL_NAME, SessionTable.SESSION_DATE_COL_NAME,
-			SessionTable.PROGRAM_ID_COL_NAME, SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME,
-			SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME };
+	String[] simpleSessionColumnNames = { SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME, SessionTable.REMOTE_ID_COL_NAME,
+			SessionTable.REMOTE_CREATED_COL_NAME, SessionTable.REMOTE_UPDATED_COL_NAME };
 
 	public SessionDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
 		programDAO = new ProgramDAO(context);
+
 	}
 
 	public List<KeenSession> getKeenSessionList() {
@@ -61,14 +64,14 @@ public class SessionDAO {
 		return allSessions;
 	}
 
-	public KeenSession getSessionByRemoteId(long id) {
+	public KeenSession getSimpleSessionByRemoteId(long id) {
 		KeenSession session = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor sessionCursor = db.query(SessionTable.TABLE_NAME, sessionColumnNames, SessionTable.TABLE_NAME + "." + SessionTable.REMOTE_ID_COL_NAME
-				+ "=" + id, null, null, null, null);
+		Cursor sessionCursor = db.query(SessionTable.TABLE_NAME, simpleSessionColumnNames, SessionTable.TABLE_NAME + "."
+				+ SessionTable.REMOTE_ID_COL_NAME + "=" + id, null, null, null, null);
 		if (sessionCursor.getCount() > 0) {
 			sessionCursor.moveToFirst();
-			session = createRichSessionFromCursor(sessionCursor);
+			session = createSimpleSessionFromCursor(sessionCursor);
 		}
 		sessionCursor.close();
 		return session;
@@ -77,13 +80,34 @@ public class SessionDAO {
 	public KeenSession getSessionById(long id) {
 		KeenSession session = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor sessionCursor = db.query(SessionTable.TABLE_NAME, sessionColumnNames, SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME + "="
-				+ id, null, null, null, null);
+
+		SQLiteQueryBuilder sqlBuilder = new SQLiteQueryBuilder();
+		sqlBuilder.setTables(JOINED_TABLES_STRING);
+		Cursor sessionCursor = sqlBuilder.query(db, sessionListColumnNames, SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME + "=" + id,
+				null, null, null, null, null);
 		if (sessionCursor.getCount() > 0) {
 			sessionCursor.moveToFirst();
-			session = createRichSessionFromCursor(sessionCursor);
+			session = createSessionFromCursor(sessionCursor);
 		}
 		sessionCursor.close();
+
+		return session;
+	}
+
+	public KeenSession getRichSessionById(long id) {
+		KeenSession session = getSessionById(id);
+		programEnrollmentDAO = new ProgramEnrollmentDAO(null);
+		athleteAttendanceDAO = new AthleteAttendanceDAO(null);
+		coachAttendanceDAO = new CoachAttendanceDAO(null);
+		if (session != null) {
+			// find and attach program enrolments
+			List<Athlete> enrolledAthletes = programEnrollmentDAO.getKeenProgramEnroledAthletes(session.getProgram().getId());
+			session.getProgram().setEnrolledAthletes(enrolledAthletes);
+			// find and attach coach attendance
+			session.setCoachAttendance(coachAttendanceDAO.getCoachAttendancesBySessionId(id));
+			// find and attach athlete attendance
+			session.setAthleteAttendance(athleteAttendanceDAO.getAthleteAttendancesBySessionId(id));
+		}
 		return session;
 	}
 
@@ -91,7 +115,7 @@ public class SessionDAO {
 
 		long sessionId = 0;
 		SQLiteDatabase db = localDB.getWritableDatabase();
-		KeenSession dbSession = getSessionByRemoteId(session.getRemoteId());
+		KeenSession dbSession = getSimpleSessionByRemoteId(session.getRemoteId());
 		if (dbSession == null) {
 			db.beginTransaction();
 			ContentValues values = new ContentValues();
@@ -163,7 +187,7 @@ public class SessionDAO {
 		return sessions;
 	}
 
-	private KeenSession createRichSessionFromCursor(Cursor c) {
+	private KeenSession createSimpleSessionFromCursor(Cursor c) {
 		KeenSession session = null;
 		if (c.getPosition() >= 0) {
 			session = new KeenSession();
@@ -172,26 +196,6 @@ public class SessionDAO {
 				session.setRemoteId(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_ID_COL_NAME)));
 				session.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_CREATED_COL_NAME)));
 				session.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_UPDATED_COL_NAME)));
-				session.setDate(new DateTime(c.getLong(c.getColumnIndexOrThrow(SessionTable.SESSION_DATE_COL_NAME))));
-
-				//				KeenProgram program = new KeenProgram();
-				//				program.setRemoteId(c.getLong(c.getColumnIndexOrThrow(ProgramTable.REMOTE_ID_COL_NAME)));
-				//				program.setName(c.getString(c.getColumnIndexOrThrow(ProgramTable.NAME_COL_NAME)));
-				//				program.setProgramTimes(c.getString(c.getColumnIndexOrThrow(ProgramTable.TIMES_COL_NAME)));
-				//
-				//				session.setProgram(program);
-				//				Location location = new Location();
-				//				location.setAddress1(c.getString(c.getColumnIndexOrThrow(LocationTable.ADDRESS_ONE_COL_NAME)));
-				//				location.setAddress2(c.getString(c.getColumnIndexOrThrow(LocationTable.ADDRESS_TWO_COL_NAME)));
-				//				location.setCity(c.getString(c.getColumnIndexOrThrow(LocationTable.CITY_COL_NAME)));
-				//				location.setState(c.getString(c.getColumnIndexOrThrow(LocationTable.STATE_COL_NAME)));
-				//				location.setZipCode(c.getString(c.getColumnIndexOrThrow(LocationTable.ZIP_CODE_COL_NAME)));
-				//				program.setLocation(location);
-
-				session.setNumberOfNewCoachesNeeded(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME)));
-				session.setNumberOfReturningCoachesNeeded(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME)));
-				boolean open = ((c.getInt(c.getColumnIndexOrThrow(SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME))) == 1 ? true : false);
-				session.setOpenToPublicRegistration(open);
 
 			} catch (IllegalArgumentException iax) {
 				session = null;
