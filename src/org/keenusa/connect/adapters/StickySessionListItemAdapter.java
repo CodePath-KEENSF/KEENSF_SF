@@ -9,7 +9,8 @@ import org.keenusa.connect.R;
 import org.keenusa.connect.activities.AthleteCoachCheckinActivity;
 import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.utilities.CheckinEditMode;
+import org.keenusa.connect.utilities.CheckinMenuActions;
+import org.keenusa.connect.utilities.DateFormatChanger;
 import org.keenusa.connect.utilities.IntentCode;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
@@ -36,7 +37,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 		TextView tvNumAthletes;
 		TextView tvNumCoaches;
 		TextView tvSessionTime;
-		RelativeLayout rlCheckInAction;
+		RelativeLayout rlParticipantCounts;
 
 	}
 
@@ -64,14 +65,14 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvNumAthletes = (TextView) convertView.findViewById(R.id.tvNumAthletes);
 			viewHolder.tvNumCoaches = (TextView) convertView.findViewById(R.id.tvNumCoaches);
 			viewHolder.tvSessionTime = (TextView) convertView.findViewById(R.id.tvSessionTime);
-			viewHolder.rlCheckInAction = (RelativeLayout) convertView.findViewById(R.id.rlCheckInAction);
+			viewHolder.rlParticipantCounts = (RelativeLayout) convertView.findViewById(R.id.rlParticipantCounts);
 
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		viewHolder.rlCheckInAction.setTag(session);
+		viewHolder.rlParticipantCounts.setTag(session);
 
 		if (program != null && program.getName() != null) {
 			viewHolder.tvSessionName.setText(session.getProgram().getName());
@@ -95,12 +96,13 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvSessionTime.setText("12pm - 1pm");
 		}
 
-		viewHolder.rlCheckInAction.setOnClickListener(new OnClickListener() {
+		viewHolder.rlParticipantCounts.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				KeenSession session = (KeenSession) v.getTag();
-				CheckinEditMode.editMode = true;
+				CheckinMenuActions.editMode = true;
+				CheckinMenuActions.sendMassMessages = false;
 				Intent checkinIntent = new Intent(getContext(), AthleteCoachCheckinActivity.class);
 				checkinIntent.putExtra("session", session);
 				((Activity) getContext()).startActivityForResult(checkinIntent, IntentCode.REQUEST_CODE);
@@ -131,7 +133,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			if (session.getDate() != null) {
 				DateTime dt = session.getDate();
 				String date = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH).format(dt.toDate());
-				headerViewHolder.tvSessionDate.setText(date);
+				headerViewHolder.tvSessionDate.setText(DateFormatChanger.dateToDescriptiveFormat(getContext(), date));
 			} else {
 				headerViewHolder.tvSessionDate.setText("01/01/2001");
 			}
@@ -154,5 +156,6 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			return 0;
 		}
 	}
+	
 
 }

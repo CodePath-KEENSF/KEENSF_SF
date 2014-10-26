@@ -13,6 +13,7 @@ import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
+import org.keenusa.connect.utilities.CheckinMenuActions;
 import org.keenusa.connect.utilities.DebugInfo;
 import org.keenusa.connect.utilities.PostCheckinUpdate;
 import org.keenusa.connect.utilities.StringConstants;
@@ -184,6 +185,16 @@ public class AthleteCheckinFragment extends Fragment {
 			}
 
 		});
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		if(CheckinMenuActions.sendMassMessages == true){
+			menu.findItem(R.id.miSendMessageAthletes).setVisible(true);
+		}else{
+			menu.findItem(R.id.miSendMessageAthletes).setVisible(false);
+		}
+		super.onPrepareOptionsMenu(menu);
 	}
 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

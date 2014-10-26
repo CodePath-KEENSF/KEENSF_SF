@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.WeakHashMap;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -14,6 +15,7 @@ import org.keenusa.connect.activities.SessionDetailsActivity;
 import org.keenusa.connect.adapters.StickySessionListItemAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
+import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
@@ -28,6 +30,10 @@ import org.keenusa.connect.utilities.StringConstants;
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,6 +48,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+
 
 public class SessionsFragment extends Fragment {
 	public static final int NUM_SESSION_FETCHES = 7;
@@ -70,6 +77,7 @@ public class SessionsFragment extends Fragment {
 	// Sticky Header List View
 	private ExpandableStickyListHeadersListView expandableStickySessionListView;
 	private StickyListHeadersAdapter expandableStickySessionListAdapter;
+	WeakHashMap<View,Integer> mOriginalViewHeightPool = new WeakHashMap<View, Integer>();
 
 	// Creates a new fragment with given arguments
 	public static SessionsFragment newInstance() {
@@ -107,6 +115,7 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setOnClickListeners() {
+		
 		expandableStickySessionListView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
@@ -124,6 +133,8 @@ public class SessionsFragment extends Fragment {
 				}
 			}
 		});
+		
+		expandableStickySessionListView.setAnimExecutor(new AnimationExecutor());
 	}
 
 	private void fetchLists() {
@@ -378,6 +389,7 @@ public class SessionsFragment extends Fragment {
 				athleteatt.setAthlete(athlete);
 			}
 		}
+		
 	}
 
 	private void formatAthleteAttendanceNames(){
@@ -424,6 +436,7 @@ public class SessionsFragment extends Fragment {
 
 		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
 		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+		expandableStickySessionListView.setDividerHeight(0);
 	}
 
 	public StickyListHeadersAdapter getAdapter() {
@@ -625,4 +638,66 @@ public class SessionsFragment extends Fragment {
 	//		expandableStickySessionListAdapter.addAll(sessions);
 
 	//	}
+	
+    //animation executor
+    class AnimationExecutor implements ExpandableStickyListHeadersListView.IAnimationExecutor {
+
+        @Override
+        public void executeAnim(final View target, final int animType) {
+            if(ExpandableStickyListHeadersListView.ANIMATION_EXPAND==animType&&target.getVisibility()==View.VISIBLE){
+                return;
+            }
+            if(ExpandableStickyListHeadersListView.ANIMATION_COLLAPSE==animType&&target.getVisibility()!=View.VISIBLE){
+                return;
+            }
+            if(mOriginalViewHeightPool.get(target)==null){
+                mOriginalViewHeightPool.put(target,target.getHeight());
+            }
+            final int viewHeight = mOriginalViewHeightPool.get(target);
+            float animStartY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? 0f : viewHeight;
+            float animEndY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? viewHeight : 0f;
+            final ViewGroup.LayoutParams lp = target.getLayoutParams();
+            
+          ValueAnimator animator = ValueAnimator.ofFloat(animStartY, animEndY);
+          animator.setDuration(300);
+          target.setVisibility(View.VISIBLE);
+          animator.addListener(new AnimatorListener() {
+              @Override
+              public void onAnimationStart(Animator animator) {
+              }
+
+              @Override
+              public void onAnimationEnd(Animator animator) {
+                  if (animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND) {
+                      target.setVisibility(View.VISIBLE);
+                  } else {
+                      target.setVisibility(View.GONE);
+                  }
+                  target.getLayoutParams().height = viewHeight;
+              }
+
+              @Override
+              public void onAnimationCancel(Animator animator) {
+
+              }
+
+              @Override
+              public void onAnimationRepeat(Animator animator) {
+
+              }
+          });
+          
+          animator.addUpdateListener(new AnimatorUpdateListener() {
+              @Override
+              public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                  lp.height = ((Float) valueAnimator.getAnimatedValue()).intValue();
+                  target.setLayoutParams(lp);
+                  target.requestLayout();
+              }
+          });
+          animator.start();
+        }
+    }	
 }
+
+
