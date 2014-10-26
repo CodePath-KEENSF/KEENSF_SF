@@ -243,7 +243,7 @@ public class AthleteCheckinFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.miSendMessageAthletes) {
 			showMassMessageDialog();
-		} if (item.getItemId() == R.id.miCheckAllAthleteIn) {
+		} else if (item.getItemId() == R.id.miCheckAllAthleteIn) {
 			checkInAllAthletes();
 		} 
 
