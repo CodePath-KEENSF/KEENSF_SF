@@ -7,7 +7,7 @@ import org.keenusa.connect.fragments.CoachCheckinFragment;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.utilities.CheckinEditMode;
+import org.keenusa.connect.utilities.CheckinMenuActions;
 import org.keenusa.connect.utilities.IntentCode;
 import org.keenusa.connect.utilities.PostCheckinUpdate;
 
@@ -157,28 +157,21 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		if(CheckinEditMode.editMode == true){
+		if(CheckinMenuActions.editMode == true){
 		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
 		    miSaveCheckin.setVisible(true);
 
 //			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
 //			miEditCheckin.setVisible(false);
-			
-			CheckinEditMode.editMode = true;
-			
-		    return true;
-
 		}else{
 //			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
 //			miEditCheckin.setVisible(true);
-//
+
 		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
 		    miSaveCheckin.setVisible(false);
-
-		    CheckinEditMode.editMode = false;
-		    
-		    return true;
 	    }
+		
+		return true;
 	}
 	
 	@Override

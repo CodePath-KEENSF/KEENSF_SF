@@ -14,7 +14,7 @@ import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
-import org.keenusa.connect.utilities.CheckinEditMode;
+import org.keenusa.connect.utilities.CheckinMenuActions;
 import org.keenusa.connect.utilities.DebugInfo;
 import org.keenusa.connect.utilities.PostCheckinUpdate;
 import org.keenusa.connect.utilities.StringConstants;
@@ -173,11 +173,18 @@ public class CoachCheckinFragment extends Fragment {
 	public void onPrepareOptionsMenu(Menu menu) {
 		
 		MenuItem miAddCoaches = menu.findItem(R.id.miAddCoaches);
-		if(CheckinEditMode.editMode == true){
+		if(CheckinMenuActions.editMode == true){
 	    	miAddCoaches.setVisible(true);
 	    }else{
 	    	miAddCoaches.setVisible(false);
 	    }
+		
+		if(CheckinMenuActions.sendMassMessages == true){
+			menu.findItem(R.id.miSendMessageCoaches).setVisible(true);
+		}else{
+			menu.findItem(R.id.miSendMessageCoaches).setVisible(false);
+		}
+
 		super.onPrepareOptionsMenu(menu);
 	}
 	

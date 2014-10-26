@@ -8,7 +8,7 @@ import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.utilities.CheckinEditMode;
+import org.keenusa.connect.utilities.CheckinMenuActions;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -136,7 +136,7 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 			
 			@Override
 			public void onClick(View v) {
-				if(CheckinEditMode.editMode == false){
+				if(CheckinMenuActions.editMode == false){
 					return;
 				}
 				TextView tvAthleteAttended = (TextView)v; 
@@ -164,7 +164,7 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 			
 			@Override
 			public void onClick(View v) {
-				if(CheckinEditMode.editMode == false){
+				if(CheckinMenuActions.editMode == false){
 					return;
 				}
 				TextView tvAthleteAbsent = (TextView)v; 
@@ -192,7 +192,7 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 			
 			@Override
 			public void onClick(View v) {
-				if(CheckinEditMode.editMode == false){
+				if(CheckinMenuActions.editMode == false){
 					return;
 				}
 

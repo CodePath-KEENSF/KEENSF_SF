@@ -15,6 +15,7 @@ import org.keenusa.connect.activities.SessionDetailsActivity;
 import org.keenusa.connect.adapters.StickySessionListItemAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
+import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
@@ -114,6 +115,7 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setOnClickListeners() {
+		
 		expandableStickySessionListView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
@@ -387,6 +389,7 @@ public class SessionsFragment extends Fragment {
 				athleteatt.setAthlete(athlete);
 			}
 		}
+		
 	}
 
 	private void formatAthleteAttendanceNames(){
@@ -433,6 +436,7 @@ public class SessionsFragment extends Fragment {
 
 		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
 		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+		expandableStickySessionListView.setDividerHeight(0);
 	}
 
 	public StickyListHeadersAdapter getAdapter() {
