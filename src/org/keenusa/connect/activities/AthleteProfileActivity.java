@@ -12,7 +12,7 @@ import org.keenusa.connect.listeners.OnSmsIconClickListener;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.models.Parent;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
+import org.keenusa.connect.networking.PostAndUpdateRemoteDataTask.PostAndUpdateRemoteDataTaskListener;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AthleteProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Athlete> {
+public class AthleteProfileActivity extends FragmentActivity {
 
 	private TextView tvLastAttended;
 	private TextView tvLastAttendedLabel;
@@ -51,8 +51,56 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	private OnPhoneLongClickListener onPhoneLongClickListener;
 	private OnEmailLongClickListener onEmailLongClickListener;
 	private OnSmsIconClickListener onSmsIconClickListener;
-
 	private Athlete athlete;
+
+	private PostAndUpdateRemoteDataTaskListener<Athlete> updateListener = new PostAndUpdateRemoteDataTaskListener<Athlete>() {
+		@Override
+		public void onDataPostAndUpdateTaskSuccess(final Athlete recordDTO) {
+			AthleteProfileActivity.this.runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					if (recordDTO != null) {
+						if (recordDTO.getPhone() != null) {
+							athlete.setPhone(recordDTO.getPhone());
+						}
+						if (recordDTO.getEmail() != null) {
+							athlete.setEmail(recordDTO.getEmail());
+						}
+						if (recordDTO.getPrimaryParent() != null && recordDTO.getPrimaryParent().getCellPhone() != null) {
+							athlete.getPrimaryParent().setCellPhone(recordDTO.getPrimaryParent().getCellPhone());
+						}
+						if (recordDTO.getPrimaryParent() != null && recordDTO.getPrimaryParent().getPhone() != null) {
+							athlete.getPrimaryParent().setPhone(recordDTO.getPrimaryParent().getPhone());
+						}
+						if (recordDTO.getPrimaryParent() != null && recordDTO.getPrimaryParent().getEmail() != null) {
+							athlete.getPrimaryParent().setEmail(recordDTO.getPrimaryParent().getEmail());
+						}
+					}
+					populateViews();
+					Toast.makeText(AthleteProfileActivity.this, "Athlete profile is updated", Toast.LENGTH_SHORT).show();
+				}
+
+			});
+		}
+
+		@Override
+		public void onPostAndUpdateTaskError() {
+			AthleteProfileActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(AthleteProfileActivity.this, "Athlete profile update is failed", Toast.LENGTH_SHORT).show();
+				}
+			});
+
+		}
+
+		@Override
+		public void onPostAndUpdateTaskProgress(String progressMessage) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +139,7 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	}
 
 	private void showUpdateAthleteProfileDialog() {
-		DialogFragment newFragment = new UpdateAthleteProfileFragment(athlete, this);
+		DialogFragment newFragment = new UpdateAthleteProfileFragment(athlete, updateListener);
 		newFragment.show(getSupportFragmentManager(), "updateAthleteProfileDialog");
 	}
 
@@ -257,35 +305,6 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 
 	private void setupOnSmsIconClickListeners() {
 		ivAthleteParentCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
-	}
-
-	@Override
-	public void onRecordUpdateResult(Athlete athleteDTO) {
-		if (athleteDTO != null) {
-			if (athleteDTO.getPhone() != null) {
-				athlete.setPhone(athleteDTO.getPhone());
-			}
-			if (athleteDTO.getEmail() != null) {
-				athlete.setEmail(athleteDTO.getEmail());
-			}
-			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getCellPhone() != null) {
-				athlete.getPrimaryParent().setCellPhone(athleteDTO.getPrimaryParent().getCellPhone());
-			}
-			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getPhone() != null) {
-				athlete.getPrimaryParent().setPhone(athleteDTO.getPrimaryParent().getPhone());
-			}
-			if (athleteDTO.getPrimaryParent() != null && athleteDTO.getPrimaryParent().getEmail() != null) {
-				athlete.getPrimaryParent().setEmail(athleteDTO.getPrimaryParent().getEmail());
-			}
-		}
-		populateViews();
-		Toast.makeText(this, "Athlete profile is updated", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void onRecordUpdateError() {
-		Toast.makeText(this, "Athlete profile update is failed", Toast.LENGTH_SHORT).show();
-
 	}
 
 	@Override

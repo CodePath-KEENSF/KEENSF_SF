@@ -11,7 +11,7 @@ import org.keenusa.connect.listeners.OnPhoneLongClickListener;
 import org.keenusa.connect.listeners.OnSmsIconClickListener;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
+import org.keenusa.connect.networking.PostAndUpdateRemoteDataTask.PostAndUpdateRemoteDataTaskListener;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -25,7 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CoachProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Coach> {
+public class CoachProfileActivity extends FragmentActivity {
 
 	private TextView tvLastAttended;
 	private TextView tvLastAttendedLabel;
@@ -48,6 +48,51 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 
 	private Coach coach;
 	private MenuItem editMenuItem;
+
+	private PostAndUpdateRemoteDataTaskListener<Coach> updateListener = new PostAndUpdateRemoteDataTaskListener<Coach>() {
+		@Override
+		public void onDataPostAndUpdateTaskSuccess(final Coach recordDTO) {
+			CoachProfileActivity.this.runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					if (recordDTO != null) {
+						// or load data from DB
+						if (recordDTO.getPhone() != null) {
+							coach.setPhone(recordDTO.getPhone());
+						}
+						if (recordDTO.getEmail() != null) {
+							coach.setEmail(recordDTO.getEmail());
+						}
+						if (recordDTO.getCellPhone() != null) {
+							coach.setCellPhone(recordDTO.getCellPhone());
+						}
+					}
+					populateViews();
+					Toast.makeText(CoachProfileActivity.this, "Coach profile is updated", Toast.LENGTH_SHORT).show();
+				}
+
+			});
+
+		}
+
+		@Override
+		public void onPostAndUpdateTaskError() {
+			CoachProfileActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(CoachProfileActivity.this, "Coach profile update is failed", Toast.LENGTH_SHORT).show();
+				}
+			});
+
+		}
+
+		@Override
+		public void onPostAndUpdateTaskProgress(String progressMessage) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +131,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 	}
 
 	private void showUpdateCoachProfileDialog() {
-		DialogFragment newFragment = new UpdateCoachProfileFragment(coach, this);
+		DialogFragment newFragment = new UpdateCoachProfileFragment(coach, updateListener);
 		newFragment.show(getSupportFragmentManager(), "updateCoachProfileDialog");
 	}
 
@@ -214,31 +259,6 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 		ivCoachCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
 	}
 
-	@Override
-	public void onRecordUpdateResult(Coach coachDTO) {
-		if (coachDTO != null) {
-			new SaveCoachDataTask().execute(coachDTO);
-			// TODO refactor
-			if (coachDTO.getPhone() != null) {
-				coach.setPhone(coachDTO.getPhone());
-			}
-			if (coachDTO.getEmail() != null) {
-				coach.setEmail(coachDTO.getEmail());
-			}
-			if (coachDTO.getCellPhone() != null) {
-				coach.setCellPhone(coachDTO.getCellPhone());
-			}
-		}
-		populateViews();
-		Toast.makeText(this, "Coach profile is updated", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void onRecordUpdateError() {
-		Toast.makeText(this, "Coach profile update is failed", Toast.LENGTH_SHORT).show();
-
-	}
-
 	public void onBackPressed() {
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -267,35 +287,6 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 			//			}
 			coach = dbCoach;
 			populateViews();
-
-		}
-
-	}
-
-	private class SaveCoachDataTask extends AsyncTask<Coach, Void, Boolean> {
-
-		@Override
-		protected void onPreExecute() {
-			//			if (llProgressBar != null) {
-			//				llProgressBar.setVisibility(View.VISIBLE);
-			//			}
-		}
-
-		@Override
-		protected Boolean doInBackground(Coach... params) {
-			CoachDAO coachDAO = new CoachDAO(CoachProfileActivity.this);
-			boolean isUpdated = coachDAO.updateCoachRecord(params[0]);
-			return isUpdated;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean isUpdated) {
-			//			if (llProgressBar != null) {
-			//				llProgressBar.setVisibility(View.GONE);
-			//			}
-			if (isUpdated) {
-				Toast.makeText(CoachProfileActivity.this, "Changes saved in DB", Toast.LENGTH_SHORT).show();
-			}
 
 		}
 

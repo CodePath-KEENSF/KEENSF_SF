@@ -15,8 +15,9 @@ public class SyncXMLHttpResponseHandler<T> {
 		this.target = target;
 	}
 
-	public void onXMLProcessingError(Throwable throwable) {
+	public void onXMLProcessingError(Throwable throwable, String response) {
 		Log.e(LOG_TAG_CLASS, throwable.toString());
+		Log.e(LOG_TAG_CLASS, response);
 	}
 
 	public T parseXMLResponse(String response) {
@@ -27,7 +28,7 @@ public class SyncXMLHttpResponseHandler<T> {
 			T remoteData = serializer.read(target, cleanResponse);
 			return remoteData;
 		} catch (Exception e) {
-			onXMLProcessingError(e);
+			onXMLProcessingError(e, cleanResponse);
 		}
 		return null;
 	}

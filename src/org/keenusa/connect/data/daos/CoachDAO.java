@@ -109,22 +109,22 @@ public class CoachDAO {
 		return coachId;
 	}
 
-	public boolean updateCoachRecord(Coach coach) {
+	public boolean updateCoachRecord(Coach coachDTO) {
 		boolean transactionStatus = false;
 
 		ContentValues values = new ContentValues();
-		if (coach.getEmail() != null) {
-			values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
+		if (coachDTO.getEmail() != null) {
+			values.put(CoachTable.EMAIL_COL_NAME, (!coachDTO.getEmail().isEmpty() ? coachDTO.getEmail() : null));
 		}
-		if (coach.getPhone() != null) {
-			values.put(CoachTable.PHONE_COL_NAME, coach.getPhone());
+		if (coachDTO.getPhone() != null) {
+			values.put(CoachTable.PHONE_COL_NAME, (!coachDTO.getPhone().isEmpty() ? coachDTO.getPhone() : null));
 		}
-		if (coach.getCellPhone() != null) {
-			values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
+		if (coachDTO.getCellPhone() != null) {
+			values.put(CoachTable.MOBILE_COL_NAME, (!coachDTO.getCellPhone().isEmpty() ? coachDTO.getCellPhone() : null));
 		}
 		SQLiteDatabase db = localDB.getWritableDatabase();
 		db.beginTransaction();
-		db.update(CoachTable.TABLE_NAME, values, CoachTable.ID_COL_NAME + "=" + coach.getId(), null);
+		db.update(CoachTable.TABLE_NAME, values, CoachTable.ID_COL_NAME + "=" + coachDTO.getId(), null);
 		db.setTransactionSuccessful();
 		transactionStatus = true;
 		db.endTransaction();

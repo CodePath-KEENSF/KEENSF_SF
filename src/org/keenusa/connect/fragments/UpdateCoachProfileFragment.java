@@ -6,7 +6,8 @@ import org.keenusa.connect.helpers.EmailAddressValidator;
 import org.keenusa.connect.helpers.PhoneNumberValidator;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
+import org.keenusa.connect.networking.PostAndUpdateRemoteCoachTask;
+import org.keenusa.connect.networking.PostAndUpdateRemoteDataTask.PostAndUpdateRemoteDataTaskListener;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -35,12 +36,12 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 
 	private Coach coach;
 	KeenCivicoreClient client;
-	CivicoreUpdateDataResultListener<Coach> onCoachProfileUpdateListener;
+	PostAndUpdateRemoteDataTaskListener<Coach> onCoachProfileUpdateListener;
 
 	public UpdateCoachProfileFragment() {
 	}
 
-	public UpdateCoachProfileFragment(Coach coach, CivicoreUpdateDataResultListener<Coach> onCoachProfileUpdateListener) {
+	public UpdateCoachProfileFragment(Coach coach, PostAndUpdateRemoteDataTaskListener<Coach> onCoachProfileUpdateListener) {
 		this.coach = coach;
 		this.onCoachProfileUpdateListener = onCoachProfileUpdateListener;
 	}
@@ -120,6 +121,13 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 
 	}
 
+	private Coach createNewCoachDTO() {
+		Coach coachDTO = new Coach();
+		coachDTO.setRemoteId(coach.getRemoteId());
+		coachDTO.setId(coach.getId());
+		return coachDTO;
+	}
+
 	public void updateCoachProfileDetails(View view) {
 
 		if (isInputValid()) {
@@ -131,37 +139,35 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 
 			if ((coach.getPhone() != null && !coach.getPhone().equals(phone)) || (coach.getPhone() == null && !phone.isEmpty())) {
 				if (coachDTO == null) {
-					coachDTO = new Coach();
-					coachDTO.setRemoteId(coach.getRemoteId());
-					coachDTO.setId(coach.getId());
+					coachDTO = createNewCoachDTO();
 				}
 				coachDTO.setPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(phone));
 			}
 			if ((coach.getEmail() != null && !coach.getEmail().equals(email)) || (coach.getEmail() == null && !email.isEmpty())) {
 				if (coachDTO == null) {
-					coachDTO = new Coach();
-					coachDTO.setRemoteId(coach.getRemoteId());
-					coachDTO.setId(coach.getId());
+					coachDTO = createNewCoachDTO();
 				}
 				coachDTO.setEmail(email);
 			}
 			if ((coach.getCellPhone() != null && !coach.getCellPhone().equals(mobile)) || (coach.getCellPhone() == null && !mobile.isEmpty())) {
 				if (coachDTO == null) {
-					coachDTO = new Coach();
-					coachDTO.setRemoteId(coach.getRemoteId());
-					coachDTO.setId(coach.getId());
+					coachDTO = createNewCoachDTO();
 				}
 				coachDTO.setCellPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(mobile));
 			}
 
 			if (coachDTO != null) {
-				client.updateCoachProfileRecord(coachDTO, onCoachProfileUpdateListener);
+				postToRemoteAndUpdateLocally(coachDTO);
 			} else {
 				Toast.makeText(getActivity(), "Nothing is changed", Toast.LENGTH_LONG).show();
 			}
 			closeInputFromWindow();
 			getDialog().dismiss();
 		}
+	}
+
+	private void postToRemoteAndUpdateLocally(Coach coach) {
+		new PostAndUpdateRemoteCoachTask(getActivity(), onCoachProfileUpdateListener, coach).start();
 	}
 
 	private boolean isInputValid() {

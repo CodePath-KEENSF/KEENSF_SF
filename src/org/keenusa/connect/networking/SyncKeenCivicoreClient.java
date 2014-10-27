@@ -19,6 +19,7 @@ import org.keenusa.connect.models.remote.RemoteCoachList;
 import org.keenusa.connect.models.remote.RemoteProgramEnrolmentList;
 import org.keenusa.connect.models.remote.RemoteProgramList;
 import org.keenusa.connect.models.remote.RemoteSessionList;
+import org.keenusa.connect.models.remote.RemoteUpdateSuccessResult;
 
 import android.content.Context;
 import android.net.Uri;
@@ -51,12 +52,9 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<Coach> fetchCoachListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.COACH_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
-
 		if (!response.isSuccessful()) {
 			throw new IOException("Unexpected response " + response);
 		}
@@ -67,12 +65,9 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<KeenProgram> fetchProgramListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.PROGRAM_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
-
 		if (!response.isSuccessful()) {
 			throw new IOException("Unexpected response " + response);
 		}
@@ -84,12 +79,9 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<Athlete> fetchAthleteListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.ATHLETE_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
-
 		if (!response.isSuccessful()) {
 			throw new IOException("Unexpected response " + response);
 		}
@@ -101,12 +93,9 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<KeenSession> fetchSessionListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.SESSION_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
-
 		if (!response.isSuccessful()) {
 			throw new IOException("Unexpected response " + response);
 		}
@@ -118,12 +107,9 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<KeenProgramEnrolment> fetchProgramEnrolmentListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.PROGRAM_ENROLMENT_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
-
 		if (!response.isSuccessful()) {
 			throw new IOException("Unexpected response " + response);
 		}
@@ -135,12 +121,9 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<AthleteAttendance> fetchAthleteAttendanceListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.ATHLETE_ATENDANCE_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
-
 		if (!response.isSuccessful()) {
 			throw new IOException("Unexpected response " + response);
 		}
@@ -152,12 +135,9 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<CoachAttendance> fetchCoachAttendanceListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.COACH_ATTENDANCE_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
-
 		if (!response.isSuccessful()) {
 			throw new IOException("Unexpected response " + response);
 		}
@@ -169,9 +149,7 @@ public class SyncKeenCivicoreClient {
 	}
 
 	public List<Affiliate> fetchAffiliateListData() throws Exception {
-
 		String url = buildSelectURL(APIRequestCode.AFFILIATE_LIST, 1);
-
 		Request request = new Request.Builder().url(url).build();
 		Response response = client.newCall(request).execute();
 
@@ -185,107 +163,37 @@ public class SyncKeenCivicoreClient {
 
 	}
 
-	//	public List<Affiliate> fetchAffiliateListData() throws Exception {
-	//
-	//		String url = buildSelectURL(APIRequestCode.AFFILIATE_LIST, 1);
-	//
-	//		Request request = new Request.Builder().url(url).build();
-	//		Response response = client.newCall(request).execute();
-	//
-	//		if (!response.isSuccessful()) {
-	//			throw new IOException("Unexpected response " + response);
-	//		}
-	//		String responseString = response.body().string();
-	//		RemoteAffiliateList remoteAffiliates = (new SyncXMLHttpResponseHandler<RemoteAffiliateList>(RemoteAffiliateList.class))
-	//				.parseXMLResponse(responseString);
-	//		return Affiliate.fromRemoteAffiliateList(remoteAffiliates.getRemoteAffiliates());
-	//
-	//	}
+	public Coach updateCoachProfileRecord(Coach coach) throws Exception {
+		String url = buildUpdateCoachURL(APIRequestCode.UPDATE_COACH_PROFILE, coach);
+		Request request = new Request.Builder().url(url).build();
+		Response response = client.newCall(request).execute();
+		if (!response.isSuccessful()) {
+			throw new IOException("Unexpected response " + response);
+		}
+		String responseString = response.body().string();
+		RemoteUpdateSuccessResult updateResult = (new SyncXMLHttpResponseHandler<RemoteUpdateSuccessResult>(RemoteUpdateSuccessResult.class))
+				.parseXMLResponse(responseString);
+		if (updateResult != null && Long.valueOf(updateResult.getRemoteId()) == coach.getRemoteId()) {
+			return coach;
+		}
+		return null;
+	}
 
-	//	public void updateCoachProfileRecord(final Coach coach, final CivicoreUpdateDataResultListener<Coach> listener) {
-	//
-	//		String url = buildUpdateCoachURL(APIRequestCode.UPDATE_COACH_PROFILE, coach);
-	//		client.get(url, new AsyncHttpResponseHandler() {
-	//
-	//			@Override
-	//			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-	//				Log.d("RESPONSE", new String(arg2));
-	//				Serializer serializer = new Persister();
-	//
-	//				try {
-	//					String response = new String(arg2);
-	//					response = response.replaceAll("&", "&amp;");
-	//					response = response.replaceAll("'", "&apos;");
-	//					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
-	//					if (listener != null) {
-	//						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == coach.getRemoteId()) {
-	//							listener.onRecordUpdateResult(coach);
-	//						} else {
-	//							listener.onRecordUpdateError();
-	//						}
-	//					}
-	//				} catch (Exception e) {
-	//					Log.e(LOG_TAG_CLASS, e.toString());
-	//					if (listener != null) {
-	//						listener.onRecordUpdateError();
-	//					}
-	//
-	//				}
-	//			}
-	//
-	//			@Override
-	//			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-	//				Log.e("RESPONSE", arg3.toString());
-	//
-	//			}
-	//
-	//		});
-	//
-	//	}
-	//
-
-	//
-	//	public void updateAfthetProfileRecord(final Athlete athlete, final CivicoreUpdateDataResultListener<Athlete> listener) {
-	//
-	//		String url = buildUpdateAthleteURL(APIRequestCode.UPDATE_ATHLETE_PROFILE, athlete);
-	//		client.get(url, new AsyncHttpResponseHandler() {
-	//
-	//			@Override
-	//			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-	//				Log.d("RESPONSE", new String(arg2));
-	//				Serializer serializer = new Persister();
-	//
-	//				try {
-	//					String response = new String(arg2);
-	//					response = response.replaceAll("&", "&amp;");
-	//					response = response.replaceAll("'", "&apos;");
-	//					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
-	//					if (listener != null) {
-	//						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == athlete.getRemoteId()) {
-	//							listener.onRecordUpdateResult(athlete);
-	//						} else {
-	//							listener.onRecordUpdateError();
-	//						}
-	//					}
-	//				} catch (Exception e) {
-	//					Log.e(LOG_TAG_CLASS, e.toString());
-	//					if (listener != null) {
-	//						listener.onRecordUpdateError();
-	//					}
-	//
-	//				}
-	//			}
-	//
-	//			@Override
-	//			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-	//				Log.e("RESPONSE", arg3.toString());
-	//
-	//			}
-	//
-	//		});
-	//
-	//	}
-	//
+	public Athlete updateAthleteProfileRecord(Athlete athlete) throws Exception {
+		String url = buildUpdateAthleteURL(APIRequestCode.UPDATE_ATHLETE_PROFILE, athlete);
+		Request request = new Request.Builder().url(url).build();
+		Response response = client.newCall(request).execute();
+		if (!response.isSuccessful()) {
+			throw new IOException("Unexpected response " + response);
+		}
+		String responseString = response.body().string();
+		RemoteUpdateSuccessResult updateResult = (new SyncXMLHttpResponseHandler<RemoteUpdateSuccessResult>(RemoteUpdateSuccessResult.class))
+				.parseXMLResponse(responseString);
+		if (updateResult != null && Long.valueOf(updateResult.getRemoteId()) == athlete.getRemoteId()) {
+			return athlete;
+		}
+		return null;
+	}
 
 	//	public void updateAthleteAttendanceRecord(final AthleteAttendance athleteAttendance,
 	//			final CivicoreUpdateDataResultListener<AthleteAttendance> listener) {
@@ -466,20 +374,20 @@ public class SyncKeenCivicoreClient {
 		return URL;
 	}
 
-	private String buildUpdateAthleteURL(APIRequestCode apiRequestCode, Athlete athlete) {
+	private String buildUpdateCoachURL(APIRequestCode apiRequestCode, Coach coach) {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
-		String apiJSONString = UpdateAthleteRequestJSONStringBuilder.buildRequestJSONString(context, athlete);
+		String apiJSONString = UpdateCoachRequestJSONStringBuilder.buildRequestJSONString(context, coach);
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 		Log.i(LOG_TAG_URL, URL);
 		return URL;
 	}
 
-	private String buildUpdateCoachURL(APIRequestCode apiRequestCode, Coach coach) {
+	private String buildUpdateAthleteURL(APIRequestCode apiRequestCode, Athlete athlete) {
 		Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
 		builder.appendQueryParameter(VERSION_PARAMETER_KEY, "2.0");
-		String apiJSONString = UpdateCoachRequestJSONStringBuilder.buildRequestJSONString(context, coach);
+		String apiJSONString = UpdateAthleteRequestJSONStringBuilder.buildRequestJSONString(context, athlete);
 		builder.appendQueryParameter(REQUEST_STRING_PARAMETER_KEY, apiJSONString);
 		String URL = builder.build().toString();
 		Log.i(LOG_TAG_URL, URL);
@@ -526,15 +434,4 @@ public class SyncKeenCivicoreClient {
 		return URL;
 	}
 
-	public interface CivicoreDataResultListener<T> {
-		public void onListResult(List<T> list);
-
-		public void onListResultError();
-	}
-
-	public interface CivicoreUpdateDataResultListener<T> {
-		public void onRecordUpdateResult(T object);
-
-		public void onRecordUpdateError();
-	}
 }

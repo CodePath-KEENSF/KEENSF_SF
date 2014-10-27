@@ -127,6 +127,40 @@ public class AthleteDAO {
 		return athleteId;
 	}
 
+	public boolean updateAthleteRecord(Athlete athleteDTO) {
+		boolean transactionStatus = false;
+
+		ContentValues values = new ContentValues();
+		if (athleteDTO.getEmail() != null) {
+			values.put(AthleteTable.EMAIL_COL_NAME, (!athleteDTO.getEmail().isEmpty() ? athleteDTO.getEmail() : null));
+		}
+		if (athleteDTO.getPhone() != null) {
+			values.put(AthleteTable.PHONE_COL_NAME, (!athleteDTO.getPhone().isEmpty() ? athleteDTO.getPhone() : null));
+		}
+		if (athleteDTO.getPrimaryParent() != null) {
+			if (athleteDTO.getPrimaryParent().getPhone() != null) {
+				values.put(AthleteTable.PARENT_PHONE_COL_NAME, (!athleteDTO.getPrimaryParent().getPhone().isEmpty() ? athleteDTO.getPrimaryParent()
+						.getPhone() : null));
+			}
+			if (athleteDTO.getPrimaryParent().getCellPhone() != null) {
+				values.put(AthleteTable.PARENT_MOBILE_COL_NAME, (!athleteDTO.getPrimaryParent().getCellPhone().isEmpty() ? athleteDTO
+						.getPrimaryParent().getCellPhone() : null));
+			}
+			if (athleteDTO.getPrimaryParent().getEmail() != null) {
+				values.put(AthleteTable.PARENT_EMAIL_COL_NAME, (!athleteDTO.getPrimaryParent().getEmail().isEmpty() ? athleteDTO.getPrimaryParent()
+						.getEmail() : null));
+			}
+
+		}
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		db.update(AthleteTable.TABLE_NAME, values, AthleteTable.ID_COL_NAME + "=" + athleteDTO.getId(), null);
+		db.setTransactionSuccessful();
+		transactionStatus = true;
+		db.endTransaction();
+		return transactionStatus;
+	}
+
 	private boolean updateAthlete(Athlete athlete) {
 		boolean transactionStatus = false;
 		ContentValues values = new ContentValues();

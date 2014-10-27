@@ -7,7 +7,8 @@ import org.keenusa.connect.helpers.PhoneNumberValidator;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.Parent;
 import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
+import org.keenusa.connect.networking.PostAndUpdateRemoteAthleteTask;
+import org.keenusa.connect.networking.PostAndUpdateRemoteDataTask.PostAndUpdateRemoteDataTaskListener;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -40,12 +41,12 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 
 	private Athlete athlete;
 	KeenCivicoreClient client;
-	CivicoreUpdateDataResultListener<Athlete> onAthleteProfileUpdateListener;
+	PostAndUpdateRemoteDataTaskListener<Athlete> onAthleteProfileUpdateListener;
 
 	public UpdateAthleteProfileFragment() {
 	}
 
-	public UpdateAthleteProfileFragment(Athlete athlete, CivicoreUpdateDataResultListener<Athlete> onAthleteProfileUpdateListener) {
+	public UpdateAthleteProfileFragment(Athlete athlete, PostAndUpdateRemoteDataTaskListener<Athlete> onAthleteProfileUpdateListener) {
 		this.athlete = athlete;
 		this.onAthleteProfileUpdateListener = onAthleteProfileUpdateListener;
 	}
@@ -154,6 +155,13 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 
 	}
 
+	private Athlete createNewAthleteDTO() {
+		Athlete athleteDTO = new Athlete();
+		athleteDTO.setRemoteId(athlete.getRemoteId());
+		athleteDTO.setId(athlete.getId());
+		return athleteDTO;
+	}
+
 	public void updateAthleteProfileDetails(View view) {
 
 		if (isInputValid()) {
@@ -167,24 +175,20 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 
 			if ((athlete.getPhone() != null && !athlete.getPhone().equals(phone)) || (athlete.getPhone() == null && !phone.isEmpty())) {
 				if (athleteDTO == null) {
-					athleteDTO = new Athlete();
-					athleteDTO.setRemoteId(athlete.getRemoteId());
+					athleteDTO = createNewAthleteDTO();
 				}
 				athleteDTO.setPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(phone));
 			}
 			if ((athlete.getEmail() != null && !athlete.getEmail().equals(email)) || (athlete.getEmail() == null && !email.isEmpty())) {
 				if (athleteDTO == null) {
-					athleteDTO = new Athlete();
-					athleteDTO.setRemoteId(athlete.getRemoteId());
-
+					athleteDTO = createNewAthleteDTO();
 				}
 				athleteDTO.setEmail(email);
 			}
 			if ((athlete.getPrimaryParent().getEmail() != null && !athlete.getPrimaryParent().getEmail().equals(pemail))
 					|| (athlete.getPrimaryParent().getEmail() == null && !pemail.isEmpty())) {
 				if (athleteDTO == null) {
-					athleteDTO = new Athlete();
-					athleteDTO.setRemoteId(athlete.getRemoteId());
+					athleteDTO = createNewAthleteDTO();
 				}
 				if (athleteDTO.getPrimaryParent() == null) {
 					athleteDTO.setPrimaryParent(new Parent());
@@ -194,8 +198,7 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			if ((athlete.getPrimaryParent().getCellPhone() != null && !athlete.getPrimaryParent().getCellPhone().equals(pmobile))
 					|| (athlete.getPrimaryParent().getCellPhone() == null && !pmobile.isEmpty())) {
 				if (athleteDTO == null) {
-					athleteDTO = new Athlete();
-					athleteDTO.setRemoteId(athlete.getRemoteId());
+					athleteDTO = createNewAthleteDTO();
 				}
 				if (athleteDTO.getPrimaryParent() == null) {
 					athleteDTO.setPrimaryParent(new Parent());
@@ -206,8 +209,7 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			if ((athlete.getPrimaryParent().getPhone() != null && !athlete.getPrimaryParent().getPhone().equals(pphone))
 					|| (athlete.getPrimaryParent().getPhone() == null && !pphone.isEmpty())) {
 				if (athleteDTO == null) {
-					athleteDTO = new Athlete();
-					athleteDTO.setRemoteId(athlete.getRemoteId());
+					athleteDTO = createNewAthleteDTO();
 				}
 				if (athleteDTO.getPrimaryParent() == null) {
 					athleteDTO.setPrimaryParent(new Parent());
@@ -216,13 +218,17 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			}
 
 			if (athleteDTO != null) {
-				client.updateAfthetProfileRecord(athleteDTO, onAthleteProfileUpdateListener);
+				postToRemoteAndUpdateLocally(athleteDTO);
 			} else {
 				Toast.makeText(getActivity(), "Nothing is changed", Toast.LENGTH_LONG).show();
 			}
 			closeInputFromWindow();
 			getDialog().dismiss();
 		}
+	}
+
+	private void postToRemoteAndUpdateLocally(Athlete athleteDTO) {
+		new PostAndUpdateRemoteAthleteTask(getActivity(), onAthleteProfileUpdateListener, athleteDTO).start();
 	}
 
 	private boolean isInputValid() {
