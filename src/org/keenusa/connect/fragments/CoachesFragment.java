@@ -24,7 +24,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -37,13 +36,7 @@ public class CoachesFragment extends Fragment {
 
 	private LinearLayout llProgressBar;
 	public String dummySearchString;
-<<<<<<< Updated upstream
-	private ProgressBar progressBar;
-
-	SearchView searchView;
-=======
 	private SearchView searchView;
->>>>>>> Stashed changes
 
 	// Creates a new fragment with given arguments
 	public static CoachesFragment newInstance() {
@@ -64,14 +57,6 @@ public class CoachesFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
-<<<<<<< Updated upstream
-				if (!bDataLoaded) {
-					llProgressBar.setVisibility(View.VISIBLE);
-					loadProgressBar();
-				}
-
-=======
->>>>>>> Stashed changes
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
 		lvCoaches.setOnItemClickListener(new OnItemClickListener() {
@@ -87,18 +72,6 @@ public class CoachesFragment extends Fragment {
 		});
 
 		return v;
-	}
-	
-	private void loadProgressBar() {
-//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
-		try {
-			for (int i = 1; i <= 10; i++) {
-				progressBar.setProgress(i*10);
-				Thread.sleep(500);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
