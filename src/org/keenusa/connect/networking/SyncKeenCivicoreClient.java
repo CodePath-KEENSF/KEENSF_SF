@@ -185,6 +185,65 @@ public class SyncKeenCivicoreClient {
 
 	}
 
+	//	public List<Affiliate> fetchAffiliateListData() throws Exception {
+	//
+	//		String url = buildSelectURL(APIRequestCode.AFFILIATE_LIST, 1);
+	//
+	//		Request request = new Request.Builder().url(url).build();
+	//		Response response = client.newCall(request).execute();
+	//
+	//		if (!response.isSuccessful()) {
+	//			throw new IOException("Unexpected response " + response);
+	//		}
+	//		String responseString = response.body().string();
+	//		RemoteAffiliateList remoteAffiliates = (new SyncXMLHttpResponseHandler<RemoteAffiliateList>(RemoteAffiliateList.class))
+	//				.parseXMLResponse(responseString);
+	//		return Affiliate.fromRemoteAffiliateList(remoteAffiliates.getRemoteAffiliates());
+	//
+	//	}
+
+	//	public void updateCoachProfileRecord(final Coach coach, final CivicoreUpdateDataResultListener<Coach> listener) {
+	//
+	//		String url = buildUpdateCoachURL(APIRequestCode.UPDATE_COACH_PROFILE, coach);
+	//		client.get(url, new AsyncHttpResponseHandler() {
+	//
+	//			@Override
+	//			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+	//				Log.d("RESPONSE", new String(arg2));
+	//				Serializer serializer = new Persister();
+	//
+	//				try {
+	//					String response = new String(arg2);
+	//					response = response.replaceAll("&", "&amp;");
+	//					response = response.replaceAll("'", "&apos;");
+	//					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
+	//					if (listener != null) {
+	//						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == coach.getRemoteId()) {
+	//							listener.onRecordUpdateResult(coach);
+	//						} else {
+	//							listener.onRecordUpdateError();
+	//						}
+	//					}
+	//				} catch (Exception e) {
+	//					Log.e(LOG_TAG_CLASS, e.toString());
+	//					if (listener != null) {
+	//						listener.onRecordUpdateError();
+	//					}
+	//
+	//				}
+	//			}
+	//
+	//			@Override
+	//			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+	//				Log.e("RESPONSE", arg3.toString());
+	//
+	//			}
+	//
+	//		});
+	//
+	//	}
+	//
+
 	//
 	//	public void updateAfthetProfileRecord(final Athlete athlete, final CivicoreUpdateDataResultListener<Athlete> listener) {
 	//
@@ -227,47 +286,7 @@ public class SyncKeenCivicoreClient {
 	//
 	//	}
 	//
-	//	public void updateCoachProfileRecord(final Coach coach, final CivicoreUpdateDataResultListener<Coach> listener) {
-	//
-	//		String url = buildUpdateCoachURL(APIRequestCode.UPDATE_COACH_PROFILE, coach);
-	//		client.get(url, new AsyncHttpResponseHandler() {
-	//
-	//			@Override
-	//			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-	//				Log.d("RESPONSE", new String(arg2));
-	//				Serializer serializer = new Persister();
-	//
-	//				try {
-	//					String response = new String(arg2);
-	//					response = response.replaceAll("&", "&amp;");
-	//					response = response.replaceAll("'", "&apos;");
-	//					RemoteUpdateSuccessResult remoteUpdateSuccessResult = serializer.read(RemoteUpdateSuccessResult.class, response);
-	//					if (listener != null) {
-	//						if (Long.valueOf(remoteUpdateSuccessResult.getRemoteId()) == coach.getRemoteId()) {
-	//							listener.onRecordUpdateResult(coach);
-	//						} else {
-	//							listener.onRecordUpdateError();
-	//						}
-	//					}
-	//				} catch (Exception e) {
-	//					Log.e(LOG_TAG_CLASS, e.toString());
-	//					if (listener != null) {
-	//						listener.onRecordUpdateError();
-	//					}
-	//
-	//				}
-	//			}
-	//
-	//			@Override
-	//			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
-	//				Log.e("RESPONSE", arg3.toString());
-	//
-	//			}
-	//
-	//		});
-	//
-	//	}
-	//
+
 	//	public void updateAthleteAttendanceRecord(final AthleteAttendance athleteAttendance,
 	//			final CivicoreUpdateDataResultListener<AthleteAttendance> listener) {
 	//

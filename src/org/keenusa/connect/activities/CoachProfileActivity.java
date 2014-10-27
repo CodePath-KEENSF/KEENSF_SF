@@ -1,8 +1,11 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.data.daos.CoachDAO;
 import org.keenusa.connect.fragments.CoachesFragment;
 import org.keenusa.connect.fragments.UpdateCoachProfileFragment;
+import org.keenusa.connect.helpers.LastAttendedDateFormatter;
+import org.keenusa.connect.helpers.PersonNameFormatter;
 import org.keenusa.connect.listeners.OnEmailLongClickListener;
 import org.keenusa.connect.listeners.OnPhoneLongClickListener;
 import org.keenusa.connect.listeners.OnSmsIconClickListener;
@@ -11,6 +14,7 @@ import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,6 +28,7 @@ import android.widget.Toast;
 public class CoachProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Coach> {
 
 	private TextView tvLastAttended;
+	private TextView tvLastAttendedLabel;
 	private TextView tvNumSessionsAttended;
 	private ImageView ivCoachProfilePic;
 	private TextView tvCoachFullName;
@@ -55,8 +60,8 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 
 		setupViews();
 		Intent i = getIntent();
-		coach = (Coach) i.getSerializableExtra(CoachesFragment.COACH_EXTRA_TAG);
-		populateViews();
+		long coachId = i.getLongExtra(CoachesFragment.COACH_EXTRA_TAG, 0);
+		new LoadCoachDataTask().execute(coachId);
 
 	}
 
@@ -87,6 +92,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 
 	private void setupViews() {
 		tvLastAttended = (TextView) findViewById(R.id.tvLastAttended);
+		tvLastAttendedLabel = (TextView) findViewById(R.id.tvLastAttendedLabel);
 		tvNumSessionsAttended = (TextView) findViewById(R.id.tvNumSessionsAttended);
 		ivCoachProfilePic = (ImageView) findViewById(R.id.ivCoachProfilePic);
 		tvCoachFullName = (TextView) findViewById(R.id.tvCoachFullName);
@@ -113,7 +119,13 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_u);
 			}
 
-			tvCoachFullName.setText(coach.getFullName());
+			tvCoachFullName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));
+			if (coach.getDateLastAttended() != null) {
+				tvLastAttended.setText(LastAttendedDateFormatter.getFormatedLastAttendedDateString(coach.getDateLastAttended()));
+			} else {
+				tvLastAttended.setVisibility(View.GONE);
+				tvLastAttendedLabel.setVisibility(View.GONE);
+			}
 
 			if (coach.isActive()) {
 				ivActiveIcon.setImageResource(R.drawable.ic_active);
@@ -205,6 +217,8 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 	@Override
 	public void onRecordUpdateResult(Coach coachDTO) {
 		if (coachDTO != null) {
+			new SaveCoachDataTask().execute(coachDTO);
+			// TODO refactor
 			if (coachDTO.getPhone() != null) {
 				coach.setPhone(coachDTO.getPhone());
 			}
@@ -229,4 +243,62 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
+
+	private class LoadCoachDataTask extends AsyncTask<Long, Void, Coach> {
+
+		@Override
+		protected void onPreExecute() {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.VISIBLE);
+			//			}
+		}
+
+		@Override
+		protected Coach doInBackground(Long... params) {
+			CoachDAO coachDAO = new CoachDAO(CoachProfileActivity.this);
+			Coach coach = coachDAO.getCoachById(params[0]);
+			return coach;
+		}
+
+		@Override
+		protected void onPostExecute(Coach dbCoach) {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.GONE);
+			//			}
+			coach = dbCoach;
+			populateViews();
+
+		}
+
+	}
+
+	private class SaveCoachDataTask extends AsyncTask<Coach, Void, Boolean> {
+
+		@Override
+		protected void onPreExecute() {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.VISIBLE);
+			//			}
+		}
+
+		@Override
+		protected Boolean doInBackground(Coach... params) {
+			CoachDAO coachDAO = new CoachDAO(CoachProfileActivity.this);
+			boolean isUpdated = coachDAO.updateCoachRecord(params[0]);
+			return isUpdated;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean isUpdated) {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.GONE);
+			//			}
+			if (isUpdated) {
+				Toast.makeText(CoachProfileActivity.this, "Changes saved in DB", Toast.LENGTH_SHORT).show();
+			}
+
+		}
+
+	}
+
 }

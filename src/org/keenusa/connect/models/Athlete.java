@@ -15,7 +15,6 @@ public class Athlete extends ContactPerson {
 
 	private long id;
 	private long remoteId;
-	// can be empty in the source but present in recent records
 	private String nickName;
 	private DateTime dateOfBirth;
 	private String primaryLanguage;

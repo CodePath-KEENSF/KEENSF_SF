@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.SessionListItemAdapter;
-import org.keenusa.connect.data.SessionDAO;
+import org.keenusa.connect.data.daos.SessionDAO;
 import org.keenusa.connect.helpers.KeenNavigationDrawer;
 import org.keenusa.connect.models.KeenSession;
 

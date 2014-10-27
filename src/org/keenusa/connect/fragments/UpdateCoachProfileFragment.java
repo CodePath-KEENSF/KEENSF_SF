@@ -133,6 +133,7 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 				if (coachDTO == null) {
 					coachDTO = new Coach();
 					coachDTO.setRemoteId(coach.getRemoteId());
+					coachDTO.setId(coach.getId());
 				}
 				coachDTO.setPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(phone));
 			}
@@ -140,6 +141,7 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 				if (coachDTO == null) {
 					coachDTO = new Coach();
 					coachDTO.setRemoteId(coach.getRemoteId());
+					coachDTO.setId(coach.getId());
 				}
 				coachDTO.setEmail(email);
 			}
@@ -147,6 +149,7 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 				if (coachDTO == null) {
 					coachDTO = new Coach();
 					coachDTO.setRemoteId(coach.getRemoteId());
+					coachDTO.setId(coach.getId());
 				}
 				coachDTO.setCellPhone(CivicorePhoneNumberFormatConverter.toCivicorePhoneNumberFormat(mobile));
 			}

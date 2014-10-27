@@ -2,15 +2,15 @@ package org.keenusa.connect.networking;
 
 import java.util.List;
 
-import org.keenusa.connect.data.AffiliateDAO;
-import org.keenusa.connect.data.AthleteAttendanceDAO;
-import org.keenusa.connect.data.AthleteDAO;
-import org.keenusa.connect.data.CoachAttendanceDAO;
-import org.keenusa.connect.data.CoachDAO;
 import org.keenusa.connect.data.KeenConnectDB;
-import org.keenusa.connect.data.ProgramDAO;
-import org.keenusa.connect.data.ProgramEnrollmentDAO;
-import org.keenusa.connect.data.SessionDAO;
+import org.keenusa.connect.data.daos.AffiliateDAO;
+import org.keenusa.connect.data.daos.AthleteAttendanceDAO;
+import org.keenusa.connect.data.daos.AthleteDAO;
+import org.keenusa.connect.data.daos.CoachAttendanceDAO;
+import org.keenusa.connect.data.daos.CoachDAO;
+import org.keenusa.connect.data.daos.ProgramDAO;
+import org.keenusa.connect.data.daos.ProgramEnrollmentDAO;
+import org.keenusa.connect.data.daos.SessionDAO;
 import org.keenusa.connect.models.Affiliate;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;

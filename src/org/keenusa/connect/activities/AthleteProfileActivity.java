@@ -1,8 +1,11 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.data.daos.AthleteDAO;
 import org.keenusa.connect.fragments.AtheletsFragment;
 import org.keenusa.connect.fragments.UpdateAthleteProfileFragment;
+import org.keenusa.connect.helpers.LastAttendedDateFormatter;
+import org.keenusa.connect.helpers.PersonNameFormatter;
 import org.keenusa.connect.listeners.OnEmailLongClickListener;
 import org.keenusa.connect.listeners.OnPhoneLongClickListener;
 import org.keenusa.connect.listeners.OnSmsIconClickListener;
@@ -12,6 +15,7 @@ import org.keenusa.connect.models.Parent;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +29,7 @@ import android.widget.Toast;
 public class AthleteProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Athlete> {
 
 	private TextView tvLastAttended;
+	private TextView tvLastAttendedLabel;
 	private TextView tvNumSessionsAttended;
 	private ImageView ivAthleteProfilePic;
 	private TextView tvAthleteFullName;
@@ -60,8 +65,8 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 
 		setupViews();
 		Intent i = getIntent();
-		athlete = (Athlete) i.getSerializableExtra(AtheletsFragment.ATHLETE_EXTRA_TAG);
-		populateViews();
+		long athleteId = i.getLongExtra(AtheletsFragment.ATHLETE_EXTRA_TAG, 0);
+		new LoadAthleteDataTask().execute(athleteId);
 
 	}
 
@@ -93,6 +98,7 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	private void setupViews() {
 
 		tvLastAttended = (TextView) findViewById(R.id.tvLastAttended);
+		tvLastAttendedLabel = (TextView) findViewById(R.id.tvLastAttendedLabel);
 		tvNumSessionsAttended = (TextView) findViewById(R.id.tvNumSessionsAttended);
 		ivAthleteProfilePic = (ImageView) findViewById(R.id.ivAthleteProfilePic);
 		tvAthleteFullName = (TextView) findViewById(R.id.tvAthleteFullName);
@@ -124,7 +130,13 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 			}
 
 			// athlete full name
-			tvAthleteFullName.setText(athlete.getFullName());
+			tvAthleteFullName.setText(PersonNameFormatter.getFormatedNameString(athlete.getFullName()));
+			if (athlete.getDateLastAttended() != null) {
+				tvLastAttended.setText(LastAttendedDateFormatter.getFormatedLastAttendedDateString(athlete.getDateLastAttended()));
+			} else {
+				tvLastAttended.setVisibility(View.GONE);
+				tvLastAttendedLabel.setVisibility(View.GONE);
+			}
 
 			if (athlete.isActive()) {
 				ivActiveIcon.setImageResource(R.drawable.ic_active);
@@ -280,5 +292,33 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	public void onBackPressed() {
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.right_out);
+	}
+
+	private class LoadAthleteDataTask extends AsyncTask<Long, Void, Athlete> {
+
+		@Override
+		protected void onPreExecute() {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.VISIBLE);
+			//			}
+		}
+
+		@Override
+		protected Athlete doInBackground(Long... params) {
+			AthleteDAO athleteDAO = new AthleteDAO(AthleteProfileActivity.this);
+			Athlete athlete = athleteDAO.getAthleteById(params[0]);
+			return athlete;
+		}
+
+		@Override
+		protected void onPostExecute(Athlete dbAthlete) {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.GONE);
+			//			}
+			athlete = dbAthlete;
+			populateViews();
+
+		}
+
 	}
 }

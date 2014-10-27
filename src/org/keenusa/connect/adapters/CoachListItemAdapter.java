@@ -3,6 +3,7 @@ package org.keenusa.connect.adapters;
 import java.util.List;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.helpers.PersonNameFormatter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
 
@@ -38,7 +39,7 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 		}
 
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-		viewHolder.tvCoachName.setText(coach.getFullName());
+		viewHolder.tvCoachName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));
 
 		viewHolder.ivCoachProfilePic.setImageResource(0);
 		if (coach.getGender() == ContactPerson.Gender.FEMALE) {

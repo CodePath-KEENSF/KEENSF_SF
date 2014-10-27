@@ -14,17 +14,20 @@ public class CoachAttendance implements Serializable {
 	 */
 	private static final long serialVersionUID = -9026136333954262937L;
 	private long id;
+	private long sessionId;
+
 	private long remoteId;
 	private long remoteSessionId;
-	private Coach coach;
-	// mostly empty
-	private String comments;
-	private AttendanceValue attendanceValue;
 	private long remoteCreateTimestamp;
 	private long remoteUpdatedTimestamp;
 
-	// used locally
+	// mostly empty not stored in DB
+	private String comments;
+	// used locally not stored in DB
 	private String coachFullName;
+
+	private Coach coach;
+	private AttendanceValue attendanceValue;
 
 	// attendance in remote source (lookup values) in the source 106 for contacts
 	public enum AttendanceValue {
@@ -171,6 +174,14 @@ public class CoachAttendance implements Serializable {
 
 	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
 		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(long sessionId) {
+		this.sessionId = sessionId;
 	}
 
 }

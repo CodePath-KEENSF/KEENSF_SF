@@ -1,9 +1,10 @@
-package org.keenusa.connect.data;
+package org.keenusa.connect.data.daos;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.keenusa.connect.data.KeenConnectDB;
 import org.keenusa.connect.data.tables.CoachTable;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
@@ -18,22 +19,35 @@ public class CoachDAO {
 
 	private KeenConnectDB localDB;
 
+	String[] simpleColumnNames = { CoachTable.ID_COL_NAME, CoachTable.REMOTE_ID_COL_NAME, CoachTable.REMOTE_CREATED_COL_NAME,
+			CoachTable.REMOTE_UPDATED_COL_NAME };
+
 	String[] columnNames = { CoachTable.ID_COL_NAME, CoachTable.REMOTE_ID_COL_NAME, CoachTable.REMOTE_CREATED_COL_NAME,
 			CoachTable.REMOTE_UPDATED_COL_NAME, CoachTable.FIRST_NAME_COL_NAME, CoachTable.MIDDLE_NAME_COL_NAME, CoachTable.LAST_NAME_COL_NAME,
 			CoachTable.EMAIL_COL_NAME, CoachTable.PHONE_COL_NAME, CoachTable.MOBILE_COL_NAME, CoachTable.GENDER_COL_NAME, CoachTable.DOB_COL_NAME,
 			CoachTable.LANGUAGES_COL_NAME, CoachTable.SKILLS_COL_NAME, CoachTable.ACTIVE_COL_NAME, CoachTable.CITY_COL_NAME,
-			CoachTable.STATE_COL_NAME, CoachTable.ZIPCODE_COL_NAME, CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME };
+			CoachTable.STATE_COL_NAME, CoachTable.ZIPCODE_COL_NAME, CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME, CoachTable.LAST_ATTENDED_DATE_COL_NAME };
 
 	public CoachDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
 	}
 
+	public Coach getSimpleCoachByRemoteId(long id) {
+		Coach coach = null;
+		SQLiteDatabase db = localDB.getReadableDatabase();
+		Cursor coachCursor = db.query(CoachTable.TABLE_NAME, simpleColumnNames, CoachTable.REMOTE_ID_COL_NAME + "=" + id, null, null, null, null);
+		if (coachCursor.getCount() > 0) {
+			coachCursor.moveToFirst();
+			coach = createSimpleCoachFromCursor(coachCursor);
+		}
+		coachCursor.close();
+		return coach;
+	}
+
 	public List<Coach> getCoachList() {
 		List<Coach> allCoaches = null;
 		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor coachsCursor = db
-				.query(CoachTable.TABLE_NAME, columnNames, null, null, null, null, CoachTable.REMOTE_CREATED_COL_NAME + " DESC", null);
-
+		Cursor coachsCursor = db.query(CoachTable.TABLE_NAME, columnNames, null, null, null, null, CoachTable.FIRST_NAME_COL_NAME + " ASC", null);
 		if (coachsCursor.getCount() > 0) {
 			coachsCursor.moveToFirst();
 			allCoaches = createCoachListFromCursor(coachsCursor);
@@ -42,18 +56,6 @@ public class CoachDAO {
 		}
 		coachsCursor.close();
 		return allCoaches;
-	}
-
-	public Coach geCoachByRemoteId(long id) {
-		Coach coach = null;
-		SQLiteDatabase db = localDB.getReadableDatabase();
-		Cursor coachCursor = db.query(CoachTable.TABLE_NAME, columnNames, CoachTable.REMOTE_ID_COL_NAME + "=" + id, null, null, null, null);
-		if (coachCursor.getCount() > 0) {
-			coachCursor.moveToFirst();
-			coach = createCoachFromCursor(coachCursor);
-		}
-		coachCursor.close();
-		return coach;
 	}
 
 	public Coach getCoachById(long id) {
@@ -69,91 +71,48 @@ public class CoachDAO {
 	}
 
 	public long saveNewCoach(Coach coach) {
-
 		long coachId = 0;
-		SQLiteDatabase db = localDB.getWritableDatabase();
-		Coach dbCoach = geCoachByRemoteId(coach.getRemoteId());
+		Coach dbCoach = getSimpleCoachByRemoteId(coach.getRemoteId());
 		if (dbCoach == null) {
-			db.beginTransaction();
-
 			ContentValues values = new ContentValues();
 			values.put(CoachTable.REMOTE_ID_COL_NAME, coach.getRemoteId());
 			values.put(CoachTable.REMOTE_CREATED_COL_NAME, coach.getRemoteCreateTimestamp());
 			values.put(CoachTable.REMOTE_UPDATED_COL_NAME, coach.getRemoteUpdatedTimestamp());
-			if (coach.getFirstName() != null) {
-				values.put(CoachTable.FIRST_NAME_COL_NAME, coach.getFirstName());
-			}
-			if (coach.getMiddleName() != null) {
-				values.put(CoachTable.MIDDLE_NAME_COL_NAME, coach.getMiddleName());
-			}
-			if (coach.getLastName() != null) {
-				values.put(CoachTable.LAST_NAME_COL_NAME, coach.getLastName());
-			}
-			if (coach.getEmail() != null) {
-				values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
-			}
-			if (coach.getPhone() != null) {
-				values.put(CoachTable.PHONE_COL_NAME, coach.getPhone());
-			}
-			if (coach.getCellPhone() != null) {
-				values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
-			}
-
+			values.put(CoachTable.FIRST_NAME_COL_NAME, coach.getFirstName());
+			values.put(CoachTable.MIDDLE_NAME_COL_NAME, coach.getMiddleName());
+			values.put(CoachTable.LAST_NAME_COL_NAME, coach.getLastName());
+			values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
+			values.put(CoachTable.PHONE_COL_NAME, coach.getPhone());
+			values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
 			values.put(CoachTable.GENDER_COL_NAME, coach.getGender().toString());
-
+			values.put(CoachTable.LANGUAGES_COL_NAME, coach.getForeignLanguages());
+			values.put(CoachTable.SKILLS_COL_NAME, coach.getSkillsExperience());
+			values.put(CoachTable.ACTIVE_COL_NAME, (coach.isActive() ? 1 : 0));
 			if (coach.getDateOfBirth() != null) {
 				values.put(CoachTable.DOB_COL_NAME, coach.getDateOfBirth().getMillis());
 			}
-
-			if (coach.getForeignLanguages() != null) {
-				values.put(CoachTable.LANGUAGES_COL_NAME, coach.getForeignLanguages());
-			}
-			if (coach.getSkillsExperience() != null) {
-				values.put(CoachTable.SKILLS_COL_NAME, coach.getSkillsExperience());
-			}
-			values.put(CoachTable.ACTIVE_COL_NAME, (coach.isActive() ? 1 : 0));
-
 			if (coach.getLocation() != null) {
-				if (coach.getLocation().getCity() != null) {
-					values.put(CoachTable.CITY_COL_NAME, coach.getLocation().getCity());
-				}
-				if (coach.getLocation().getState() != null) {
-					values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getState());
-				}
-				if (coach.getLocation().getZipCode() != null) {
-					values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getZipCode());
-				}
+				values.put(CoachTable.CITY_COL_NAME, coach.getLocation().getCity());
+				values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getState());
+				values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getZipCode());
 			}
-
+			SQLiteDatabase db = localDB.getWritableDatabase();
+			db.beginTransaction();
 			coachId = db.insert(CoachTable.TABLE_NAME, null, values);
 			db.setTransactionSuccessful();
 			db.endTransaction();
 		} else if (dbCoach.getRemoteUpdatedTimestamp() < coach.getRemoteUpdatedTimestamp()) {
-			// more recent version of the Coach - to be updated
+			// more recent version of the coach - to be updated
 			coach.setId(dbCoach.getId());
 			updateCoach(coach);
 		}
 		return coachId;
 	}
 
-	private boolean updateCoach(Coach coach) {
-
+	public boolean updateCoachRecord(Coach coach) {
 		boolean transactionStatus = false;
-		SQLiteDatabase db = localDB.getWritableDatabase();
-		db.beginTransaction();
-		ContentValues values = new ContentValues();
 
-		values.put(CoachTable.REMOTE_CREATED_COL_NAME, coach.getRemoteCreateTimestamp());
-		values.put(CoachTable.REMOTE_UPDATED_COL_NAME, coach.getRemoteUpdatedTimestamp());
-		if (coach.getFirstName() != null) {
-			values.put(CoachTable.FIRST_NAME_COL_NAME, coach.getFirstName());
-		}
-		if (coach.getMiddleName() != null) {
-			values.put(CoachTable.MIDDLE_NAME_COL_NAME, coach.getMiddleName());
-		}
-		if (coach.getLastName() != null) {
-			values.put(CoachTable.LAST_NAME_COL_NAME, coach.getLastName());
-		}
+		ContentValues values = new ContentValues();
 		if (coach.getEmail() != null) {
 			values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
 		}
@@ -163,39 +122,47 @@ public class CoachDAO {
 		if (coach.getCellPhone() != null) {
 			values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
 		}
-
-		values.put(CoachTable.GENDER_COL_NAME, coach.getGender().toString());
-
-		if (coach.getDateOfBirth() != null) {
-			values.put(CoachTable.DOB_COL_NAME, coach.getDateOfBirth().getMillis());
-		}
-
-		if (coach.getForeignLanguages() != null) {
-			values.put(CoachTable.LANGUAGES_COL_NAME, coach.getForeignLanguages());
-		}
-		if (coach.getSkillsExperience() != null) {
-			values.put(CoachTable.SKILLS_COL_NAME, coach.getSkillsExperience());
-		}
-		values.put(CoachTable.ACTIVE_COL_NAME, (coach.isActive() ? 1 : 0));
-
-		if (coach.getLocation() != null) {
-			if (coach.getLocation().getCity() != null) {
-				values.put(CoachTable.CITY_COL_NAME, coach.getLocation().getCity());
-			}
-			if (coach.getLocation().getState() != null) {
-				values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getState());
-			}
-			if (coach.getLocation().getZipCode() != null) {
-				values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getZipCode());
-			}
-		}
-
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
 		db.update(CoachTable.TABLE_NAME, values, CoachTable.ID_COL_NAME + "=" + coach.getId(), null);
 		db.setTransactionSuccessful();
 		transactionStatus = true;
 		db.endTransaction();
 		return transactionStatus;
+	}
 
+	private boolean updateCoach(Coach coach) {
+		boolean transactionStatus = false;
+
+		ContentValues values = new ContentValues();
+		values.put(CoachTable.REMOTE_CREATED_COL_NAME, coach.getRemoteCreateTimestamp());
+		values.put(CoachTable.REMOTE_UPDATED_COL_NAME, coach.getRemoteUpdatedTimestamp());
+		values.put(CoachTable.FIRST_NAME_COL_NAME, coach.getFirstName());
+		values.put(CoachTable.MIDDLE_NAME_COL_NAME, coach.getMiddleName());
+		values.put(CoachTable.LAST_NAME_COL_NAME, coach.getLastName());
+		values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
+		values.put(CoachTable.PHONE_COL_NAME, coach.getPhone());
+		values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
+		values.put(CoachTable.GENDER_COL_NAME, coach.getGender().toString());
+		values.put(CoachTable.LANGUAGES_COL_NAME, coach.getForeignLanguages());
+		values.put(CoachTable.SKILLS_COL_NAME, coach.getSkillsExperience());
+		values.put(CoachTable.ACTIVE_COL_NAME, (coach.isActive() ? 1 : 0));
+		if (coach.getDateOfBirth() != null) {
+			values.put(CoachTable.DOB_COL_NAME, coach.getDateOfBirth().getMillis());
+		}
+		if (coach.getLocation() != null) {
+			values.put(CoachTable.CITY_COL_NAME, coach.getLocation().getCity());
+			values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getState());
+			values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getZipCode());
+		}
+
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		db.update(CoachTable.TABLE_NAME, values, CoachTable.ID_COL_NAME + "=" + coach.getId(), null);
+		db.setTransactionSuccessful();
+		transactionStatus = true;
+		db.endTransaction();
+		return transactionStatus;
 	}
 
 	private List<Coach> createCoachListFromCursor(Cursor c) {
@@ -209,7 +176,6 @@ public class CoachDAO {
 				}
 				c.moveToNext();
 			}
-
 		}
 		return coaches;
 	}
@@ -244,6 +210,27 @@ public class CoachDAO {
 				location.setZipCode(c.getString(c.getColumnIndexOrThrow(CoachTable.ZIPCODE_COL_NAME)));
 				coach.setLocation(location);
 				coach.setNumberOfSessionsAttended(c.getInt(c.getColumnIndexOrThrow(CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME)));
+				long lastAttended = c.getLong(c.getColumnIndexOrThrow(CoachTable.LAST_ATTENDED_DATE_COL_NAME));
+				if (lastAttended != 0) {
+					coach.setDateLastAttended(new DateTime(lastAttended));
+				}
+
+			} catch (IllegalArgumentException iax) {
+				coach = null;
+			}
+		}
+		return coach;
+	}
+
+	private Coach createSimpleCoachFromCursor(Cursor c) {
+		Coach coach = null;
+		if (c.getPosition() >= 0) {
+			coach = new Coach();
+			try {
+				coach.setId(c.getLong(c.getColumnIndexOrThrow(CoachTable.ID_COL_NAME)));
+				coach.setRemoteId(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_ID_COL_NAME)));
+				coach.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_CREATED_COL_NAME)));
+				coach.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_UPDATED_COL_NAME)));
 
 			} catch (IllegalArgumentException iax) {
 				coach = null;

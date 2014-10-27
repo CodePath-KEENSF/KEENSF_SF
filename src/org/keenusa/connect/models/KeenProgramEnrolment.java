@@ -16,12 +16,15 @@ public class KeenProgramEnrolment implements Serializable {
 	private static final long serialVersionUID = 5486907615451742803L;
 	private long id;
 	private long remoteId;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
+
 	private KeenProgram program;
 	private Athlete athlete;
 	private boolean isInWaitlist;
+
+	// not saved to DB - redundant
 	private String athleteFullName;
-	private long remoteCreateTimestamp;
-	private long remoteUpdatedTimestamp;
 
 	public KeenProgramEnrolment() {
 	}

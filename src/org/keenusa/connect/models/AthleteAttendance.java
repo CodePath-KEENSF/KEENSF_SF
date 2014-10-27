@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.keenusa.connect.helpers.CivicoreAthleteAttendanceStringParser;
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.models.remote.RemoteAthleteAttendance;
 
 public class AthleteAttendance implements Serializable {
@@ -14,15 +15,17 @@ public class AthleteAttendance implements Serializable {
 	 */
 	private static final long serialVersionUID = 5486907615451742803L;
 	private long id;
+	private long sessionId;
+
 	private long remoteId;
 	private long remoteSessionId;
-	private Athlete athlete;
-	//no comments field in the remote table youth_days_attendance
-	private AttendanceValue attendanceValue;
-	// used locally
-	private String athleteFullName;
 	private long remoteCreateTimestamp;
 	private long remoteUpdatedTimestamp;
+	// not stored in DB - redundant
+	private String athleteFullName;
+
+	private Athlete athlete;
+	private AttendanceValue attendanceValue;
 
 	//attendance in remote source (lookup values) in the source id58 for youth
 	public enum AttendanceValue {
@@ -69,6 +72,10 @@ public class AthleteAttendance implements Serializable {
 			athleteAttendance.setRemoteSessionId(Long.valueOf(remoteAthleteAttendance.getClassesDaysId()));
 			athleteAttendance.setAttendanceValue(CivicoreAthleteAttendanceStringParser.parseAthleteAttendanceString(remoteAthleteAttendance
 					.getAttendance()));
+			athleteAttendance
+					.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteAthleteAttendance.getCreated()).getMillis());
+			athleteAttendance.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteAthleteAttendance.getUpdated())
+					.getMillis());
 		}
 		return athleteAttendance;
 	}
@@ -158,6 +165,14 @@ public class AthleteAttendance implements Serializable {
 
 	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
 		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(long sessionId) {
+		this.sessionId = sessionId;
 	}
 
 }

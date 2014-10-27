@@ -13,9 +13,9 @@ public class AffiliateTable {
 	public static final String WEBSITE_COL_NAME = "website";
 
 	public static String getCreateSQL() {
-		return "CREATE TABLE " + TABLE_NAME + " (" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, " + REMOTE_ID_COL_NAME + " NUMBER, "
-				+ REMOTE_CREATED_COL_NAME + " NUMBER, " + REMOTE_UPDATED_COL_NAME + " NUMBER, " + NAME_COL_NAME + " TEXT, " + CONTACT_NAME_COL_NAME
-				+ " TEXT, " + EMAIL_COL_NAME + " TEXT, " + WEBSITE_COL_NAME + " TEXT);";
+		return "CREATE TABLE " + TABLE_NAME + " (" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, " + REMOTE_ID_COL_NAME + " NUMBER NOT NULL UNIQUE, "
+				+ REMOTE_CREATED_COL_NAME + " NUMBER NOT NULL DEFAULT 0, " + REMOTE_UPDATED_COL_NAME + " NUMBER, " + NAME_COL_NAME + " TEXT, "
+				+ CONTACT_NAME_COL_NAME + " TEXT, " + EMAIL_COL_NAME + " TEXT, " + WEBSITE_COL_NAME + " TEXT);";
 	}
 
 	public static String getDropTableSQL() {
