@@ -36,7 +36,7 @@
     </style>
 
     <style name="ActionBar.Solid.Keen" parent="android:Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/main_theme_color</item>
+        <item name="android:background">@color/secondary_theme_color</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleText.Keen</item>
     </style>
 
@@ -50,7 +50,7 @@
     </style>
 
     <style name="ActionBarTabText.Keen" parent="@android:Widget.Holo.Light.ActionBar.TabText">
-        <item name="android:textColor">@color/main_theme_color</item>
+        <item name="android:textColor">@color/secondary_theme_color</item>
     </style>
 
     <style name="PopupMenu.Keen" parent="@android:Widget.Holo.Light.ListPopupWindow">

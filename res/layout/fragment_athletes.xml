@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-     <LinearLayout
+    <LinearLayout
         android:id="@+id/llLoadingAthletesIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <ProgressBar
             android:id="@+id/pbLoadingAthletes"
@@ -29,8 +30,7 @@
             android:text="Loading ..."
             android:textColor="#8899a6" />
     </LinearLayout>
-    
-    
+
     <ListView
         android:id="@+id/lvAthletes"
         android:layout_width="match_parent"
@@ -38,7 +38,12 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/llLoadingAthletesIndicator" >
+        android:layout_below="@id/llLoadingAthletesIndicator"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:divider="@null" >
     </ListView>
 
 </RelativeLayout>
