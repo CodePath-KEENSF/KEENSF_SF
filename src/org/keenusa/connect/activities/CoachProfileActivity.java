@@ -24,6 +24,7 @@ import android.widget.Toast;
 public class CoachProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Coach> {
 
 	private TextView tvLastAttended;
+	private TextView tvNumSessionsAttended;
 	private ImageView ivCoachProfilePic;
 	private TextView tvCoachFullName;
 	private ImageView ivActiveIcon;
@@ -72,9 +73,9 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 		if (id == R.id.action_edit) {
 			showUpdateCoachProfileDialog();
 			return true;
-		}else if (item.getItemId() == android.R.id.home) {
-	        finish();
-	        return true;
+		} else if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -86,6 +87,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 
 	private void setupViews() {
 		tvLastAttended = (TextView) findViewById(R.id.tvLastAttended);
+		tvNumSessionsAttended = (TextView) findViewById(R.id.tvNumSessionsAttended);
 		ivCoachProfilePic = (ImageView) findViewById(R.id.ivCoachProfilePic);
 		tvCoachFullName = (TextView) findViewById(R.id.tvCoachFullName);
 		ivActiveIcon = (ImageView) findViewById(R.id.ivActiveIcon);
@@ -178,6 +180,7 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 				tvCoachSkills.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
 			}
 			tvCoachSkills.setText(skills);
+			tvNumSessionsAttended.setText(coach.getNumberOfSessionsAttended() + " sessions");
 			setupOnPhoneLongClickListeners();
 			setupOnEmailLongClickListeners();
 			setupOnSmsIconClickListeners();
@@ -220,5 +223,10 @@ public class CoachProfileActivity extends FragmentActivity implements CivicoreUp
 	public void onRecordUpdateError() {
 		Toast.makeText(this, "Coach profile update is failed", Toast.LENGTH_SHORT).show();
 
+	}
+
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

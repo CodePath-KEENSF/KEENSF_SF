@@ -6,8 +6,8 @@ import java.util.List;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
+import org.keenusa.connect.data.CoachDAO;
 import org.keenusa.connect.models.Coach;
-import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.utilities.StringConstants;
 
@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
 	public String dummySearchString;
+	private ProgressBar progressBar;
 
 	SearchView searchView;
 
@@ -54,17 +56,20 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		bDataLoaded = false;
 		coachList = new ArrayList<Coach>();
 		adapter = new CoachListItemAdapter(getActivity(), coachList);
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchCoachListData(this);
+		CoachDAO coachDAO = new CoachDAO(getActivity());
+		adapter.addAll(coachDAO.getCoachList());
+		//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+		//		client.fetchCoachListData(this);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
-		if (!bDataLoaded) {
-			llProgressBar.setVisibility(View.VISIBLE);
-		}
+				if (!bDataLoaded) {
+					llProgressBar.setVisibility(View.VISIBLE);
+					loadProgressBar();
+				}
 
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
@@ -75,11 +80,24 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 				Intent i = new Intent(getActivity(), CoachProfileActivity.class);
 				i.putExtra(COACH_EXTRA_TAG, adapter.getItem(position));
 				startActivity(i);
+				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
 			}
 		});
 
 		return v;
+	}
+	
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public CoachListItemAdapter getAdapter() {
@@ -155,8 +173,8 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		});
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-	
+
 	public void onBackPressed() {
-		getActivity().overridePendingTransition(R.anim.bottom_out, R.anim.top_in);
+		getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

@@ -25,6 +25,7 @@ import android.widget.Toast;
 public class AthleteProfileActivity extends FragmentActivity implements CivicoreUpdateDataResultListener<Athlete> {
 
 	private TextView tvLastAttended;
+	private TextView tvNumSessionsAttended;
 	private ImageView ivAthleteProfilePic;
 	private TextView tvAthleteFullName;
 	private ImageView ivActiveIcon;
@@ -77,9 +78,9 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 		if (id == R.id.action_edit) {
 			showUpdateAthleteProfileDialog();
 			return true;
-		}else if (item.getItemId() == android.R.id.home) {
-	        finish();
-	        return true;
+		} else if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -92,6 +93,7 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	private void setupViews() {
 
 		tvLastAttended = (TextView) findViewById(R.id.tvLastAttended);
+		tvNumSessionsAttended = (TextView) findViewById(R.id.tvNumSessionsAttended);
 		ivAthleteProfilePic = (ImageView) findViewById(R.id.ivAthleteProfilePic);
 		tvAthleteFullName = (TextView) findViewById(R.id.tvAthleteFullName);
 		ivActiveIcon = (ImageView) findViewById(R.id.ivActiveIcon);
@@ -219,7 +221,7 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 					tvAthleteParentEmail.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 				}
 				tvAthleteParentEmail.setText(pemail);
-
+				tvNumSessionsAttended.setText(athlete.getNumberOfSessionsAttended() + " sessions");
 				setupOnPhoneLongClickListeners();
 				setupOnEmailLongClickListeners();
 				setupOnSmsIconClickListeners();
@@ -272,5 +274,11 @@ public class AthleteProfileActivity extends FragmentActivity implements Civicore
 	public void onRecordUpdateError() {
 		Toast.makeText(this, "Athlete profile update is failed", Toast.LENGTH_SHORT).show();
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

@@ -22,7 +22,7 @@ public class CoachDAO {
 			CoachTable.REMOTE_UPDATED_COL_NAME, CoachTable.FIRST_NAME_COL_NAME, CoachTable.MIDDLE_NAME_COL_NAME, CoachTable.LAST_NAME_COL_NAME,
 			CoachTable.EMAIL_COL_NAME, CoachTable.PHONE_COL_NAME, CoachTable.MOBILE_COL_NAME, CoachTable.GENDER_COL_NAME, CoachTable.DOB_COL_NAME,
 			CoachTable.LANGUAGES_COL_NAME, CoachTable.SKILLS_COL_NAME, CoachTable.ACTIVE_COL_NAME, CoachTable.CITY_COL_NAME,
-			CoachTable.STATE_COL_NAME, CoachTable.ZIPCODE_COL_NAME };
+			CoachTable.STATE_COL_NAME, CoachTable.ZIPCODE_COL_NAME, CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME };
 
 	public CoachDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
@@ -243,6 +243,7 @@ public class CoachDAO {
 				location.setState(c.getString(c.getColumnIndexOrThrow(CoachTable.STATE_COL_NAME)));
 				location.setZipCode(c.getString(c.getColumnIndexOrThrow(CoachTable.ZIPCODE_COL_NAME)));
 				coach.setLocation(location);
+				coach.setNumberOfSessionsAttended(c.getInt(c.getColumnIndexOrThrow(CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME)));
 
 			} catch (IllegalArgumentException iax) {
 				coach = null;

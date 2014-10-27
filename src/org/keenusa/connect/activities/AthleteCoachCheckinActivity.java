@@ -22,22 +22,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
-public class AthleteCoachCheckinActivity extends FragmentActivity implements TabListener, AddCoachDialogListener{
-	
+public class AthleteCoachCheckinActivity extends FragmentActivity implements TabListener, AddCoachDialogListener {
+
 	private FragmentPagerAdapter adapterViewPager;
 	private ViewPager vpPagerCheckin;
-	
+
 	private ActionBar actionBar;
-	
+
 	private KeenSession session;
 	KeenCivicoreClient client;
-	
+
 	AthleteCheckinFragment athleteCheckinFragment;
 	CoachCheckinFragment coachCheckinFragment;
 
@@ -51,13 +49,13 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 		setupFragmentPager();
 		setupTabs();
 	}
-	
+
 	private void getData() {
 		session = (KeenSession) getIntent().getSerializableExtra("session");
 	}
 
 	private void setupTabs() {
-		
+
 		Tab tabFirst;
 		Tab tabSecond;
 
@@ -70,7 +68,7 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 		tabFirst.setText(getResources().getString(R.string.title_activity_athlete_list));
 		tabFirst.setTabListener(this);
 		actionBar.addTab(tabFirst);
-		
+
 		tabSecond = actionBar.newTab();
 		tabSecond.setText(getResources().getString(R.string.title_activity_coach_list));
 		tabSecond.setTabListener(this);
@@ -89,29 +87,29 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	@Override
 	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void setupFragmentPager() {
 		vpPagerCheckin = (ViewPager) findViewById(R.id.vpPagerCheckin);
 		adapterViewPager = new ListsPagerAdapter(getSupportFragmentManager());
 		vpPagerCheckin.setAdapter(adapterViewPager);
-		
+
 		// Attach the page change listener inside the activity
 		vpPagerCheckin.setOnPageChangeListener(new OnPageChangeListener() {
-			
+
 			// This method will be invoked when a new page becomes selected.
 			@Override
 			public void onPageSelected(int position) {
 				actionBar.setSelectedNavigationItem(position);
 			}
-			
+
 			// This method will be invoked when the current page is scrolled
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 				// Code goes here
 			}
-			
+
 			// Called when the scroll state changes: 
 			// SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
 			@Override
@@ -131,7 +129,7 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 		@Override
 		public int getCount() {
 			return 2;
-		} 
+		}
 
 		// Returns the fragment to display for that page
 		@Override
@@ -154,26 +152,25 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 			return "Page " + position;
 		}
 	}
-	
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		if(CheckinMenuActions.editMode == true){
-		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
-		    miSaveCheckin.setVisible(true);
 
-//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
-//			miEditCheckin.setVisible(false);
-		}else{
-//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
-//			miEditCheckin.setVisible(true);
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (CheckinMenuActions.editMode == true) {
+			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
+			miSaveCheckin.setVisible(true);
 
-		    MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
-		    miSaveCheckin.setVisible(false);
-	    }
-		
+			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+			//			miEditCheckin.setVisible(false);
+		} else {
+			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+			//			miEditCheckin.setVisible(true);
+
+			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
+			miSaveCheckin.setVisible(false);
+		}
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -182,30 +179,33 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.miEditCheckin){
-	//		CheckinEditMode.editMode = true;
-	//		invalidateOptionsMenu();
+		if (item.getItemId() == R.id.miEditCheckin) {
+			//		CheckinEditMode.editMode = true;
+			//		invalidateOptionsMenu();
 			return true;
-		}else if(item.getItemId() == R.id.miSaveCheckin){
-	//		CheckinEditMode.editMode = false;
-	//		invalidateOptionsMenu();
+		} else if (item.getItemId() == R.id.miSaveCheckin) {
+			//		CheckinEditMode.editMode = false;
+			//		invalidateOptionsMenu();
 			postAttendance();
-			return true;		
-		}else if (item.getItemId() == android.R.id.home) {
+			return true;
+		} else if (item.getItemId() == android.R.id.home) {
 			UpdateSession();
 			return true;
-	    } else {
-	        return super.onOptionsItemSelected(item);
-	    }
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	public void onBackPressed() {
 		UpdateSession();
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 
 	private void UpdateSession() {
 		Intent finishCheckinIntent = new Intent();
 		finishCheckinIntent.putExtra("session", session);
+		overridePendingTransition(R.anim.right_in, R.anim.left_out);
 		setResult(IntentCode.RESULT_OK, finishCheckinIntent);
 		finish();
 	}

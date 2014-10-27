@@ -25,7 +25,7 @@ public class AthleteDAO {
 			AthleteTable.NICKNAME_COL_NAME, AthleteTable.DOB_COL_NAME, AthleteTable.PRIMLANGUAGE_COL_NAME, AthleteTable.ACTIVE_COL_NAME,
 			AthleteTable.PARENT_MOBILE_COL_NAME, AthleteTable.PARENT_EMAIL_COL_NAME, AthleteTable.PARENT_PHONE_COL_NAME,
 			AthleteTable.PARENT_RELATIONSHIP_COL_NAME, AthleteTable.PARENT_FIRST_NAME_COL_NAME, AthleteTable.PARENT_LAST_NAME_COL_NAME,
-			AthleteTable.CITY_COL_NAME, AthleteTable.STATE_COL_NAME, AthleteTable.ZIPCODE_COL_NAME };
+			AthleteTable.CITY_COL_NAME, AthleteTable.STATE_COL_NAME, AthleteTable.ZIPCODE_COL_NAME, AthleteTable.NUM_SESSIONS_ATTENDED_COL_NAME };
 
 	public AthleteDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
@@ -287,6 +287,7 @@ public class AthleteDAO {
 				location.setState(c.getString(c.getColumnIndexOrThrow(AthleteTable.STATE_COL_NAME)));
 				location.setZipCode(c.getString(c.getColumnIndexOrThrow(AthleteTable.ZIPCODE_COL_NAME)));
 				athlete.setLocation(location);
+				athlete.setNumberOfSessionsAttended(c.getInt(c.getColumnIndexOrThrow(AthleteTable.NUM_SESSIONS_ATTENDED_COL_NAME)));
 
 			} catch (IllegalArgumentException iax) {
 				athlete = null;

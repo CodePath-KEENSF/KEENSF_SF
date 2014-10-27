@@ -83,10 +83,38 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 		sb.append("CREATE TRIGGER update_checked_coach_count AFTER INSERT ON ").append(CoachAttendanceTable.TABLE_NAME);
 		sb.append(" WHEN ").append("new.").append(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("<>'")
 				.append(CoachAttendance.AttendanceValue.REGISTERED.toString()).append("'");
+		sb.append(" AND ").append("new.").append(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("<>'")
+				.append(CoachAttendance.AttendanceValue.CANCELLED.toString()).append("'");
 		sb.append(" BEGIN ");
 		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME).append("=")
 				.append(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME).append(" + 1");
 		sb.append(" WHERE ").append(SessionTable.ID_COL_NAME).append("=").append("new.").append(CoachAttendanceTable.SESSION_ID_COL_NAME);
+		sb.append("; END;");
+		Log.e("TRIGGER", sb.toString());
+		db.execSQL(sb.toString());
+
+		// increment number of sessions attended for coach when attendance record is inserted
+		sb = new StringBuilder();
+		sb.append("CREATE TRIGGER update_coach_session_count AFTER INSERT ON ").append(CoachAttendanceTable.TABLE_NAME);
+		sb.append(" WHEN ").append("new.").append(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("='")
+				.append(CoachAttendance.AttendanceValue.ATTENDED.toString()).append("'");
+		sb.append(" BEGIN ");
+		sb.append("UPDATE ").append(CoachTable.TABLE_NAME).append(" SET ").append(CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME).append("=")
+				.append(CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME).append(" + 1");
+		sb.append(" WHERE ").append(CoachTable.ID_COL_NAME).append("=").append("new.").append(CoachAttendanceTable.COACH_ID_COL_NAME);
+		sb.append("; END;");
+		Log.e("TRIGGER", sb.toString());
+		db.execSQL(sb.toString());
+
+		// increment number of sessions attended for athlete when attendance record is inserted
+		sb = new StringBuilder();
+		sb.append("CREATE TRIGGER update_athlete_session_count AFTER INSERT ON ").append(AthleteAttendanceTable.TABLE_NAME);
+		sb.append(" WHEN ").append("new.").append(AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("='")
+				.append(AthleteAttendance.AttendanceValue.ATTENDED.toString()).append("'");
+		sb.append(" BEGIN ");
+		sb.append("UPDATE ").append(AthleteTable.TABLE_NAME).append(" SET ").append(AthleteTable.NUM_SESSIONS_ATTENDED_COL_NAME).append("=")
+				.append(AthleteTable.NUM_SESSIONS_ATTENDED_COL_NAME).append(" + 1");
+		sb.append(" WHERE ").append(AthleteTable.ID_COL_NAME).append("=").append("new.").append(AthleteAttendanceTable.ATHLETE_ID_COL_NAME);
 		sb.append("; END;");
 		Log.e("TRIGGER", sb.toString());
 		db.execSQL(sb.toString());

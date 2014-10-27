@@ -6,8 +6,8 @@ import java.util.List;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.AthleteProfileActivity;
 import org.keenusa.connect.adapters.AtheletListItemAdapter;
+import org.keenusa.connect.data.AthleteDAO;
 import org.keenusa.connect.models.Athlete;
-import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.utilities.StringConstants;
 
@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
 	public String dummySearchString;
-
+	private ProgressBar progressBar;
 	private SearchView searchView;
 
 	// Creates a new fragment with given arguments
@@ -56,17 +57,20 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 		bDataLoaded = false;
 		athleteList = new ArrayList<Athlete>();
 		adapter = new AtheletListItemAdapter(getActivity(), athleteList);
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchAthleteListData(this);
+		AthleteDAO athleteDAO = new AthleteDAO(getActivity());
+		adapter.addAll(athleteDAO.getAthleteList());
+		//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+		//		client.fetchAthleteListData(this);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_athletes, container, false);
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarAthletes);
-		if (!bDataLoaded) {
-			llProgressBar.setVisibility(View.VISIBLE);
-		}
+				if (!bDataLoaded) {
+					llProgressBar.setVisibility(View.VISIBLE);
+					loadProgressBar();
+				}
 		lvAthletes = (ListView) v.findViewById(R.id.lvAthletes);
 		lvAthletes.setAdapter(adapter);
 		lvAthletes.setOnItemClickListener(new OnItemClickListener() {
@@ -76,10 +80,22 @@ public class AtheletsFragment extends Fragment implements CivicoreDataResultList
 				Intent i = new Intent(getActivity(), AthleteProfileActivity.class);
 				i.putExtra(ATHLETE_EXTRA_TAG, adapter.getItem(position));
 				startActivity(i);
-				getActivity().overridePendingTransition(R.anim.bottom_out, R.anim.top_in);
+				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
 		return v;
+	}
+	
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public AtheletListItemAdapter getAdapter() {

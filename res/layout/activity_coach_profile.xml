@@ -35,12 +35,33 @@
             android:text="last attended:"
             android:textSize="10sp" />
 
+        <TextView
+            android:id="@+id/tvNumSessionsAttended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tvLastAttended"
+            android:layout_marginLeft="5dp"
+            android:text="10 sessions"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tvNumSessionsAttendedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/tvLastAttendedLabel"
+            android:layout_toLeftOf="@id/tvNumSessionsAttended"
+            android:gravity="right"
+            android:text="attended"
+            android:textSize="10sp" />
+
         <ImageView
             android:id="@+id/ivCoachProfilePic"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_alignLeft="@id/tvLastAttendedLabel"
-            android:layout_below="@id/tvLastAttendedLabel"
+            android:layout_alignLeft="@id/tvNumSessionsAttendedLabel"
+            android:layout_below="@id/tvNumSessionsAttendedLabel"
             android:src="@drawable/ic_user_photos_u" />
 
         <TextView
@@ -80,15 +101,15 @@
             android:background="#ffffff"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" >
-            
-             <TextView
+
+            <TextView
                 android:id="@+id/tvCoachLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_location"
                 android:drawablePadding="5dp"
                 android:text="San Francisco, CA 9400" />
-            
+
             <TextView
                 android:id="@+id/tvCoachForeignLanguages"
                 android:layout_width="wrap_content"
@@ -117,18 +138,16 @@
                 android:layout_alignLeft="@id/tvCoachSkillsLabel"
                 android:layout_below="@id/tvCoachSkillsLabel"
                 android:text="Coach" />
-
-           
         </RelativeLayout>
 
-         <RelativeLayout
+        <RelativeLayout
             android:id="@+id/rlCoachContactInfoTile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/rlAdditionalInfoTile"
             android:layout_below="@id/rlAdditionalInfoTile" >
-            
-             <TextView
+
+            <TextView
                 android:id="@+id/tvCoachCellPhoneLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,15 +155,15 @@
                 android:layout_below="@id/tvAthleteParentFullNameRelationship"
                 android:layout_marginTop="10dp"
                 android:text="Mobile" />
-             
-               <TextView
+
+            <TextView
                 android:id="@+id/tvCoachCellPhone"
+                style="@style/TextView.ActiveContact.Keen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tvCoachCellPhoneLabel"
                 android:layout_below="@id/tvCoachCellPhoneLabel"
-                android:text="650-000-0000"
-                style="@style/TextView.ActiveContact.Keen" />
+                android:text="650-000-0000" />
 
             <ImageView
                 android:id="@+id/ivCoachCellPhoneMsg"
@@ -165,12 +184,12 @@
 
             <TextView
                 android:id="@+id/tvCoachPhone"
+                style="@style/TextView.ActiveContact.Keen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/tvCoachPhoneLabel"
                 android:layout_below="@id/tvCoachPhoneLabel"
-                android:text="650-000-0000"
-                style="@style/TextView.ActiveContact.Keen" />
+                android:text="650-000-0000" />
 
             <TextView
                 android:id="@+id/tvCoachEmailLabel"
@@ -183,15 +202,13 @@
 
             <TextView
                 android:id="@+id/tvCoachEmail"
+                style="@style/TextView.ActiveContact.Keen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/tvCoachEmailLabel"
                 android:layout_below="@id/tvCoachEmailLabel"
-                android:text="someone@mail.com"
-                style="@style/TextView.ActiveContact.Keen" />
-        
-     
-           </RelativeLayout>
+                android:text="someone@mail.com" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </ScrollView>

@@ -41,6 +41,15 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onDataLoaderResult() {
+						LoginActivity.this.runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								tvProgressUpdates.setVisibility(View.GONE);
+
+							}
+
+						});
 						Intent i = new Intent(LoginActivity.this, SessionListActivity.class);
 						startActivity(i);
 
@@ -52,6 +61,7 @@ public class LoginActivity extends Activity {
 
 							@Override
 							public void run() {
+								tvProgressUpdates.setVisibility(View.VISIBLE);
 								tvProgressUpdates.setText(progressMessage);
 
 							}

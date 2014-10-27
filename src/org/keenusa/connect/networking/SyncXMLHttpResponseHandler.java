@@ -20,7 +20,7 @@ public class SyncXMLHttpResponseHandler<T> {
 	}
 
 	public T parseXMLResponse(String response) {
-		Log.d("RESPONSE", response);
+		//		Log.d("RESPONSE", response);
 		Serializer serializer = new Persister();
 		String cleanResponse = cleanResponse(response);
 		try {

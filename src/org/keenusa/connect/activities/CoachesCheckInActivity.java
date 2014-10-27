@@ -92,7 +92,14 @@ public class CoachesCheckInActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent i = new Intent(CoachesCheckInActivity.this, CoachProfileActivity.class);
 				startActivity(i);
+				overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
+	}
+	
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

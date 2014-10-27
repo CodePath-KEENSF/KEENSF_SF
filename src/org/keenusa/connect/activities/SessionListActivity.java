@@ -50,6 +50,9 @@ public class SessionListActivity extends Activity {
 	}
 
 	private void openSessionDetails(int pos) {
+
+		//		SessionDAO sessionDAO = new SessionDAO(this);
+		//		KeenSession session = sessionDAO.getRichSessionById(sessionList.get(pos).getId());
 		Intent i = new Intent(this, SessionDetailsActivity.class);
 		i.putExtra("session", sessionList.get(pos));
 		i.putExtra("program", sessionList.get(pos).getProgram());
@@ -115,5 +118,11 @@ public class SessionListActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggles
 		dlDrawer.getDrawerToggle().onConfigurationChanged(newConfig);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

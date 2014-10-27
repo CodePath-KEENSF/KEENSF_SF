@@ -26,6 +26,7 @@ public class AthleteTable {
 	public static final String CITY_COL_NAME = "athlete_city";
 	public static final String STATE_COL_NAME = "athlete_state";
 	public static final String ZIPCODE_COL_NAME = "athlete_zipcode";
+	public static final String NUM_SESSIONS_ATTENDED_COL_NAME = "athlete_num_attended";
 
 	public static String getCreateSQL() {
 		return "CREATE TABLE " + TABLE_NAME + " (" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, " + REMOTE_ID_COL_NAME + " NUMBER, "
@@ -34,7 +35,8 @@ public class AthleteTable {
 				+ GENDER_COL_NAME + " TEXT, " + NICKNAME_COL_NAME + " TEXT, " + DOB_COL_NAME + " NUMBER, " + PRIMLANGUAGE_COL_NAME + " TEXT, "
 				+ ACTIVE_COL_NAME + " NUMBER, " + CITY_COL_NAME + " TEXT, " + STATE_COL_NAME + " TEXT, " + ZIPCODE_COL_NAME + " TEXT, "
 				+ PARENT_MOBILE_COL_NAME + " TEXT, " + PARENT_EMAIL_COL_NAME + " TEXT, " + PARENT_PHONE_COL_NAME + " TEXT, "
-				+ PARENT_RELATIONSHIP_COL_NAME + " TEXT, " + PARENT_FIRST_NAME_COL_NAME + " TEXT, " + PARENT_LAST_NAME_COL_NAME + " TEXT);";
+				+ PARENT_RELATIONSHIP_COL_NAME + " TEXT, " + PARENT_FIRST_NAME_COL_NAME + " TEXT, " + NUM_SESSIONS_ATTENDED_COL_NAME
+				+ " INTEGER NOT NULL DEFAULT 0, " + PARENT_LAST_NAME_COL_NAME + " TEXT);";
 	}
 
 	public static String getDropTableSQL() {

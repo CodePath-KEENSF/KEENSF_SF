@@ -87,7 +87,7 @@ public class AthleteAttendanceDAO {
 				values.put(AthleteAttendanceTable.REMOTE_UPDATED_COL_NAME, attendance.getRemoteUpdatedTimestamp());
 			}
 
-			long sessionId = sessionDAO.getSessionByRemoteId(attendance.getRemoteSessionId()).getId();
+			long sessionId = sessionDAO.getSimpleSessionByRemoteId(attendance.getRemoteSessionId()).getId();
 			values.put(AthleteAttendanceTable.SESSION_ID_COL_NAME, sessionId);
 
 			if (attendance.getAthlete() != null) {
@@ -120,7 +120,7 @@ public class AthleteAttendanceDAO {
 			values.put(AthleteAttendanceTable.REMOTE_UPDATED_COL_NAME, attendance.getRemoteUpdatedTimestamp());
 		}
 
-		long sessionId = sessionDAO.getSessionByRemoteId(attendance.getRemoteSessionId()).getId();
+		long sessionId = sessionDAO.getSimpleSessionByRemoteId(attendance.getRemoteSessionId()).getId();
 		values.put(AthleteAttendanceTable.SESSION_ID_COL_NAME, sessionId);
 
 		if (attendance.getAthlete() != null) {
@@ -163,7 +163,7 @@ public class AthleteAttendanceDAO {
 				attendance.setRemoteId(c.getLong(c.getColumnIndexOrThrow(AthleteAttendanceTable.REMOTE_ID_COL_NAME)));
 				attendance.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(AthleteAttendanceTable.REMOTE_CREATED_COL_NAME)));
 				attendance.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(AthleteAttendanceTable.REMOTE_UPDATED_COL_NAME)));
-				attendance.setRemoteSessionId(sessionDAO.getSessionByRemoteId(
+				attendance.setRemoteSessionId(sessionDAO.getSessionById(
 						c.getLong(c.getColumnIndexOrThrow(AthleteAttendanceTable.SESSION_ID_COL_NAME))).getRemoteId());
 				attendance.setAttendanceValue(AthleteAttendance.AttendanceValue.valueOf(c.getString(c
 						.getColumnIndexOrThrow(AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME))));

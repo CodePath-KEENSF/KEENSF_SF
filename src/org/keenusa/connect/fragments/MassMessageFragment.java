@@ -174,7 +174,7 @@ public class MassMessageFragment extends DialogFragment {
 					.show();
 		}
 		startActivity(emailIntent);
-
+		getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
 
 	private void sendMassSMS() {

@@ -34,13 +34,33 @@
             android:gravity="right"
             android:text="last attended:"
             android:textSize="10sp" />
+        <TextView
+            android:id="@+id/tvNumSessionsAttended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvLastAttended"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:text="10 sessions"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tvNumSessionsAttendedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/tvLastAttendedLabel"
+            android:layout_toLeftOf="@id/tvNumSessionsAttended"
+            android:gravity="right"
+            android:text="attended"
+            android:textSize="10sp" />
 
         <ImageView
             android:id="@+id/ivAthleteProfilePic"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_alignLeft="@id/tvLastAttendedLabel"
-            android:layout_below="@id/tvLastAttendedLabel"
+            android:layout_alignLeft="@id/tvNumSessionsAttendedLabel"
+            android:layout_below="@id/tvNumSessionsAttendedLabel"
             android:src="@drawable/ic_user_photos_u" />
 
         <TextView

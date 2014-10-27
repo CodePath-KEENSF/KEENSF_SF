@@ -15,7 +15,6 @@ import org.keenusa.connect.activities.SessionDetailsActivity;
 import org.keenusa.connect.adapters.StickySessionListItemAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
-import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgram;
@@ -35,6 +34,8 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -73,6 +75,7 @@ public class SessionsFragment extends Fragment {
 
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
+	private ProgressBar progressBar;
 
 	// Sticky Header List View
 	private ExpandableStickyListHeadersListView expandableStickySessionListView;
@@ -432,11 +435,24 @@ public class SessionsFragment extends Fragment {
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarSessions);
 		if (!bDataLoaded) {
 			llProgressBar.setVisibility(View.VISIBLE);
+			loadProgressBar();
 		}
 
 		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
 		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
 		expandableStickySessionListView.setDividerHeight(0);
+	}
+
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public StickyListHeadersAdapter getAdapter() {

@@ -13,11 +13,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class AthleteListActivity<T> extends FragmentActivity implements CivicoreDataResultListener<Athlete> {
 
 	AtheletsFragment atheletsFragment;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,19 @@ public class AthleteListActivity<T> extends FragmentActivity implements Civicore
 
 		KeenCivicoreClient client = new KeenCivicoreClient(this);
 		client.fetchAthleteListData(this);
+		loadProgressBar();
+	}
+
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -63,5 +78,11 @@ public class AthleteListActivity<T> extends FragmentActivity implements Civicore
 	public void onListResultError() {
 		Toast.makeText(this, "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
 
+	}
+	
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/ivSessionBackgroundPic"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="330dp"
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
@@ -82,7 +82,7 @@
             android:textStyle="bold"
             android:textSize="15dp"
             android:text="@string/session_changable"
-            android:textColor="@color/default_color" />
+            android:textColor="@color/no_data_message_text_color" />
 
         <TextView
             android:id="@+id/tvLocation"
@@ -94,11 +94,13 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/location_changable"
-            android:textColor="@color/default_color"
+            android:textColor="@color/no_data_message_text_color"
             android:textStyle="bold"
             android:textSize="15sp" />
         
-        <LinearLayout
+    </RelativeLayout>
+
+    <LinearLayout
         android:id="@+id/rlParticipantCounts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -131,7 +133,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarAthlete"
                 android:layout_alignRight="@id/cicularProgressBarAthlete"
                 android:layout_alignTop="@id/cicularProgressBarAthlete"
-                android:textColor="@color/main_theme_text_color"
+                android:textColor="@color/secondary_theme_color"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:text="progress" />
@@ -143,7 +145,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarAthlete"
                 android:layout_alignRight="@id/cicularProgressBarAthlete"
                 android:layout_below="@id/cicularProgressBarAthlete"
-                android:textColor="@color/main_theme_text_color"
+                android:textColor="@color/secondary_theme_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:textStyle="bold"
@@ -175,7 +177,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarCoach"
                 android:layout_alignRight="@id/cicularProgressBarCoach"
                 android:layout_alignTop="@+id/cicularProgressBarCoach"
-                android:textColor="@color/main_theme_text_color"
+                android:textColor="@color/secondary_theme_color"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:text="progress" />
@@ -187,7 +189,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarCoach"
                 android:layout_alignRight="@id/cicularProgressBarCoach"
                 android:layout_below="@id/cicularProgressBarCoach"
-                android:textColor="@color/main_theme_text_color"
+                android:textColor="@color/secondary_theme_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:textStyle="bold"
@@ -196,8 +198,6 @@
 
         
     </LinearLayout>
-    </RelativeLayout>
-
     
 
 </RelativeLayout>

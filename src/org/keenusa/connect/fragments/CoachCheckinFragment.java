@@ -6,7 +6,6 @@ import java.util.List;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachCheckInAdapter;
-import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
@@ -34,10 +33,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.SearchView.OnQueryTextListener;
 
 public class CoachCheckinFragment extends Fragment {
 
@@ -54,7 +54,7 @@ public class CoachCheckinFragment extends Fragment {
 	private ArrayList<KeenSession> sessionList;
 	private List<CoachAttendance> coachAttendanceList;
 	private List<CoachAttendance> coachAttendanceListOriginal;
-
+	private ProgressBar progressBar;
 	private boolean bDataLoaded = false;
 
 	private KeenSession session;
@@ -130,7 +130,7 @@ public class CoachCheckinFragment extends Fragment {
 				i.putExtra(COACH_EXTRA_TAG,
 						coachCheckInAdapter.getItem(position).getCoach());
 				startActivity(i);
-
+				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
 	}
@@ -139,6 +139,7 @@ public class CoachCheckinFragment extends Fragment {
 		llProgressBarCoachCheckin = (LinearLayout) v.findViewById(R.id.llProgressBarCoachCheckin);
 		if (!bDataLoaded) {
 			llProgressBarCoachCheckin.setVisibility(View.VISIBLE);
+			loadProgressBar();
 		}
 
 		lvCoachCheckin = (ListView) v.findViewById(R.id.lvCoachCheckin);
@@ -146,6 +147,18 @@ public class CoachCheckinFragment extends Fragment {
 		tvCoachAttended = (TextView) v.findViewById(R.id.tvCoachAttended);
 	}
 
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void fetchSessionList() {
 		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
 
