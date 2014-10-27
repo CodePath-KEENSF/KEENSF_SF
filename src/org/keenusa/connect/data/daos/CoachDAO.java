@@ -109,6 +109,45 @@ public class CoachDAO {
 		return coachId;
 	}
 
+	public boolean saveNewCoachList(List<Coach> coaches) {
+		boolean areSaved = false;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (Coach coach : coaches) {
+			Coach dbCoach = getSimpleCoachByRemoteId(coach.getRemoteId());
+			if (dbCoach == null) {
+				values.clear();
+				values.put(CoachTable.REMOTE_ID_COL_NAME, coach.getRemoteId());
+				values.put(CoachTable.REMOTE_CREATED_COL_NAME, coach.getRemoteCreateTimestamp());
+				values.put(CoachTable.REMOTE_UPDATED_COL_NAME, coach.getRemoteUpdatedTimestamp());
+				values.put(CoachTable.FIRST_NAME_COL_NAME, coach.getFirstName());
+				values.put(CoachTable.MIDDLE_NAME_COL_NAME, coach.getMiddleName());
+				values.put(CoachTable.LAST_NAME_COL_NAME, coach.getLastName());
+				values.put(CoachTable.EMAIL_COL_NAME, coach.getEmail());
+				values.put(CoachTable.PHONE_COL_NAME, coach.getPhone());
+				values.put(CoachTable.MOBILE_COL_NAME, coach.getCellPhone());
+				values.put(CoachTable.GENDER_COL_NAME, coach.getGender().toString());
+				values.put(CoachTable.LANGUAGES_COL_NAME, coach.getForeignLanguages());
+				values.put(CoachTable.SKILLS_COL_NAME, coach.getSkillsExperience());
+				values.put(CoachTable.ACTIVE_COL_NAME, (coach.isActive() ? 1 : 0));
+				if (coach.getDateOfBirth() != null) {
+					values.put(CoachTable.DOB_COL_NAME, coach.getDateOfBirth().getMillis());
+				}
+				if (coach.getLocation() != null) {
+					values.put(CoachTable.CITY_COL_NAME, coach.getLocation().getCity());
+					values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getState());
+					values.put(CoachTable.STATE_COL_NAME, coach.getLocation().getZipCode());
+				}
+				db.insert(CoachTable.TABLE_NAME, null, values);
+			}
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		areSaved = true;
+		return areSaved;
+	}
+
 	public boolean updateCoachRecord(Coach coachDTO) {
 		boolean transactionStatus = false;
 

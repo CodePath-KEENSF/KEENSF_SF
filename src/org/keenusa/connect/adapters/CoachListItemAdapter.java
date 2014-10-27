@@ -37,8 +37,17 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 			viewHolder.tvCoachName = (TextView) convertView.findViewById(R.id.tvCoachName);
 			convertView.setTag(viewHolder);
 		}
-
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+		if (position == 0 && getCount() == 1) {
+			convertView.setBackgroundResource(R.drawable.single_item_list_background);
+		} else if (position == 0 && getCount() > 1) {
+			convertView.setBackgroundResource(R.drawable.list_item_background_first_item);
+		} else if (position == getCount() - 1) {
+			convertView.setBackgroundResource(R.drawable.list_item_background_last_item);
+		} else {
+			convertView.setBackgroundResource(R.drawable.list_item_background);
+		}
+
 		viewHolder.tvCoachName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));
 
 		viewHolder.ivCoachProfilePic.setImageResource(0);

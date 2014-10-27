@@ -151,6 +151,57 @@ public class CoachAttendanceDAO {
 		return attendanceId;
 	}
 
+	public boolean saveNewCoachAttendanceList(List<CoachAttendance> attendances) {
+		boolean areSaved = false;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (CoachAttendance attendance : attendances) {
+
+			CoachAttendance dbCoachAttendance = getSimpleCoachAttendanceByRemoteId(attendance.getRemoteId());
+			if (dbCoachAttendance == null) {
+				values.clear();
+				values.put(CoachAttendanceTable.REMOTE_ID_COL_NAME, attendance.getRemoteId());
+				values.put(CoachAttendanceTable.REMOTE_CREATED_COL_NAME, attendance.getRemoteCreateTimestamp());
+				values.put(CoachAttendanceTable.REMOTE_UPDATED_COL_NAME, attendance.getRemoteUpdatedTimestamp());
+
+				long sessionId = 0;
+				if (sessionMap.containsKey(attendance.getRemoteSessionId())) {
+					sessionId = sessionMap.get(attendance.getRemoteSessionId());
+				} else {
+					KeenSession session = sessionDAO.getSimpleSessionByRemoteId(attendance.getRemoteSessionId());
+					if (session != null) {
+						sessionId = session.getId();
+						sessionMap.put(attendance.getRemoteSessionId(), sessionId);
+					}
+				}
+				values.put(CoachAttendanceTable.SESSION_ID_COL_NAME, sessionId);
+
+				if (attendance.getCoach() != null) {
+					long coachId = 0;
+					if (coachMap.containsKey(attendance.getCoach().getRemoteId())) {
+						coachId = coachMap.get(attendance.getCoach().getRemoteId());
+					} else {
+						Coach coach = coachDAO.getSimpleCoachByRemoteId(attendance.getCoach().getRemoteId());
+						if (coach != null) {
+							coachId = coach.getId();
+							coachMap.put(attendance.getCoach().getRemoteId(), coachId);
+						}
+					}
+					values.put(CoachAttendanceTable.COACH_ID_COL_NAME, coachId);
+				}
+
+				values.put(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME, attendance.getAttendanceValue().toString());
+				db.insert(CoachAttendanceTable.TABLE_NAME, null, values);
+			}
+
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		areSaved = true;
+		return areSaved;
+	}
+
 	private boolean updateCoachAttendance(CoachAttendance attendance) {
 		boolean transactionStatus = false;
 
