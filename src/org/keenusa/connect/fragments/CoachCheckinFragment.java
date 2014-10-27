@@ -54,6 +54,7 @@ public class CoachCheckinFragment extends Fragment {
 	private ArrayList<KeenSession> sessionList;
 	private List<CoachAttendance> coachAttendanceList;
 	private List<CoachAttendance> coachAttendanceListOriginal;
+	private List<CoachAttendance> coachAttendanceListSorted;
 	private ProgressBar progressBar;
 	private boolean bDataLoaded = false;
 
@@ -61,7 +62,8 @@ public class CoachCheckinFragment extends Fragment {
 	KeenCivicoreClient client;
 
 	// Creates a new fragment with given arguments
-	public static CoachCheckinFragment newInstance(KeenSession session, KeenCivicoreClient client) {
+	public static CoachCheckinFragment newInstance(KeenSession session,
+			KeenCivicoreClient client) {
 		CoachCheckinFragment coachCheckinFragment = new CoachCheckinFragment();
 		coachCheckinFragment.session = session;
 		coachCheckinFragment.client = client;
@@ -80,8 +82,10 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_coach_checkin, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.fragment_coach_checkin, container,
+				false);
 
 		setViews(v);
 
@@ -111,13 +115,15 @@ public class CoachCheckinFragment extends Fragment {
 
 			coachAttendanceListOriginal.add(new CoachAttendance());
 
-			coachAttendanceListOriginal.get(i).setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
+			coachAttendanceListOriginal.get(i).setAttendanceValue(
+					coachAttendanceList.get(i).getAttendanceValue());
 
 		}
 	}
 
 	private void setAdapter() {
-		coachCheckInAdapter = new CoachCheckInAdapter(getActivity(), coachAttendanceList);
+		coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
+				coachAttendanceList);
 	}
 
 	private void setOnClickListeners() {
@@ -130,13 +136,15 @@ public class CoachCheckinFragment extends Fragment {
 				i.putExtra(COACH_EXTRA_TAG,
 						coachCheckInAdapter.getItem(position).getCoach());
 				startActivity(i);
-				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+				getActivity().overridePendingTransition(R.anim.right_in,
+						R.anim.left_out);
 			}
 		});
 	}
 
 	private void setViews(View v) {
-		llProgressBarCoachCheckin = (LinearLayout) v.findViewById(R.id.llProgressBarCoachCheckin);
+		llProgressBarCoachCheckin = (LinearLayout) v
+				.findViewById(R.id.llProgressBarCoachCheckin);
 		if (!bDataLoaded) {
 			llProgressBarCoachCheckin.setVisibility(View.VISIBLE);
 			loadProgressBar();
@@ -148,17 +156,18 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	private void loadProgressBar() {
-//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		// progressBar.getProgressDrawable().setColorFilter(Color.GREEN,
+		// Mode.MULTIPLY);
 		try {
 			for (int i = 1; i <= 10; i++) {
-				progressBar.setProgress(i*10);
+				progressBar.setProgress(i * 10);
 				Thread.sleep(500);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void fetchSessionList() {
 		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
 
@@ -181,26 +190,25 @@ public class CoachCheckinFragment extends Fragment {
 		});
 	}
 
-	
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		
+
 		MenuItem miAddCoaches = menu.findItem(R.id.miAddCoaches);
-		if(CheckinMenuActions.editMode == true){
-	    	miAddCoaches.setVisible(true);
-	    }else{
-	    	miAddCoaches.setVisible(false);
-	    }
-		
-		if(CheckinMenuActions.sendMassMessages == true){
+		if (CheckinMenuActions.editMode == true) {
+			miAddCoaches.setVisible(true);
+		} else {
+			miAddCoaches.setVisible(false);
+		}
+
+		if (CheckinMenuActions.sendMassMessages == true) {
 			menu.findItem(R.id.miSendMessageCoaches).setVisible(true);
-		}else{
+		} else {
 			menu.findItem(R.id.miSendMessageCoaches).setVisible(false);
 		}
 
 		super.onPrepareOptionsMenu(menu);
 	}
-	
+
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.coach_checkin, menu);
 
@@ -230,18 +238,23 @@ public class CoachCheckinFragment extends Fragment {
 				// Create the new arraylist for each search character
 				for (CoachAttendance coachAttendance : coachAttendanceList) {
 
-					String fullName = coachAttendance.getCoach().getFirstLastName();
+					String fullName = coachAttendance.getCoach()
+							.getFirstLastName();
 
-					if (searchTextlength <= coachAttendance.getCoach().getFirstName().length()
-							|| searchTextlength <= coachAttendance.getCoach().getLastName().length()) {
+					if (searchTextlength <= coachAttendance.getCoach()
+							.getFirstName().length()
+							|| searchTextlength <= coachAttendance.getCoach()
+									.getLastName().length()) {
 
-						if (fullName.toLowerCase().contains(searchText.toLowerCase())) {
+						if (fullName.toLowerCase().contains(
+								searchText.toLowerCase())) {
 							tempCoachAttendanceList.add(coachAttendance);
 						}
 					}
 				}
 
-				coachCheckInAdapter = new CoachCheckInAdapter(getActivity(), tempCoachAttendanceList);
+				coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
+						tempCoachAttendanceList);
 				lvCoachCheckin.setAdapter(coachCheckInAdapter);
 
 				return true;
@@ -257,9 +270,9 @@ public class CoachCheckinFragment extends Fragment {
 			DialogFragment newFragment = new AddCoachToCheckinFragment();
 			newFragment.show(getActivity().getSupportFragmentManager(),
 					"Add Coach");
-		} else if (item.getItemId() == R.id.miCheckAllCoachIn ) {
+		} else if (item.getItemId() == R.id.miCheckAllCoachIn) {
 			checkInAllCoaches();
-		} 
+		}
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -274,15 +287,24 @@ public class CoachCheckinFragment extends Fragment {
 		coachAttendanceListOriginal = new ArrayList<CoachAttendance>();
 		for (int i = 0; i < coachAttendanceList.size(); i++) {
 			coachAttendanceListOriginal.add(new CoachAttendance());
-			coachAttendanceListOriginal.get(i).setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
-			// TODO - Update TextView on UI to show all Athletes are set as "ATTENDED"
-//			tvCoachAttended.setText(coachAttendanceListOriginal.get(i).setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED));
-			Toast.makeText(getActivity(), coachAttendanceList.get(i).getAttendedCoachFullName() + " has set as " + coachAttendanceListOriginal.get(i).getAttendanceValue(), Toast.LENGTH_LONG).show();
+			coachAttendanceListOriginal.get(i).setAttendanceValue(
+					coachAttendanceList.get(i).getAttendanceValue());
+			// TODO - Update TextView on UI to show all Athletes are set as
+			// "ATTENDED"
+			// tvCoachAttended.setText(coachAttendanceListOriginal.get(i).setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED));
+			Toast.makeText(
+					getActivity(),
+					coachAttendanceList.get(i).getAttendedCoachFullName()
+							+ " has set as "
+							+ coachAttendanceListOriginal.get(i)
+									.getAttendanceValue(), Toast.LENGTH_LONG)
+					.show();
 		}
 	}
 
 	private void showMassMessageDialog() {
-		DialogFragment newFragment = new MassMessageFragment(null, coachAttendanceList);
+		DialogFragment newFragment = new MassMessageFragment(null,
+				coachAttendanceList);
 		newFragment.show(getActivity().getSupportFragmentManager(),
 				"Mass Message Dialog");
 	}
@@ -291,10 +313,14 @@ public class CoachCheckinFragment extends Fragment {
 		for (int i = 0; i < coachAttendanceList.size(); i++) {
 			if (i < coachAttendanceListOriginal.size()) {
 				if (coachAttendanceListOriginal.get(i) != null) {
-				if (coachAttendanceListOriginal.get(i).getAttendanceValue() != coachAttendanceList.get(i).getAttendanceValue()) {
+					if (coachAttendanceListOriginal.get(i).getAttendanceValue() != coachAttendanceList
+							.get(i).getAttendanceValue()) {
 
 						updateRecord(coachAttendanceList.get(i));
-						coachAttendanceListOriginal.get(i).setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
+						coachAttendanceListOriginal.get(i)
+								.setAttendanceValue(
+										coachAttendanceList.get(i)
+												.getAttendanceValue());
 					}
 				}
 			} else { // new attendance records
@@ -302,8 +328,10 @@ public class CoachCheckinFragment extends Fragment {
 						session.getRemoteId());
 				addRecord(coachAttendanceList.get(i));
 				CoachAttendance addedCoachAttendance = new CoachAttendance();
-				addedCoachAttendance.setAttendanceValue(coachAttendanceList.get(i).getAttendanceValue());
-				addedCoachAttendance.setCoach(coachAttendanceList.get(i).getCoach());
+				addedCoachAttendance.setAttendanceValue(coachAttendanceList
+						.get(i).getAttendanceValue());
+				addedCoachAttendance.setCoach(coachAttendanceList.get(i)
+						.getCoach());
 				coachAttendanceListOriginal.add(addedCoachAttendance);
 			}
 		}
@@ -311,23 +339,26 @@ public class CoachCheckinFragment extends Fragment {
 
 	public void updateRecord(CoachAttendance coach) {
 		PostCheckinUpdate.done++;
-		client.updateCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
+		client.updateCoachAttendanceRecord(coach,
+				new CivicoreUpdateDataResultListener<CoachAttendance>() {
 
-			@Override
-			public void onRecordUpdateResult(CoachAttendance updatedCoachAtt) {
-				PostCheckinUpdate.done--;
-				if(PostCheckinUpdate.done == 0){
-					DebugInfo.showToast(getActivity(), "Attendance Posted!");
-				}
-				Log.d("temp", "attendance updated");
-			}
+					@Override
+					public void onRecordUpdateResult(
+							CoachAttendance updatedCoachAtt) {
+						PostCheckinUpdate.done--;
+						if (PostCheckinUpdate.done == 0) {
+							DebugInfo.showToast(getActivity(),
+									"Attendance Posted!");
+						}
+						Log.d("temp", "attendance updated");
+					}
 
-			@Override
-			public void onRecordUpdateError() {
-				Log.d("temp", "attendance update error");
+					@Override
+					public void onRecordUpdateError() {
+						Log.d("temp", "attendance update error");
 
-			}
-		});
+					}
+				});
 	}
 
 	public void addRecord(CoachAttendance coach) {
@@ -338,8 +369,9 @@ public class CoachCheckinFragment extends Fragment {
 					@Override
 					public void onRecordUpdateResult(CoachAttendance object) {
 						PostCheckinUpdate.done--;
-						if(PostCheckinUpdate.done == 0){
-							DebugInfo.showToast(getActivity(), "Attendance Posted!");
+						if (PostCheckinUpdate.done == 0) {
+							DebugInfo.showToast(getActivity(),
+									"Attendance Posted!");
 						}
 						Log.d("temp", "attendance added");
 					}
@@ -354,19 +386,48 @@ public class CoachCheckinFragment extends Fragment {
 
 	public void addCoach(Coach coach) {
 		int i = 0;
-		for(CoachAttendance coachAtt: coachAttendanceList){
+		for (CoachAttendance coachAtt : coachAttendanceList) {
 			i++;
-			if(coachAtt.getCoach().getFirstLastName().equals(coach.getFirstLastName())){
+			if (coachAtt.getCoach().getFirstLastName()
+					.equals(coach.getFirstLastName())) {
 				lvCoachCheckin.setSelection(i);
 				return;
 			}
 		}
-		
+
 		CoachAttendance addedCoachAttendance = new CoachAttendance();
 		addedCoachAttendance.setAttendanceValue(AttendanceValue.REGISTERED);
 		addedCoachAttendance.setCoach(coach);
 		coachAttendanceList.add(addedCoachAttendance);
 		coachCheckInAdapter.notifyDataSetChanged();
 	}
+	
+	public void SortCoachAttendance()
+	{
+		coachAttendanceListSorted = new ArrayList<CoachAttendance>();
+		
+		AttendanceValue coachAttendanaceVal = AttendanceValue.CALLED_IN_ABSENCE;
+		
+		int k =0;
+		for (int j = 0; j < 4; j++) {
+			if (j == 0) {
+				coachAttendanaceVal = AttendanceValue.REGISTERED;
+			} else if (j == 1) {
+				coachAttendanaceVal = AttendanceValue.ATTENDED;
+			} else if (j == 2) {
+				coachAttendanaceVal = AttendanceValue.NO_CALL_NO_SHOW;
+			} else {
+				coachAttendanaceVal = AttendanceValue.CALLED_IN_ABSENCE;
+			}
+			
+			for (int i = 0; i < coachAttendanceList.size(); i++) {
 
+				if (coachAttendanceList.get(i).getAttendanceValue() == coachAttendanaceVal)
+					coachAttendanceListSorted.set(k, coachAttendanceList.get(i));
+				k++;
+			}
+
+		}
+
+	}
 }

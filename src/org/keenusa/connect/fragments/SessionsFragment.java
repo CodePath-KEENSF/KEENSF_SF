@@ -325,12 +325,9 @@ public class SessionsFragment extends Fragment {
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
 		
-		try {
-			setSessionListToCurrentDate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		setSearchListPosition(sessionList);
+//		setSessionListToCurrentDate();
+		
 		if (llProgressBar != null) {
 			llProgressBar.setVisibility(View.GONE);
 		}
