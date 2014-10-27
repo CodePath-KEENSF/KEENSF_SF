@@ -20,6 +20,7 @@ public class AtheletListItemAdapter extends ArrayAdapter<Athlete> {
 	private static class ViewHolder {
 		ImageView ivAthleteProfilePic;
 		TextView tvAthleteName;
+		TextView tvAthleteAge;
 	}
 
 	public AtheletListItemAdapter(Context context, List<Athlete> athletes) {
@@ -35,11 +36,18 @@ public class AtheletListItemAdapter extends ArrayAdapter<Athlete> {
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.ivAthleteProfilePic = (ImageView) convertView.findViewById(R.id.ivAthleteProfilePic);
 			viewHolder.tvAthleteName = (TextView) convertView.findViewById(R.id.tvAthleteName);
+			viewHolder.tvAthleteAge = (TextView) convertView.findViewById(R.id.tvAthleteAge);
 			convertView.setTag(viewHolder);
 		}
 
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 		viewHolder.tvAthleteName.setText(PersonNameFormatter.getFormatedNameString(athlete.getFullName()));
+		if (athlete.getAge() > 0) {
+			viewHolder.tvAthleteAge.setText(athlete.getAge() + " years");
+			viewHolder.tvAthleteAge.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.tvAthleteAge.setVisibility(View.GONE);
+		}
 
 		viewHolder.ivAthleteProfilePic.setImageResource(0);
 		if (athlete.getGender() == ContactPerson.Gender.FEMALE) {

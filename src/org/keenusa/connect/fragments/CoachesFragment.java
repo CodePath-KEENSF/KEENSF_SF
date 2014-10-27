@@ -34,7 +34,7 @@ public class CoachesFragment extends Fragment {
 	private List<Coach> coachList;
 	private ListView lvCoaches;
 
-	private LinearLayout llProgressBar;
+	private LinearLayout llLoadingCoachesIndicator;
 	public String dummySearchString;
 	private SearchView searchView;
 
@@ -56,7 +56,7 @@ public class CoachesFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
-		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
+		llLoadingCoachesIndicator = (LinearLayout) v.findViewById(R.id.llLoadingCoachesIndicator);
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
 		lvCoaches.setOnItemClickListener(new OnItemClickListener() {
@@ -131,8 +131,8 @@ public class CoachesFragment extends Fragment {
 
 		@Override
 		protected void onPreExecute() {
-			if (llProgressBar != null) {
-				llProgressBar.setVisibility(View.VISIBLE);
+			if (llLoadingCoachesIndicator != null) {
+				llLoadingCoachesIndicator.setVisibility(View.VISIBLE);
 			}
 		}
 
@@ -145,8 +145,8 @@ public class CoachesFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(List<Coach> coaches) {
-			if (llProgressBar != null) {
-				llProgressBar.setVisibility(View.GONE);
+			if (llLoadingCoachesIndicator != null) {
+				llLoadingCoachesIndicator.setVisibility(View.GONE);
 			}
 			adapter.clear();
 			adapter.addAll(coaches);

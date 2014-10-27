@@ -35,7 +35,7 @@ public class AtheletsFragment extends Fragment {
 	List<Athlete> athleteList;
 	ListView lvAthletes;
 
-	private LinearLayout llProgressBar;
+	private LinearLayout llLoadingAthletesIndicator;
 	public String dummySearchString;
 	private SearchView searchView;
 
@@ -57,7 +57,7 @@ public class AtheletsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_athletes, container, false);
-		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarAthletes);
+		llLoadingAthletesIndicator = (LinearLayout) v.findViewById(R.id.llLoadingAthletesIndicator);
 		lvAthletes = (ListView) v.findViewById(R.id.lvAthletes);
 		lvAthletes.setAdapter(adapter);
 		lvAthletes.setOnItemClickListener(new OnItemClickListener() {
@@ -132,8 +132,8 @@ public class AtheletsFragment extends Fragment {
 
 		@Override
 		protected void onPreExecute() {
-			if (llProgressBar != null) {
-				llProgressBar.setVisibility(View.VISIBLE);
+			if (llLoadingAthletesIndicator != null) {
+				llLoadingAthletesIndicator.setVisibility(View.VISIBLE);
 			}
 		}
 
@@ -146,8 +146,8 @@ public class AtheletsFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(List<Athlete> athletes) {
-			if (llProgressBar != null) {
-				llProgressBar.setVisibility(View.GONE);
+			if (llLoadingAthletesIndicator != null) {
+				llLoadingAthletesIndicator.setVisibility(View.GONE);
 			}
 			adapter.clear();
 			adapter.addAll(athletes);
