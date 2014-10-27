@@ -12,6 +12,7 @@ import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.utilities.CheckinMenuActions;
 import org.keenusa.connect.utilities.DateFormatChanger;
 import org.keenusa.connect.utilities.IntentCode;
+import org.keenusa.connect.utilities.SetSessionImage;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.app.Activity;
@@ -22,6 +23,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,8 +40,10 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 		TextView tvNumAthletes;
 		TextView tvNumCoaches;
 		TextView tvSessionTime;
-		RelativeLayout rlParticipantCounts;
-
+		LinearLayout llParticipantCounts;
+		RelativeLayout rlSessionContainer;
+		RelativeLayout rlSessionDetails;
+		ImageView ivSessionImage;
 	}
 
 	public static class HeaderViewHolder {
@@ -65,17 +70,21 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvNumAthletes = (TextView) convertView.findViewById(R.id.tvNumAthletes);
 			viewHolder.tvNumCoaches = (TextView) convertView.findViewById(R.id.tvNumCoaches);
 			viewHolder.tvSessionTime = (TextView) convertView.findViewById(R.id.tvSessionTime);
-			viewHolder.rlParticipantCounts = (RelativeLayout) convertView.findViewById(R.id.rlParticipantCounts);
+			viewHolder.llParticipantCounts = (LinearLayout) convertView.findViewById(R.id.llParticipantCounts);
+			viewHolder.rlSessionContainer = (RelativeLayout) convertView.findViewById(R.id.rlSessionContainer);
+			viewHolder.rlSessionDetails = (RelativeLayout) convertView.findViewById(R.id.rlSessionDetails);
+			viewHolder.ivSessionImage = (ImageView) convertView.findViewById(R.id.ivSessionImage);
 
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		viewHolder.rlParticipantCounts.setTag(session);
+		viewHolder.llParticipantCounts.setTag(session);
 
 		if (program != null && program.getName() != null) {
 			viewHolder.tvSessionName.setText(session.getProgram().getName());
+			SetSessionImage.changeBackgroundImage(program.getName(), viewHolder.ivSessionImage);
 		} else {
 			viewHolder.tvSessionName.setText("Dummy Program");
 		}
@@ -96,7 +105,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 			viewHolder.tvSessionTime.setText("12pm - 1pm");
 		}
 
-		viewHolder.rlParticipantCounts.setOnClickListener(new OnClickListener() {
+		viewHolder.llParticipantCounts.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

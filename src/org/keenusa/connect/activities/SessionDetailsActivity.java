@@ -10,6 +10,7 @@ import org.keenusa.connect.models.KeenProgram;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.utilities.CheckinMenuActions;
 import org.keenusa.connect.utilities.FastBlur;
+import org.keenusa.connect.utilities.SetSessionImage;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -59,11 +60,12 @@ public class SessionDetailsActivity extends FragmentActivity {
 	private void setData() {
 		String address = "";
 		session = (KeenSession) getIntent().getSerializableExtra("session");
-		program = (KeenProgram) getIntent().getSerializableExtra("program");
+		program = session.getProgram();
 
 		tvDate.setText(formamtDate(session.getDate()));
 		tvProgramName.setText(program.getName());
-		changeBackgroundImage(program.getName());
+//		changeBackgroundImage(program.getName());
+		SetSessionImage.changeBackgroundImage(program.getName(), image);
 		if (program.getLocation() != null) {
 			tvLocation.setText(program.getLocation().getLocationString());
 		} else {

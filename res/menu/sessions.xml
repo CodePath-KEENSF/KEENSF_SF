@@ -12,13 +12,13 @@
         android:id="@+id/miExpandAll"
         android:icon="@drawable/ic_expand"
         android:orderInCategory="30"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:showAsAction="collapseActionView"
         android:title="@string/expand_all"/>
     <item
         android:id="@+id/miCollapseAll"
         android:icon="@drawable/ic_collapse"
         android:orderInCategory="30"
-        android:showAsAction="ifRoom|collapseActionView"
+        android:showAsAction="collapseActionView"
         android:title="@string/collapse_all"/>
 
 </menu>

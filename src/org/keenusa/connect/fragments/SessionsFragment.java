@@ -22,6 +22,7 @@ import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
+import org.keenusa.connect.utilities.DebugInfo;
 import org.keenusa.connect.utilities.GetNextDay;
 import org.keenusa.connect.utilities.KeenSessionComparator;
 import org.keenusa.connect.utilities.StringConstants;
@@ -34,10 +35,9 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -321,9 +321,10 @@ public class SessionsFragment extends Fragment {
 		connectSessionWithAthleteAttendance();
 
 		Collections.sort(sessionList, Collections.reverseOrder(new KeenSessionComparator()));
-
+		
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
-
+		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+		
 		try {
 			setSessionListToCurrentDate();
 		} catch (Exception e) {
@@ -422,7 +423,6 @@ public class SessionsFragment extends Fragment {
 		
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
 		i.putExtra("session", sessionList.get(pos));
-		i.putExtra("program", sessionList.get(pos).getProgram());
 		startActivity(i);
 		getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
@@ -440,7 +440,6 @@ public class SessionsFragment extends Fragment {
 
 		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
 		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
-		expandableStickySessionListView.setDividerHeight(0);
 	}
 
 	private void loadProgressBar() {

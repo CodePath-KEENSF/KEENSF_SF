@@ -6,22 +6,22 @@
 
     <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
         android:id="@+id/lvSessionList"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@color/session_list_background_color"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:padding="10dp" />
+        android:divider="@android:color/transparent"
+        android:dividerHeight="30.0sp"
+        android:padding="10dp"
+        android:background="@android:color/white"/>
 
     <LinearLayout
         android:id="@+id/llProgressBarSessions"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/keen_lauch_background"
+        android:background="@drawable/ymca"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone" >
@@ -33,8 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:indeterminate="true" 
-            android:progress="1">
+            android:indeterminate="true"
+            android:progress="1" >
         </ProgressBar>
     </LinearLayout>
 
