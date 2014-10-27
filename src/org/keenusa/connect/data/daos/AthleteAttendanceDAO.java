@@ -154,6 +154,55 @@ public class AthleteAttendanceDAO {
 		return attendanceId;
 	}
 
+	public boolean saveNewAthleteAttendanceList(List<AthleteAttendance> attendances) {
+		boolean areSaved = false;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (AthleteAttendance attendance : attendances) {
+			AthleteAttendance dbAthleteAttendance = getSimpleAthleteAttendanceByRemoteId(attendance.getRemoteId());
+			if (dbAthleteAttendance == null) {
+				values.clear();
+				values.put(AthleteAttendanceTable.REMOTE_ID_COL_NAME, attendance.getRemoteId());
+				values.put(AthleteAttendanceTable.REMOTE_CREATED_COL_NAME, attendance.getRemoteCreateTimestamp());
+				values.put(AthleteAttendanceTable.REMOTE_UPDATED_COL_NAME, attendance.getRemoteUpdatedTimestamp());
+
+				long sessionId = 0;
+				if (sessionMap.containsKey(attendance.getRemoteSessionId())) {
+					sessionId = sessionMap.get(attendance.getRemoteSessionId());
+				} else {
+					KeenSession session = sessionDAO.getSimpleSessionByRemoteId(attendance.getRemoteSessionId());
+					if (session != null) {
+						sessionId = session.getId();
+						sessionMap.put(attendance.getRemoteSessionId(), sessionId);
+					}
+				}
+				values.put(AthleteAttendanceTable.SESSION_ID_COL_NAME, sessionId);
+
+				if (attendance.getAthlete() != null) {
+
+					long athleteId = 0;
+					if (athleteMap.containsKey(attendance.getAthlete().getRemoteId())) {
+						athleteId = athleteMap.get(attendance.getAthlete().getRemoteId());
+					} else {
+						Athlete athlete = athleteDAO.getSimpleAthleteByRemoteId(attendance.getAthlete().getRemoteId());
+						if (athlete != null) {
+							athleteId = athlete.getId();
+							athleteMap.put(attendance.getAthlete().getRemoteId(), athleteId);
+						}
+					}
+					values.put(AthleteAttendanceTable.ATHLETE_ID_COL_NAME, athleteId);
+				}
+				values.put(AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME, attendance.getAttendanceValue().toString());
+				db.insert(AthleteAttendanceTable.TABLE_NAME, null, values);
+			}
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		areSaved = true;
+		return areSaved;
+	}
+
 	private boolean updateAthleteAttendance(AthleteAttendance attendance) {
 		boolean transactionStatus = false;
 

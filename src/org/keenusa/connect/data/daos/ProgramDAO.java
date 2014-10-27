@@ -111,6 +111,48 @@ public class ProgramDAO {
 		return programId;
 	}
 
+	public boolean saveNewProgramList(List<KeenProgram> programs) {
+		boolean areSaved = false;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (KeenProgram program : programs) {
+			KeenProgram dbProgram = getSimpleProgramByRemoteId(program.getRemoteId());
+			if (dbProgram == null) {
+				values.clear();
+				values.put(ProgramTable.REMOTE_ID_COL_NAME, program.getRemoteId());
+				values.put(ProgramTable.REMOTE_CREATED_COL_NAME, program.getRemoteCreateTimestamp());
+				values.put(ProgramTable.REMOTE_UPDATED_COL_NAME, program.getRemoteUpdatedTimestamp());
+				values.put(ProgramTable.NAME_COL_NAME, program.getName());
+				values.put(ProgramTable.TIMES_COL_NAME, program.getProgramTimes());
+				values.put(ProgramTable.REGISTRATION_EMAL_TEXT_COL_NAME, program.getCoachRegistrationConfirmationEmailText());
+				if (program.getLocation() != null) {
+					values.put(ProgramTable.ADDRESS_ONE_COL_NAME, program.getLocation().getAddress1());
+					values.put(ProgramTable.ADDRESS_TWO_COL_NAME, program.getLocation().getAddress2());
+					values.put(ProgramTable.CITY_COL_NAME, program.getLocation().getCity());
+					values.put(ProgramTable.STATE_COL_NAME, program.getLocation().getState());
+					values.put(ProgramTable.ZIP_CODE_COL_NAME, program.getLocation().getZipCode());
+				}
+				if (program.getActiveFromDate() != null) {
+					values.put(ProgramTable.START_DATE_COL_NAME, program.getActiveFromDate().getMillis());
+				}
+				if (program.getActiveToDate() != null) {
+					values.put(ProgramTable.END_DATE_COL_NAME, program.getActiveToDate().getMillis());
+				}
+
+				if (program.getGeneralProgramType() != null) {
+					values.put(ProgramTable.TYPE_COL_NAME, program.getGeneralProgramType().toString());
+				}
+				db.insert(ProgramTable.TABLE_NAME, null, values);
+
+			}
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		areSaved = true;
+		return areSaved;
+	}
+
 	private boolean updateProgram(KeenProgram program) {
 		boolean transactionStatus = false;
 		ContentValues values = new ContentValues();

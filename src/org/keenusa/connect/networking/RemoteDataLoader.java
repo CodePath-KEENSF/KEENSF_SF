@@ -82,9 +82,7 @@ public class RemoteDataLoader extends Thread {
 			coaches = client.fetchCoachListData();
 			Log.i("DATA_LOAD", "Coaches fetched " + coaches.size());
 			CoachDAO coacheDAO = new CoachDAO(context);
-			for (Coach coach : coaches) {
-				coacheDAO.saveNewCoach(coach);
-			}
+			coacheDAO.saveNewCoachList(coaches);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -98,9 +96,7 @@ public class RemoteDataLoader extends Thread {
 			athletes = client.fetchAthleteListData();
 			Log.i("DATA_LOAD", "Athletes fetched " + athletes.size());
 			AthleteDAO athleteDAO = new AthleteDAO(context);
-			for (Athlete athlete : athletes) {
-				athleteDAO.saveNewAthlete(athlete);
-			}
+			athleteDAO.saveNewAthleteList(athletes);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,9 +110,7 @@ public class RemoteDataLoader extends Thread {
 			programs = client.fetchProgramListData();
 			Log.i("DATA_LOAD", "Programs fetched " + programs.size());
 			ProgramDAO programDAO = new ProgramDAO(context);
-			for (KeenProgram program : programs) {
-				programDAO.saveNewProgram(program);
-			}
+			programDAO.saveNewProgramList(programs);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,9 +124,7 @@ public class RemoteDataLoader extends Thread {
 			sessions = client.fetchSessionListData();
 			Log.i("DATA_LOAD", "Sessions fetched " + sessions.size());
 			SessionDAO sessionDAO = new SessionDAO(context);
-			for (KeenSession session : sessions) {
-				sessionDAO.saveNewSession(session);
-			}
+			sessionDAO.saveNewSessionList(sessions);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -146,9 +138,7 @@ public class RemoteDataLoader extends Thread {
 			keenProgramEnrolments = client.fetchProgramEnrolmentListData();
 			Log.i("DATA_LOAD", "Program enrolments fetched " + keenProgramEnrolments.size());
 			ProgramEnrollmentDAO enrollmentDAO = new ProgramEnrollmentDAO(context);
-			for (KeenProgramEnrolment enrollment : keenProgramEnrolments) {
-				enrollmentDAO.saveNewProgramEnrolment(enrollment);
-			}
+			enrollmentDAO.saveNewProgramEnrolmentList(keenProgramEnrolments);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -162,9 +152,7 @@ public class RemoteDataLoader extends Thread {
 			athleteAttendances = client.fetchAthleteAttendanceListData();
 			Log.i("DATA_LOAD", "Athlete attendances fetched " + athleteAttendances.size());
 			AthleteAttendanceDAO attendanceDAO = new AthleteAttendanceDAO(context);
-			for (AthleteAttendance attendance : athleteAttendances) {
-				attendanceDAO.saveNewAthleteAttendance(attendance);
-			}
+			attendanceDAO.saveNewAthleteAttendanceList(athleteAttendances);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -178,9 +166,7 @@ public class RemoteDataLoader extends Thread {
 			coachAttendances = client.fetchCoachAttendanceListData();
 			Log.i("DATA_LOAD", "Coach attendances fetched " + coachAttendances.size());
 			CoachAttendanceDAO attendanceDAO = new CoachAttendanceDAO(context);
-			for (CoachAttendance attendance : coachAttendances) {
-				attendanceDAO.saveNewCoachAttendance(attendance);
-			}
+			attendanceDAO.saveNewCoachAttendanceList(coachAttendances);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

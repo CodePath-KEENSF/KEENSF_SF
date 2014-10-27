@@ -127,6 +127,56 @@ public class AthleteDAO {
 		return athleteId;
 	}
 
+	public boolean saveNewAthleteList(List<Athlete> athletes) {
+		boolean areSaved = false;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (Athlete athlete : athletes) {
+
+			Athlete dbAthlete = getSimpleAthleteByRemoteId(athlete.getRemoteId());
+			if (dbAthlete == null) {
+				values.clear();
+				values.put(AthleteTable.REMOTE_ID_COL_NAME, athlete.getRemoteId());
+				values.put(AthleteTable.REMOTE_CREATED_COL_NAME, athlete.getRemoteCreateTimestamp());
+				values.put(AthleteTable.REMOTE_UPDATED_COL_NAME, athlete.getRemoteUpdatedTimestamp());
+				values.put(AthleteTable.FIRST_NAME_COL_NAME, athlete.getFirstName());
+				values.put(AthleteTable.MIDDLE_NAME_COL_NAME, athlete.getMiddleName());
+				values.put(AthleteTable.LAST_NAME_COL_NAME, athlete.getLastName());
+				values.put(AthleteTable.EMAIL_COL_NAME, athlete.getEmail());
+				values.put(AthleteTable.PHONE_COL_NAME, athlete.getPhone());
+				values.put(AthleteTable.GENDER_COL_NAME, athlete.getGender().toString());
+				values.put(AthleteTable.NICKNAME_COL_NAME, athlete.getNickName());
+				values.put(AthleteTable.PRIMLANGUAGE_COL_NAME, athlete.getPrimaryLanguage());
+				values.put(AthleteTable.ACTIVE_COL_NAME, (athlete.isActive() ? 1 : 0));
+				if (athlete.getDateOfBirth() != null) {
+					values.put(AthleteTable.DOB_COL_NAME, athlete.getDateOfBirth().getMillis());
+				}
+				if (athlete.getPrimaryParent() != null) {
+					values.put(AthleteTable.PARENT_MOBILE_COL_NAME, athlete.getPrimaryParent().getCellPhone());
+					values.put(AthleteTable.PARENT_PHONE_COL_NAME, athlete.getPrimaryParent().getPhone());
+					values.put(AthleteTable.PARENT_EMAIL_COL_NAME, athlete.getPrimaryParent().getEmail());
+					if (athlete.getPrimaryParent().getParentRelationship() != null) {
+						values.put(AthleteTable.PARENT_RELATIONSHIP_COL_NAME, athlete.getPrimaryParent().getParentRelationship().toString());
+					}
+					values.put(AthleteTable.PARENT_FIRST_NAME_COL_NAME, athlete.getPrimaryParent().getFirstName());
+					values.put(AthleteTable.PARENT_LAST_NAME_COL_NAME, athlete.getPrimaryParent().getLastName());
+				}
+				if (athlete.getLocation() != null) {
+					values.put(AthleteTable.CITY_COL_NAME, athlete.getLocation().getCity());
+					values.put(AthleteTable.STATE_COL_NAME, athlete.getLocation().getState());
+					values.put(AthleteTable.STATE_COL_NAME, athlete.getLocation().getZipCode());
+				}
+				db.insert(AthleteTable.TABLE_NAME, null, values);
+			}
+
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		areSaved = true;
+		return areSaved;
+	}
+
 	public boolean updateAthleteRecord(Athlete athleteDTO) {
 		boolean transactionStatus = false;
 

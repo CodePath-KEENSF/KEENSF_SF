@@ -133,6 +133,49 @@ public class SessionDAO {
 		return sessionId;
 	}
 
+	public boolean saveNewSessionList(List<KeenSession> sessions) {
+		boolean areSaved = false;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (KeenSession session : sessions) {
+			KeenSession dbSession = getSimpleSessionByRemoteId(session.getRemoteId());
+			if (dbSession == null) {
+				values.clear();
+				values.put(SessionTable.REMOTE_ID_COL_NAME, session.getRemoteId());
+				values.put(SessionTable.REMOTE_CREATED_COL_NAME, session.getRemoteCreateTimestamp());
+				values.put(SessionTable.REMOTE_UPDATED_COL_NAME, session.getRemoteUpdatedTimestamp());
+				if (session.getDate() != null) {
+					values.put(SessionTable.SESSION_DATE_COL_NAME, session.getDate().getMillis());
+				}
+
+				if (session.getProgram() != null) {
+					long programId = 0;
+					if (programMap.containsKey(session.getProgram().getRemoteId())) {
+						programId = programMap.get(session.getProgram().getRemoteId());
+					} else {
+						KeenProgram program = programDAO.getSimpleProgramByRemoteId(session.getProgram().getRemoteId());
+						if (program != null) {
+							programId = program.getId();
+							programMap.put(session.getProgram().getRemoteId(), programId);
+						}
+					}
+					values.put(SessionTable.PROGRAM_ID_COL_NAME, programId);
+				}
+
+				values.put(SessionTable.NUMBER_OF_NEW_COACHES_NEEDED_COL_NAME, session.getNumberOfNewCoachesNeeded());
+				values.put(SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, session.getNumberOfReturningCoachesNeeded());
+				values.put(SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME, (session.isOpenToPublicRegistration() ? 1 : 0));
+				db.insert(SessionTable.TABLE_NAME, null, values);
+
+			}
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		areSaved = true;
+		return areSaved;
+	}
+
 	private boolean updateSession(KeenSession session) {
 
 		boolean transactionStatus = false;

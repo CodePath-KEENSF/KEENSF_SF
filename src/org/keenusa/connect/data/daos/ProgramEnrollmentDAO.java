@@ -147,6 +147,55 @@ public class ProgramEnrollmentDAO {
 		return enrolmentId;
 	}
 
+	public boolean saveNewProgramEnrolmentList(List<KeenProgramEnrolment> enrolments) {
+		boolean areSaved = false;
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (KeenProgramEnrolment enrolment : enrolments) {
+			KeenProgramEnrolment dbProgramEnrollment = getSimpleProgramEnrolmentByRemoteId(enrolment.getRemoteId());
+			if (dbProgramEnrollment == null) {
+				values.clear();
+				values.put(ProgramEnrollmentTable.REMOTE_ID_COL_NAME, enrolment.getRemoteId());
+				values.put(ProgramEnrollmentTable.REMOTE_CREATED_COL_NAME, enrolment.getRemoteCreateTimestamp());
+				values.put(ProgramEnrollmentTable.REMOTE_UPDATED_COL_NAME, enrolment.getRemoteUpdatedTimestamp());
+				if (enrolment.getProgram() != null) {
+					long programId = 0;
+					if (programMap.containsKey(enrolment.getProgram().getRemoteId())) {
+						programId = programMap.get(enrolment.getProgram().getRemoteId());
+					} else {
+						KeenProgram program = programDAO.getSimpleProgramByRemoteId(enrolment.getProgram().getRemoteId());
+						if (program != null) {
+							programId = program.getId();
+							programMap.put(enrolment.getProgram().getRemoteId(), programId);
+						}
+					}
+					values.put(ProgramEnrollmentTable.PROGRAM_ID_COL_NAME, programId);
+				}
+				if (enrolment.getAthlete() != null) {
+					long athleteId = 0;
+					if (athleteMap.containsKey(enrolment.getAthlete().getRemoteId())) {
+						athleteId = athleteMap.get(enrolment.getAthlete().getRemoteId());
+					} else {
+						Athlete athlete = athleteDAO.getSimpleAthleteByRemoteId(enrolment.getAthlete().getRemoteId());
+						if (athlete != null) {
+							athleteId = athlete.getId();
+							athleteMap.put(enrolment.getAthlete().getRemoteId(), athleteId);
+						}
+					}
+					values.put(ProgramEnrollmentTable.ATHLETE_ID_COL_NAME, athleteId);
+				}
+				values.put(ProgramEnrollmentTable.WAITLIST_COL_NAME, (enrolment.isInWaitlist() ? 1 : 0));
+				db.insert(ProgramEnrollmentTable.TABLE_NAME, null, values);
+
+			}
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		areSaved = true;
+		return areSaved;
+	}
+
 	private boolean updateProgramEnrollement(KeenProgramEnrolment enrolment) {
 		boolean transactionStatus = false;
 
