@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -29,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -45,7 +43,7 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
 	private KeenCivicoreClient client;
-
+	private ProgressBar progressBar;
 	SearchView searchView;
 
 	public AddCoachToCheckinFragment() {
@@ -75,6 +73,7 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoachesAdd);
 		if (!bDataLoaded) {
 			llProgressBar.setVisibility(View.VISIBLE);
+			loadProgressBar();
 		}
 
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoachesAdd);
@@ -127,6 +126,18 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		return v;
+	}
+	
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public CoachListItemAdapter getAdapter() {

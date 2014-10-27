@@ -205,6 +205,7 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	private void UpdateSession() {
 		Intent finishCheckinIntent = new Intent();
 		finishCheckinIntent.putExtra("session", session);
+		overridePendingTransition(R.anim.right_in, R.anim.left_out);
 		setResult(IntentCode.RESULT_OK, finishCheckinIntent);
 		finish();
 	}

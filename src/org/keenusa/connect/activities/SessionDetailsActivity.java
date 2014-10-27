@@ -91,58 +91,58 @@ public class SessionDetailsActivity extends FragmentActivity {
 	private void changeBackgroundImage(String name) {
 		if (name.equals("Sports 1")) {
 			image.setImageResource(R.drawable.sports1);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("Sports 2")) {
 			image.setImageResource(R.drawable.sports2);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("Sports 1 & 2")) {
 			image.setImageResource(R.drawable.sports1tennis);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("Basketball") || name.equals("Basketball Clinic - Hoops")
 				|| name.equals("Summer Family Pool Party or Basketball & Picnic")) {
 			image.setImageResource(R.drawable.basketballclinic);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("KEENquatics") || name.equals("KEENquatics - SWIM")) {
 			image.setImageResource(R.drawable.quatics);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("Summer Family Picnic & Games")) {
 			image.setImageResource(R.drawable.picnic);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("Kids Sports & Tennis - SFUHS")) {
 			image.setImageResource(R.drawable.sports1tennis);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("Kids and Young Adult Sports at YMCA") || name.equals("Kids Sports and Young Adult Sports - East Bay")) {
 			image.setImageResource(R.drawable.ymca);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("Holiday Party 2012")) {
 			image.setImageResource(R.drawable.holidayparty);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		} else if (name.equals("KEENGala: Pre-Event") || name.equals("KEENGala - Event Volunteer Shift 1")
 				|| name.equals("KEENGala - Event Volunteer Shift 2")) {
 			image.setImageResource(R.drawable.holidayparty);
-			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
 		}
 	}
 
-	private void blurImage(final TextView tvDate, final TextView tvProgramName, final TextView tvLocation, final TextView tvProgramType,
-			final TextView tvProgramTimes) {
-		image.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-
-			@Override
-			public boolean onPreDraw() {
-				image.getViewTreeObserver().removeOnPreDrawListener(this);
-				image.buildDrawingCache();
-
-				Bitmap bmp = image.getDrawingCache();
-				blur(bmp, tvDate);
-				blur(bmp, tvProgramName);
-				blur(bmp, tvLocation);
-				blur(bmp, tvProgramType);
-				blur(bmp, tvProgramTimes);
-				return true;
-			}
-		});
-	}
+//	private void blurImage(final TextView tvDate, final TextView tvProgramName, final TextView tvLocation, final TextView tvProgramType,
+//			final TextView tvProgramTimes) {
+//		image.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//
+//			@Override
+//			public boolean onPreDraw() {
+//				image.getViewTreeObserver().removeOnPreDrawListener(this);
+//				image.buildDrawingCache();
+//
+//				Bitmap bmp = image.getDrawingCache();
+//				blur(bmp, tvDate);
+//				blur(bmp, tvProgramName);
+//				blur(bmp, tvLocation);
+//				blur(bmp, tvProgramType);
+//				blur(bmp, tvProgramTimes);
+//				return true;
+//			}
+//		});
+//	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void blur(Bitmap bkg, TextView textView) {
@@ -181,13 +181,13 @@ public class SessionDetailsActivity extends FragmentActivity {
 		image = (ImageView) findViewById(R.id.ivSessionBackgroundPic);
 	}
 
-	private TextView addStatusText(ViewGroup container) {
-		TextView result = new TextView(this);
-		result.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		result.setTextColor(0xFFFFFFFF);
-		container.addView(result);
-		return result;
-	}
+//	private TextView addStatusText(ViewGroup container) {
+//		TextView result = new TextView(this);
+//		result.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//		result.setTextColor(0xFFFFFFFF);
+//		container.addView(result);
+//		return result;
+//	}
 
 	public void athleteCheckIn(View v) {
 		openAthleteCheckIn(session, program);
@@ -202,6 +202,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 		i.putExtra("session", session2);
 		i.putExtra("program", program2);
 		startActivity(i);
+		overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
 
 	private void openAthleteCheckIn(KeenSession session2, KeenProgram program2) {
@@ -209,6 +210,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 		i.putExtra("session", session2);
 		i.putExtra("program", program2);
 		startActivity(i);
+		overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
 
 	@Override
@@ -232,7 +234,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 			Intent checkinIntent = new Intent(getBaseContext(), AthleteCoachCheckinActivity.class);
 			checkinIntent.putExtra("session", session);
 			startActivity(checkinIntent);
-			overridePendingTransition(R.anim.left_out, R.anim.right_in);
+			overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
 		} else if (item.getItemId() == R.id.miSendMessage) {
 			showMassMessageDialog();

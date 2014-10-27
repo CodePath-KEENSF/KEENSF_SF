@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	private LinearLayout llProgressBar;
 	private boolean bDataLoaded = false;
 	public String dummySearchString;
+	private ProgressBar progressBar;
 
 	SearchView searchView;
 
@@ -64,9 +66,10 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_coaches, container, false);
 		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoaches);
-		//		if (!bDataLoaded) {
-		//			llProgressBar.setVisibility(View.VISIBLE);
-		//		}
+				if (!bDataLoaded) {
+					llProgressBar.setVisibility(View.VISIBLE);
+					loadProgressBar();
+				}
 
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoaches);
 		lvCoaches.setAdapter(adapter);
@@ -83,6 +86,18 @@ public class CoachesFragment extends Fragment implements CivicoreDataResultListe
 		});
 
 		return v;
+	}
+	
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public CoachListItemAdapter getAdapter() {

@@ -34,6 +34,8 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -442,6 +444,7 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
 		try {
 			for (int i = 1; i <= 10; i++) {
 				progressBar.setProgress(i*10);

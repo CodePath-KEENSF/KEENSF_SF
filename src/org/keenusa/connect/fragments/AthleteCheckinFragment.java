@@ -33,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
@@ -54,7 +55,7 @@ public class AthleteCheckinFragment extends Fragment {
 	private List<AthleteAttendance> athleteAttendanceList;
 	private List<AthleteAttendance> athleteAttendanceListOriginal;
 	private HashMap<String, Athlete> AthleteAttendanceMap = new HashMap<String, Athlete>();
-
+	private ProgressBar progressBar;
 	private boolean bDataLoaded = false;
 
 	private KeenSession session;
@@ -148,7 +149,7 @@ public class AthleteCheckinFragment extends Fragment {
 				Intent i = new Intent(getActivity(), AthleteProfileActivity.class);
 				i.putExtra(ATHLETE_EXTRA_TAG, athleteCheckInAdapter.getItem(position).getAthlete());
 				startActivity(i);
-
+				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
 	}
@@ -158,11 +159,24 @@ public class AthleteCheckinFragment extends Fragment {
 				.findViewById(R.id.llProgressBarAthleteCheckin);
 		if (!bDataLoaded) {
 			llProgressBarAthleteCheckin.setVisibility(View.VISIBLE);
+			loadProgressBar();
 		}
 
 		lvAthleteCheckin = (ListView) v.findViewById(R.id.lvAthleteCheckin);
 		lvAthleteCheckin.setAdapter(athleteCheckInAdapter);
 		tvAthleteAttended = (TextView) v.findViewById(R.id.tvAthleteAttended);
+	}
+	
+	private void loadProgressBar() {
+//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void fetchSessionList() {

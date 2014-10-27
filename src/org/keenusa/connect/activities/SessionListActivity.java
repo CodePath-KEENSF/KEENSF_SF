@@ -119,4 +119,10 @@ public class SessionListActivity extends Activity {
 		// Pass any configuration change to the drawer toggles
 		dlDrawer.getDrawerToggle().onConfigurationChanged(newConfig);
 	}
+	
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
+	}
 }
