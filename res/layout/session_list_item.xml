@@ -9,6 +9,8 @@
     <ImageView
         android:id="@+id/ivSessionImage"
         android:paddingBottom="4dp"
+        android:paddingTop="1dp"
+        android:paddingLeft="1dp"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/rlSessionContainer"
