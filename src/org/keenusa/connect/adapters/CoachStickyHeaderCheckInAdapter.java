@@ -1,14 +1,18 @@
 package org.keenusa.connect.adapters;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.activities.AthleteCoachCheckinActivity;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
 import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.utilities.CheckinMenuActions;
+import org.keenusa.connect.utilities.CoachAttComparator;
+import org.keenusa.connect.utilities.DebugInfo;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.content.Context;
@@ -27,6 +31,8 @@ import android.widget.TextView;
 public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendance> implements StickyListHeadersAdapter{
 
 	private KeenCivicoreClient client;
+	private List<CoachAttendance> coachAttList;
+	private Context context;
 
 	public static class ViewHolder {
 		ImageView ivCoachProfilePic;
@@ -35,6 +41,9 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 		TextView tvCoachAttended;
 		TextView tvCoachAbsent;
 		TextView tvCoachCancelled;
+		ImageView ivCoachCheckinCall;
+		ImageView ivCoachCheckinSms;
+		ImageView ivCoachCheckinEmail;
 	}
 	
 	public static class HeaderViewHolder {
@@ -42,9 +51,11 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 	}
 
 
-	public CoachStickyHeaderCheckInAdapter(Context context, List<CoachAttendance> objects) {
-		super(context, 0, objects);
+	public CoachStickyHeaderCheckInAdapter(Context context, List<CoachAttendance> coachAttList) {
+		super(context, 0, coachAttList);
 		client = new KeenCivicoreClient(context);
+		this.coachAttList = coachAttList;
+		this.context = context;
 	}
 
 	@Override
@@ -63,11 +74,28 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 			viewHolder.tvCoachAbsent = (TextView) convertView.findViewById(R.id.tvCoachAbsent);
 			viewHolder.tvCoachCancelled = (TextView) convertView.findViewById(R.id.tvCoachCancelled);
 			viewHolder.llCoachAttendance = (LinearLayout) convertView.findViewById(R.id.llCoachAttendance);
+//			viewHolder.ivCoachCheckinCall = (ImageView) convertView.findViewById(R.id.ivCoachCheckinCall);
+//			viewHolder.ivCoachCheckinSms = (ImageView) convertView.findViewById(R.id.ivCoachCheckinSms);
+//			viewHolder.ivCoachCheckinEmail = (ImageView) convertView.findViewById(R.id.ivCoachCheckinEmail);
 
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+
+		if (position == 0 && getCount() == 1) {
+			convertView.setBackgroundResource(R.drawable.single_item_list_background);
+		} else if (position == 0 && getCount() > 1) {
+			convertView.setBackgroundResource(R.drawable.list_item_background_first_item);
+		} else if (position == getCount() - 1) {
+			convertView.setBackgroundResource(R.drawable.list_item_background_last_item);
+		} else {
+			convertView.setBackgroundResource(R.drawable.list_item_background);
+		}
+
+//		viewHolder.ivCoachCheckinCall.setTag(coachAttendance);
+//		viewHolder.ivCoachCheckinSms.setTag(coachAttendance);
+//		viewHolder.ivCoachCheckinEmail.setTag(coachAttendance);
 
 		if (coachAttendance != null) {
 
@@ -93,7 +121,7 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 				viewHolder.tvCoachCancelled.setVisibility(View.GONE);
 				viewHolder.llCoachAttendance.setVisibility(View.GONE);
 				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)viewHolder.tvCoachName.getLayoutParams();
-				params.addRule(RelativeLayout.ALIGN_TOP, 0);
+				params.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
 				viewHolder.tvCoachName.setGravity(Gravity.CENTER_VERTICAL);
 				
 				return convertView;
@@ -136,6 +164,27 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 
 	public void setOnClickListeners(View convertView, ViewHolder viewHolder) {
 
+//		viewHolder.ivCoachCheckinCall.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//				CoachAttendance coachAttendance = (CoachAttendance) v.getTag();
+//				DebugInfo.showToast(getContext(), "call"+ coachAttendance.getCoach().getCellPhone());
+//			}
+//		});
+//		
+//		viewHolder.ivCoachCheckinSms.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//				CoachAttendance coachAttendance = (CoachAttendance) v.getTag();
+//				DebugInfo.showToast(getContext(), "call"+ coachAttendance.getCoach().getPhone());
+//			}
+//		});
+//
+//		viewHolder.ivCoachCheckinEmail.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//				CoachAttendance coachAttendance = (CoachAttendance) v.getTag();
+//				DebugInfo.showToast(getContext(), "call"+ coachAttendance.getCoach().getEmail());
+//			}
+//		});
+
 		viewHolder.tvCoachAttended.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -157,6 +206,8 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 
 				CoachAttendance coachAttendance = (CoachAttendance) v.getTag(R.color.tag1);
 				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.ATTENDED);
+				
+				((AthleteCoachCheckinActivity)context).refreshCoachAttendance();
 			}
 		});
 
@@ -181,6 +232,8 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 
 				CoachAttendance coachAttendance = (CoachAttendance) v.getTag(R.color.tag1);
 				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
+				
+				((AthleteCoachCheckinActivity)context).refreshCoachAttendance();
 			}
 		});
 
@@ -206,6 +259,8 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 
 				CoachAttendance coachAttendance = (CoachAttendance) v.getTag(R.color.tag1);
 				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CANCELLED);
+				
+				((AthleteCoachCheckinActivity)context).refreshCoachAttendance();
 			}
 		});
 	}
@@ -232,9 +287,9 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 			}else if(coachAttendance.getAttendanceValue() == AttendanceValue.REGISTERED){
 				headerViewHolder.tvAttendanceValue.setText("Registered");
 			}else if(coachAttendance.getAttendanceValue() == AttendanceValue.NO_CALL_NO_SHOW){
-				headerViewHolder.tvAttendanceValue.setText("No Show");
+				headerViewHolder.tvAttendanceValue.setText("Absent (No Show)");
 			}else{
-				headerViewHolder.tvAttendanceValue.setText("Called Absence");
+				headerViewHolder.tvAttendanceValue.setText("Absent (Called, Cancelled)");
 			}
 		}
 		// TODO Auto-generated method stub
@@ -259,3 +314,4 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 		return 1;
 	}
 }
+

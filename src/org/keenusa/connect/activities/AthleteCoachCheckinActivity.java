@@ -220,5 +220,12 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	public void onFinishAddDialog(Coach coach) {
 		coachCheckinFragment.addCoach(coach);
 	}
+	
+	public void refreshCoachAttendance(){
+		coachCheckinFragment.refreshAttendance();
+	}
 
+	public void refreshAthleteAttendance(){
+		athleteCheckinFragment.refreshAttendance();
+	}
 }

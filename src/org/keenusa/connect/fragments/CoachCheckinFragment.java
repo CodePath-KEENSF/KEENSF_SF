@@ -1,23 +1,34 @@
 package org.keenusa.connect.fragments;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
-import org.keenusa.connect.adapters.CoachCheckInAdapter;
+import org.keenusa.connect.adapters.CoachStickyHeaderCheckInAdapter;
+import org.keenusa.connect.fragments.AthleteCheckinFragment.AnimationExecutor;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 import org.keenusa.connect.utilities.CheckinMenuActions;
+import org.keenusa.connect.utilities.CoachAttComparator;
 import org.keenusa.connect.utilities.DebugInfo;
 import org.keenusa.connect.utilities.PostCheckinUpdate;
 import org.keenusa.connect.utilities.StringConstants;
 
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.ValueAnimator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -31,9 +42,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
@@ -41,20 +53,23 @@ import android.widget.Toast;
 
 public class CoachCheckinFragment extends Fragment {
 
-	public static final String COACH_EXTRA_TAG = "COACH";
+	public static final String COACH_EXTRA_TAG = "COACH_ID";
 
 	public String dummySearchString;
 	private SearchView searchView;
 
 	private LinearLayout llProgressBarCoachCheckin;
-	private ListView lvCoachCheckin;
-	private CoachCheckInAdapter coachCheckInAdapter;
+	// private ListView lvCoachCheckin;
+	// private CoachCheckInAdapter coachCheckInAdapter;
 	private TextView tvCoachAttended;
+
+	private ExpandableStickyListHeadersListView lvCoachCheckin;
+	private StickyListHeadersAdapter coachCheckInAdapter;
 
 	private ArrayList<KeenSession> sessionList;
 	private List<CoachAttendance> coachAttendanceList;
 	private List<CoachAttendance> coachAttendanceListOriginal;
-	private List<CoachAttendance> coachAttendanceListSorted;
+	WeakHashMap<View,Integer> mOriginalViewHeightPool = new WeakHashMap<View, Integer>();
 	private ProgressBar progressBar;
 	private boolean bDataLoaded = false;
 
@@ -109,6 +124,8 @@ public class CoachCheckinFragment extends Fragment {
 			coachAttendanceList = session.getCoachAttendance();
 		}
 
+		Collections.sort(coachAttendanceList, new CoachAttComparator());
+
 		coachAttendanceListOriginal = new ArrayList<CoachAttendance>();
 
 		for (int i = 0; i < coachAttendanceList.size(); i++) {
@@ -119,11 +136,14 @@ public class CoachCheckinFragment extends Fragment {
 					coachAttendanceList.get(i).getAttendanceValue());
 
 		}
+
 	}
 
 	private void setAdapter() {
-		coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
-				coachAttendanceList);
+		// coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
+		// coachAttendanceList);
+		coachCheckInAdapter = new CoachStickyHeaderCheckInAdapter(
+				getActivity(), coachAttendanceList);
 	}
 
 	private void setOnClickListeners() {
@@ -133,13 +153,53 @@ public class CoachCheckinFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent i = new Intent(getActivity(), CoachProfileActivity.class);
-				i.putExtra(COACH_EXTRA_TAG,
-						coachCheckInAdapter.getItem(position).getCoach());
+				CoachAttendance coachAtt = coachAttendanceList.get(position);
+				 i.putExtra(COACH_EXTRA_TAG,coachAtt.getCoach().getId());
 				startActivity(i);
 				getActivity().overridePendingTransition(R.anim.right_in,
 						R.anim.left_out);
 			}
 		});
+		
+		lvCoachCheckin.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+			@Override
+			public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+				if (lvCoachCheckin.isHeaderCollapsed(headerId)) {
+					lvCoachCheckin.expand(headerId);
+				} else {
+					lvCoachCheckin.collapse(headerId);
+				}
+			}
+		});
+		
+		lvCoachCheckin.setAnimExecutor(new AnimationExecutor());
+		
+//		lvCoachCheckin.setOnItemLongClickListener(new OnItemLongClickListener() {
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> adapter, View view,
+//					int pos, long id) {
+//				LinearLayout back = (LinearLayout)view.findViewById(R.id.llCoachCheckinBack);
+//				RelativeLayout front = (RelativeLayout)view.findViewById(R.id.rlCoachCheckinFront);
+//				if(front.getAlpha() == 1.0f){
+//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
+//					animFront.setTarget(front);
+//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
+//					animBack.setTarget(back);
+//					animFront.start();
+//					animBack.start();
+//					Log.d("temp", "front");
+//				}else{
+//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
+//					animFront.setTarget(front);
+//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
+//					animBack.setTarget(back);
+//					animBack.start();
+//					animFront.start();
+//					Log.d("temp", "back");
+//				}
+//				return true;
+//			}
+//		});
 	}
 
 	private void setViews(View v) {
@@ -150,7 +210,8 @@ public class CoachCheckinFragment extends Fragment {
 			loadProgressBar();
 		}
 
-		lvCoachCheckin = (ListView) v.findViewById(R.id.lvCoachCheckin);
+		lvCoachCheckin = (ExpandableStickyListHeadersListView) v
+				.findViewById(R.id.lvCoachCheckin);
 		lvCoachCheckin.setAdapter(coachCheckInAdapter);
 		tvCoachAttended = (TextView) v.findViewById(R.id.tvCoachAttended);
 	}
@@ -166,28 +227,6 @@ public class CoachCheckinFragment extends Fragment {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void fetchSessionList() {
-		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
-
-			@Override
-			public void onListResult(List<KeenSession> list) {
-				sessionList.clear();
-				sessionList.addAll(list);
-
-				for (KeenSession fetchedSession : sessionList) {
-					if (fetchedSession.getRemoteId() == session.getRemoteId()) {
-						fetchedSession = session;
-					}
-				}
-			}
-
-			@Override
-			public void onListResultError() {
-			}
-
-		});
 	}
 
 	@Override
@@ -253,8 +292,8 @@ public class CoachCheckinFragment extends Fragment {
 					}
 				}
 
-				coachCheckInAdapter = new CoachCheckInAdapter(getActivity(),
-						tempCoachAttendanceList);
+				coachCheckInAdapter = new CoachStickyHeaderCheckInAdapter(
+						getActivity(), tempCoachAttendanceList);
 				lvCoachCheckin.setAdapter(coachCheckInAdapter);
 
 				return true;
@@ -312,6 +351,7 @@ public class CoachCheckinFragment extends Fragment {
 	public void postAttendance() {
 		for (int i = 0; i < coachAttendanceList.size(); i++) {
 			if (i < coachAttendanceListOriginal.size()) {
+				// need hash key check here to make sure wrong attendances are not posted
 				if (coachAttendanceListOriginal.get(i) != null) {
 					if (coachAttendanceListOriginal.get(i).getAttendanceValue() != coachAttendanceList
 							.get(i).getAttendanceValue()) {
@@ -335,6 +375,8 @@ public class CoachCheckinFragment extends Fragment {
 				coachAttendanceListOriginal.add(addedCoachAttendance);
 			}
 		}
+		Collections.sort(coachAttendanceList, new CoachAttComparator());
+		Collections.sort(coachAttendanceListOriginal, new CoachAttComparator());
 	}
 
 	public void updateRecord(CoachAttendance coach) {
@@ -399,35 +441,74 @@ public class CoachCheckinFragment extends Fragment {
 		addedCoachAttendance.setAttendanceValue(AttendanceValue.REGISTERED);
 		addedCoachAttendance.setCoach(coach);
 		coachAttendanceList.add(addedCoachAttendance);
-		coachCheckInAdapter.notifyDataSetChanged();
+		Collections.sort(coachAttendanceList, new CoachAttComparator());
+		// coachCheckInAdapter.notifyDataSetChanged();
 	}
-	
-	public void SortCoachAttendance()
-	{
-		coachAttendanceListSorted = new ArrayList<CoachAttendance>();
-		
-		AttendanceValue coachAttendanaceVal = AttendanceValue.CALLED_IN_ABSENCE;
-		
-		int k =0;
-		for (int j = 0; j < 4; j++) {
-			if (j == 0) {
-				coachAttendanaceVal = AttendanceValue.REGISTERED;
-			} else if (j == 1) {
-				coachAttendanaceVal = AttendanceValue.ATTENDED;
-			} else if (j == 2) {
-				coachAttendanaceVal = AttendanceValue.NO_CALL_NO_SHOW;
-			} else {
-				coachAttendanaceVal = AttendanceValue.CALLED_IN_ABSENCE;
-			}
-			
-			for (int i = 0; i < coachAttendanceList.size(); i++) {
 
-				if (coachAttendanceList.get(i).getAttendanceValue() == coachAttendanaceVal)
-					coachAttendanceListSorted.set(k, coachAttendanceList.get(i));
-				k++;
-			}
-
-		}
-
+	public void refreshAttendance(){
+		Collections.sort(coachAttendanceList, new CoachAttComparator());
+		coachCheckInAdapter = new CoachStickyHeaderCheckInAdapter(
+				getActivity(), coachAttendanceList);
+		lvCoachCheckin.setAdapter(coachCheckInAdapter);
 	}
+
+    class AnimationExecutor implements ExpandableStickyListHeadersListView.IAnimationExecutor {
+
+        @Override
+        public void executeAnim(final View target, final int animType) {
+            if(ExpandableStickyListHeadersListView.ANIMATION_EXPAND==animType&&target.getVisibility()==View.VISIBLE){
+                return;
+            }
+            if(ExpandableStickyListHeadersListView.ANIMATION_COLLAPSE==animType&&target.getVisibility()!=View.VISIBLE){
+                return;
+            }
+            if(mOriginalViewHeightPool.get(target)==null){
+                mOriginalViewHeightPool.put(target,target.getHeight());
+            }
+            final int viewHeight = mOriginalViewHeightPool.get(target);
+            float animStartY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? 0f : viewHeight;
+            float animEndY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? viewHeight : 0f;
+            final ViewGroup.LayoutParams lp = target.getLayoutParams();
+            
+          ValueAnimator animator = ValueAnimator.ofFloat(animStartY, animEndY);
+          animator.setDuration(300);
+          target.setVisibility(View.VISIBLE);
+          animator.addListener(new AnimatorListener() {
+              @Override
+              public void onAnimationStart(Animator animator) {
+              }
+
+              @Override
+              public void onAnimationEnd(Animator animator) {
+                  if (animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND) {
+                      target.setVisibility(View.VISIBLE);
+                  } else {
+                      target.setVisibility(View.GONE);
+                  }
+                  target.getLayoutParams().height = viewHeight;
+              }
+
+              @Override
+              public void onAnimationCancel(Animator animator) {
+
+              }
+
+              @Override
+              public void onAnimationRepeat(Animator animator) {
+
+              }
+          });
+          
+          animator.addUpdateListener(new AnimatorUpdateListener() {
+              @Override
+              public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                  lp.height = ((Float) valueAnimator.getAnimatedValue()).intValue();
+                  target.setLayoutParams(lp);
+                  target.requestLayout();
+              }
+          });
+          animator.start();
+        }
+    }	
+    
 }

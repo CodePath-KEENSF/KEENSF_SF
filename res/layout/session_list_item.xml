@@ -14,10 +14,10 @@
         android:layout_alignBottom="@+id/rlSessionContainer"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:paddingBottom="4dp"
-        android:paddingLeft="1dp"
-        android:paddingTop="1dp"
-        android:scaleType="fitXY"
+        android:paddingBottom="3dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/ymca" />
 
     <RelativeLayout
@@ -27,10 +27,10 @@
         android:layout_alignBottom="@+id/rlSessionContainer"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:paddingBottom="4dp"
-        android:paddingLeft="1dp"
-        android:paddingTop="1dp"
-        android:background="#60808080" >
+        android:background="#60808080"
+        android:paddingBottom="3dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp" >
     </RelativeLayout>
 
     <RelativeLayout

@@ -3,17 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/tvSessionDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/textview_bottom_border"
-        android:layout_marginTop="25dp"
         android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/selector_session_header_background"
         android:paddingBottom="10dp"
+        android:paddingTop="12dp"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />

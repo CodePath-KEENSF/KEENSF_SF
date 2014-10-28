@@ -21,7 +21,6 @@
         android:id="@+id/llProgressBarSessions"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/ymca"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone" >

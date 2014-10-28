@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ListView
+    <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
         android:id="@+id/lvCoachCheckin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,26 +11,25 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
-    </ListView>
-
         <LinearLayout
-        android:id="@+id/llProgressBarCoachCheckin"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <ProgressBar
-            android:id="@+id/pbCoachCheckin"
-            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/llProgressBarCoachCheckin"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:indeterminate="true" 
-            android:progress="1" >
-        </ProgressBar>
-    </LinearLayout>
-    
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/pbCoachCheckin"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:indeterminate="true"
+                android:progress="1" >
+            </ProgressBar>
+        </LinearLayout>
+    </se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView>
+
 </RelativeLayout>

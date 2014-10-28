@@ -22,7 +22,6 @@ import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
-import org.keenusa.connect.utilities.DebugInfo;
 import org.keenusa.connect.utilities.GetNextDay;
 import org.keenusa.connect.utilities.KeenSessionComparator;
 import org.keenusa.connect.utilities.StringConstants;
@@ -32,11 +31,13 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorInflater;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,8 +47,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -138,6 +141,33 @@ public class SessionsFragment extends Fragment {
 		});
 		
 		expandableStickySessionListView.setAnimExecutor(new AnimationExecutor());
+		
+//		expandableStickySessionListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> adapter, View view,
+//					int pos, long id) {
+//				LinearLayout back = (LinearLayout)view.findViewById(R.id.back);
+//				RelativeLayout front = (RelativeLayout)view.findViewById(R.id.rlSessionList);
+//				if(front.getAlpha() == 1.0f){
+//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
+//					animFront.setTarget(front);
+//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
+//					animBack.setTarget(back);
+//					animFront.start();
+//					animBack.start();
+//					Log.d("temp", "front");
+//				}else{
+//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
+//					animFront.setTarget(front);
+//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
+//					animBack.setTarget(back);
+//					animBack.start();
+//					animFront.start();
+//					Log.d("temp", "back");
+//				}
+//				return true;
+//			}
+//		});
 	}
 
 	private void fetchLists() {

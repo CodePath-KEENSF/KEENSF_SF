@@ -3,6 +3,7 @@ package org.keenusa.connect.adapters;
 import java.util.List;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.activities.AthleteCoachCheckinActivity;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
@@ -10,32 +11,47 @@ import org.keenusa.connect.models.ContactPerson;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.utilities.CheckinMenuActions;
 
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
+public class AthleteStickyHeaderCheckInAdapter extends
+		ArrayAdapter<AthleteAttendance> implements StickyListHeadersAdapter {
 
 	private KeenCivicoreClient client;
+	private List<AthleteAttendance> athleteAttList;
+	private Context context;
 
 	public static class ViewHolder {
 		ImageView ivAthleteProfilePic;
 		TextView tvAthleteName;
+		LinearLayout llAthleteAttendance;
 		TextView tvAthleteAttended;
 		TextView tvAthleteAbsent;
 		TextView tvAthleteCancelled;
 	}
 
-	public AthleteCheckinAdapter(Context context,
-			List<AthleteAttendance> objects) {
-		super(context, 0, objects);
+	public static class HeaderViewHolder {
+		TextView tvAttendanceValue;
+	}
+
+	public AthleteStickyHeaderCheckInAdapter(Context context,
+			List<AthleteAttendance> athleteAttList) {
+		super(context, 0, athleteAttList);
 		client = new KeenCivicoreClient(context);
+		this.athleteAttList = athleteAttList;
+		this.context = context;
 	}
 
 	@Override
@@ -59,10 +75,25 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 					.findViewById(R.id.tvAthleteAbsent);
 			viewHolder.tvAthleteCancelled = (TextView) convertView
 					.findViewById(R.id.tvAthleteCancelled);
+			viewHolder.llAthleteAttendance = (LinearLayout) convertView
+					.findViewById(R.id.llAthleteAttendance);
 
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
+		}
+
+		if (position == 0 && getCount() == 1) {
+			convertView
+					.setBackgroundResource(R.drawable.single_item_list_background);
+		} else if (position == 0 && getCount() > 1) {
+			convertView
+					.setBackgroundResource(R.drawable.list_item_background_first_item);
+		} else if (position == getCount() - 1) {
+			convertView
+					.setBackgroundResource(R.drawable.list_item_background_last_item);
+		} else {
+			convertView.setBackgroundResource(R.drawable.list_item_background);
 		}
 
 		if (athleteAttendance != null) {
@@ -85,6 +116,19 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 
 				viewHolder.tvAthleteName.setText(athleteAttendance.getAthlete()
 						.getFirstLastName());
+			}
+
+			if (CheckinMenuActions.editMode == false) {
+				viewHolder.tvAthleteAttended.setVisibility(View.GONE);
+				viewHolder.tvAthleteAbsent.setVisibility(View.GONE);
+				viewHolder.tvAthleteCancelled.setVisibility(View.GONE);
+				viewHolder.llAthleteAttendance.setVisibility(View.GONE);
+				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewHolder.tvAthleteName
+						.getLayoutParams();
+				params.addRule(RelativeLayout.ALIGN_TOP, 0);
+				viewHolder.tvAthleteName.setGravity(Gravity.CENTER_VERTICAL);
+
+				return convertView;
 			}
 
 			viewHolder.tvAthleteAttended
@@ -162,6 +206,9 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 						.getTag(R.color.tag1);
 				athleteAttendance
 						.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
+
+				((AthleteCoachCheckinActivity) context)
+						.refreshAthleteAttendance();
 			}
 		});
 
@@ -192,6 +239,9 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 						.getTag(R.color.tag1);
 				athleteAttendance
 						.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
+
+				((AthleteCoachCheckinActivity) context)
+						.refreshAthleteAttendance();
 			}
 		});
 
@@ -222,7 +272,63 @@ public class AthleteCheckinAdapter extends ArrayAdapter<AthleteAttendance> {
 						.getTag(R.color.tag1);
 				athleteAttendance
 						.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
+
+				((AthleteCoachCheckinActivity) context)
+						.refreshAthleteAttendance();
 			}
 		});
+	}
+
+	@Override
+	public View getHeaderView(int position, View convertView, ViewGroup parent) {
+		AthleteAttendance athleteAttendance = getItem(position);
+
+		HeaderViewHolder headerViewHolder;
+		if (convertView == null) {
+			convertView = LayoutInflater.from(getContext()).inflate(
+					R.layout.attendance_header, parent, false);
+
+			headerViewHolder = new HeaderViewHolder();
+			headerViewHolder.tvAttendanceValue = (TextView) convertView
+					.findViewById(R.id.tvAttendanceValue);
+
+			convertView.setTag(headerViewHolder);
+		} else {
+			headerViewHolder = (HeaderViewHolder) convertView.getTag();
+		}
+
+		if (athleteAttendance != null) {
+			if (athleteAttendance.getAttendanceValue() == AttendanceValue.ATTENDED) {
+				headerViewHolder.tvAttendanceValue.setText("Attended");
+			} else if (athleteAttendance.getAttendanceValue() == AttendanceValue.CALLED_IN_ABSENCE) {
+				headerViewHolder.tvAttendanceValue.setText("Absent (Called)");
+			} else if (athleteAttendance.getAttendanceValue() == AttendanceValue.NO_CALL_NO_SHOW) {
+				headerViewHolder.tvAttendanceValue.setText("Absent (No Show)");
+			} else {
+				headerViewHolder.tvAttendanceValue.setText("Registered");
+			}
+//			Log.d("temp", "att: " + athleteAttendance);
+//			Log.d("temp", "att: " + headerViewHolder.tvAttendanceValue.getText());
+		}
+		// TODO Auto-generated method stub
+		return convertView;
+	}
+
+	@Override
+	public long getHeaderId(int position) {
+		AthleteAttendance athleteAttendance = getItem(position);
+
+		if (athleteAttendance != null) {
+			if (athleteAttendance.getAttendanceValue() == AttendanceValue.ATTENDED) {
+				return 0;
+			} else if (athleteAttendance.getAttendanceValue() == AttendanceValue.CALLED_IN_ABSENCE) {
+				return 1;
+			} else if (athleteAttendance.getAttendanceValue() == AttendanceValue.NO_CALL_NO_SHOW) {
+				return 2;
+			} else {
+				return 3;
+			}
+		}
+		return 1;
 	}
 }
