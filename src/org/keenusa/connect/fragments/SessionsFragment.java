@@ -31,14 +31,11 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorInflater;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,13 +44,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-
 
 public class SessionsFragment extends Fragment {
 	public static final int NUM_SESSION_FETCHES = 7;
@@ -76,14 +70,14 @@ public class SessionsFragment extends Fragment {
 	private HashMap<Long, Athlete> sessionAthleteIdMap = new HashMap<Long, Athlete>();
 	private HashMap<String, Coach> sessionCoachMap = new HashMap<String, Coach>();
 
-	private LinearLayout llProgressBar;
+	private LinearLayout llLoadingSessionsIndicator;
 	private boolean bDataLoaded = false;
 	private ProgressBar progressBar;
 
 	// Sticky Header List View
 	private ExpandableStickyListHeadersListView expandableStickySessionListView;
 	private StickyListHeadersAdapter expandableStickySessionListAdapter;
-	WeakHashMap<View,Integer> mOriginalViewHeightPool = new WeakHashMap<View, Integer>();
+	WeakHashMap<View, Integer> mOriginalViewHeightPool = new WeakHashMap<View, Integer>();
 
 	// Creates a new fragment with given arguments
 	public static SessionsFragment newInstance() {
@@ -121,7 +115,7 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void setOnClickListeners() {
-		
+
 		expandableStickySessionListView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
@@ -139,35 +133,35 @@ public class SessionsFragment extends Fragment {
 				}
 			}
 		});
-		
+
 		expandableStickySessionListView.setAnimExecutor(new AnimationExecutor());
-		
-//		expandableStickySessionListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-//			@Override
-//			public boolean onItemLongClick(AdapterView<?> adapter, View view,
-//					int pos, long id) {
-//				LinearLayout back = (LinearLayout)view.findViewById(R.id.back);
-//				RelativeLayout front = (RelativeLayout)view.findViewById(R.id.rlSessionList);
-//				if(front.getAlpha() == 1.0f){
-//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
-//					animFront.setTarget(front);
-//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
-//					animBack.setTarget(back);
-//					animFront.start();
-//					animBack.start();
-//					Log.d("temp", "front");
-//				}else{
-//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
-//					animFront.setTarget(front);
-//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
-//					animBack.setTarget(back);
-//					animBack.start();
-//					animFront.start();
-//					Log.d("temp", "back");
-//				}
-//				return true;
-//			}
-//		});
+
+		//		expandableStickySessionListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		//			@Override
+		//			public boolean onItemLongClick(AdapterView<?> adapter, View view,
+		//					int pos, long id) {
+		//				LinearLayout back = (LinearLayout)view.findViewById(R.id.back);
+		//				RelativeLayout front = (RelativeLayout)view.findViewById(R.id.rlSessionList);
+		//				if(front.getAlpha() == 1.0f){
+		//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
+		//					animFront.setTarget(front);
+		//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
+		//					animBack.setTarget(back);
+		//					animFront.start();
+		//					animBack.start();
+		//					Log.d("temp", "front");
+		//				}else{
+		//					Animator animFront = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_in);
+		//					animFront.setTarget(front);
+		//					Animator animBack = AnimatorInflater.loadAnimator(getActivity(), R.animator.card_flip_left_out);
+		//					animBack.setTarget(back);
+		//					animBack.start();
+		//					animFront.start();
+		//					Log.d("temp", "back");
+		//				}
+		//				return true;
+		//			}
+		//		});
 	}
 
 	private void fetchLists() {
@@ -351,15 +345,15 @@ public class SessionsFragment extends Fragment {
 		connectSessionWithAthleteAttendance();
 
 		Collections.sort(sessionList, Collections.reverseOrder(new KeenSessionComparator()));
-		
+
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
-		
+
 		setSearchListPosition(sessionList);
-//		setSessionListToCurrentDate();
-		
-		if (llProgressBar != null) {
-			llProgressBar.setVisibility(View.GONE);
+		//		setSessionListToCurrentDate();
+
+		if (llLoadingSessionsIndicator != null) {
+			llLoadingSessionsIndicator.setVisibility(View.GONE);
 		}
 	}
 
@@ -420,24 +414,24 @@ public class SessionsFragment extends Fragment {
 				athleteatt.setAthlete(athlete);
 			}
 		}
-		
+
 	}
 
-	private void formatAthleteAttendanceNames(){
-		for(AthleteAttendance athleteatt : athleteAttendanceList){
-			String LastName="";
-			String FirstName="";
+	private void formatAthleteAttendanceNames() {
+		for (AthleteAttendance athleteatt : athleteAttendanceList) {
+			String LastName = "";
+			String FirstName = "";
 			String fullName;
 			String athleteName = athleteatt.getAttendedAthleteFullName();
 			String[] nameWord = athleteName.split(",");
 
-			if(nameWord[0] != null){
+			if (nameWord[0] != null) {
 				LastName = nameWord[0];
 			}
 
-			if(nameWord[1] != null){
+			if (nameWord[1] != null) {
 				FirstName = nameWord[1];
-				FirstName = FirstName.substring(FirstName.indexOf(' ')+1, FirstName.length());
+				FirstName = FirstName.substring(FirstName.indexOf(' ') + 1, FirstName.length());
 				FirstName = FirstName + " ";
 			}
 
@@ -445,23 +439,23 @@ public class SessionsFragment extends Fragment {
 			athleteatt.setAthleteFullName(fullName);
 		}
 	}
-	
+
 	private void openSessionDetails(int pos) {
-		
+
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
 		i.putExtra("session", sessionList.get(pos));
 		startActivity(i);
 		getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
-	
+
 	private void setAdapter() {
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 	}
 
 	private void setViews(View v) {
-		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarSessions);
+		llLoadingSessionsIndicator = (LinearLayout) v.findViewById(R.id.llLoadingSessionsIndicator);
 		if (!bDataLoaded) {
-			llProgressBar.setVisibility(View.VISIBLE);
+			llLoadingSessionsIndicator.setVisibility(View.VISIBLE);
 			loadProgressBar();
 		}
 
@@ -470,10 +464,10 @@ public class SessionsFragment extends Fragment {
 	}
 
 	private void loadProgressBar() {
-//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
 		try {
 			for (int i = 1; i <= 10; i++) {
-				progressBar.setProgress(i*10);
+				progressBar.setProgress(i * 10);
 				Thread.sleep(500);
 			}
 		} catch (Exception e) {
@@ -658,14 +652,14 @@ public class SessionsFragment extends Fragment {
 	}
 
 	public void updateSession(KeenSession newSession) {
-		KeenSession oldSession = (KeenSession)sessionMap.get(newSession.getRemoteId());
+		KeenSession oldSession = (KeenSession) sessionMap.get(newSession.getRemoteId());
 		oldSession.setAthleteAttendance(newSession.getAthleteAttendance());
 		oldSession.setCoachAttendance(newSession.getCoachAttendance());
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
 
-		for (int i=0;i<sessionList.size();i++){
-			if(sessionList.get(i).getRemoteId() == oldSession.getRemoteId()){
+		for (int i = 0; i < sessionList.size(); i++) {
+			if (sessionList.get(i).getRemoteId() == oldSession.getRemoteId()) {
 				expandableStickySessionListView.setSelection(i);
 				break;
 			}
@@ -680,66 +674,64 @@ public class SessionsFragment extends Fragment {
 	//		expandableStickySessionListAdapter.addAll(sessions);
 
 	//	}
-	
-    //animation executor
-    class AnimationExecutor implements ExpandableStickyListHeadersListView.IAnimationExecutor {
 
-        @Override
-        public void executeAnim(final View target, final int animType) {
-            if(ExpandableStickyListHeadersListView.ANIMATION_EXPAND==animType&&target.getVisibility()==View.VISIBLE){
-                return;
-            }
-            if(ExpandableStickyListHeadersListView.ANIMATION_COLLAPSE==animType&&target.getVisibility()!=View.VISIBLE){
-                return;
-            }
-            if(mOriginalViewHeightPool.get(target)==null){
-                mOriginalViewHeightPool.put(target,target.getHeight());
-            }
-            final int viewHeight = mOriginalViewHeightPool.get(target);
-            float animStartY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? 0f : viewHeight;
-            float animEndY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? viewHeight : 0f;
-            final ViewGroup.LayoutParams lp = target.getLayoutParams();
-            
-          ValueAnimator animator = ValueAnimator.ofFloat(animStartY, animEndY);
-          animator.setDuration(300);
-          target.setVisibility(View.VISIBLE);
-          animator.addListener(new AnimatorListener() {
-              @Override
-              public void onAnimationStart(Animator animator) {
-              }
+	//animation executor
+	class AnimationExecutor implements ExpandableStickyListHeadersListView.IAnimationExecutor {
 
-              @Override
-              public void onAnimationEnd(Animator animator) {
-                  if (animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND) {
-                      target.setVisibility(View.VISIBLE);
-                  } else {
-                      target.setVisibility(View.GONE);
-                  }
-                  target.getLayoutParams().height = viewHeight;
-              }
+		@Override
+		public void executeAnim(final View target, final int animType) {
+			if (ExpandableStickyListHeadersListView.ANIMATION_EXPAND == animType && target.getVisibility() == View.VISIBLE) {
+				return;
+			}
+			if (ExpandableStickyListHeadersListView.ANIMATION_COLLAPSE == animType && target.getVisibility() != View.VISIBLE) {
+				return;
+			}
+			if (mOriginalViewHeightPool.get(target) == null) {
+				mOriginalViewHeightPool.put(target, target.getHeight());
+			}
+			final int viewHeight = mOriginalViewHeightPool.get(target);
+			float animStartY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? 0f : viewHeight;
+			float animEndY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? viewHeight : 0f;
+			final ViewGroup.LayoutParams lp = target.getLayoutParams();
 
-              @Override
-              public void onAnimationCancel(Animator animator) {
+			ValueAnimator animator = ValueAnimator.ofFloat(animStartY, animEndY);
+			animator.setDuration(300);
+			target.setVisibility(View.VISIBLE);
+			animator.addListener(new AnimatorListener() {
+				@Override
+				public void onAnimationStart(Animator animator) {
+				}
 
-              }
+				@Override
+				public void onAnimationEnd(Animator animator) {
+					if (animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND) {
+						target.setVisibility(View.VISIBLE);
+					} else {
+						target.setVisibility(View.GONE);
+					}
+					target.getLayoutParams().height = viewHeight;
+				}
 
-              @Override
-              public void onAnimationRepeat(Animator animator) {
+				@Override
+				public void onAnimationCancel(Animator animator) {
 
-              }
-          });
-          
-          animator.addUpdateListener(new AnimatorUpdateListener() {
-              @Override
-              public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                  lp.height = ((Float) valueAnimator.getAnimatedValue()).intValue();
-                  target.setLayoutParams(lp);
-                  target.requestLayout();
-              }
-          });
-          animator.start();
-        }
-    }	
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator animator) {
+
+				}
+			});
+
+			animator.addUpdateListener(new AnimatorUpdateListener() {
+				@Override
+				public void onAnimationUpdate(ValueAnimator valueAnimator) {
+					lp.height = ((Float) valueAnimator.getAnimatedValue()).intValue();
+					target.setLayoutParams(lp);
+					target.requestLayout();
+				}
+			});
+			animator.start();
+		}
+	}
 }
-
-

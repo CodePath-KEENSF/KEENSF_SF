@@ -13,41 +13,33 @@ import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.textservice.SpellCheckerService.Session;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 
-public class SessionAthleteCoachListActivity extends FragmentActivity implements TabListener{
+public class SessionAthleteCoachListActivity extends FragmentActivity implements TabListener {
 
 	private FragmentPagerAdapter adapterViewPager;
 	private ViewPager vpPager;
-	
+
 	private ActionBar actionBar;
-	
+
 	private SessionsFragment sessionsFragment;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_session_athlete_coach_list);
-		
+
 		setupFragmentPager();
 		setupTabs();
 	}
 
-//	close the app on back button press?	
-//	@Override
-//	public void onBackPressed() {
-//		finish();
-//	}
-
 	private void setupTabs() {
-		
+
 		Tab tabFirst;
 		Tab tabSecond;
 		Tab tabThird;
@@ -62,12 +54,12 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		tabFirst.setTabListener(this);
 		actionBar.addTab(tabFirst);
 		actionBar.selectTab(tabFirst);
-		
+
 		tabSecond = actionBar.newTab();
 		tabSecond.setText(getResources().getString(R.string.title_activity_athlete_list));
 		tabSecond.setTabListener(this);
 		actionBar.addTab(tabSecond);
-		
+
 		tabSecond = actionBar.newTab();
 		tabSecond.setText(getResources().getString(R.string.title_activity_coach_list));
 		tabSecond.setTabListener(this);
@@ -86,29 +78,29 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 	@Override
 	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void setupFragmentPager() {
 		vpPager = (ViewPager) findViewById(R.id.vpPager);
 		adapterViewPager = new ListsPagerAdapter(getSupportFragmentManager());
 		vpPager.setAdapter(adapterViewPager);
-		
+
 		// Attach the page change listener inside the activity
 		vpPager.setOnPageChangeListener(new OnPageChangeListener() {
-			
+
 			// This method will be invoked when a new page becomes selected.
 			@Override
 			public void onPageSelected(int position) {
 				actionBar.setSelectedNavigationItem(position);
 			}
-			
+
 			// This method will be invoked when the current page is scrolled
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 				// Code goes here
 			}
-			
+
 			// Called when the scroll state changes: 
 			// SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
 			@Override
@@ -128,7 +120,7 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 		@Override
 		public int getCount() {
 			return 3;
-		} 
+		}
 
 		// Returns the fragment to display for that page
 		@Override
@@ -152,24 +144,16 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 			return "Page " + position;
 		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == IntentCode.RESULT_OK
-				&& requestCode == IntentCode.REQUEST_CODE) {
-			KeenSession session = (KeenSession)data.getSerializableExtra("session");
+		if (resultCode == IntentCode.RESULT_OK && requestCode == IntentCode.REQUEST_CODE) {
+			KeenSession session = (KeenSession) data.getSerializableExtra("session");
 			sessionsFragment.updateSession(session);
-			
-		} else if (resultCode == IntentCode.CHECK_IN_FAIL
-				&& requestCode == IntentCode.REQUEST_CODE) {
+
+		} else if (resultCode == IntentCode.CHECK_IN_FAIL && requestCode == IntentCode.REQUEST_CODE) {
 			DebugInfo.showToast(this, "check-in failed");
 		}
 
-	}
-	
-	@Override
-	public void onBackPressed() {
-//		finish();
-//		overridePendingTransition(R.anim.left_in, R.anim.right_out);
 	}
 }

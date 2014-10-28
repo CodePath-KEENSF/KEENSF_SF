@@ -31,13 +31,11 @@ public class LoginActivity extends Activity {
 		tvProgressUpdates = (TextView) findViewById(R.id.tvProgressUpdates);
 		btnLogin = (Button) findViewById(R.id.btnApiLogin);
 
+		etUserName.requestFocus();
 		btnLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				etUserName.setEnabled(false);
-				etPassword.setEnabled(false);
-				btnLogin.setEnabled(false);
-				closeInputFromWindow();
+				switchUIToLoginActivatedState();
 				new RemoteDataLoader(LoginActivity.this, new DataLoaderResultListener() {
 
 					@Override
@@ -52,6 +50,7 @@ public class LoginActivity extends Activity {
 
 						});
 						openSessionAthleteCoachList();
+						finish();
 
 					}
 
@@ -75,7 +74,18 @@ public class LoginActivity extends Activity {
 					}
 				}).start();
 			}
+
 		});
+
+	}
+
+	private void switchUIToLoginActivatedState() {
+		etUserName.clearFocus();
+		etPassword.clearFocus();
+		etUserName.setEnabled(false);
+		etPassword.setEnabled(false);
+		btnLogin.setEnabled(false);
+		closeInputFromWindow();
 
 	}
 
