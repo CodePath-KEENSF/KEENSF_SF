@@ -122,7 +122,6 @@
                 android:layout_height="80dip"
                 android:layout_centerHorizontal="true"
                 android:indeterminate="false"
-                android:progress="30"
                 android:progressDrawable="@drawable/progressbar" />
 
             <TextView
@@ -133,7 +132,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarAthlete"
                 android:layout_alignRight="@id/cicularProgressBarAthlete"
                 android:layout_alignTop="@id/cicularProgressBarAthlete"
-                android:textColor="@color/secondary_theme_color"
+                android:textColor="@color/main_theme_color"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:text="progress" />
@@ -145,7 +144,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarAthlete"
                 android:layout_alignRight="@id/cicularProgressBarAthlete"
                 android:layout_below="@id/cicularProgressBarAthlete"
-                android:textColor="@color/secondary_theme_color"
+                android:textColor="@color/main_theme_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:textStyle="bold"
@@ -177,7 +176,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarCoach"
                 android:layout_alignRight="@id/cicularProgressBarCoach"
                 android:layout_alignTop="@+id/cicularProgressBarCoach"
-                android:textColor="@color/secondary_theme_color"
+                android:textColor="@color/main_theme_color"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:text="progress" />
@@ -189,7 +188,7 @@
                 android:layout_alignLeft="@id/cicularProgressBarCoach"
                 android:layout_alignRight="@id/cicularProgressBarCoach"
                 android:layout_below="@id/cicularProgressBarCoach"
-                android:textColor="@color/secondary_theme_color"
+                android:textColor="@color/main_theme_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:textStyle="bold"

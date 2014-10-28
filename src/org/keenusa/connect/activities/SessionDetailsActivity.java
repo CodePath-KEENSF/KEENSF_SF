@@ -82,11 +82,25 @@ public class SessionDetailsActivity extends FragmentActivity {
 			tvProgramTimes.setVisibility(View.GONE);
 		}
 
-		_progressBarCoach.setProgress(session.getRegisteredCoachCount());
-		tvAttCoach.setText(session.getRegisteredCoachCount() + "");
+//		_progressBarCoach.setProgress(session.getRegisteredCoachCount());
+//		tvAttCoach.setText(session.getRegisteredCoachCount() + "");
+//		if (session.getCheckedInCoachCount() != 0 && (session.getCheckedInCoachCount() == session.getRegisteredCoachCount())) {
+		if (session.getCheckedInCoachCount() == session.getRegisteredCoachCount()) {
+			_progressBarCoach.setProgress(100);
+		}
+		_progressBarCoach.setProgress(session.getCheckedInCoachCount()/session.getRegisteredCoachCount());
+		_progressBarCoach.setMax(session.getRegisteredCoachCount());
+		tvAttCoach.setText(session.getCheckedInCoachCount() + " / " + session.getRegisteredCoachCount());
 
-		_progressBarAthlete.setProgress(session.getRegisteredAthleteCount());
-		tvAttAthlete.setText(session.getRegisteredAthleteCount() + "");
+//		_progressBarAthlete.setProgress(session.getRegisteredAthleteCount());
+//		tvAttAthlete.setText(session.getRegisteredAthleteCount() + "");
+//		if (session.getCheckedInAthleteCount() != 0 && (session.getCheckedInAthleteCount() == session.getRegisteredAthleteCount())) {
+		if (session.getCheckedInAthleteCount() == session.getRegisteredAthleteCount()) {
+			_progressBarCoach.setProgress(100);
+		}
+		_progressBarAthlete.setProgress(session.getCheckedInAthleteCount()/session.getRegisteredAthleteCount());
+		_progressBarAthlete.setMax(session.getRegisteredAthleteCount());
+		tvAttAthlete.setText(session.getCheckedInAthleteCount() + " / " + session.getRegisteredAthleteCount());
 
 	}
 
