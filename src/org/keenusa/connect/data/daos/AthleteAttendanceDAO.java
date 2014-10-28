@@ -38,7 +38,7 @@ public class AthleteAttendanceDAO {
 	String[] simpleColumnNames = { AthleteAttendanceTable.ID_COL_NAME, AthleteAttendanceTable.REMOTE_ID_COL_NAME,
 			AthleteAttendanceTable.REMOTE_CREATED_COL_NAME, AthleteAttendanceTable.REMOTE_UPDATED_COL_NAME };
 
-	String[] columnNames = { AthleteAttendanceTable.ID_COL_NAME, AthleteAttendanceTable.REMOTE_ID_COL_NAME,
+	String[] columnNames = { AthleteAttendanceTable.TABLE_NAME + "." + AthleteAttendanceTable.ID_COL_NAME, AthleteAttendanceTable.REMOTE_ID_COL_NAME,
 			AthleteAttendanceTable.REMOTE_CREATED_COL_NAME, AthleteAttendanceTable.REMOTE_UPDATED_COL_NAME,
 			AthleteAttendanceTable.SESSION_ID_COL_NAME, AthleteAttendanceTable.ATHLETE_ID_COL_NAME, AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME,
 			AthleteTable.REMOTE_ID_COL_NAME, AthleteTable.REMOTE_CREATED_COL_NAME, AthleteTable.REMOTE_UPDATED_COL_NAME,

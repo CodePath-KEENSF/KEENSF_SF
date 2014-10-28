@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
 import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreSessionOpenToRegStringParser;
 import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
-import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
 import org.keenusa.connect.models.remote.RemoteSession;
 
 public class KeenSession implements Serializable {
@@ -48,11 +47,8 @@ public class KeenSession implements Serializable {
 		super();
 	}
 
-	public KeenSession(long remoteId, DateTime date, KeenProgram program,
-			boolean openToPublicRegistration, int numberOfNewCoachesNeeded,
-			int numberOfReturningCoachesNeeded,
-			List<AthleteAttendance> athleteAttendance,
-			List<CoachAttendance> coachAttendance) {
+	public KeenSession(long remoteId, DateTime date, KeenProgram program, boolean openToPublicRegistration, int numberOfNewCoachesNeeded,
+			int numberOfReturningCoachesNeeded, List<AthleteAttendance> athleteAttendance, List<CoachAttendance> coachAttendance) {
 		super();
 		this.remoteId = remoteId;
 		this.date = date;
@@ -69,46 +65,35 @@ public class KeenSession implements Serializable {
 		if (remoteSession != null) {
 			keenSession = new KeenSession();
 			keenSession.setRemoteId(Long.valueOf(remoteSession.getRemoteId()));
-			keenSession.setDate(CivicoreDateStringParser
-					.parseDate(remoteSession.getAttendanceDate()));
+			keenSession.setDate(CivicoreDateStringParser.parseDate(remoteSession.getAttendanceDate()));
 			KeenProgram program = new KeenProgram();
 			program.setRemoteId(Long.valueOf(remoteSession.getClassesId()));
 			program.setName(remoteSession.getClassesName());
 			keenSession.setProgram(program);
 			if (remoteSession.getAthletes() != null) {
-				keenSession.setNumberOfAthletesRegistered(Integer
-						.valueOf(remoteSession.getAthletes()));
+				keenSession.setNumberOfAthletesRegistered(Integer.valueOf(remoteSession.getAthletes()));
 			}
 			if (remoteSession.getCoachesAttended() != null) {
-				keenSession.setNumberOfCoachesAttended(Integer
-						.valueOf(remoteSession.getCoachesAttended()));
+				keenSession.setNumberOfCoachesAttended(Integer.valueOf(remoteSession.getCoachesAttended()));
 			}
 			if (remoteSession.getCoachesRegistered() != null) {
-				keenSession.setNumberOfCoachesRegistered(Integer
-						.valueOf(remoteSession.getCoachesRegistered()));
+				keenSession.setNumberOfCoachesRegistered(Integer.valueOf(remoteSession.getCoachesRegistered()));
 			}
 			if (remoteSession.getNewCoachesNeeded() != null) {
-				keenSession.setNumberOfNewCoachesNeeded(Integer
-						.valueOf(remoteSession.getNewCoachesNeeded()));
+				keenSession.setNumberOfNewCoachesNeeded(Integer.valueOf(remoteSession.getNewCoachesNeeded()));
 			}
 			if (remoteSession.getReturningCoachesNeeded() != null) {
-				keenSession.setNumberOfReturningCoachesNeeded(Integer
-						.valueOf(remoteSession.getReturningCoachesNeeded()));
+				keenSession.setNumberOfReturningCoachesNeeded(Integer.valueOf(remoteSession.getReturningCoachesNeeded()));
 			}
-			keenSession.setRemoteCreateTimestamp(CivicoreTimestampStringParser
-					.parseTimestamp(remoteSession.getCreated()).getMillis());
-			keenSession.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser
-					.parseTimestamp(remoteSession.getUpdated()).getMillis());
-			keenSession
-					.setOpenToPublicRegistration(CivicoreSessionOpenToRegStringParser
-							.parseSessionOpenToRegString(remoteSession
-									.getOpenToPublicRegistration()));
+			keenSession.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteSession.getCreated()).getMillis());
+			keenSession.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteSession.getUpdated()).getMillis());
+			keenSession.setOpenToPublicRegistration(CivicoreSessionOpenToRegStringParser.parseSessionOpenToRegString(remoteSession
+					.getOpenToPublicRegistration()));
 		}
 		return keenSession;
 	}
 
-	public static List<KeenSession> fromRemoteSessionList(
-			List<RemoteSession> remoteSessionList) {
+	public static List<KeenSession> fromRemoteSessionList(List<RemoteSession> remoteSessionList) {
 		List<KeenSession> sessions = null;
 		if (remoteSessionList != null) {
 			sessions = new ArrayList<KeenSession>(remoteSessionList.size());
@@ -125,8 +110,8 @@ public class KeenSession implements Serializable {
 
 	public int getRegisteredAthleteCount() {
 		int registeredAthleteCount = 0;
-		if (program != null && program.getEnrolledAthletes() != null) {
-			registeredAthleteCount = program.getEnrolledAthletes().size();
+		if (program != null && program.getProgramEnrolments() != null) {
+			registeredAthleteCount = program.getProgramEnrolments().size();
 		} else {
 			registeredAthleteCount = getNumberOfAthletesRegistered();
 		}
@@ -242,22 +227,22 @@ public class KeenSession implements Serializable {
 		}
 
 		this.athleteAttendance.add(athleteAttendance);
-		
-//		if (this.athleteAttendance == null) {
-//			this.athleteAttendance = new ArrayList<AthleteAttendance>();
-//			this.athleteAttendance.add(athleteAttendance);
-//			return;
-//		}
-//
-//		int i = 0;
-//		for (AthleteAttendance athleteAtt : this.athleteAttendance) {
-//			if (athleteAtt.getAttendanceValue() == athleteAttendance
-//					.getAttendanceValue()) {
-//				this.athleteAttendance.add(i, athleteAttendance);
-//				return;
-//			}
-//			i++;
-//		}
+
+		//		if (this.athleteAttendance == null) {
+		//			this.athleteAttendance = new ArrayList<AthleteAttendance>();
+		//			this.athleteAttendance.add(athleteAttendance);
+		//			return;
+		//		}
+		//
+		//		int i = 0;
+		//		for (AthleteAttendance athleteAtt : this.athleteAttendance) {
+		//			if (athleteAtt.getAttendanceValue() == athleteAttendance
+		//					.getAttendanceValue()) {
+		//				this.athleteAttendance.add(i, athleteAttendance);
+		//				return;
+		//			}
+		//			i++;
+		//		}
 	}
 
 	public List<CoachAttendance> getCoachAttendance() {
@@ -273,8 +258,7 @@ public class KeenSession implements Serializable {
 
 		int i = 0;
 		for (CoachAttendance coachAtt : this.coachAttendance) {
-			if (coachAtt.getAttendanceValue() == coachAttendance
-					.getAttendanceValue()) {
+			if (coachAtt.getAttendanceValue() == coachAttendance.getAttendanceValue()) {
 				this.coachAttendance.add(i, coachAttendance);
 				return;
 			}
@@ -290,8 +274,7 @@ public class KeenSession implements Serializable {
 		return numberOfReturningCoachesNeeded;
 	}
 
-	public void setNumberOfReturningCoachesNeeded(
-			int numberOfReturningCoachesNeeded) {
+	public void setNumberOfReturningCoachesNeeded(int numberOfReturningCoachesNeeded) {
 		this.numberOfReturningCoachesNeeded = numberOfReturningCoachesNeeded;
 	}
 

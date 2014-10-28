@@ -12,6 +12,7 @@ import org.keenusa.connect.adapters.AthleteStickyHeaderCheckInAdapter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
+import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
@@ -68,7 +69,7 @@ public class AthleteCheckinFragment extends Fragment {
 	private List<AthleteAttendance> athleteAttendanceList;
 	private List<AthleteAttendance> athleteAttendanceListOriginal;
 	private HashMap<String, Athlete> AthleteAttendanceMap = new HashMap<String, Athlete>();
-	WeakHashMap<View,Integer> mOriginalViewHeightPool = new WeakHashMap<View, Integer>();
+	WeakHashMap<View, Integer> mOriginalViewHeightPool = new WeakHashMap<View, Integer>();
 	private ProgressBar progressBar;
 	private boolean bDataLoaded = false;
 
@@ -76,8 +77,7 @@ public class AthleteCheckinFragment extends Fragment {
 	KeenCivicoreClient client;
 
 	// Creates a new fragment with given arguments
-	public static AthleteCheckinFragment newInstance(KeenSession session,
-			KeenCivicoreClient client) {
+	public static AthleteCheckinFragment newInstance(KeenSession session, KeenCivicoreClient client) {
 		AthleteCheckinFragment athleteCheckinFragment = new AthleteCheckinFragment();
 		athleteCheckinFragment.session = session;
 		athleteCheckinFragment.client = client;
@@ -96,10 +96,8 @@ public class AthleteCheckinFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_athlete_checkin, container,
-				false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.fragment_athlete_checkin, container, false);
 
 		setViews(v);
 
@@ -129,23 +127,21 @@ public class AthleteCheckinFragment extends Fragment {
 
 			athleteAttendanceListOriginal.add(new AthleteAttendance());
 
-			athleteAttendanceListOriginal.get(i).setAttendanceValue(
-					athleteAttendanceList.get(i).getAttendanceValue());
+			athleteAttendanceListOriginal.get(i).setAttendanceValue(athleteAttendanceList.get(i).getAttendanceValue());
 
 		}
 
 		// Add existing athletes in hash map
 		for (AthleteAttendance athleteAttendance : athleteAttendanceList) {
-			AthleteAttendanceMap.put(athleteAttendance.getAthlete()
-					.getFirstLastName(), athleteAttendance.getAthlete());
+			AthleteAttendanceMap.put(athleteAttendance.getAthlete().getFirstLastName(), athleteAttendance.getAthlete());
 		}
 
-		for (Athlete athlete : session.getProgram().getEnrolledAthletes()) {
-			if (AthleteAttendanceMap.get(athlete.getFirstLastName()) == null) {
+		for (KeenProgramEnrolment enrolment : session.getProgram().getProgramEnrolments()) {
+
+			if (AthleteAttendanceMap.get(enrolment.getAthlete().getFirstLastName()) == null) {
 				athleteAttendanceList.add(new AthleteAttendance());
-				AthleteAttendance athleteAttendance = athleteAttendanceList
-						.get(athleteAttendanceList.size() - 1);
-				athleteAttendance.setAthlete(athlete);
+				AthleteAttendance athleteAttendance = athleteAttendanceList.get(athleteAttendanceList.size() - 1);
+				athleteAttendance.setAthlete(enrolment.getAthlete());
 				athleteAttendance.setRemoteSessionId(session.getRemoteId());
 				athleteAttendance.setAttendanceValue(AttendanceValue.REGISTERED);
 			}
@@ -158,8 +154,7 @@ public class AthleteCheckinFragment extends Fragment {
 		// athleteCheckInAdapter = new AthleteCheckinAdapter(getActivity(),
 		// athleteAttendanceList);
 
-		athleteCheckInAdapter = new AthleteStickyHeaderCheckInAdapter(
-				getActivity(), athleteAttendanceList);
+		athleteCheckInAdapter = new AthleteStickyHeaderCheckInAdapter(getActivity(), athleteAttendanceList);
 
 	}
 
@@ -167,19 +162,14 @@ public class AthleteCheckinFragment extends Fragment {
 		lvAthleteCheckin.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Intent i = new Intent(getActivity(),
-						AthleteProfileActivity.class);
-				i.putExtra(ATHLETE_EXTRA_TAG,
-						athleteAttendanceList.get(position).getAthlete()
-								.getId());
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent i = new Intent(getActivity(), AthleteProfileActivity.class);
+				i.putExtra(ATHLETE_EXTRA_TAG, athleteAttendanceList.get(position).getAthlete().getId());
 				startActivity(i);
-				getActivity().overridePendingTransition(R.anim.right_in,
-						R.anim.left_out);
+				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
-		
+
 		lvAthleteCheckin.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
 			@Override
 			public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
@@ -190,20 +180,18 @@ public class AthleteCheckinFragment extends Fragment {
 				}
 			}
 		});
-		
+
 		lvAthleteCheckin.setAnimExecutor(new AnimationExecutor());
 	}
 
 	private void setViews(View v) {
-		llProgressBarAthleteCheckin = (LinearLayout) v
-				.findViewById(R.id.llProgressBarAthleteCheckin);
+		llProgressBarAthleteCheckin = (LinearLayout) v.findViewById(R.id.llProgressBarAthleteCheckin);
 		if (!bDataLoaded) {
 			llProgressBarAthleteCheckin.setVisibility(View.VISIBLE);
 			loadProgressBar();
 		}
 
-		lvAthleteCheckin = (ExpandableStickyListHeadersListView) v
-				.findViewById(R.id.lvAthleteCheckin);
+		lvAthleteCheckin = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvAthleteCheckin);
 		lvAthleteCheckin.setAdapter(athleteCheckInAdapter);
 		tvAthleteAttended = (TextView) v.findViewById(R.id.tvAthleteAttended);
 	}
@@ -256,8 +244,7 @@ public class AthleteCheckinFragment extends Fragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.athlete_checkin, menu);
 
-		MenuItem searchItem = menu
-				.findItem(R.id.action_search_athletees_checkin);
+		MenuItem searchItem = menu.findItem(R.id.action_search_athletees_checkin);
 		dummySearchString = StringConstants.DUMMY_SEARCH_STRING;
 		searchView = (SearchView) searchItem.getActionView();
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
@@ -283,23 +270,18 @@ public class AthleteCheckinFragment extends Fragment {
 				// Create the new arraylist for each search character
 				for (AthleteAttendance athleteAttendance : athleteAttendanceList) {
 
-					String fullName = athleteAttendance.getAthlete()
-							.getFirstLastName();
+					String fullName = athleteAttendance.getAthlete().getFirstLastName();
 
-					if (searchTextlength <= athleteAttendance.getAthlete()
-							.getFirstName().length()
-							|| searchTextlength <= athleteAttendance
-									.getAthlete().getLastName().length()) {
+					if (searchTextlength <= athleteAttendance.getAthlete().getFirstName().length()
+							|| searchTextlength <= athleteAttendance.getAthlete().getLastName().length()) {
 
-						if (fullName.toLowerCase().contains(
-								searchText.toLowerCase())) {
+						if (fullName.toLowerCase().contains(searchText.toLowerCase())) {
 							tempAthleteAttendanceList.add(athleteAttendance);
 						}
 					}
 				}
 
-				athleteCheckInAdapter = new AthleteStickyHeaderCheckInAdapter(
-						getActivity(), tempAthleteAttendanceList);
+				athleteCheckInAdapter = new AthleteStickyHeaderCheckInAdapter(getActivity(), tempAthleteAttendanceList);
 				lvAthleteCheckin.setAdapter(athleteCheckInAdapter);
 
 				return true;
@@ -328,55 +310,40 @@ public class AthleteCheckinFragment extends Fragment {
 		athleteAttendanceListOriginal = new ArrayList<AthleteAttendance>();
 		for (int i = 0; i < athleteAttendanceList.size(); i++) {
 			athleteAttendanceListOriginal.add(new AthleteAttendance());
-			athleteAttendanceListOriginal.get(i).setAttendanceValue(
-					AthleteAttendance.AttendanceValue.ATTENDED);
+			athleteAttendanceListOriginal.get(i).setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
 			// TODO - Update TextView on UI to show all Athletes are set as
 			// "ATTENDED"
 			// tvAthleteAttended.setText(athleteAttendanceListOriginal.get(i).setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED));
 			Toast.makeText(
 					getActivity(),
-					athleteAttendanceList.get(i).getAttendedAthleteFullName()
-							+ " has set as "
-							+ athleteAttendanceListOriginal.get(i)
-									.getAttendanceValue(), Toast.LENGTH_LONG)
-					.show();
+					athleteAttendanceList.get(i).getAttendedAthleteFullName() + " has set as "
+							+ athleteAttendanceListOriginal.get(i).getAttendanceValue(), Toast.LENGTH_LONG).show();
 		}
 	}
 
 	private void showMassMessageDialog() {
-		DialogFragment newFragment = new MassMessageFragment(session
-				.getProgram().getEnrolledAthletes(), null);
-		newFragment.show(getActivity().getSupportFragmentManager(),
-				"Mass Message Dialog");
+		DialogFragment newFragment = new MassMessageFragment(session.getProgram().getProgramEnrolments(), null);
+		newFragment.show(getActivity().getSupportFragmentManager(), "Mass Message Dialog");
 	}
 
 	public void postAttendance() {
 		for (int i = 0; i < athleteAttendanceList.size(); i++) {
 			if (i < athleteAttendanceListOriginal.size()) {
 				if (athleteAttendanceListOriginal.get(i) != null) {
-					if (athleteAttendanceListOriginal.get(i)
-							.getAttendanceValue() != athleteAttendanceList.get(
-							i).getAttendanceValue()) {
+					if (athleteAttendanceListOriginal.get(i).getAttendanceValue() != athleteAttendanceList.get(i).getAttendanceValue()) {
 
 						updateRecord(athleteAttendanceList.get(i));
-						athleteAttendanceListOriginal.get(i)
-								.setAttendanceValue(
-										athleteAttendanceList.get(i)
-												.getAttendanceValue());
+						athleteAttendanceListOriginal.get(i).setAttendanceValue(athleteAttendanceList.get(i).getAttendanceValue());
 					}
 				}
 			} else { // new attendance records
 				if (athleteAttendanceList.get(i).getAttendanceValue() != null) {
-					athleteAttendanceList.get(i).setRemoteSessionId(
-							session.getRemoteId());
+					athleteAttendanceList.get(i).setRemoteSessionId(session.getRemoteId());
 					addRecord(athleteAttendanceList.get(i));
 
 					AthleteAttendance addedAthleteAttendance = new AthleteAttendance();
-					addedAthleteAttendance
-							.setAttendanceValue(athleteAttendanceList.get(i)
-									.getAttendanceValue());
-					addedAthleteAttendance.setAthlete(athleteAttendanceList
-							.get(i).getAthlete());
+					addedAthleteAttendance.setAttendanceValue(athleteAttendanceList.get(i).getAttendanceValue());
+					addedAthleteAttendance.setAthlete(athleteAttendanceList.get(i).getAthlete());
 					athleteAttendanceListOriginal.add(addedAthleteAttendance);
 
 				}
@@ -384,95 +351,83 @@ public class AthleteCheckinFragment extends Fragment {
 
 		}
 		Collections.sort(athleteAttendanceList, new AthleteAttComparator());
-		Collections.sort(athleteAttendanceListOriginal,
-				new AthleteAttComparator());
+		Collections.sort(athleteAttendanceListOriginal, new AthleteAttComparator());
 	}
 
 	public void updateRecord(AthleteAttendance athlete) {
 		PostCheckinUpdate.done++;
-		client.updateAthleteAttendanceRecord(athlete,
-				new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+		client.updateAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
 
-					@Override
-					public void onRecordUpdateResult(AthleteAttendance object) {
-						PostCheckinUpdate.done--;
-						if (PostCheckinUpdate.done == 0) {
-							DebugInfo.showToast(getActivity(),
-									"Attendance Posted!");
-						}
-						Log.d("temp", "attendance updated");
-					}
+			@Override
+			public void onRecordUpdateResult(AthleteAttendance object) {
+				PostCheckinUpdate.done--;
+				if (PostCheckinUpdate.done == 0) {
+					DebugInfo.showToast(getActivity(), "Attendance Posted!");
+				}
+				Log.d("temp", "attendance updated");
+			}
 
-					@Override
-					public void onRecordUpdateError() {
-						Log.d("temp", "attendance update error");
+			@Override
+			public void onRecordUpdateError() {
+				Log.d("temp", "attendance update error");
 
-					}
-				});
+			}
+		});
 	}
 
 	public void addRecord(AthleteAttendance athlete) {
 		PostCheckinUpdate.done++;
-		client.insertNewAthleteAttendanceRecord(athlete,
-				new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+		client.insertNewAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
 
-					@Override
-					public void onRecordUpdateResult(AthleteAttendance object) {
-						PostCheckinUpdate.done--;
-						if (PostCheckinUpdate.done == 0) {
-							DebugInfo.showToast(getActivity(),
-									"Attendance Posted!");
-						}
-						Log.d("temp", "attendance added");
-					}
+			@Override
+			public void onRecordUpdateResult(AthleteAttendance object) {
+				PostCheckinUpdate.done--;
+				if (PostCheckinUpdate.done == 0) {
+					DebugInfo.showToast(getActivity(), "Attendance Posted!");
+				}
+				Log.d("temp", "attendance added");
+			}
 
-					@Override
-					public void onRecordUpdateError() {
-						Log.d("temp", "attendance add error");
+			@Override
+			public void onRecordUpdateError() {
+				Log.d("temp", "attendance add error");
 
-					}
-				});
+			}
+		});
 	}
 
 	public void refreshAttendance() {
-		for(int i =0; i< athleteAttendanceList.size();i++){
+		for (int i = 0; i < athleteAttendanceList.size(); i++) {
 			Log.d("temp", "before: " + athleteAttendanceList.get(i).getAttendanceValue());
 		}
 		Collections.sort(athleteAttendanceList, new AthleteAttComparator());
-		for(int i =0; i< athleteAttendanceList.size();i++){
+		for (int i = 0; i < athleteAttendanceList.size(); i++) {
 			Log.d("temp", "after: " + athleteAttendanceList.get(i).getAttendanceValue());
 		}
-		athleteCheckInAdapter = new AthleteStickyHeaderCheckInAdapter(
-				getActivity(), athleteAttendanceList);
+		athleteCheckInAdapter = new AthleteStickyHeaderCheckInAdapter(getActivity(), athleteAttendanceList);
 		lvAthleteCheckin.setAdapter(athleteCheckInAdapter);
 	}
 
 	// animation executor
-	class AnimationExecutor implements
-			ExpandableStickyListHeadersListView.IAnimationExecutor {
+	class AnimationExecutor implements ExpandableStickyListHeadersListView.IAnimationExecutor {
 
 		@Override
 		public void executeAnim(final View target, final int animType) {
-			if (ExpandableStickyListHeadersListView.ANIMATION_EXPAND == animType
-					&& target.getVisibility() == View.VISIBLE) {
+			if (ExpandableStickyListHeadersListView.ANIMATION_EXPAND == animType && target.getVisibility() == View.VISIBLE) {
 				return;
 			}
-			if (ExpandableStickyListHeadersListView.ANIMATION_COLLAPSE == animType
-					&& target.getVisibility() != View.VISIBLE) {
+			if (ExpandableStickyListHeadersListView.ANIMATION_COLLAPSE == animType && target.getVisibility() != View.VISIBLE) {
 				return;
 			}
 			if (mOriginalViewHeightPool.get(target) == null) {
 				mOriginalViewHeightPool.put(target, target.getHeight());
 			}
 			final int viewHeight = mOriginalViewHeightPool.get(target);
-			float animStartY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? 0f
-					: viewHeight;
-			float animEndY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? viewHeight
-					: 0f;
+			float animStartY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? 0f : viewHeight;
+			float animEndY = animType == ExpandableStickyListHeadersListView.ANIMATION_EXPAND ? viewHeight : 0f;
 			final ViewGroup.LayoutParams lp = target.getLayoutParams();
 
-			ValueAnimator animator = ValueAnimator
-					.ofFloat(animStartY, animEndY);
+			ValueAnimator animator = ValueAnimator.ofFloat(animStartY, animEndY);
 			animator.setDuration(300);
 			target.setVisibility(View.VISIBLE);
 			animator.addListener(new AnimatorListener() {
@@ -504,8 +459,7 @@ public class AthleteCheckinFragment extends Fragment {
 			animator.addUpdateListener(new AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator valueAnimator) {
-					lp.height = ((Float) valueAnimator.getAnimatedValue())
-							.intValue();
+					lp.height = ((Float) valueAnimator.getAnimatedValue()).intValue();
 					target.setLayoutParams(lp);
 					target.requestLayout();
 				}

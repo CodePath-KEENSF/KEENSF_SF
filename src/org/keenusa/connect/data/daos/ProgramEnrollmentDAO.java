@@ -260,7 +260,7 @@ public class ProgramEnrollmentDAO {
 		if (c.getPosition() >= 0) {
 			enrollment = new KeenProgramEnrolment();
 			try {
-				enrollment.setId(c.getLong(c.getColumnIndexOrThrow(ProgramEnrollmentTable.TABLE_NAME + "." + ProgramEnrollmentTable.ID_COL_NAME)));
+				enrollment.setId(c.getLong(c.getColumnIndexOrThrow(ProgramEnrollmentTable.ID_COL_NAME)));
 				enrollment.setRemoteId(c.getLong(c.getColumnIndexOrThrow(ProgramEnrollmentTable.REMOTE_ID_COL_NAME)));
 				enrollment.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(ProgramEnrollmentTable.REMOTE_CREATED_COL_NAME)));
 				enrollment.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(ProgramEnrollmentTable.REMOTE_UPDATED_COL_NAME)));

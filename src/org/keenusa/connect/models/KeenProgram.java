@@ -27,7 +27,7 @@ public class KeenProgram implements Serializable {
 	// probably we do not need this as it is sent on approval of a new coach, not sure why approval is for a program
 	private String coachApprovalConfirmationEmailText;
 	private Location location;
-	private List<Athlete> enrolledAthletes;
+	private List<KeenProgramEnrolment> programEnrolments;
 	private long remoteCreateTimestamp;
 	private long remoteUpdatedTimestamp;
 
@@ -49,7 +49,6 @@ public class KeenProgram implements Serializable {
 		this.generalProgramType = generalProgramType;
 		this.programTimes = programTimes;
 		this.location = location;
-		this.enrolledAthletes = enrolledAthletes;
 	}
 
 	public static KeenProgram fromRemoteProgram(RemoteProgram remoteProgram) {
@@ -151,20 +150,20 @@ public class KeenProgram implements Serializable {
 		this.location = location;
 	}
 
-	public List<Athlete> getEnrolledAthletes() {
-		return enrolledAthletes;
-	}
-
-	public void setEnrolledAthletes(List<Athlete> enrolledAthletes) {
-		this.enrolledAthletes = enrolledAthletes;
-	}
-
-	public void addEnrolledAthletes(Athlete enrolledAthletes) {
-		if (this.enrolledAthletes == null) {
-			this.enrolledAthletes = new ArrayList<Athlete>();
-		}
-		this.enrolledAthletes.add(enrolledAthletes);
-	}
+	//	public List<Athlete> getEnrolledAthletes() {
+	//		return enrolledAthletes;
+	//	}
+	//
+	//	public void setEnrolledAthletes(List<Athlete> enrolledAthletes) {
+	//		this.enrolledAthletes = enrolledAthletes;
+	//	}
+	//
+	//	public void addEnrolledAthletes(Athlete enrolledAthletes) {
+	//		if (this.enrolledAthletes == null) {
+	//			this.enrolledAthletes = new ArrayList<Athlete>();
+	//		}
+	//		this.enrolledAthletes.add(enrolledAthletes);
+	//	}
 
 	public String getCoachRegistrationConfirmationEmailText() {
 		return coachRegistrationConfirmationEmailText;
@@ -204,6 +203,14 @@ public class KeenProgram implements Serializable {
 
 	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
 		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public List<KeenProgramEnrolment> getProgramEnrolments() {
+		return programEnrolments;
+	}
+
+	public void setProgramEnrolments(List<KeenProgramEnrolment> programEnrolments) {
+		this.programEnrolments = programEnrolments;
 	}
 
 }

@@ -2,8 +2,6 @@ package org.keenusa.connect.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.WeakHashMap;
@@ -13,17 +11,10 @@ import org.joda.time.LocalDate;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.SessionDetailsActivity;
 import org.keenusa.connect.adapters.StickySessionListItemAdapter;
-import org.keenusa.connect.models.Athlete;
-import org.keenusa.connect.models.AthleteAttendance;
-import org.keenusa.connect.models.Coach;
-import org.keenusa.connect.models.CoachAttendance;
+import org.keenusa.connect.data.daos.SessionDAO;
 import org.keenusa.connect.models.KeenProgram;
-import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
-import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 import org.keenusa.connect.utilities.GetNextDay;
-import org.keenusa.connect.utilities.KeenSessionComparator;
 import org.keenusa.connect.utilities.StringConstants;
 
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
@@ -34,6 +25,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,34 +37,33 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class SessionsFragment extends Fragment {
-	public static final int NUM_SESSION_FETCHES = 7;
-	public int currentFetch = 0;
+	//	public static final int NUM_SESSION_FETCHES = 7;
+	//	public int currentFetch = 0;
 
 	public String dummySearchString;
 	private SearchView searchView;
 
-	private ArrayList<KeenSession> sessionList;
-	private ArrayList<KeenProgram> programList;
-	private ArrayList<KeenProgramEnrolment> programEnrolmentList;
-	private List<AthleteAttendance> athleteAttendanceList;
-	private List<CoachAttendance> coachAttendanceList;
-	private List<Coach> coachList;
-	private List<Athlete> athleteList;
-
-	private HashMap<Long, KeenProgram> sessionProgramMap = new HashMap<Long, KeenProgram>();
-	private HashMap<Long, KeenSession> sessionMap = new HashMap<Long, KeenSession>();
-	private HashMap<String, Athlete> sessionAthleteMap = new HashMap<String, Athlete>();
-	private HashMap<Long, Athlete> sessionAthleteIdMap = new HashMap<Long, Athlete>();
-	private HashMap<String, Coach> sessionCoachMap = new HashMap<String, Coach>();
+	private List<KeenSession> sessionList;
+	//	private ArrayList<KeenProgram> programList;
+	//	private ArrayList<KeenProgramEnrolment> programEnrolmentList;
+	//	private List<AthleteAttendance> athleteAttendanceList;
+	//	private List<CoachAttendance> coachAttendanceList;
+	//	private List<Coach> coachList;
+	//	private List<Athlete> athleteList;
+	//
+	//	private HashMap<Long, KeenProgram> sessionProgramMap = new HashMap<Long, KeenProgram>();
+	//	private HashMap<Long, KeenSession> sessionMap = new HashMap<Long, KeenSession>();
+	//	private HashMap<String, Athlete> sessionAthleteMap = new HashMap<String, Athlete>();
+	//	private HashMap<Long, Athlete> sessionAthleteIdMap = new HashMap<Long, Athlete>();
+	//	private HashMap<String, Coach> sessionCoachMap = new HashMap<String, Coach>();
 
 	private LinearLayout llLoadingSessionsIndicator;
-	private boolean bDataLoaded = false;
-	private ProgressBar progressBar;
+	//	private boolean bDataLoaded = false;
+	//	private ProgressBar progressBar;
 
 	// Sticky Header List View
 	private ExpandableStickyListHeadersListView expandableStickySessionListView;
@@ -91,24 +82,26 @@ public class SessionsFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		sessionList = new ArrayList<KeenSession>();
-		programList = new ArrayList<KeenProgram>();
-		programEnrolmentList = new ArrayList<KeenProgramEnrolment>();
-		coachAttendanceList = new ArrayList<CoachAttendance>();
-		athleteAttendanceList = new ArrayList<AthleteAttendance>();
-		coachList = new ArrayList<Coach>();
-		athleteList = new ArrayList<Athlete>();
+		//		programList = new ArrayList<KeenProgram>();
+		//		programEnrolmentList = new ArrayList<KeenProgramEnrolment>();
+		//		coachAttendanceList = new ArrayList<CoachAttendance>();
+		//		athleteAttendanceList = new ArrayList<AthleteAttendance>();
+		//		coachList = new ArrayList<Coach>();
+		//		athleteList = new ArrayList<Athlete>();
 
 		setAdapter();
+		new LoadSessionListDataTask().execute();
 
-		fetchLists();
+		//		fetchLists();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_sessions, container, false);
 
-		setViews(v);
-
+		//		setViews(v);
+		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
+		llLoadingSessionsIndicator = (LinearLayout) v.findViewById(R.id.llLoadingSessionsIndicator);
 		setOnClickListeners();
 
 		return v;
@@ -164,286 +157,286 @@ public class SessionsFragment extends Fragment {
 		//		});
 	}
 
-	private void fetchLists() {
-		bDataLoaded = false;
-		fetchProgramList();
-		fetchProgramEnrolmentList();
-		fetchAthleteAttendanceList();
-		fetchCoachAttendanceList();
-		fetchAthleteList();
-		fetchCoachList();
-		fetchSessionList();
-	}
+	//	private void fetchLists() {
+	//		bDataLoaded = false;
+	//		fetchProgramList();
+	//		fetchProgramEnrolmentList();
+	//		fetchAthleteAttendanceList();
+	//		fetchCoachAttendanceList();
+	//		fetchAthleteList();
+	//		fetchCoachList();
+	//		fetchSessionList();
+	//	}
+	//
+	//	private void fetchProgramList() {
+	//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+	//		client.fetchProgramListData(new CivicoreDataResultListener<KeenProgram>() {
+	//
+	//			@Override
+	//			public void onListResult(List<KeenProgram> list) {
+	//				programList.clear();
+	//				programList.addAll(list);
+	//				for (KeenProgram program : programList) {
+	//					sessionProgramMap.put(program.getRemoteId(), program);
+	//				}
+	//				monitorFetches();
+	//			}
+	//
+	//			@Override
+	//			public void onListResultError() {
+	//				monitorFetches();
+	//			}
+	//
+	//		});
+	//	}
+	//
+	//	private void fetchProgramEnrolmentList() {
+	//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+	//		client.fetchProgramEnrolmentListData(new CivicoreDataResultListener<KeenProgramEnrolment>() {
+	//
+	//			@Override
+	//			public void onListResult(List<KeenProgramEnrolment> list) {
+	//				programEnrolmentList.clear();
+	//				programEnrolmentList.addAll(list);
+	//				//				for (KeenProgram program : programList) {
+	//				//					sessionProgramMap.put(program.getRemoteId(), program);
+	//				//				}
+	//				monitorFetches();
+	//			}
+	//
+	//			@Override
+	//			public void onListResultError() {
+	//				monitorFetches();
+	//			}
+	//
+	//		});
+	//	}
+	//
+	//	private void fetchAthleteAttendanceList() {
+	//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+	//		client.fetchAthleteAttendanceListData(new CivicoreDataResultListener<AthleteAttendance>() {
+	//
+	//			@Override
+	//			public void onListResult(List<AthleteAttendance> list) {
+	//				athleteAttendanceList.clear();
+	//				athleteAttendanceList.addAll(list);
+	//				formatAthleteAttendanceNames();
+	//				monitorFetches();
+	//			}
+	//
+	//			@Override
+	//			public void onListResultError() {
+	//				monitorFetches();
+	//			}
+	//
+	//		});
+	//	}
+	//
+	//	private void fetchCoachAttendanceList() {
+	//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+	//		client.fetchCoachAttendanceListData(new CivicoreDataResultListener<CoachAttendance>() {
+	//
+	//			@Override
+	//			public void onListResult(List<CoachAttendance> list) {
+	//				coachAttendanceList.clear();
+	//				coachAttendanceList.addAll(list);
+	//				monitorFetches();
+	//			}
+	//
+	//			@Override
+	//			public void onListResultError() {
+	//				monitorFetches();
+	//			}
+	//
+	//		});
+	//	}
+	//
+	//	private void fetchAthleteList() {
+	//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+	//		client.fetchAthleteListData(new CivicoreDataResultListener<Athlete>() {
+	//
+	//			@Override
+	//			public void onListResult(List<Athlete> list) {
+	//				athleteList.clear();
+	//				athleteList.addAll(list);
+	//				for (Athlete athlete : athleteList) {
+	//					sessionAthleteMap.put(athlete.getFirstLastName(), athlete);
+	//					sessionAthleteIdMap.put(athlete.getRemoteId(), athlete);
+	//				}
+	//				monitorFetches();
+	//			}
+	//
+	//			@Override
+	//			public void onListResultError() {
+	//				monitorFetches();
+	//			}
+	//
+	//		});
+	//	}
+	//
+	//	private void fetchCoachList() {
+	//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+	//		client.fetchCoachListData(new CivicoreDataResultListener<Coach>() {
+	//
+	//			@Override
+	//			public void onListResult(List<Coach> list) {
+	//				coachList.clear();
+	//				coachList.addAll(list);
+	//				for (Coach coach : coachList) {
+	//					sessionCoachMap.put(coach.getFirstLastName(), coach);
+	//				}
+	//				monitorFetches();
+	//			}
+	//
+	//			@Override
+	//			public void onListResultError() {
+	//				monitorFetches();
+	//			}
+	//
+	//		});
+	//	}
+	//
+	//	private void fetchSessionList() {
+	//		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
+	//		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
+	//
+	//			@Override
+	//			public void onListResult(List<KeenSession> list) {
+	//				sessionList.clear();
+	//				sessionList.addAll(list);
+	//				for (KeenSession session : sessionList) {
+	//					sessionMap.put(session.getRemoteId(), session);
+	//				}
+	//
+	//				monitorFetches();
+	//			}
+	//
+	//			@Override
+	//			public void onListResultError() {
+	//				monitorFetches();
+	//			}
+	//
+	//		});
+	//	}
+	//
+	//	private void monitorFetches() {
+	//		currentFetch++;
+	//		if (currentFetch == NUM_SESSION_FETCHES) {
+	//			updateSessionListViews();
+	//		}
+	//	}
 
-	private void fetchProgramList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchProgramListData(new CivicoreDataResultListener<KeenProgram>() {
+	//	private void updateSessionListViews() {
+	//
+	//		//		bDataLoaded = true;
+	//
+	//		// Received all the lists required for session list
+	//		// Get the location and time information from program associated with the given session
+	//		connectSessionWithProgram();
+	//		connectProgramWithEnrolmentList();
+	//		connectSessionWithCoachAttendance();
+	//		connectSessionWithAthleteAttendance();
+	//
+	//		Collections.sort(sessionList, Collections.reverseOrder(new KeenSessionComparator()));
+	//
+	//		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
+	//		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+	//
+	//		setSearchListPosition(sessionList);
+	//		//		setSessionListToCurrentDate();
+	//
+	//		if (llLoadingSessionsIndicator != null) {
+	//			llLoadingSessionsIndicator.setVisibility(View.GONE);
+	//		}
+	//	}
 
-			@Override
-			public void onListResult(List<KeenProgram> list) {
-				programList.clear();
-				programList.addAll(list);
-				for (KeenProgram program : programList) {
-					sessionProgramMap.put(program.getRemoteId(), program);
-				}
-				monitorFetches();
-			}
+	//	private void connectSessionWithProgram() {
+	//
+	//		for (KeenSession session : sessionList) {
+	//			KeenProgram program;
+	//			program = (KeenProgram) sessionProgramMap.get(session.getProgram().getRemoteId());
+	//			if (program != null) {
+	//				session.setProgram(program);
+	//			}
+	//		}
+	//	}
 
-			@Override
-			public void onListResultError() {
-				monitorFetches();
-			}
+	//	private void connectProgramWithEnrolmentList() {
+	//
+	//		for (KeenProgramEnrolment programEnrolment : programEnrolmentList) {
+	//			KeenProgram program;
+	//			program = (KeenProgram) sessionProgramMap.get(programEnrolment.getProgram().getRemoteId());
+	//			if (program != null) {
+	//				programEnrolment.setProgram(program);
+	//				programEnrolment.setAthlete(sessionAthleteIdMap.get(programEnrolment.getAthlete().getRemoteId()));
+	//				program.addEnrolledAthletes(programEnrolment.getAthlete());
+	//			}
+	//		}
+	//	}
+	//
+	//	private void connectSessionWithCoachAttendance() {
+	//
+	//		for (CoachAttendance coachatt : coachAttendanceList) {
+	//
+	//			KeenSession session;
+	//			session = (KeenSession) sessionMap.get(coachatt.getRemoteSessionId());
+	//			if (session != null) {
+	//				session.addCoachAttendance(coachatt);
+	//			}
+	//
+	//			Coach coach;
+	//			coach = (Coach) sessionCoachMap.get(coachatt.getAttendedCoachFullName());
+	//			if (coach != null) {
+	//				coachatt.setCoach(coach);
+	//			}
+	//		}
+	//	}
+	//
+	//	private void connectSessionWithAthleteAttendance() {
+	//
+	//		for (AthleteAttendance athleteatt : athleteAttendanceList) {
+	//			KeenSession session;
+	//			session = (KeenSession) sessionMap.get(athleteatt.getRemoteSessionId());
+	//			if (session != null) {
+	//				session.addAthleteAttendance(athleteatt);
+	//			}
+	//
+	//			Athlete athlete;
+	//			athlete = (Athlete) sessionAthleteMap.get(athleteatt.getAttendedAthleteFullName());
+	//			if (athlete != null) {
+	//				athleteatt.setAthlete(athlete);
+	//			}
+	//		}
+	//
+	//	}
 
-		});
-	}
-
-	private void fetchProgramEnrolmentList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchProgramEnrolmentListData(new CivicoreDataResultListener<KeenProgramEnrolment>() {
-
-			@Override
-			public void onListResult(List<KeenProgramEnrolment> list) {
-				programEnrolmentList.clear();
-				programEnrolmentList.addAll(list);
-				//				for (KeenProgram program : programList) {
-				//					sessionProgramMap.put(program.getRemoteId(), program);
-				//				}
-				monitorFetches();
-			}
-
-			@Override
-			public void onListResultError() {
-				monitorFetches();
-			}
-
-		});
-	}
-
-	private void fetchAthleteAttendanceList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchAthleteAttendanceListData(new CivicoreDataResultListener<AthleteAttendance>() {
-
-			@Override
-			public void onListResult(List<AthleteAttendance> list) {
-				athleteAttendanceList.clear();
-				athleteAttendanceList.addAll(list);
-				formatAthleteAttendanceNames();
-				monitorFetches();
-			}
-
-			@Override
-			public void onListResultError() {
-				monitorFetches();
-			}
-
-		});
-	}
-
-	private void fetchCoachAttendanceList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchCoachAttendanceListData(new CivicoreDataResultListener<CoachAttendance>() {
-
-			@Override
-			public void onListResult(List<CoachAttendance> list) {
-				coachAttendanceList.clear();
-				coachAttendanceList.addAll(list);
-				monitorFetches();
-			}
-
-			@Override
-			public void onListResultError() {
-				monitorFetches();
-			}
-
-		});
-	}
-
-	private void fetchAthleteList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchAthleteListData(new CivicoreDataResultListener<Athlete>() {
-
-			@Override
-			public void onListResult(List<Athlete> list) {
-				athleteList.clear();
-				athleteList.addAll(list);
-				for (Athlete athlete : athleteList) {
-					sessionAthleteMap.put(athlete.getFirstLastName(), athlete);
-					sessionAthleteIdMap.put(athlete.getRemoteId(), athlete);
-				}
-				monitorFetches();
-			}
-
-			@Override
-			public void onListResultError() {
-				monitorFetches();
-			}
-
-		});
-	}
-
-	private void fetchCoachList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchCoachListData(new CivicoreDataResultListener<Coach>() {
-
-			@Override
-			public void onListResult(List<Coach> list) {
-				coachList.clear();
-				coachList.addAll(list);
-				for (Coach coach : coachList) {
-					sessionCoachMap.put(coach.getFirstLastName(), coach);
-				}
-				monitorFetches();
-			}
-
-			@Override
-			public void onListResultError() {
-				monitorFetches();
-			}
-
-		});
-	}
-
-	private void fetchSessionList() {
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchSessionListData(new CivicoreDataResultListener<KeenSession>() {
-
-			@Override
-			public void onListResult(List<KeenSession> list) {
-				sessionList.clear();
-				sessionList.addAll(list);
-				for (KeenSession session : sessionList) {
-					sessionMap.put(session.getRemoteId(), session);
-				}
-
-				monitorFetches();
-			}
-
-			@Override
-			public void onListResultError() {
-				monitorFetches();
-			}
-
-		});
-	}
-
-	private void monitorFetches() {
-		currentFetch++;
-		if (currentFetch == NUM_SESSION_FETCHES) {
-			updateSessionListViews();
-		}
-	}
-
-	private void updateSessionListViews() {
-
-		bDataLoaded = true;
-
-		// Received all the lists required for session list
-		// Get the location and time information from program associated with the given session
-		connectSessionWithProgram();
-		connectProgramWithEnrolmentList();
-		connectSessionWithCoachAttendance();
-		connectSessionWithAthleteAttendance();
-
-		Collections.sort(sessionList, Collections.reverseOrder(new KeenSessionComparator()));
-
-		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
-		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
-
-		setSearchListPosition(sessionList);
-		//		setSessionListToCurrentDate();
-
-		if (llLoadingSessionsIndicator != null) {
-			llLoadingSessionsIndicator.setVisibility(View.GONE);
-		}
-	}
-
-	private void connectSessionWithProgram() {
-
-		for (KeenSession session : sessionList) {
-			KeenProgram program;
-			program = (KeenProgram) sessionProgramMap.get(session.getProgram().getRemoteId());
-			if (program != null) {
-				session.setProgram(program);
-			}
-		}
-	}
-
-	private void connectProgramWithEnrolmentList() {
-
-		for (KeenProgramEnrolment programEnrolment : programEnrolmentList) {
-			KeenProgram program;
-			program = (KeenProgram) sessionProgramMap.get(programEnrolment.getProgram().getRemoteId());
-			if (program != null) {
-				programEnrolment.setProgram(program);
-				programEnrolment.setAthlete(sessionAthleteIdMap.get(programEnrolment.getAthlete().getRemoteId()));
-				program.addEnrolledAthletes(programEnrolment.getAthlete());
-			}
-		}
-	}
-
-	private void connectSessionWithCoachAttendance() {
-
-		for (CoachAttendance coachatt : coachAttendanceList) {
-
-			KeenSession session;
-			session = (KeenSession) sessionMap.get(coachatt.getRemoteSessionId());
-			if (session != null) {
-				session.addCoachAttendance(coachatt);
-			}
-
-			Coach coach;
-			coach = (Coach) sessionCoachMap.get(coachatt.getAttendedCoachFullName());
-			if (coach != null) {
-				coachatt.setCoach(coach);
-			}
-		}
-	}
-
-	private void connectSessionWithAthleteAttendance() {
-
-		for (AthleteAttendance athleteatt : athleteAttendanceList) {
-			KeenSession session;
-			session = (KeenSession) sessionMap.get(athleteatt.getRemoteSessionId());
-			if (session != null) {
-				session.addAthleteAttendance(athleteatt);
-			}
-
-			Athlete athlete;
-			athlete = (Athlete) sessionAthleteMap.get(athleteatt.getAttendedAthleteFullName());
-			if (athlete != null) {
-				athleteatt.setAthlete(athlete);
-			}
-		}
-
-	}
-
-	private void formatAthleteAttendanceNames() {
-		for (AthleteAttendance athleteatt : athleteAttendanceList) {
-			String LastName = "";
-			String FirstName = "";
-			String fullName;
-			String athleteName = athleteatt.getAttendedAthleteFullName();
-			String[] nameWord = athleteName.split(",");
-
-			if (nameWord[0] != null) {
-				LastName = nameWord[0];
-			}
-
-			if (nameWord[1] != null) {
-				FirstName = nameWord[1];
-				FirstName = FirstName.substring(FirstName.indexOf(' ') + 1, FirstName.length());
-				FirstName = FirstName + " ";
-			}
-
-			fullName = FirstName + LastName;
-			athleteatt.setAthleteFullName(fullName);
-		}
-	}
+	//	private void formatAthleteAttendanceNames() {
+	//		for (AthleteAttendance athleteatt : athleteAttendanceList) {
+	//			String LastName = "";
+	//			String FirstName = "";
+	//			String fullName;
+	//			String athleteName = athleteatt.getAttendedAthleteFullName();
+	//			String[] nameWord = athleteName.split(",");
+	//
+	//			if (nameWord[0] != null) {
+	//				LastName = nameWord[0];
+	//			}
+	//
+	//			if (nameWord[1] != null) {
+	//				FirstName = nameWord[1];
+	//				FirstName = FirstName.substring(FirstName.indexOf(' ') + 1, FirstName.length());
+	//				FirstName = FirstName + " ";
+	//			}
+	//
+	//			fullName = FirstName + LastName;
+	//			athleteatt.setAthleteFullName(fullName);
+	//		}
+	//	}
 
 	private void openSessionDetails(int pos) {
 
 		Intent i = new Intent(getActivity(), SessionDetailsActivity.class);
-		i.putExtra("session", sessionList.get(pos));
+		i.putExtra("SESSION_ID", sessionList.get(pos).getId());
 		startActivity(i);
 		getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
@@ -452,28 +445,28 @@ public class SessionsFragment extends Fragment {
 		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
 	}
 
-	private void setViews(View v) {
-		llLoadingSessionsIndicator = (LinearLayout) v.findViewById(R.id.llLoadingSessionsIndicator);
-		if (!bDataLoaded) {
-			llLoadingSessionsIndicator.setVisibility(View.VISIBLE);
-			loadProgressBar();
-		}
-
-		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
-		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
-	}
-
-	private void loadProgressBar() {
-		//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
-		try {
-			for (int i = 1; i <= 10; i++) {
-				progressBar.setProgress(i * 10);
-				Thread.sleep(500);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	//	private void setViews(View v) {
+	//		llLoadingSessionsIndicator = (LinearLayout) v.findViewById(R.id.llLoadingSessionsIndicator);
+	//		if (!bDataLoaded) {
+	//			llLoadingSessionsIndicator.setVisibility(View.VISIBLE);
+	//			loadProgressBar();
+	//		}
+	//
+	//		expandableStickySessionListView = (ExpandableStickyListHeadersListView) v.findViewById(R.id.lvSessionList);
+	//		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+	//	}
+	//
+	//	private void loadProgressBar() {
+	//		//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+	//		try {
+	//			for (int i = 1; i <= 10; i++) {
+	//				progressBar.setProgress(i * 10);
+	//				Thread.sleep(500);
+	//			}
+	//		} catch (Exception e) {
+	//			e.printStackTrace();
+	//		}
+	//	}
 
 	public StickyListHeadersAdapter getAdapter() {
 		return expandableStickySessionListAdapter;
@@ -628,7 +621,7 @@ public class SessionsFragment extends Fragment {
 		}
 	}
 
-	private void setSearchListPosition(ArrayList<KeenSession> tempSessionList) {
+	private void setSearchListPosition(List<KeenSession> tempSessionList) {
 		int currentDateIndex = 0;
 		LocalDate today = new LocalDate();
 		String currentDateStr = new SimpleDateFormat(StringConstants.DATE_FORMAT_YEAR, Locale.ENGLISH).format(today.toDate());
@@ -651,20 +644,20 @@ public class SessionsFragment extends Fragment {
 
 	}
 
-	public void updateSession(KeenSession newSession) {
-		KeenSession oldSession = (KeenSession) sessionMap.get(newSession.getRemoteId());
-		oldSession.setAthleteAttendance(newSession.getAthleteAttendance());
-		oldSession.setCoachAttendance(newSession.getCoachAttendance());
-		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
-		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
-
-		for (int i = 0; i < sessionList.size(); i++) {
-			if (sessionList.get(i).getRemoteId() == oldSession.getRemoteId()) {
-				expandableStickySessionListView.setSelection(i);
-				break;
-			}
-		}
-	}
+	//	public void updateSession(KeenSession newSession) {
+	//		KeenSession oldSession = (KeenSession) sessionMap.get(newSession.getRemoteId());
+	//		oldSession.setAthleteAttendance(newSession.getAthleteAttendance());
+	//		oldSession.setCoachAttendance(newSession.getCoachAttendance());
+	//		expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessionList);
+	//		expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+	//
+	//		for (int i = 0; i < sessionList.size(); i++) {
+	//			if (sessionList.get(i).getRemoteId() == oldSession.getRemoteId()) {
+	//				expandableStickySessionListView.setSelection(i);
+	//				break;
+	//			}
+	//		}
+	//	}
 
 	//	public void addAPIData(List<KeenSession> sessions) {
 	//		sessionListAdapter.clear();
@@ -733,5 +726,41 @@ public class SessionsFragment extends Fragment {
 			});
 			animator.start();
 		}
+	}
+
+	private class LoadSessionListDataTask extends AsyncTask<String, Void, List<KeenSession>> {
+
+		@Override
+		protected void onPreExecute() {
+			if (llLoadingSessionsIndicator != null) {
+				llLoadingSessionsIndicator.setVisibility(View.VISIBLE);
+			}
+		}
+
+		@Override
+		protected List<KeenSession> doInBackground(String... params) {
+			SessionDAO sessionDAO = new SessionDAO(getActivity());
+			List<KeenSession> sessions = sessionDAO.getKeenSessionList();
+			return sessions;
+		}
+
+		@Override
+		protected void onPostExecute(List<KeenSession> sessions) {
+			if (llLoadingSessionsIndicator != null) {
+				llLoadingSessionsIndicator.setVisibility(View.GONE);
+			}
+			sessionList = sessions;
+			expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessions);
+			expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+			setSearchListPosition(sessionList);
+			setSessionListToCurrentDate();
+		}
+
+	}
+
+	@Override
+	public void onResume() {
+		new LoadSessionListDataTask().execute();
+		super.onResume();
 	}
 }

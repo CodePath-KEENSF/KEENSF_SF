@@ -37,13 +37,14 @@ public class CoachAttendanceDAO {
 	String[] simpleColumnNames = { CoachAttendanceTable.ID_COL_NAME, CoachAttendanceTable.REMOTE_ID_COL_NAME,
 			CoachAttendanceTable.REMOTE_CREATED_COL_NAME, CoachAttendanceTable.REMOTE_UPDATED_COL_NAME };
 
-	String[] columnNames = { CoachAttendanceTable.ID_COL_NAME, CoachAttendanceTable.REMOTE_ID_COL_NAME, CoachAttendanceTable.REMOTE_CREATED_COL_NAME,
-			CoachAttendanceTable.REMOTE_UPDATED_COL_NAME, CoachAttendanceTable.SESSION_ID_COL_NAME, CoachAttendanceTable.COACH_ID_COL_NAME,
-			CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME, CoachTable.REMOTE_ID_COL_NAME, CoachTable.REMOTE_CREATED_COL_NAME,
-			CoachTable.REMOTE_UPDATED_COL_NAME, CoachTable.FIRST_NAME_COL_NAME, CoachTable.MIDDLE_NAME_COL_NAME, CoachTable.LAST_NAME_COL_NAME,
-			CoachTable.EMAIL_COL_NAME, CoachTable.PHONE_COL_NAME, CoachTable.MOBILE_COL_NAME, CoachTable.GENDER_COL_NAME, CoachTable.DOB_COL_NAME,
-			CoachTable.LANGUAGES_COL_NAME, CoachTable.SKILLS_COL_NAME, CoachTable.ACTIVE_COL_NAME, CoachTable.CITY_COL_NAME,
-			CoachTable.STATE_COL_NAME, CoachTable.ZIPCODE_COL_NAME, CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME, CoachTable.LAST_ATTENDED_DATE_COL_NAME };
+	String[] columnNames = { CoachAttendanceTable.TABLE_NAME + "." + CoachAttendanceTable.ID_COL_NAME, CoachAttendanceTable.REMOTE_ID_COL_NAME,
+			CoachAttendanceTable.REMOTE_CREATED_COL_NAME, CoachAttendanceTable.REMOTE_UPDATED_COL_NAME, CoachAttendanceTable.SESSION_ID_COL_NAME,
+			CoachAttendanceTable.COACH_ID_COL_NAME, CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME, CoachTable.REMOTE_ID_COL_NAME,
+			CoachTable.REMOTE_CREATED_COL_NAME, CoachTable.REMOTE_UPDATED_COL_NAME, CoachTable.FIRST_NAME_COL_NAME, CoachTable.MIDDLE_NAME_COL_NAME,
+			CoachTable.LAST_NAME_COL_NAME, CoachTable.EMAIL_COL_NAME, CoachTable.PHONE_COL_NAME, CoachTable.MOBILE_COL_NAME,
+			CoachTable.GENDER_COL_NAME, CoachTable.DOB_COL_NAME, CoachTable.LANGUAGES_COL_NAME, CoachTable.SKILLS_COL_NAME,
+			CoachTable.ACTIVE_COL_NAME, CoachTable.CITY_COL_NAME, CoachTable.STATE_COL_NAME, CoachTable.ZIPCODE_COL_NAME,
+			CoachTable.NUM_SESSIONS_ATTENDED_COL_NAME, CoachTable.LAST_ATTENDED_DATE_COL_NAME };
 
 	public CoachAttendanceDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);

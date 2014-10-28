@@ -149,7 +149,7 @@ public class SessionAthleteCoachListActivity extends FragmentActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == IntentCode.RESULT_OK && requestCode == IntentCode.REQUEST_CODE) {
 			KeenSession session = (KeenSession) data.getSerializableExtra("session");
-			sessionsFragment.updateSession(session);
+			//			sessionsFragment.updateSession(session);
 
 		} else if (resultCode == IntentCode.CHECK_IN_FAIL && requestCode == IntentCode.REQUEST_CODE) {
 			DebugInfo.showToast(this, "check-in failed");

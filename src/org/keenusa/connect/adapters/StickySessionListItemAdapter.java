@@ -1,7 +1,7 @@
 package org.keenusa.connect.adapters;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
@@ -50,7 +50,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 		TextView tvSessionDate;
 	}
 
-	public StickySessionListItemAdapter(Context context, ArrayList<KeenSession> sessionList) {
+	public StickySessionListItemAdapter(Context context, List<KeenSession> sessionList) {
 		super(context, 0, sessionList);
 		this.context = context;
 	}

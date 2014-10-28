@@ -3,11 +3,10 @@ package org.keenusa.connect.fragments;
 import java.util.List;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.CoachAttendance;
+import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.models.Parent;
-import org.keenusa.connect.utilities.DebugInfo;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -15,7 +14,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +28,7 @@ import android.widget.Toast;
 public class MassMessageFragment extends DialogFragment {
 
 	private KeenSession session;
-	private List<Athlete> enrolledAthleteList;
+	private List<KeenProgramEnrolment> programEnrollments;
 	private List<CoachAttendance> coachAttendanceList;
 
 	private EditText etMassMessage;
@@ -42,9 +40,8 @@ public class MassMessageFragment extends DialogFragment {
 		// Empty constructor required for DialogFragment
 	}
 
-	public MassMessageFragment(List<Athlete> enrolledAthleteList,
-			List<CoachAttendance> coachAttendanceList) {
-		this.enrolledAthleteList = enrolledAthleteList;
+	public MassMessageFragment(List<KeenProgramEnrolment> enrolledAthleteList, List<CoachAttendance> coachAttendanceList) {
+		this.programEnrollments = enrolledAthleteList;
 		this.coachAttendanceList = coachAttendanceList;
 	}
 
@@ -55,17 +52,14 @@ public class MassMessageFragment extends DialogFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View view = LayoutInflater.from(getActivity()).inflate(
-				R.layout.fragment_mass_message, container);
+		View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_mass_message, container);
 		setViews(view);
 
 		setOnClickListeners();
 
-		getDialog().getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		return view;
@@ -76,12 +70,10 @@ public class MassMessageFragment extends DialogFragment {
 
 		// set the state based on number of characters
 		etMassMessage.addTextChangedListener(new TextWatcher() {
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 			}
 
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 			}
 
 			public void afterTextChanged(Editable arg0) {
@@ -91,19 +83,15 @@ public class MassMessageFragment extends DialogFragment {
 					// bold to normal
 					tvEmail.setEnabled(false);
 					tvSMS.setEnabled(false);
-					tvEmail.setTextColor(getResources().getColor(
-							android.R.color.darker_gray));
-					tvSMS.setTextColor(getResources().getColor(
-							android.R.color.darker_gray));
+					tvEmail.setTextColor(getResources().getColor(android.R.color.darker_gray));
+					tvSMS.setTextColor(getResources().getColor(android.R.color.darker_gray));
 					tvEmail.setTypeface(null, Typeface.NORMAL);
 					tvSMS.setTypeface(null, Typeface.NORMAL);
 				} else {
 					tvEmail.setEnabled(true);
 					tvSMS.setEnabled(true);
-					tvEmail.setTextColor(getResources().getColor(
-							android.R.color.holo_green_dark));
-					tvSMS.setTextColor(getResources().getColor(
-							android.R.color.holo_blue_dark));
+					tvEmail.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+					tvSMS.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
 					tvEmail.setTypeface(null, Typeface.BOLD);
 					tvSMS.setTypeface(null, Typeface.BOLD);
 				}
@@ -133,8 +121,7 @@ public class MassMessageFragment extends DialogFragment {
 
 			@Override
 			public void onClick(View v) {
-				getDialog().getWindow().setSoftInputMode(
-						WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+				getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 				getDialog().dismiss();
 			}
 		});
@@ -144,11 +131,12 @@ public class MassMessageFragment extends DialogFragment {
 		String[] emails = new String[100];
 		int count = 0;
 
-		if (enrolledAthleteList != null) {
-			for (Athlete athlete : enrolledAthleteList) {
-				Parent parent = athlete.getPrimaryParent();
+		if (programEnrollments != null) {
+			for (KeenProgramEnrolment enrolment : programEnrollments) {
+				Parent parent = enrolment.getAthlete().getPrimaryParent();
 				if (parent.getEmail() != null) {
-					emails[count++] = parent.getEmail();;
+					emails[count++] = parent.getEmail();
+					;
 				}
 			}
 		}
@@ -164,14 +152,11 @@ public class MassMessageFragment extends DialogFragment {
 		Intent emailIntent = new Intent(Intent.ACTION_SEND);
 		emailIntent.setType("message/rfc822");
 		emailIntent.putExtra(Intent.EXTRA_EMAIL, emails);
-		emailIntent.putExtra(Intent.EXTRA_TEXT, etMassMessage.getText()
-				.toString());
+		emailIntent.putExtra(Intent.EXTRA_TEXT, etMassMessage.getText().toString());
 		try {
 			startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 		} catch (android.content.ActivityNotFoundException ex) {
-			Toast.makeText(getActivity(),
-					"There are no email clients installed.", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
 		}
 		startActivity(emailIntent);
 		getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -179,9 +164,9 @@ public class MassMessageFragment extends DialogFragment {
 
 	private void sendMassSMS() {
 		String phone = "";
-		if (enrolledAthleteList != null) {
-			for (Athlete athlete : enrolledAthleteList) {
-				Parent parent = athlete.getPrimaryParent();
+		if (programEnrollments != null) {
+			for (KeenProgramEnrolment enrolment : programEnrollments) {
+				Parent parent = enrolment.getAthlete().getPrimaryParent();
 				if (parent.getCellPhone() != null) {
 					phone = phone + parent.getCellPhone() + ",";
 				}
@@ -203,16 +188,13 @@ public class MassMessageFragment extends DialogFragment {
 			smsIntent.setType("vnd.android-dir/mms-sms");
 			startActivity(Intent.createChooser(smsIntent, "Send message..."));
 		} else {
-			Toast.makeText(getActivity(),
-					"Can not send sms. The phone number is invalid",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Can not send sms. The phone number is invalid", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	private void setViews(View view) {
 		etMassMessage = (EditText) view.findViewById(R.id.etMassMessage);
-		btnMassMessageDone = (Button) view
-				.findViewById(R.id.btnMassMessageDone);
+		btnMassMessageDone = (Button) view.findViewById(R.id.btnMassMessageDone);
 		tvEmail = (TextView) view.findViewById(R.id.tvEmail);
 		tvSMS = (TextView) view.findViewById(R.id.tvSMS);
 		tvEmail.setEnabled(false);

@@ -79,7 +79,8 @@ public class SessionDAO {
 		SQLiteDatabase db = localDB.getReadableDatabase();
 		SQLiteQueryBuilder sqlBuilder = new SQLiteQueryBuilder();
 		sqlBuilder.setTables(JOINED_TABLES_STRING);
-		Cursor sessionCursor = sqlBuilder.query(db, columnNames, SessionTable.ID_COL_NAME + "=" + id, null, null, null, null, null);
+		Cursor sessionCursor = sqlBuilder.query(db, columnNames, SessionTable.TABLE_NAME + "." + SessionTable.ID_COL_NAME + "=" + id, null, null,
+				null, null, null);
 		if (sessionCursor.getCount() > 0) {
 			sessionCursor.moveToFirst();
 			session = createSessionFromCursor(sessionCursor);
@@ -258,6 +259,7 @@ public class SessionDAO {
 				session.setDate(new DateTime(c.getLong(c.getColumnIndexOrThrow(SessionTable.SESSION_DATE_COL_NAME))));
 
 				KeenProgram program = new KeenProgram();
+				program.setId(c.getLong(c.getColumnIndexOrThrow(SessionTable.PROGRAM_ID_COL_NAME)));
 				program.setRemoteId(c.getLong(c.getColumnIndexOrThrow(ProgramTable.REMOTE_ID_COL_NAME)));
 				program.setName(c.getString(c.getColumnIndexOrThrow(ProgramTable.NAME_COL_NAME)));
 				program.setProgramTimes(c.getString(c.getColumnIndexOrThrow(ProgramTable.TIMES_COL_NAME)));
