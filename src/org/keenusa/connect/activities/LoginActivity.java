@@ -9,34 +9,35 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoginActivity extends Activity {
 
 	private TextView tvProgressUpdates;
+	private Button btnLogin;
+	private EditText etUserName;
+	private EditText etPassword;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
+		etUserName = (EditText) findViewById(R.id.etUserName);
+		etPassword = (EditText) findViewById(R.id.etPassword);
 		tvProgressUpdates = (TextView) findViewById(R.id.tvProgressUpdates);
+		btnLogin = (Button) findViewById(R.id.btnApiLogin);
 
-		Button btnLogin = (Button) findViewById(R.id.btnApiLogin);
 		btnLogin.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				openSessionAthleteCoachList();
-			}
-		});
-
-		Button btnLoginWithDataLoad = (Button) findViewById(R.id.btnLoginWithDataLoad);
-		btnLoginWithDataLoad.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
+				etUserName.setEnabled(false);
+				etPassword.setEnabled(false);
+				btnLogin.setEnabled(false);
+				closeInputFromWindow();
 				new RemoteDataLoader(LoginActivity.this, new DataLoaderResultListener() {
 
 					@Override
@@ -45,13 +46,12 @@ public class LoginActivity extends Activity {
 
 							@Override
 							public void run() {
-								tvProgressUpdates.setVisibility(View.GONE);
+								tvProgressUpdates.setText("");
 
 							}
 
 						});
-						Intent i = new Intent(LoginActivity.this, SessionListActivity.class);
-						startActivity(i);
+						openSessionAthleteCoachList();
 
 					}
 
@@ -61,7 +61,6 @@ public class LoginActivity extends Activity {
 
 							@Override
 							public void run() {
-								tvProgressUpdates.setVisibility(View.VISIBLE);
 								tvProgressUpdates.setText(progressMessage);
 
 							}
@@ -77,6 +76,7 @@ public class LoginActivity extends Activity {
 				}).start();
 			}
 		});
+
 	}
 
 	private void openSessionAthleteCoachList() {
@@ -85,4 +85,7 @@ public class LoginActivity extends Activity {
 		overridePendingTransition(R.anim.right_in, R.anim.left_out);
 	}
 
+	private void closeInputFromWindow() {
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+	}
 }

@@ -43,11 +43,11 @@ public class AtheletListItemAdapter extends ArrayAdapter<Athlete> {
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 
 		if (position == 0 && getCount() == 1) {
-			convertView.setBackgroundResource(R.drawable.single_item_list_background);
+			convertView.setBackgroundResource(R.drawable.list_item_background);
 		} else if (position == 0 && getCount() > 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background_first_item);
+			convertView.setBackgroundResource(R.drawable.list_item_background);
 		} else if (position == getCount() - 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background_last_item);
+			convertView.setBackgroundResource(R.drawable.list_item_background);
 		} else {
 			convertView.setBackgroundResource(R.drawable.list_item_background);
 		}

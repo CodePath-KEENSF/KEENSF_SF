@@ -31,16 +31,16 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
-public class AddCoachToCheckinFragment extends DialogFragment implements CivicoreDataResultListener<Coach>{
+public class AddCoachToCheckinFragment extends DialogFragment implements CivicoreDataResultListener<Coach> {
 
 	public static final String COACH_EXTRA_TAG = "COACH";
-	
+
 	private CoachListItemAdapter adapter;
 	private List<Coach> coachList;
 	private ListView lvCoaches;
 	private EditText etAddCoach;
 
-	private LinearLayout llProgressBar;
+	private LinearLayout llLoadingCoachesIndicator;
 	private boolean bDataLoaded = false;
 	private KeenCivicoreClient client;
 	private ProgressBar progressBar;
@@ -66,13 +66,12 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_coaches_add, container, false);
-		llProgressBar = (LinearLayout) v.findViewById(R.id.llProgressBarCoachesAdd);
+		llLoadingCoachesIndicator = (LinearLayout) v.findViewById(R.id.llLoadingCoachesIndicator);
 		if (!bDataLoaded) {
-			llProgressBar.setVisibility(View.VISIBLE);
+			llLoadingCoachesIndicator.setVisibility(View.VISIBLE);
 			loadProgressBar();
 		}
 
@@ -88,17 +87,16 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 			}
 		});
 
-		etAddCoach = (EditText)v.findViewById(R.id.etAddCoach);
+		etAddCoach = (EditText) v.findViewById(R.id.etAddCoach);
 		etAddCoach.addTextChangedListener(new TextWatcher() {
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 			}
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
+
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 			}
 
 			public void afterTextChanged(Editable arg0) {
-				
+
 				ArrayList<Coach> tempCoachList = new ArrayList<Coach>();
 				int searchTextlength = etAddCoach.getText().length();
 
@@ -120,26 +118,25 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 			}
 
 		});
-		
-		getDialog().getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+		getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		return v;
 	}
-	
+
 	private void loadProgressBar() {
-//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
+		//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
 		try {
 			for (int i = 1; i <= 10; i++) {
-				progressBar.setProgress(i*10);
+				progressBar.setProgress(i * 10);
 				Thread.sleep(500);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public CoachListItemAdapter getAdapter() {
 		return adapter;
 	}
@@ -154,8 +151,8 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 		addAPIData(list);
 		coachList = list;
 		bDataLoaded = true;
-		if (llProgressBar != null) {
-			llProgressBar.setVisibility(View.GONE);
+		if (llLoadingCoachesIndicator != null) {
+			llLoadingCoachesIndicator.setVisibility(View.GONE);
 		}
 	}
 

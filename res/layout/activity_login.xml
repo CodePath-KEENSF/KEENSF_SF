@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="@color/login_details_background_color"
+        android:background="@drawable/login_details_background"
         android:padding="15dp" >
 
         <EditText
@@ -52,28 +52,22 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/etPassword"
             android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
             android:text="@string/log_in_button" />
+
+        <TextView
+            android:id="@+id/tvProgressUpdates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btnApiLogin"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:textColor="@color/main_theme_text_color" />
     </RelativeLayout>
-
-    <Button
-        android:id="@+id/btnLoginWithDataLoad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlLoginDetails"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-        android:text="@string/log_with_data_button" />
-
-    <TextView
-        android:id="@+id/tvProgressUpdates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/rlLoginDetails"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/rlLoginDetails"
-        android:layout_marginBottom="17dp"
-        android:gravity="center"
-        android:textColor="@color/main_theme_text_color" />
 
 </RelativeLayout>

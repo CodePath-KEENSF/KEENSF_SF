@@ -43,6 +43,8 @@
     <string name="action_edit">Edit record</string>
     <string name="button_cancel_text">Cancel</string>
     <string name="button_save_text">Save</string>
+     <string name="add_coach_dialog_title">Add Coach Attendance</string>
+    
 
     <color name="color">#eee9e9</color>
 

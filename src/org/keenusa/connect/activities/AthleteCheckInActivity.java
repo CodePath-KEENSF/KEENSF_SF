@@ -24,6 +24,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class AthleteCheckInActivity extends Activity {
+
+	public static final String ATHLETE_EXTRA_TAG = "ATHLETE_ID";
 	AthleteAttendance athleteAtt;
 	KeenSession session;
 	KeenProgram program;
@@ -90,12 +92,13 @@ public class AthleteCheckInActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent i = new Intent(AthleteCheckInActivity.this, AthleteProfileActivity.class);
+				i.putExtra(ATHLETE_EXTRA_TAG, athleteCheckInAdapter.getItem(position).getId());
 				startActivity(i);
 				overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		finish();
