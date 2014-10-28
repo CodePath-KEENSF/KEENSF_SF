@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/ivSessionBackgroundPic"
         android:layout_width="match_parent"
-        android:layout_height="330dp"
+        android:layout_height="250dp"
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
@@ -22,92 +22,76 @@
         android:background="@color/session_details_background_color" >
 
         <TextView
-            android:id="@+id/tvDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="@string/date_changable"
-            android:textColor="@color/secondary_theme_color"
-            android:textSize="20sp" 
-            android:textStyle="bold"/>
-        
-        <LinearLayout
-	        android:id="@+id/controls"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:background="#7f000000"
-	        android:orientation="vertical"
-	        android:layout_gravity="bottom"/>
-
-        <TextView
             android:id="@+id/tvProgramName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvDate"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="25dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="@string/program_name_changable"
-            android:textColor="@color/main_theme_color"
-            android:textSize="25sp" 
-            android:textStyle="bold"/>
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvProgramType"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvProgramName"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="@string/program_type"
-            android:textColor="@color/secondary_theme_color"
-            android:textStyle="bold" 
-            android:textSize="15dp"/>
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvProgramType"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/date_changable"
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvProgramTimes"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvProgramType"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textStyle="bold"
-            android:textSize="15dp"
+            android:layout_below="@+id/tvDate"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="@string/session_changable"
-            android:textColor="@color/no_data_message_text_color" />
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/tvLocation"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@id/tvProgramName"
+            android:layout_alignParentLeft="true"
+            android:gravity="left"
             android:layout_below="@+id/tvProgramTimes"
             android:layout_marginTop="25dp"
-            android:gravity="center"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/location_changable"
-            android:textColor="@color/no_data_message_text_color"
-            android:textStyle="bold"
-            android:textSize="15sp" />
-        
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="10sp" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/rlParticipantCounts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="15dp"
-        android:paddingTop="5dp"
-        android:orientation="horizontal" >
+        android:layout_below="@+id/rlSessionDetails"
+        android:orientation="horizontal"
+        android:paddingTop="20dp" >
 
         <RelativeLayout
             android:id="@+id/cpbAthlete"
@@ -132,10 +116,9 @@
                 android:layout_alignLeft="@id/cicularProgressBarAthlete"
                 android:layout_alignRight="@id/cicularProgressBarAthlete"
                 android:layout_alignTop="@id/cicularProgressBarAthlete"
-                android:textColor="@color/main_theme_color"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:text="progress" />
+                android:text="progress"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/tvAttAthletesLabel"
@@ -144,14 +127,13 @@
                 android:layout_alignLeft="@id/cicularProgressBarAthlete"
                 android:layout_alignRight="@id/cicularProgressBarAthlete"
                 android:layout_below="@id/cicularProgressBarAthlete"
-                android:textColor="@color/main_theme_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:text="@string/athletes_registered_label" />
+                android:text="@string/athletes_registered_label"
+                android:textColor="@color/secondary_theme_color"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
-        </RelativeLayout>    
-         
         <RelativeLayout
             android:id="@+id/cpbCoach"
             android:layout_width="0dp"
@@ -176,10 +158,9 @@
                 android:layout_alignLeft="@id/cicularProgressBarCoach"
                 android:layout_alignRight="@id/cicularProgressBarCoach"
                 android:layout_alignTop="@+id/cicularProgressBarCoach"
-                android:textColor="@color/main_theme_color"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:text="progress" />
+                android:text="progress"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/tvAttCoachesLabel"
@@ -188,15 +169,12 @@
                 android:layout_alignLeft="@id/cicularProgressBarCoach"
                 android:layout_alignRight="@id/cicularProgressBarCoach"
                 android:layout_below="@id/cicularProgressBarCoach"
-                android:textColor="@color/main_theme_color"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:text="@string/coaches_registered_label" />
+                android:text="@string/coaches_registered_label"
+                android:textColor="@color/secondary_theme_color"
+                android:textStyle="bold" />
         </RelativeLayout>
-
-        
     </LinearLayout>
-    
 
 </RelativeLayout>

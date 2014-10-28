@@ -277,7 +277,7 @@ public class CoachAttendanceDAO {
 						.getColumnIndexOrThrow(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME))));
 
 				Coach coach = new Coach();
-				coach.setId(c.getLong(c.getColumnIndexOrThrow(CoachAttendanceTable.ID_COL_NAME)));
+				coach.setId(c.getLong(c.getColumnIndexOrThrow(CoachAttendanceTable.COACH_ID_COL_NAME)));
 				coach.setRemoteId(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_ID_COL_NAME)));
 				coach.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_CREATED_COL_NAME)));
 				coach.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(CoachTable.REMOTE_UPDATED_COL_NAME)));

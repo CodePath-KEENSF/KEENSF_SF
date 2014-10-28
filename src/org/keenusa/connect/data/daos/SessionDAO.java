@@ -17,6 +17,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
 public class SessionDAO {
 
@@ -36,8 +37,8 @@ public class SessionDAO {
 			SessionTable.NUMBER_OF_RETURNING_COACHES_NEEDED_COL_NAME, SessionTable.OPEN_FOR_REGISTRATION_FLAG_COL_NAME,
 			SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME, SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME,
 			SessionTable.NUMBER_OF_ATHLETES_REGISTERED_COL_NAME, SessionTable.NUMBER_OF_COACHES_REGISTERED_COL_NAME, ProgramTable.NAME_COL_NAME,
-			ProgramTable.TIMES_COL_NAME, ProgramTable.REMOTE_ID_COL_NAME, ProgramTable.ADDRESS_ONE_COL_NAME, ProgramTable.ADDRESS_TWO_COL_NAME,
-			ProgramTable.CITY_COL_NAME, ProgramTable.STATE_COL_NAME, ProgramTable.ZIP_CODE_COL_NAME };
+			ProgramTable.TIMES_COL_NAME, ProgramTable.TYPE_COL_NAME, ProgramTable.REMOTE_ID_COL_NAME, ProgramTable.ADDRESS_ONE_COL_NAME,
+			ProgramTable.ADDRESS_TWO_COL_NAME, ProgramTable.CITY_COL_NAME, ProgramTable.STATE_COL_NAME, ProgramTable.ZIP_CODE_COL_NAME };
 
 	public SessionDAO(Context context) {
 		localDB = KeenConnectDB.getKeenConnectDB(context);
@@ -241,6 +242,7 @@ public class SessionDAO {
 				session.setRemoteCreateTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_CREATED_COL_NAME)));
 				session.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(SessionTable.REMOTE_UPDATED_COL_NAME)));
 			} catch (IllegalArgumentException iax) {
+				Log.e(SessionDAO.class.getSimpleName(), iax.toString());
 				session = null;
 			}
 		}
@@ -263,6 +265,11 @@ public class SessionDAO {
 				program.setRemoteId(c.getLong(c.getColumnIndexOrThrow(ProgramTable.REMOTE_ID_COL_NAME)));
 				program.setName(c.getString(c.getColumnIndexOrThrow(ProgramTable.NAME_COL_NAME)));
 				program.setProgramTimes(c.getString(c.getColumnIndexOrThrow(ProgramTable.TIMES_COL_NAME)));
+				String gpt = c.getString(c.getColumnIndexOrThrow(ProgramTable.TYPE_COL_NAME));
+				if (gpt != null) {
+					program.setGeneralProgramType((KeenProgram.GeneralProgramType.valueOf(c.getString(c
+							.getColumnIndexOrThrow(ProgramTable.TYPE_COL_NAME)))));
+				}
 				Location location = new Location();
 				location.setAddress1(c.getString(c.getColumnIndexOrThrow(ProgramTable.ADDRESS_ONE_COL_NAME)));
 				location.setAddress2(c.getString(c.getColumnIndexOrThrow(ProgramTable.ADDRESS_TWO_COL_NAME)));
@@ -281,6 +288,7 @@ public class SessionDAO {
 				session.setNumberOfCoachesRegistered(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_COACHES_REGISTERED_COL_NAME)));
 				session.setNumberOfCoachesCheckedIn(c.getInt(c.getColumnIndexOrThrow(SessionTable.NUMBER_OF_COACHES_CHECKED_IN_COL_NAME)));
 			} catch (IllegalArgumentException iax) {
+				Log.e(SessionDAO.class.getSimpleName(), iax.toString());
 				session = null;
 			}
 		}

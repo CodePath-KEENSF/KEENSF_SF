@@ -113,7 +113,7 @@ public class StickySessionListItemAdapter extends ArrayAdapter<KeenSession> impl
 				CheckinMenuActions.editMode = true;
 				CheckinMenuActions.sendMassMessages = false;
 				Intent checkinIntent = new Intent(getContext(), AthleteCoachCheckinActivity.class);
-				checkinIntent.putExtra("session", session);
+				checkinIntent.putExtra("SESSION_ID", session.getId());
 				((Activity) getContext()).startActivityForResult(checkinIntent, IntentCode.REQUEST_CODE);
 				((Activity) getContext()).overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}

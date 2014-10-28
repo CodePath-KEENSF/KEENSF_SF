@@ -7,9 +7,9 @@ import android.widget.ImageView;
 public class SetSessionImage {
 
 	public static void changeBackgroundImage(String name, ImageView image) {
-		
+
 		image.setImageResource(0);
-		
+
 		if (name.equals("Sports 1")) {
 			image.setImageResource(R.drawable.sports1);
 		} else if (name.equals("Sports 2")) {
@@ -32,8 +32,7 @@ public class SetSessionImage {
 		} else if (name.equals("KEENGala: Pre-Event") || name.equals("KEENGala - Event Volunteer Shift 1")
 				|| name.equals("KEENGala - Event Volunteer Shift 2")) {
 			image.setImageResource(R.drawable.holidayparty);
-		}
-		else{
+		} else {
 			image.setImageResource(R.drawable.sports1);
 		}
 	}

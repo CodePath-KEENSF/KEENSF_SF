@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
 public class ProgramEnrollmentDAO {
 
@@ -322,6 +323,7 @@ public class ProgramEnrollmentDAO {
 				enrolment.setRemoteUpdatedTimestamp(c.getLong(c.getColumnIndexOrThrow(ProgramEnrollmentTable.REMOTE_UPDATED_COL_NAME)));
 
 			} catch (IllegalArgumentException iax) {
+				Log.e(ProgramEnrollmentDAO.class.getSimpleName(), iax.toString());
 				enrolment = null;
 			}
 		}

@@ -11,7 +11,7 @@
     <color name="tag1">#00000000</color>
     <color name="tag2">#00000000</color>
     <color name="session_details_background_color">#88000000</color>
-    <color name="login_details_background_color">#88ffffff</color>
+    <color name="login_details_background_color">#887170B3</color>
     <color name="session_background_color">#fffafafa</color>
     <color name="session_list_separator_color">#FFE0E0E0</color>
     <color name="session_border_color">#ff808080</color>

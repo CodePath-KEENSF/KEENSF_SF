@@ -247,7 +247,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 			CheckinMenuActions.editMode = false;
 			CheckinMenuActions.sendMassMessages = true;
 			Intent checkinIntent = new Intent(getBaseContext(), AthleteCoachCheckinActivity.class);
-			checkinIntent.putExtra("session", session);
+			checkinIntent.putExtra("SESSION_ID", session.getId());
 			startActivity(checkinIntent);
 			overridePendingTransition(R.anim.right_in, R.anim.left_out);
 

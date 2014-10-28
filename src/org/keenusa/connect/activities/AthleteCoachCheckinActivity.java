@@ -1,10 +1,19 @@
 package org.keenusa.connect.activities;
 
+import java.util.List;
+
 import org.keenusa.connect.R;
+import org.keenusa.connect.data.daos.AthleteAttendanceDAO;
+import org.keenusa.connect.data.daos.CoachAttendanceDAO;
+import org.keenusa.connect.data.daos.ProgramEnrollmentDAO;
+import org.keenusa.connect.data.daos.SessionDAO;
 import org.keenusa.connect.fragments.AddCoachToCheckinFragment.AddCoachDialogListener;
 import org.keenusa.connect.fragments.AthleteCheckinFragment;
 import org.keenusa.connect.fragments.CoachCheckinFragment;
+import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.Coach;
+import org.keenusa.connect.models.CoachAttendance;
+import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.utilities.CheckinMenuActions;
@@ -15,6 +24,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -46,12 +56,12 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		client = new KeenCivicoreClient(this);
 		getData();
-		setupFragmentPager();
-		setupTabs();
+
 	}
 
 	private void getData() {
-		session = (KeenSession) getIntent().getSerializableExtra("session");
+		long sessionId = getIntent().getLongExtra("SESSION_ID", 0);
+		new LoadSessionDataTask().execute(sessionId);
 	}
 
 	private void setupTabs() {
@@ -220,12 +230,48 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	public void onFinishAddDialog(Coach coach) {
 		coachCheckinFragment.addCoach(coach);
 	}
-	
-	public void refreshCoachAttendance(){
+
+	public void refreshCoachAttendance() {
 		coachCheckinFragment.refreshAttendance();
 	}
 
-	public void refreshAthleteAttendance(){
+	public void refreshAthleteAttendance() {
 		athleteCheckinFragment.refreshAttendance();
+	}
+
+	private class LoadSessionDataTask extends AsyncTask<Long, Void, KeenSession> {
+
+		@Override
+		protected void onPreExecute() {
+
+		}
+
+		@Override
+		protected KeenSession doInBackground(Long... params) {
+			SessionDAO sessionDAO = new SessionDAO(AthleteCoachCheckinActivity.this);
+			KeenSession session = sessionDAO.getSessionById(params[0]);
+
+			ProgramEnrollmentDAO peDAO = new ProgramEnrollmentDAO(AthleteCoachCheckinActivity.this);
+			List<KeenProgramEnrolment> enrolments = peDAO.getKeenProgramEnrollments(session.getProgram().getId());
+			session.getProgram().setProgramEnrolments(enrolments);
+
+			AthleteAttendanceDAO aaDAO = new AthleteAttendanceDAO(AthleteCoachCheckinActivity.this);
+			List<AthleteAttendance> aAttehndances = aaDAO.getAthleteAttendancesBySessionId(session.getId());
+			session.setAthleteAttendance(aAttehndances);
+
+			CoachAttendanceDAO caDAO = new CoachAttendanceDAO(AthleteCoachCheckinActivity.this);
+			List<CoachAttendance> cAttehndances = caDAO.getCoachAttendancesBySessionId(session.getId());
+			session.setCoachAttendance(cAttehndances);
+
+			return session;
+		}
+
+		@Override
+		protected void onPostExecute(KeenSession dbSession) {
+			session = dbSession;
+			setupFragmentPager();
+			setupTabs();
+		}
+
 	}
 }

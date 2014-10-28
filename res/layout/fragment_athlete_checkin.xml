@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:divider="@null" >
 
         <LinearLayout
             android:id="@+id/llProgressBarAthleteCheckin"

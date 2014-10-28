@@ -46,6 +46,7 @@ public class SessionsFragment extends Fragment {
 
 	public String dummySearchString;
 	private SearchView searchView;
+	private boolean isFirstView = true;
 
 	private List<KeenSession> sessionList;
 	//	private ArrayList<KeenProgram> programList;
@@ -753,7 +754,10 @@ public class SessionsFragment extends Fragment {
 			expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessions);
 			expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
 			setSearchListPosition(sessionList);
-			setSessionListToCurrentDate();
+			if (isFirstView) {
+				isFirstView = false;
+				setSessionListToCurrentDate();
+			}
 		}
 
 	}
