@@ -74,7 +74,8 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/tvCoachName"
             android:orientation="horizontal"
-            android:paddingLeft="5dp" >
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
 
             <TextView
                 android:id="@+id/tvCoachAttended"

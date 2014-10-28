@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
 import org.keenusa.connect.data.KeenConnectDB;
 import org.keenusa.connect.data.tables.AthleteAttendanceTable;
 import org.keenusa.connect.data.tables.AthleteTable;
-import org.keenusa.connect.data.tables.ProgramTable;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.ContactPerson;
@@ -103,6 +102,20 @@ public class AthleteAttendanceDAO {
 		return attendance;
 	}
 
+	public boolean updateAthleteAttendanceStatus(AthleteAttendance attendance) {
+		boolean transactionStatus = false;
+		ContentValues values = new ContentValues();
+		values.put(AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME, attendance.getAttendanceValue().toString());
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		db.update(AthleteAttendanceTable.TABLE_NAME, values, AthleteAttendanceTable.ID_COL_NAME + "=" + attendance.getId(), null);
+		db.setTransactionSuccessful();
+		transactionStatus = true;
+		db.endTransaction();
+		return transactionStatus;
+	}
+
+	// should be enforcing uniqueness of session -athlete combination - no duplicate attendances
 	public long saveNewAthleteAttendance(AthleteAttendance attendance) {
 		long attendanceId = 0;
 
@@ -240,7 +253,7 @@ public class AthleteAttendanceDAO {
 
 		SQLiteDatabase db = localDB.getWritableDatabase();
 		db.beginTransaction();
-		db.update(ProgramTable.TABLE_NAME, values, ProgramTable.ID_COL_NAME + "=" + attendance.getId(), null);
+		db.update(AthleteAttendanceTable.TABLE_NAME, values, AthleteAttendanceTable.ID_COL_NAME + "=" + attendance.getId(), null);
 		db.setTransactionSuccessful();
 		transactionStatus = true;
 		db.endTransaction();

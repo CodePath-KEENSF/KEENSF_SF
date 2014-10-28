@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.AthleteCoachCheckinActivity;
+import org.keenusa.connect.helpers.PersonNameFormatter;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
@@ -14,7 +15,6 @@ import org.keenusa.connect.utilities.CheckinMenuActions;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class AthleteStickyHeaderCheckInAdapter extends
-		ArrayAdapter<AthleteAttendance> implements StickyListHeadersAdapter {
+public class AthleteStickyHeaderCheckInAdapter extends ArrayAdapter<AthleteAttendance> implements StickyListHeadersAdapter {
 
 	private KeenCivicoreClient client;
 	private List<AthleteAttendance> athleteAttList;
@@ -46,8 +45,7 @@ public class AthleteStickyHeaderCheckInAdapter extends
 		TextView tvAttendanceValue;
 	}
 
-	public AthleteStickyHeaderCheckInAdapter(Context context,
-			List<AthleteAttendance> athleteAttList) {
+	public AthleteStickyHeaderCheckInAdapter(Context context, List<AthleteAttendance> athleteAttList) {
 		super(context, 0, athleteAttList);
 		client = new KeenCivicoreClient(context);
 		this.athleteAttList = athleteAttList;
@@ -61,22 +59,15 @@ public class AthleteStickyHeaderCheckInAdapter extends
 
 		ViewHolder viewHolder;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(
-					R.layout.athlete_checkin_list_item, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.athlete_checkin_list_item, parent, false);
 
 			viewHolder = new ViewHolder();
-			viewHolder.ivAthleteProfilePic = (ImageView) convertView
-					.findViewById(R.id.ivAthleteProfilePic);
-			viewHolder.tvAthleteName = (TextView) convertView
-					.findViewById(R.id.tvAthleteName);
-			viewHolder.tvAthleteAttended = (TextView) convertView
-					.findViewById(R.id.tvAthleteAttended);
-			viewHolder.tvAthleteAbsent = (TextView) convertView
-					.findViewById(R.id.tvAthleteAbsent);
-			viewHolder.tvAthleteCancelled = (TextView) convertView
-					.findViewById(R.id.tvAthleteCancelled);
-			viewHolder.llAthleteAttendance = (LinearLayout) convertView
-					.findViewById(R.id.llAthleteAttendance);
+			viewHolder.ivAthleteProfilePic = (ImageView) convertView.findViewById(R.id.ivAthleteProfilePic);
+			viewHolder.tvAthleteName = (TextView) convertView.findViewById(R.id.tvAthleteName);
+			viewHolder.tvAthleteAttended = (TextView) convertView.findViewById(R.id.tvAthleteAttended);
+			viewHolder.tvAthleteAbsent = (TextView) convertView.findViewById(R.id.tvAthleteAbsent);
+			viewHolder.tvAthleteCancelled = (TextView) convertView.findViewById(R.id.tvAthleteCancelled);
+			viewHolder.llAthleteAttendance = (LinearLayout) convertView.findViewById(R.id.llAthleteAttendance);
 
 			convertView.setTag(viewHolder);
 		} else {
@@ -84,14 +75,11 @@ public class AthleteStickyHeaderCheckInAdapter extends
 		}
 
 		if (position == 0 && getCount() == 1) {
-			convertView
-					.setBackgroundResource(R.drawable.single_item_list_background);
+			convertView.setBackgroundResource(R.drawable.list_item_background);
 		} else if (position == 0 && getCount() > 1) {
-			convertView
-					.setBackgroundResource(R.drawable.list_item_background_first_item);
+			convertView.setBackgroundResource(R.drawable.list_item_background);
 		} else if (position == getCount() - 1) {
-			convertView
-					.setBackgroundResource(R.drawable.list_item_background_last_item);
+			convertView.setBackgroundResource(R.drawable.list_item_background);
 		} else {
 			convertView.setBackgroundResource(R.drawable.list_item_background);
 		}
@@ -104,18 +92,14 @@ public class AthleteStickyHeaderCheckInAdapter extends
 
 				viewHolder.ivAthleteProfilePic.setImageResource(0);
 				if (athlete.getGender() == ContactPerson.Gender.FEMALE) {
-					viewHolder.ivAthleteProfilePic
-							.setImageResource(R.drawable.ic_user_photos_f);
+					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_f);
 				} else if (athlete.getGender() == ContactPerson.Gender.MALE) {
-					viewHolder.ivAthleteProfilePic
-							.setImageResource(R.drawable.ic_user_photos_m);
+					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_m);
 				} else {
-					viewHolder.ivAthleteProfilePic
-							.setImageResource(R.drawable.ic_user_photos_u);
+					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_u);
 				}
 
-				viewHolder.tvAthleteName.setText(athleteAttendance.getAthlete()
-						.getFirstLastName());
+				viewHolder.tvAthleteName.setText(PersonNameFormatter.getFormatedNameString(athleteAttendance.getAthlete().getFirstLastName()));
 			}
 
 			if (CheckinMenuActions.editMode == false) {
@@ -123,51 +107,38 @@ public class AthleteStickyHeaderCheckInAdapter extends
 				viewHolder.tvAthleteAbsent.setVisibility(View.GONE);
 				viewHolder.tvAthleteCancelled.setVisibility(View.GONE);
 				viewHolder.llAthleteAttendance.setVisibility(View.GONE);
-				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewHolder.tvAthleteName
-						.getLayoutParams();
+				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewHolder.tvAthleteName.getLayoutParams();
 				params.addRule(RelativeLayout.ALIGN_TOP, 0);
 				viewHolder.tvAthleteName.setGravity(Gravity.CENTER_VERTICAL);
 
 				return convertView;
 			}
 
-			viewHolder.tvAthleteAttended
-					.setTag(R.color.tag1, athleteAttendance);
+			viewHolder.tvAthleteAttended.setTag(R.color.tag1, athleteAttendance);
 			viewHolder.tvAthleteAttended.setTag(R.color.tag2, viewHolder);
 
 			viewHolder.tvAthleteAbsent.setTag(R.color.tag1, athleteAttendance);
 			viewHolder.tvAthleteAbsent.setTag(R.color.tag2, viewHolder);
 
-			viewHolder.tvAthleteCancelled.setTag(R.color.tag1,
-					athleteAttendance);
+			viewHolder.tvAthleteCancelled.setTag(R.color.tag1, athleteAttendance);
 			viewHolder.tvAthleteCancelled.setTag(R.color.tag2, viewHolder);
 
-			viewHolder.tvAthleteAttended.setTextColor(getContext()
-					.getResources().getColor(android.R.color.darker_gray));
+			viewHolder.tvAthleteAttended.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
-			viewHolder.tvAthleteAbsent.setTextColor(getContext().getResources()
-					.getColor(android.R.color.darker_gray));
+			viewHolder.tvAthleteAbsent.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
-			viewHolder.tvAthleteCancelled.setTextColor(getContext()
-					.getResources().getColor(android.R.color.darker_gray));
+			viewHolder.tvAthleteCancelled.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
-			AttendanceValue attendanceValue = athleteAttendance
-					.getAttendanceValue();
+			AttendanceValue attendanceValue = athleteAttendance.getAttendanceValue();
 
 			if (attendanceValue == AthleteAttendance.AttendanceValue.ATTENDED) {
-				viewHolder.tvAthleteAttended.setTextColor(getContext()
-						.getResources().getColor(
-								android.R.color.holo_green_dark));
+				viewHolder.tvAthleteAttended.setTextColor(getContext().getResources().getColor(android.R.color.holo_green_dark));
 				viewHolder.tvAthleteAttended.setTypeface(null, Typeface.BOLD);
 			} else if (attendanceValue == AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW) {
-				viewHolder.tvAthleteAbsent
-						.setTextColor(getContext().getResources().getColor(
-								android.R.color.holo_red_dark));
+				viewHolder.tvAthleteAbsent.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
 				viewHolder.tvAthleteAbsent.setTypeface(null, Typeface.BOLD);
 			} else if (attendanceValue == AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE) {
-				viewHolder.tvAthleteCancelled.setTextColor(getContext()
-						.getResources().getColor(
-								android.R.color.holo_orange_dark));
+				viewHolder.tvAthleteCancelled.setTextColor(getContext().getResources().getColor(android.R.color.holo_orange_dark));
 				viewHolder.tvAthleteCancelled.setTypeface(null, Typeface.BOLD);
 			}
 		}
@@ -187,28 +158,21 @@ public class AthleteStickyHeaderCheckInAdapter extends
 					return;
 				}
 				TextView tvAthleteAttended = (TextView) v;
-				tvAthleteAttended.setTextColor(getContext().getResources()
-						.getColor(android.R.color.holo_green_dark));
+				tvAthleteAttended.setTextColor(getContext().getResources().getColor(android.R.color.holo_green_dark));
 				tvAthleteAttended.setTypeface(null, Typeface.BOLD);
 
 				ViewHolder viewHolder = (ViewHolder) v.getTag(R.color.tag2);
 
-				viewHolder.tvAthleteAbsent.setTextColor(getContext()
-						.getResources().getColor(android.R.color.darker_gray));
-				viewHolder.tvAthleteCancelled.setTextColor(getContext()
-						.getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvAthleteAbsent.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvAthleteCancelled.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
 				viewHolder.tvAthleteAbsent.setTypeface(null, Typeface.NORMAL);
-				viewHolder.tvAthleteCancelled
-						.setTypeface(null, Typeface.NORMAL);
+				viewHolder.tvAthleteCancelled.setTypeface(null, Typeface.NORMAL);
 
-				AthleteAttendance athleteAttendance = (AthleteAttendance) v
-						.getTag(R.color.tag1);
-				athleteAttendance
-						.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
+				AthleteAttendance athleteAttendance = (AthleteAttendance) v.getTag(R.color.tag1);
+				athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.ATTENDED);
 
-				((AthleteCoachCheckinActivity) context)
-						.refreshAthleteAttendance();
+				((AthleteCoachCheckinActivity) context).refreshAthleteAttendance();
 			}
 		});
 
@@ -220,28 +184,21 @@ public class AthleteStickyHeaderCheckInAdapter extends
 					return;
 				}
 				TextView tvAthleteAbsent = (TextView) v;
-				tvAthleteAbsent.setTextColor(getContext().getResources()
-						.getColor(android.R.color.holo_red_dark));
+				tvAthleteAbsent.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
 				tvAthleteAbsent.setTypeface(null, Typeface.BOLD);
 
 				ViewHolder viewHolder = (ViewHolder) v.getTag(R.color.tag2);
 
-				viewHolder.tvAthleteAttended.setTextColor(getContext()
-						.getResources().getColor(android.R.color.darker_gray));
-				viewHolder.tvAthleteCancelled.setTextColor(getContext()
-						.getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvAthleteAttended.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvAthleteCancelled.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
 				viewHolder.tvAthleteAttended.setTypeface(null, Typeface.NORMAL);
-				viewHolder.tvAthleteCancelled
-						.setTypeface(null, Typeface.NORMAL);
+				viewHolder.tvAthleteCancelled.setTypeface(null, Typeface.NORMAL);
 
-				AthleteAttendance athleteAttendance = (AthleteAttendance) v
-						.getTag(R.color.tag1);
-				athleteAttendance
-						.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
+				AthleteAttendance athleteAttendance = (AthleteAttendance) v.getTag(R.color.tag1);
+				athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.NO_CALL_NO_SHOW);
 
-				((AthleteCoachCheckinActivity) context)
-						.refreshAthleteAttendance();
+				((AthleteCoachCheckinActivity) context).refreshAthleteAttendance();
 			}
 		});
 
@@ -254,27 +211,21 @@ public class AthleteStickyHeaderCheckInAdapter extends
 				}
 
 				TextView tvAthleteCancelled = (TextView) v;
-				tvAthleteCancelled.setTextColor(getContext().getResources()
-						.getColor(android.R.color.holo_orange_dark));
+				tvAthleteCancelled.setTextColor(getContext().getResources().getColor(android.R.color.holo_orange_dark));
 				tvAthleteCancelled.setTypeface(null, Typeface.BOLD);
 
 				ViewHolder viewHolder = (ViewHolder) v.getTag(R.color.tag2);
 
-				viewHolder.tvAthleteAttended.setTextColor(getContext()
-						.getResources().getColor(android.R.color.darker_gray));
-				viewHolder.tvAthleteAbsent.setTextColor(getContext()
-						.getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvAthleteAttended.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
+				viewHolder.tvAthleteAbsent.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
 				viewHolder.tvAthleteAttended.setTypeface(null, Typeface.NORMAL);
 				viewHolder.tvAthleteAbsent.setTypeface(null, Typeface.NORMAL);
 
-				AthleteAttendance athleteAttendance = (AthleteAttendance) v
-						.getTag(R.color.tag1);
-				athleteAttendance
-						.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
+				AthleteAttendance athleteAttendance = (AthleteAttendance) v.getTag(R.color.tag1);
+				athleteAttendance.setAttendanceValue(AthleteAttendance.AttendanceValue.CALLED_IN_ABSENCE);
 
-				((AthleteCoachCheckinActivity) context)
-						.refreshAthleteAttendance();
+				((AthleteCoachCheckinActivity) context).refreshAthleteAttendance();
 			}
 		});
 	}
@@ -285,12 +236,10 @@ public class AthleteStickyHeaderCheckInAdapter extends
 
 		HeaderViewHolder headerViewHolder;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(
-					R.layout.attendance_header, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.attendance_header, parent, false);
 
 			headerViewHolder = new HeaderViewHolder();
-			headerViewHolder.tvAttendanceValue = (TextView) convertView
-					.findViewById(R.id.tvAttendanceValue);
+			headerViewHolder.tvAttendanceValue = (TextView) convertView.findViewById(R.id.tvAttendanceValue);
 
 			convertView.setTag(headerViewHolder);
 		} else {
@@ -307,8 +256,8 @@ public class AthleteStickyHeaderCheckInAdapter extends
 			} else {
 				headerViewHolder.tvAttendanceValue.setText("Registered");
 			}
-//			Log.d("temp", "att: " + athleteAttendance);
-//			Log.d("temp", "att: " + headerViewHolder.tvAttendanceValue.getText());
+			//			Log.d("temp", "att: " + athleteAttendance);
+			//			Log.d("temp", "att: " + headerViewHolder.tvAttendanceValue.getText());
 		}
 		// TODO Auto-generated method stub
 		return convertView;

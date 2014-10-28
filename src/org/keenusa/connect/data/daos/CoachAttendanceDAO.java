@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
 import org.keenusa.connect.data.KeenConnectDB;
 import org.keenusa.connect.data.tables.CoachAttendanceTable;
 import org.keenusa.connect.data.tables.CoachTable;
-import org.keenusa.connect.data.tables.ProgramTable;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.ContactPerson;
@@ -101,6 +100,20 @@ public class CoachAttendanceDAO {
 		return attendance;
 	}
 
+	public boolean updateCoachAttendanceStatus(CoachAttendance attendance) {
+		boolean transactionStatus = false;
+		ContentValues values = new ContentValues();
+		values.put(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME, attendance.getAttendanceValue().toString());
+		SQLiteDatabase db = localDB.getWritableDatabase();
+		db.beginTransaction();
+		db.update(CoachAttendanceTable.TABLE_NAME, values, CoachAttendanceTable.ID_COL_NAME + "=" + attendance.getId(), null);
+		db.setTransactionSuccessful();
+		transactionStatus = true;
+		db.endTransaction();
+		return transactionStatus;
+	}
+
+	// should be enforcing uniqueness of session - coach combination - no duplicate attendances
 	public long saveNewCoachAttendance(CoachAttendance attendance) {
 		long attendanceId = 0;
 
@@ -239,7 +252,7 @@ public class CoachAttendanceDAO {
 		values.put(CoachAttendanceTable.ATTENDANCE_VALUE_COL_NAME, attendance.getAttendanceValue().toString());
 		SQLiteDatabase db = localDB.getWritableDatabase();
 		db.beginTransaction();
-		db.update(ProgramTable.TABLE_NAME, values, ProgramTable.ID_COL_NAME + "=" + attendance.getId(), null);
+		db.update(CoachAttendanceTable.TABLE_NAME, values, CoachAttendanceTable.ID_COL_NAME + "=" + attendance.getId(), null);
 		db.setTransactionSuccessful();
 		transactionStatus = true;
 		db.endTransaction();
