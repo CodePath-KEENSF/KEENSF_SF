@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -47,6 +48,7 @@ public class SessionsFragment extends Fragment {
 	public String dummySearchString;
 	private SearchView searchView;
 	private boolean isFirstView = true;
+	private ProgressBar progressBar;
 
 	private List<KeenSession> sessionList;
 	//	private ArrayList<KeenProgram> programList;
@@ -735,6 +737,7 @@ public class SessionsFragment extends Fragment {
 		protected void onPreExecute() {
 			if (llLoadingSessionsIndicator != null) {
 				llLoadingSessionsIndicator.setVisibility(View.VISIBLE);
+				loadProgressBar();
 			}
 		}
 
@@ -762,6 +765,16 @@ public class SessionsFragment extends Fragment {
 
 	}
 
+	private void loadProgressBar() {
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void onResume() {
 		new LoadSessionListDataTask().execute();
