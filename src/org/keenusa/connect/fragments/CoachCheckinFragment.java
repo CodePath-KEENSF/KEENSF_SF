@@ -8,6 +8,9 @@ import java.util.WeakHashMap;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.CoachProfileActivity;
 import org.keenusa.connect.adapters.CoachStickyHeaderCheckInAdapter;
+import org.keenusa.connect.adapters.StickySessionListItemAdapter;
+import org.keenusa.connect.data.daos.CoachAttendanceDAO;
+import org.keenusa.connect.data.daos.SessionDAO;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.CoachAttendance.AttendanceValue;
@@ -28,6 +31,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -345,48 +349,59 @@ public class CoachCheckinFragment extends Fragment {
 		}
 		Collections.sort(coachAttendanceList, new CoachAttComparator());
 		Collections.sort(coachAttendanceListOriginal, new CoachAttComparator());
+		Toast.makeText(getActivity(), "Coach Attendance Posted!", Toast.LENGTH_SHORT).show();
 	}
 
-	public void updateRecord(CoachAttendance coach) {
-		PostCheckinUpdate.done++;
-		client.updateCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
+//	public void updateRecord(CoachAttendance coach) {
+//		PostCheckinUpdate.done++;
+//		client.updateCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
+//
+//			@Override
+//			public void onRecordUpdateResult(CoachAttendance updatedCoachAtt) {
+//				PostCheckinUpdate.done--;
+//				if (PostCheckinUpdate.done == 0) {
+//					DebugInfo.showToast(getActivity(), "Attendance Posted!");
+//				}
+//				Log.d("temp", "attendance updated");
+//			}
+//
+//			@Override
+//			public void onRecordUpdateError() {
+//				Log.d("temp", "attendance update error");
+//
+//			}
+//		});
+//	}
 
-			@Override
-			public void onRecordUpdateResult(CoachAttendance updatedCoachAtt) {
-				PostCheckinUpdate.done--;
-				if (PostCheckinUpdate.done == 0) {
-					DebugInfo.showToast(getActivity(), "Attendance Posted!");
-				}
-				Log.d("temp", "attendance updated");
-			}
-
-			@Override
-			public void onRecordUpdateError() {
-				Log.d("temp", "attendance update error");
-
-			}
-		});
+	public void updateRecord(CoachAttendance coach){
+		CoachAttendanceDAO coachAttendanceDAO = new CoachAttendanceDAO(getActivity()); 
+		coachAttendanceDAO.updateCoachAttendanceStatus(coach);
 	}
 
+//	public void addRecord(CoachAttendance coach) {
+//		PostCheckinUpdate.done++;
+//		client.insertNewCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
+//
+//			@Override
+//			public void onRecordUpdateResult(CoachAttendance object) {
+//				PostCheckinUpdate.done--;
+//				if (PostCheckinUpdate.done == 0) {
+//					DebugInfo.showToast(getActivity(), "Attendance Posted!");
+//				}
+//				Log.d("temp", "attendance added");
+//			}
+//
+//			@Override
+//			public void onRecordUpdateError() {
+//				Log.d("temp", "attendance add error");
+//
+//			}
+//		});
+//	}
+	
 	public void addRecord(CoachAttendance coach) {
-		PostCheckinUpdate.done++;
-		client.insertNewCoachAttendanceRecord(coach, new CivicoreUpdateDataResultListener<CoachAttendance>() {
-
-			@Override
-			public void onRecordUpdateResult(CoachAttendance object) {
-				PostCheckinUpdate.done--;
-				if (PostCheckinUpdate.done == 0) {
-					DebugInfo.showToast(getActivity(), "Attendance Posted!");
-				}
-				Log.d("temp", "attendance added");
-			}
-
-			@Override
-			public void onRecordUpdateError() {
-				Log.d("temp", "attendance add error");
-
-			}
-		});
+		CoachAttendanceDAO coachAttendanceDAO = new CoachAttendanceDAO(getActivity()); 
+		coachAttendanceDAO.saveNewCoachAttendance(coach);
 	}
 
 	public void addCoach(Coach coach) {
@@ -406,6 +421,43 @@ public class CoachCheckinFragment extends Fragment {
 		Collections.sort(coachAttendanceList, new CoachAttComparator());
 		// coachCheckInAdapter.notifyDataSetChanged();
 	}
+
+//	private class UpdateCoachAttendanceTask extends AsyncTask<CoachAttendance, Void, Void> {
+//
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//			if (llLoadingSessionsIndicator != null) {
+//				llLoadingSessionsIndicator.setVisibility(View.VISIBLE);
+//				loadProgressBar();
+//			}
+//		}
+//
+//		@Override
+//		protected Void doInBackground(CoachAttendance... coachAtt) {
+//			CoachAttendanceDAO coachAttendanceDAO = new CoachAttendanceDAO(getActivity()); 
+//			coachAttendanceDAO.updateCoachAttendanceStatus(coachAtt);
+//			List<KeenSession> sessions = sessionDAO.getKeenSessionList();
+//			return;
+//			
+//		}
+//
+//		@Override
+//		protected void onPostExecute(List<KeenSession> sessions) {
+//			if (llLoadingSessionsIndicator != null) {
+//				llLoadingSessionsIndicator.setVisibility(View.GONE);
+//			}
+//			sessionList = sessions;
+//			expandableStickySessionListAdapter = new StickySessionListItemAdapter(getActivity(), sessions);
+//			expandableStickySessionListView.setAdapter(expandableStickySessionListAdapter);
+//			setSearchListPosition(sessionList);
+//			if (isFirstView) {
+//				isFirstView = false;
+//				setSessionListToCurrentDate();
+//			}
+//		}
+//
+//	}
 
 	public void refreshAttendance() {
 		Collections.sort(coachAttendanceList, new CoachAttComparator());
@@ -471,5 +523,6 @@ public class CoachCheckinFragment extends Fragment {
 			animator.start();
 		}
 	}
+	
 
 }

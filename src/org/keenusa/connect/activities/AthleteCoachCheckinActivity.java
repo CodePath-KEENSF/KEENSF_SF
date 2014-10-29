@@ -16,6 +16,7 @@ import org.keenusa.connect.models.CoachAttendance;
 import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
+import org.keenusa.connect.utilities.CheckinEditMode;
 import org.keenusa.connect.utilities.CheckinMenuActions;
 import org.keenusa.connect.utilities.IntentCode;
 import org.keenusa.connect.utilities.PostCheckinUpdate;
@@ -164,12 +165,13 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	}
 
 	public boolean onPrepareOptionsMenu(Menu menu) {
-//		if (CheckinMenuActions.editMode == true) {
-//			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
-//			miSaveCheckin.setVisible(true);
-//
-//			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
-//			//			miEditCheckin.setVisible(false);
+		if (CheckinMenuActions.editMode == true) {
+			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
+			miSaveCheckin.setVisible(true);
+		}
+
+			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+			//			miEditCheckin.setVisible(false);
 //		} else {
 //			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
 //			//			miEditCheckin.setVisible(true);
@@ -198,7 +200,13 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 			//		invalidateOptionsMenu();
 			postAttendance();
 			return true; 
-		} else */ if (item.getItemId() == android.R.id.home) {
+		} else */ 
+		if (item.getItemId() == R.id.miSaveCheckin) {
+			CheckinEditMode.editMode = false;
+			invalidateOptionsMenu();
+			postAttendance();
+			return true;
+		}else if (item.getItemId() == android.R.id.home) {
 			UpdateSession();
 			overridePendingTransition(R.anim.left_in, R.anim.right_out);
 			return true;

@@ -188,7 +188,7 @@ public class CoachCheckInAdapterAllAtt extends ArrayAdapter<CoachAttendance> {
 				viewHolder.tvCoachNCNS.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
 				CoachAttendance coachAttendance = (CoachAttendance) v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.NO_CALL_NO_SHOW);
 			}
 		});
 
@@ -211,7 +211,7 @@ public class CoachCheckInAdapterAllAtt extends ArrayAdapter<CoachAttendance> {
 				viewHolder.tvCoachNCNS.setTextColor(getContext().getResources().getColor(android.R.color.darker_gray));
 
 				CoachAttendance coachAttendance = (CoachAttendance) v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CANCELLED);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE);
 			}
 		});
 

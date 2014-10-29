@@ -9,6 +9,7 @@ import java.util.WeakHashMap;
 import org.keenusa.connect.R;
 import org.keenusa.connect.activities.AthleteProfileActivity;
 import org.keenusa.connect.adapters.AthleteStickyHeaderCheckInAdapter;
+import org.keenusa.connect.data.daos.AthleteAttendanceDAO;
 import org.keenusa.connect.models.Athlete;
 import org.keenusa.connect.models.AthleteAttendance;
 import org.keenusa.connect.models.AthleteAttendance.AttendanceValue;
@@ -16,11 +17,7 @@ import org.keenusa.connect.models.KeenProgramEnrolment;
 import org.keenusa.connect.models.KeenSession;
 import org.keenusa.connect.networking.KeenCivicoreClient;
 import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreUpdateDataResultListener;
 import org.keenusa.connect.utilities.AthleteAttComparator;
-import org.keenusa.connect.utilities.CheckinMenuActions;
-import org.keenusa.connect.utilities.DebugInfo;
-import org.keenusa.connect.utilities.PostCheckinUpdate;
 import org.keenusa.connect.utilities.StringConstants;
 
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
@@ -328,6 +325,9 @@ public class AthleteCheckinFragment extends Fragment {
 
 	public void postAttendance() {
 		for (int i = 0; i < athleteAttendanceList.size(); i++) {
+			if(athleteAttendanceList.get(i).getAttendanceValue() == AttendanceValue.REGISTERED){
+				continue;
+			}
 			if (i < athleteAttendanceListOriginal.size()) {
 				if (athleteAttendanceListOriginal.get(i) != null) {
 					if (athleteAttendanceListOriginal.get(i).getAttendanceValue() != athleteAttendanceList.get(i).getAttendanceValue()) {
@@ -352,48 +352,59 @@ public class AthleteCheckinFragment extends Fragment {
 		}
 		Collections.sort(athleteAttendanceList, new AthleteAttComparator());
 		Collections.sort(athleteAttendanceListOriginal, new AthleteAttComparator());
+		Toast.makeText(getActivity(), "Athlete Attendance Posted!", Toast.LENGTH_SHORT).show();
 	}
 
-	public void updateRecord(AthleteAttendance athlete) {
-		PostCheckinUpdate.done++;
-		client.updateAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+//	public void updateRecord(AthleteAttendance athlete) {
+//		PostCheckinUpdate.done++;
+//		client.updateAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+//
+//			@Override
+//			public void onRecordUpdateResult(AthleteAttendance object) {
+//				PostCheckinUpdate.done--;
+//				if (PostCheckinUpdate.done == 0) {
+//					DebugInfo.showToast(getActivity(), "Attendance Posted!");
+//				}
+//				Log.d("temp", "attendance updated");
+//			}
+//
+//			@Override
+//			public void onRecordUpdateError() {
+//				Log.d("temp", "attendance update error");
+//
+//			}
+//		});
+//	}
 
-			@Override
-			public void onRecordUpdateResult(AthleteAttendance object) {
-				PostCheckinUpdate.done--;
-				if (PostCheckinUpdate.done == 0) {
-					DebugInfo.showToast(getActivity(), "Attendance Posted!");
-				}
-				Log.d("temp", "attendance updated");
-			}
-
-			@Override
-			public void onRecordUpdateError() {
-				Log.d("temp", "attendance update error");
-
-			}
-		});
+	public void updateRecord(AthleteAttendance athlete){
+		AthleteAttendanceDAO athleteAttendanceDAO = new AthleteAttendanceDAO(getActivity()); 
+		Log.d("temp", "update ath: "+athleteAttendanceDAO.updateAthleteAttendanceStatus(athlete));
 	}
+
+//	public void addRecord(AthleteAttendance athlete) {
+//		PostCheckinUpdate.done++;
+//		client.insertNewAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
+//
+//			@Override
+//			public void onRecordUpdateResult(AthleteAttendance object) {
+//				PostCheckinUpdate.done--;
+//				if (PostCheckinUpdate.done == 0) {
+//					DebugInfo.showToast(getActivity(), "Attendance Posted!");
+//				}
+//				Log.d("temp", "attendance added");
+//			}
+//
+//			@Override
+//			public void onRecordUpdateError() {
+//				Log.d("temp", "attendance add error");
+//
+//			}
+//		});
+//	}
 
 	public void addRecord(AthleteAttendance athlete) {
-		PostCheckinUpdate.done++;
-		client.insertNewAthleteAttendanceRecord(athlete, new CivicoreUpdateDataResultListener<AthleteAttendance>() {
-
-			@Override
-			public void onRecordUpdateResult(AthleteAttendance object) {
-				PostCheckinUpdate.done--;
-				if (PostCheckinUpdate.done == 0) {
-					DebugInfo.showToast(getActivity(), "Attendance Posted!");
-				}
-				Log.d("temp", "attendance added");
-			}
-
-			@Override
-			public void onRecordUpdateError() {
-				Log.d("temp", "attendance add error");
-
-			}
-		});
+		AthleteAttendanceDAO athleteAttendanceDAO = new AthleteAttendanceDAO(getActivity()); 
+		Log.d("temp", "add ath: "+athleteAttendanceDAO.saveNewAthleteAttendance(athlete));
 	}
 
 	public void refreshAttendance() {

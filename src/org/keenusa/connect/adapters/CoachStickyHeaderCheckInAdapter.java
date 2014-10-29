@@ -255,7 +255,7 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 				viewHolder.tvCoachAbsent.setTypeface(null, Typeface.NORMAL);
 
 				CoachAttendance coachAttendance = (CoachAttendance) v.getTag(R.color.tag1);
-				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CANCELLED);
+				coachAttendance.setAttendanceValue(CoachAttendance.AttendanceValue.CALLED_IN_ABSENCE);
 
 				((AthleteCoachCheckinActivity) context).refreshCoachAttendance();
 			}
