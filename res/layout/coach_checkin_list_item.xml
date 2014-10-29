@@ -1,115 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#ffffff" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlCoachCheckinFront"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="7dp"
+    android:layout_marginTop="7dp"
+    android:background="@drawable/selector_participant_background" >
 
-<!--     <LinearLayout -->
-<!--         android:id="@+id/llCoachCheckinBack" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_marginBottom="5dp" -->
-<!--         android:layout_marginTop="5dp" -->
-<!--         android:visibility="gone" -->
-<!--         android:gravity="center_vertical"  -->
-<!--         android:orientation="horizontal"> -->
+    <ImageView
+        android:id="@+id/ivCoachProfilePic"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_photos_u" />
 
-<!--         <ImageView -->
-<!--             android:id="@+id/ivCoachCheckinCall" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:layout_weight="1" -->
-<!--             android:src="@drawable/ic_athlete_kid" /> -->
+    <TextView
+        android:id="@+id/tvCoachName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivCoachProfilePic"
+        android:layout_toRightOf="@id/ivCoachProfilePic"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:text="Coach Name"
+        android:textStyle="bold" />
 
-<!--         <ImageView -->
-<!--             android:id="@+id/ivCoachCheckinSms" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:layout_weight="1" -->
-<!--             android:src="@drawable/ic_coach_whistle" /> -->
-
-<!--         <ImageView -->
-<!--             android:id="@+id/ivCoachCheckinEmail" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:layout_weight="1" -->
-<!--             android:src="@drawable/ic_checkin_all" /> -->
-<!--     </LinearLayout> -->
-
-    <RelativeLayout
-        android:id="@+id/rlCoachCheckinFront"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:background="#ffffffff">
-
-        <ImageView
-            android:id="@+id/ivCoachProfilePic"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_user_photos_u" />
+    <LinearLayout
+        android:id="@+id/llCoachAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvCoachName"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvCoachName"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
 
         <TextView
-            android:id="@+id/tvCoachName"
+            android:id="@+id/tvCoachAttended"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/ivCoachProfilePic"
-            android:layout_toRightOf="@id/ivCoachProfilePic"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:layout_weight="1"
+            android:paddingBottom="10dp"
             android:paddingTop="5dp"
-            android:text="Coach Name"
-            android:textStyle="bold" />
+            android:text="@string/attended_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/darker_gray" />
 
-        <LinearLayout
-            android:id="@+id/llCoachAttendance"
+        <TextView
+            android:id="@+id/tvCoachCancelled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvCoachName"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvCoachName"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
+            android:layout_weight="1"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/cancel_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/darker_gray" />
 
-            <TextView
-                android:id="@+id/tvCoachAttended"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/attended_label"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/tvCoachAbsent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/absent_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/darker_gray" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvCoachCancelled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/cancel_label"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/darker_gray" />
-
-            <TextView
-                android:id="@+id/tvCoachAbsent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="10dp"
-                android:paddingTop="5dp"
-                android:text="@string/absent_label"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/darker_gray" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>

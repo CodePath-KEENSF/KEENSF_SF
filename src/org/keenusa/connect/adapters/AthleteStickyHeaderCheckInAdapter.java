@@ -74,15 +74,15 @@ public class AthleteStickyHeaderCheckInAdapter extends ArrayAdapter<AthleteAtten
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		if (position == 0 && getCount() == 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
-		} else if (position == 0 && getCount() > 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
-		} else if (position == getCount() - 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
-		} else {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
-		}
+//		if (position == 0 && getCount() == 1) {
+//			convertView.setBackgroundResource(R.drawable.list_item_background);
+//		} else if (position == 0 && getCount() > 1) {
+//			convertView.setBackgroundResource(R.drawable.list_item_background);
+//		} else if (position == getCount() - 1) {
+//			convertView.setBackgroundResource(R.drawable.list_item_background);
+//		} else {
+//			convertView.setBackgroundResource(R.drawable.list_item_background);
+//		}
 
 		if (athleteAttendance != null) {
 

@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="15dp"
-    android:layout_marginTop="10dp"
-    android:paddingTop="15dp" >
+    android:layout_marginBottom="7dp"
+    android:layout_marginTop="7dp"
+    android:background="@drawable/selector_participant_background">
 
     <ImageView
         android:id="@+id/ivAthleteProfilePic"
@@ -35,9 +35,9 @@
         android:layout_alignLeft="@+id/tvAthleteName"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvAthleteName"
+        android:orientation="horizontal"
         android:paddingLeft="5dp"
-        android:paddingRight="0dp"
-        android:orientation="horizontal" >
+        android:paddingRight="0dp" >
 
         <TextView
             android:id="@+id/tvAthleteAttended"
