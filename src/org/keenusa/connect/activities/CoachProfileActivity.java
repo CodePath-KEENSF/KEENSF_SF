@@ -99,7 +99,6 @@ public class CoachProfileActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coach_profile);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		overridePendingTransition(R.anim.left_out, R.anim.right_in);
 		onPhoneLongClickListener = new OnPhoneLongClickListener(this);
 		onEmailLongClickListener = new OnEmailLongClickListener(this);
 		onSmsIconClickListener = new OnSmsIconClickListener(this);
