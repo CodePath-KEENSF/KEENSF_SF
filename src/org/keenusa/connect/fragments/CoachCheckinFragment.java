@@ -285,7 +285,6 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-<<<<<<< HEAD
 //		if (item.getItemId() == R.id.miSendMessageCoaches) {
 //			showMassMessageDialog();
 		/*} else*/ if (item.getItemId() == R.id.miAddCoaches) {
@@ -297,17 +296,7 @@ public class CoachCheckinFragment extends Fragment {
 //			checkInAllCoaches();
 //		}
 //
-=======
-		if (item.getItemId() == R.id.miSendMessageCoaches) {
-			showMassMessageDialog();
-		} else if (item.getItemId() == R.id.miAddCoaches) {
-			DialogFragment newFragment = AddCoachToCheckinFragment.newInstance(session.getId());
-			newFragment.show(getActivity().getSupportFragmentManager(), "Add Coach");
-		} else if (item.getItemId() == R.id.miCheckAllCoachIn) {
-			checkInAllCoaches();
-		}
 
->>>>>>> 4e44498461fcab733a84e772d8344c02edc53729
 		return super.onOptionsItemSelected(item);
 	}
 
