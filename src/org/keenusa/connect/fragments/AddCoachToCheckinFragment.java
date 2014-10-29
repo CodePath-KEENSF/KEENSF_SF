@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.keenusa.connect.R;
 import org.keenusa.connect.adapters.CoachListItemAdapter;
+import org.keenusa.connect.data.daos.CoachDAO;
 import org.keenusa.connect.models.Coach;
-import org.keenusa.connect.networking.KeenCivicoreClient;
-import org.keenusa.connect.networking.KeenCivicoreClient.CivicoreDataResultListener;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -26,28 +26,28 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-import android.widget.Toast;
 
-public class AddCoachToCheckinFragment extends DialogFragment implements CivicoreDataResultListener<Coach> {
-
-	public static final String COACH_EXTRA_TAG = "COACH";
+public class AddCoachToCheckinFragment extends DialogFragment {
 
 	private CoachListItemAdapter adapter;
 	private List<Coach> coachList;
 	private ListView lvCoaches;
 	private EditText etAddCoach;
-
 	private LinearLayout llLoadingCoachesIndicator;
-	private boolean bDataLoaded = false;
-	private KeenCivicoreClient client;
-	private ProgressBar progressBar;
 	SearchView searchView;
+	private long sessionId;
 
 	public AddCoachToCheckinFragment() {
 		// Empty constructor required for DialogFragment
+	}
+
+	// Creates a new fragment with given arguments
+	public static AddCoachToCheckinFragment newInstance(long sessionId) {
+		AddCoachToCheckinFragment addCoachToCheckinFragment = new AddCoachToCheckinFragment();
+		addCoachToCheckinFragment.sessionId = sessionId;
+		return addCoachToCheckinFragment;
 	}
 
 	public interface AddCoachDialogListener {
@@ -58,11 +58,9 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		bDataLoaded = false;
 		coachList = new ArrayList<Coach>();
 		adapter = new CoachListItemAdapter(getActivity(), coachList);
-		KeenCivicoreClient client = new KeenCivicoreClient(getActivity());
-		client.fetchCoachListData(this);
+		new LoadCoachListDataTask().execute(sessionId);
 	}
 
 	@Override
@@ -70,11 +68,6 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 
 		View v = inflater.inflate(R.layout.fragment_coaches_add, container, false);
 		llLoadingCoachesIndicator = (LinearLayout) v.findViewById(R.id.llLoadingCoachesIndicator);
-		if (!bDataLoaded) {
-			llLoadingCoachesIndicator.setVisibility(View.VISIBLE);
-			loadProgressBar();
-		}
-
 		lvCoaches = (ListView) v.findViewById(R.id.lvCoachesAdd);
 		lvCoaches.setAdapter(adapter);
 		lvCoaches.setOnItemClickListener(new OnItemClickListener() {
@@ -125,42 +118,6 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 		return v;
 	}
 
-	private void loadProgressBar() {
-		//		progressBar.getProgressDrawable().setColorFilter(Color.GREEN, Mode.MULTIPLY);
-		try {
-			for (int i = 1; i <= 10; i++) {
-				progressBar.setProgress(i * 10);
-				Thread.sleep(500);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public CoachListItemAdapter getAdapter() {
-		return adapter;
-	}
-
-	public void addAPIData(List<Coach> coaches) {
-		adapter.clear();
-		adapter.addAll(coaches);
-	}
-
-	@Override
-	public void onListResult(List<Coach> list) {
-		addAPIData(list);
-		coachList = list;
-		bDataLoaded = true;
-		if (llLoadingCoachesIndicator != null) {
-			llLoadingCoachesIndicator.setVisibility(View.GONE);
-		}
-	}
-
-	@Override
-	public void onListResultError() {
-		Toast.makeText(getActivity(), "Error in fetching data from CiviCore", Toast.LENGTH_SHORT).show();
-	}
-
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.coaches, menu);
 
@@ -178,6 +135,33 @@ public class AddCoachToCheckinFragment extends DialogFragment implements Civicor
 			}
 		});
 		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	private class LoadCoachListDataTask extends AsyncTask<Long, Void, List<Coach>> {
+
+		@Override
+		protected void onPreExecute() {
+			if (llLoadingCoachesIndicator != null) {
+				llLoadingCoachesIndicator.setVisibility(View.VISIBLE);
+			}
+		}
+
+		@Override
+		protected List<Coach> doInBackground(Long... params) {
+			CoachDAO coachDAO = new CoachDAO(getActivity());
+			List<Coach> coaches = coachDAO.getCoachesToRegisterForSessionList(params[0]);
+			return coaches;
+		}
+
+		@Override
+		protected void onPostExecute(List<Coach> coaches) {
+			if (llLoadingCoachesIndicator != null) {
+				llLoadingCoachesIndicator.setVisibility(View.GONE);
+			}
+			adapter.clear();
+			adapter.addAll(coaches);
+		}
+
 	}
 
 }
