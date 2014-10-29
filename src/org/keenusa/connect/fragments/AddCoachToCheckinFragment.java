@@ -64,6 +64,13 @@ public class AddCoachToCheckinFragment extends DialogFragment {
 	}
 
 	@Override
+	public void onActivityCreated(Bundle arg0) {
+	    super.onActivityCreated(arg0);
+	    getDialog().getWindow()
+	    .getAttributes().windowAnimations = R.style.DialogAnimation;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_coaches_add, container, false);

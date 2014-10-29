@@ -290,7 +290,6 @@ public class CoachCheckinFragment extends Fragment {
 		/*} else*/if (item.getItemId() == R.id.miAddCoaches) {
 			DialogFragment newFragment = AddCoachToCheckinFragment.newInstance(session.getId());
 			newFragment.show(getActivity().getSupportFragmentManager(), "Add Coach");
-			getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 		} //else if (item.getItemId() == R.id.miCheckAllCoachIn) {
 		//			checkInAllCoaches();
 		//		}
