@@ -15,12 +15,12 @@ public class TestDataFactory {
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
 	private static TestDataFactory instance = new TestDataFactory();
-	private Affliliate affliliate;
+	private Affiliate affliliate;
 	private Location contactLocation;
 	private Location programLocation;
 
 	private TestDataFactory() {
-		affliliate = new Affliliate(1, "KEEN SF", "Damien Chacona", "damien@keensf.com", "www.keensanfrancisco.org");
+		affliliate = new Affiliate(1, "KEEN SF", "Damien Chacona", "damien@keensf.com", "www.keensanfrancisco.org");
 		contactLocation = new Location("San Francisco", "94102", "CA", "", "");
 		programLocation = new Location("San Francisco", "94105", "CA", "Embarcadero YMCA", "169 Steuart Street");
 	}
@@ -117,6 +117,58 @@ public class TestDataFactory {
 		sessions.add(session);
 		session = new KeenSession(1, parseDate("11/23/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
 		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/23/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/23/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/23/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/23/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/23/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("11/29/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("12/31/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("12/31/2014"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("1/1/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("1/2/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("1/3/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("1/4/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("1/5/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("2/1/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("3/1/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("4/1/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("4/2/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("4/3/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("4/5/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("5/1/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("6/1/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("7/1/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("7/2/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("7/3/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("7/4/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
+		session = new KeenSession(1, parseDate("7/5/2015"), getProgram(), true, 0, 5, getAthleteAttendanceList(), getCoachAttendanceList());
+		sessions.add(session);
 
 		return sessions;
 	}
@@ -154,7 +206,7 @@ public class TestDataFactory {
 		return athleteAttendanceList;
 	}
 
-	public Affliliate getAffliliate() {
+	public Affiliate getAffliliate() {
 		return affliliate;
 
 	}

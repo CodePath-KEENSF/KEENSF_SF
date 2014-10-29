@@ -3,7 +3,20 @@
 
     <color name="main_theme_color">#8DC641</color>
     <color name="secondary_theme_color">#7170B3</color>
-    <color name="main_theme_text_color">#000000</color>
+    <color name="main_theme_text_color">#ffffff</color>
     <color name="no_data_message_text_color">#C0C0C0</color>
-
+    <color name="list_item_border_color">#8899a6</color>
+    <color name="list_item_background_color">#ffffff</color>
+    <color name="default_color">#000000</color>
+    <color name="tag1">#00000000</color>
+    <color name="tag2">#00000000</color>
+    <color name="session_details_background_color">#88000000</color>
+    <color name="login_details_background_color">#887170B3</color>
+    <color name="session_background_color">#fffafafa</color>
+    <color name="session_list_separator_color">#FFE0E0E0</color>
+    <color name="session_border_color">#ff808080</color>
+    <color name="att_header_background_color">#ffeaeaea</color>
+    <color name="att_header_shadow_color">#FFD0D0D0</color>
+    <color name="secondary_text_color">#8899a6</color>
+    
 </resources>

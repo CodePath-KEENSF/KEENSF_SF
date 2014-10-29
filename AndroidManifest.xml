@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".KeenConnectApp"
@@ -19,47 +20,78 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".activities.LoginActivity"
-            android:label="@string/app_name" >
+        
+       <!-- <activity
+            android:name="org.keenusa.connect.activities.SplahScreen"
+            android:label="@string/title_activity_splah_screen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity> -->
+        
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>   
         </activity>
         <activity
             android:name=".activities.CoachListActivity"
-            android:label="@string/title_activity_coach_list" >
+            android:label="@string/title_activity_coach_list"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.AthleteListActivity"
-            android:label="@string/title_activity_athlete_list" >
+            android:label="@string/title_activity_athlete_list"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.SessionDetailsActivity"
-            android:label="@string/title_activity_session_details" >
+            android:label="@string/title_activity_session_details"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activities.CheckInActivity"
-            android:label="@string/title_activity_check_in" >
+            android:name=".activities.AthleteCoachCheckinActivity"
+            android:label="@string/title_activity_check_in"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activities.CoachesCheckInActivity"
+            android:label="@string/title_activity_check_in"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activities.AthleteCheckInActivity"
+            android:label="@string/title_activity_athlete_list"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.SessionListActivity"
-            android:label="@string/title_activity_session_list" >
+            android:label="@string/title_activity_session_list"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.CoachProfileActivity"
-            android:label="@string/title_activity_coach_profile" >
+            android:label="@string/title_activity_coach_profile"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.AthleteProfileActivity"
-            android:label="@string/title_activity_athlete_profile" >
+            android:label="@string/title_activity_athlete_profile"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="org.keenusa.connect.activities.SessionAthleteCoachListActivity"
-            android:label="@string/title_activity_session_athlete_coach_list" >
+            android:name=".activities.SessionAthleteCoachListActivity"
+            android:label="@string/title_activity_session_athlete_coach_list"
+            android:screenOrientation="portrait" >
         </activity>
+        
     </application>
 
 </manifest>

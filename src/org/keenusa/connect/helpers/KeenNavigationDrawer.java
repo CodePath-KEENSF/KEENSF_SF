@@ -1,9 +1,7 @@
 package org.keenusa.connect.helpers;
 
 import org.keenusa.connect.R;
-import org.keenusa.connect.activities.AthleteListActivity;
-import org.keenusa.connect.activities.CheckInActivity;
-import org.keenusa.connect.activities.CoachListActivity;
+import org.keenusa.connect.activities.CoachesCheckInActivity;
 import org.keenusa.connect.activities.SessionListActivity;
 
 import android.app.ActionBar;
@@ -26,8 +24,7 @@ public class KeenNavigationDrawer extends DrawerLayout {
 	private ArrayAdapter<String> drawerAdapter;
 	private String[] drawerNavItems;
 
-	public KeenNavigationDrawer(Context context, AttributeSet attrs,
-			int defStyle) {
+	public KeenNavigationDrawer(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -41,14 +38,11 @@ public class KeenNavigationDrawer extends DrawerLayout {
 
 	// setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer),
 	// R.layout.drawer_list_item, R.id.flContent);
-	public void setupDrawerConfiguration(ListView drawerListView,
-			int drawerItemRes) {
+	public void setupDrawerConfiguration(ListView drawerListView, int drawerItemRes) {
 		// Setup navigation items array
-		drawerNavItems = getResources().getStringArray(
-				R.array.navigation_drawer_array);
+		drawerNavItems = getResources().getStringArray(R.array.navigation_drawer_array);
 		// Set the adapter for the list view
-		drawerAdapter = new ArrayAdapter<String>(getActivity(), drawerItemRes,
-				drawerNavItems);
+		drawerAdapter = new ArrayAdapter<String>(getActivity(), drawerItemRes, drawerNavItems);
 		// Setup drawer list view and related adapter
 		lvDrawer = drawerListView;
 		lvDrawer.setAdapter(drawerAdapter);
@@ -78,19 +72,19 @@ public class KeenNavigationDrawer extends DrawerLayout {
 			intent = new Intent(getActivity(), SessionListActivity.class);
 			break;
 		case 1:
-			intent = new Intent(getActivity(), CheckInActivity.class);
+			intent = new Intent(getActivity(), CoachesCheckInActivity.class);
 			break;
 		case 2:
-			intent = new Intent(getActivity(), AthleteListActivity.class);
-			break;
+			//			intent = new Intent(getActivity(), AthleteListActivity.class);
+			//			break;
 		case 3:
-			intent = new Intent(getActivity(), CoachListActivity.class);
-			break;
+			//			intent = new Intent(getActivity(), CoachListActivity.class);
+			//			break;
 		default:
 			intent = new Intent(getActivity(), SessionListActivity.class);
 			break;
 		}
-		
+
 		getActivity().startActivity(intent);
 
 		// setTitle(navItem.getTitle());
@@ -113,11 +107,9 @@ public class KeenNavigationDrawer extends DrawerLayout {
 		getActionBar().setTitle(title);
 	}
 
-	private class FragmentDrawerItemListener implements
-			ListView.OnItemClickListener {
+	private class FragmentDrawerItemListener implements ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			selectDrawerItem(position);
 		}
 	}

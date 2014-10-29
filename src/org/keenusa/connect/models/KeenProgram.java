@@ -1,24 +1,35 @@
 package org.keenusa.connect.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.keenusa.connect.helpers.CivicoreDateStringParser;
+import org.keenusa.connect.helpers.CivicoreGeneralProgramTypeStringParser;
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
+import org.keenusa.connect.models.remote.RemoteProgram;
 
-public class KeenProgram implements Serializable{
+public class KeenProgram implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3835920568930700515L;
+	private long id;
 	private long remoteId;
 	private String name;
 	private DateTime activeFromDate;
 	private DateTime activeToDate;
 	private GeneralProgramType generalProgramType;
 	private String programTimes;
+	private String coachRegistrationConfirmationEmailText;
+	// probably we do not need this as it is sent on approval of a new coach, not sure why approval is for a program
+	private String coachApprovalConfirmationEmailText;
 	private Location location;
-	private List<Athlete> enrolledAthletes;
+	private List<KeenProgramEnrolment> programEnrolments;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
 
 	//in remote source lookup 15
 	public enum GeneralProgramType {
@@ -38,7 +49,49 @@ public class KeenProgram implements Serializable{
 		this.generalProgramType = generalProgramType;
 		this.programTimes = programTimes;
 		this.location = location;
-		this.enrolledAthletes = enrolledAthletes;
+	}
+
+	public static KeenProgram fromRemoteProgram(RemoteProgram remoteProgram) {
+		KeenProgram keenProgram = null;
+		if (remoteProgram != null) {
+			keenProgram = new KeenProgram();
+			keenProgram.setRemoteId(Long.valueOf(remoteProgram.getRemoteId()));
+
+			Location location = new Location();
+			location.setAddress1(remoteProgram.getAddress1());
+			location.setAddress2(remoteProgram.getAddress2());
+			location.setCity(remoteProgram.getCity());
+			location.setZipCode(remoteProgram.getZipCode());
+			location.setState(remoteProgram.getState());
+			keenProgram.setLocation(location);
+
+			keenProgram.setName(remoteProgram.getClassName());
+			keenProgram.setActiveFromDate(CivicoreDateStringParser.parseDate(remoteProgram.getClassStartDate()));
+			keenProgram.setActiveToDate(CivicoreDateStringParser.parseDate(remoteProgram.getClassEndDate()));
+			keenProgram.setProgramTimes(remoteProgram.getTimes());
+			keenProgram.setGeneralProgramType(CivicoreGeneralProgramTypeStringParser.parseGenralProgramTypeString(remoteProgram
+					.getGeneralProgramType()));
+			keenProgram.setCoachApprovalConfirmationEmailText(remoteProgram.getApprovalEmailMessage());
+			keenProgram.setCoachRegistrationConfirmationEmailText(remoteProgram.getRegistrationConfirmation());
+			keenProgram.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteProgram.getCreated()).getMillis());
+			keenProgram.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteProgram.getUpdated()).getMillis());
+		}
+		return keenProgram;
+	}
+
+	public static List<KeenProgram> fromRemoteProgramList(List<RemoteProgram> remoteProgramList) {
+		List<KeenProgram> programs = null;
+		if (remoteProgramList != null) {
+			programs = new ArrayList<KeenProgram>(remoteProgramList.size());
+			for (RemoteProgram remoteProgram : remoteProgramList) {
+				KeenProgram keenProgram = fromRemoteProgram(remoteProgram);
+				programs.add(keenProgram);
+			}
+
+		} else {
+			programs = new ArrayList<KeenProgram>();
+		}
+		return programs;
 	}
 
 	public long getRemoteId() {
@@ -97,12 +150,67 @@ public class KeenProgram implements Serializable{
 		this.location = location;
 	}
 
-	public List<Athlete> getEnrolledAthletes() {
-		return enrolledAthletes;
+	//	public List<Athlete> getEnrolledAthletes() {
+	//		return enrolledAthletes;
+	//	}
+	//
+	//	public void setEnrolledAthletes(List<Athlete> enrolledAthletes) {
+	//		this.enrolledAthletes = enrolledAthletes;
+	//	}
+	//
+	//	public void addEnrolledAthletes(Athlete enrolledAthletes) {
+	//		if (this.enrolledAthletes == null) {
+	//			this.enrolledAthletes = new ArrayList<Athlete>();
+	//		}
+	//		this.enrolledAthletes.add(enrolledAthletes);
+	//	}
+
+	public String getCoachRegistrationConfirmationEmailText() {
+		return coachRegistrationConfirmationEmailText;
 	}
 
-	public void setEnrolledAthletes(List<Athlete> enrolledAthletes) {
-		this.enrolledAthletes = enrolledAthletes;
+	public void setCoachRegistrationConfirmationEmailText(String coachRegistrationConfirmationEmailText) {
+		this.coachRegistrationConfirmationEmailText = coachRegistrationConfirmationEmailText;
+	}
+
+	public String getCoachApprovalConfirmationEmailText() {
+		return coachApprovalConfirmationEmailText;
+	}
+
+	public void setCoachApprovalConfirmationEmailText(String coachApprovalConfirmationEmailText) {
+		this.coachApprovalConfirmationEmailText = coachApprovalConfirmationEmailText;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public List<KeenProgramEnrolment> getProgramEnrolments() {
+		return programEnrolments;
+	}
+
+	public void setProgramEnrolments(List<KeenProgramEnrolment> programEnrolments) {
+		this.programEnrolments = programEnrolments;
 	}
 
 }

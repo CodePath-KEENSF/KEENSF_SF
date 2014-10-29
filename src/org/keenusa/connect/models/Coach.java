@@ -7,12 +7,12 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreGenderStringParser;
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.models.remote.RemoteCoach;
-
-import android.util.Log;
 
 public class Coach extends ContactPerson {
 
+	private long id;
 	private long remoteId;
 	private DateTime dateOfBirth;
 	// status mostly empty in the source
@@ -21,9 +21,10 @@ public class Coach extends ContactPerson {
 	private Location location;
 	private String foreignLanguages;
 	private String skillsExperience;
-
-	private String sequence = "";
-	private String name = "";
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
+	private int numberOfSessionsAttended;
+	private DateTime dateLastAttended;
 
 	public Coach() {
 		super();
@@ -44,10 +45,6 @@ public class Coach extends ContactPerson {
 		Coach coach = null;
 		if (remoteCoach != null) {
 			coach = new Coach();
-			if (remoteCoach.getDateOfbirth() != null) {
-				Log.d("DOB", remoteCoach.getDateOfbirth() + " " + remoteCoach.getFirstName() + " " + remoteCoach.getLastName());
-			}
-
 			coach.setRemoteId(Long.valueOf(remoteCoach.getRemoteId()));
 			coach.setFirstName(remoteCoach.getFirstName());
 			coach.setLastName(remoteCoach.getLastName());
@@ -70,6 +67,8 @@ public class Coach extends ContactPerson {
 			coach.setGender(CivicoreGenderStringParser.parseGenderString(remoteCoach.getGender()));
 			coach.setForeignLanguages(remoteCoach.getForeignLanguage());
 			coach.setSkillsExperience(remoteCoach.getSkillsExperience());
+			coach.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteCoach.getCreated()).getMillis());
+			coach.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteCoach.getUpdated()).getMillis());
 		}
 		return coach;
 	}
@@ -125,22 +124,6 @@ public class Coach extends ContactPerson {
 		this.isActive = isActive;
 	}
 
-	public String getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getForeignLanguages() {
 		return foreignLanguages;
 	}
@@ -155,6 +138,50 @@ public class Coach extends ContactPerson {
 
 	public void setSkillsExperience(String skillsExperience) {
 		this.skillsExperience = skillsExperience;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public int getNumberOfSessionsAttended() {
+		return numberOfSessionsAttended;
+	}
+
+	public void setNumberOfSessionsAttended(int numberOfSessionsAttended) {
+		this.numberOfSessionsAttended = numberOfSessionsAttended;
+	}
+
+	public DateTime getDateLastAttended() {
+		return dateLastAttended;
+	}
+
+	public void setDateLastAttended(DateTime dateLastAttended) {
+		this.dateLastAttended = dateLastAttended;
 	}
 
 }

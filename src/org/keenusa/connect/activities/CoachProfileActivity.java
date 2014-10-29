@@ -1,31 +1,43 @@
 package org.keenusa.connect.activities;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.data.daos.CoachDAO;
 import org.keenusa.connect.fragments.CoachesFragment;
+import org.keenusa.connect.fragments.UpdateCoachProfileFragment;
+import org.keenusa.connect.helpers.LastAttendedDateFormatter;
+import org.keenusa.connect.helpers.PersonNameFormatter;
 import org.keenusa.connect.listeners.OnEmailLongClickListener;
 import org.keenusa.connect.listeners.OnPhoneLongClickListener;
+import org.keenusa.connect.listeners.OnSmsIconClickListener;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
+import org.keenusa.connect.networking.PostAndUpdateRemoteDataTask.PostAndUpdateRemoteDataTaskListener;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class CoachProfileActivity extends Activity {
+public class CoachProfileActivity extends FragmentActivity {
 
 	private TextView tvLastAttended;
+	private TextView tvLastAttendedLabel;
+	private TextView tvNumberOfSessionsAttended;
 	private ImageView ivCoachProfilePic;
 	private TextView tvCoachFullName;
 	private ImageView ivActiveIcon;
 	private TextView tvCoachAge;
 	private TextView tvCoachLocation;
 	private TextView tvCoachCellPhone;
+	private ImageView ivCoachCellPhoneMsg;
 	private TextView tvCoachPhone;
 	private TextView tvCoachEmail;
 	private TextView tvCoachForeignLanguages;
@@ -33,66 +45,141 @@ public class CoachProfileActivity extends Activity {
 
 	private OnPhoneLongClickListener onPhoneLongClickListener;
 	private OnEmailLongClickListener onEmailLongClickListener;
+	private OnSmsIconClickListener onSmsIconClickListener;
+
+	private RelativeLayout rlSkills;
+	private RelativeLayout rlLocation;
+	private RelativeLayout rlLanguage;
+
+	private Coach coach;
+	private MenuItem editMenuItem;
+
+	private PostAndUpdateRemoteDataTaskListener<Coach> updateListener = new PostAndUpdateRemoteDataTaskListener<Coach>() {
+		@Override
+		public void onDataPostAndUpdateTaskSuccess(final Coach recordDTO) {
+			CoachProfileActivity.this.runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					if (recordDTO != null) {
+						// or load data from DB
+						if (recordDTO.getPhone() != null) {
+							coach.setPhone(recordDTO.getPhone());
+						}
+						if (recordDTO.getEmail() != null) {
+							coach.setEmail(recordDTO.getEmail());
+						}
+						if (recordDTO.getCellPhone() != null) {
+							coach.setCellPhone(recordDTO.getCellPhone());
+						}
+					}
+					populateViews();
+					Toast.makeText(CoachProfileActivity.this, "Coach profile is updated", Toast.LENGTH_SHORT).show();
+				}
+
+			});
+
+		}
+
+		@Override
+		public void onPostAndUpdateTaskError() {
+			CoachProfileActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(CoachProfileActivity.this, "Coach profile update is failed", Toast.LENGTH_SHORT).show();
+				}
+			});
+
+		}
+
+		@Override
+		public void onPostAndUpdateTaskProgress(String progressMessage) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coach_profile);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		onPhoneLongClickListener = new OnPhoneLongClickListener(this);
 		onEmailLongClickListener = new OnEmailLongClickListener(this);
+		onSmsIconClickListener = new OnSmsIconClickListener(this);
 
-		Intent i = getIntent();
-		Coach coach = (Coach) i.getSerializableExtra(CoachesFragment.COACH_EXTRA_TAG);
 		setupViews();
-		populateViews(coach);
+		Intent i = getIntent();
+		long coachId = i.getLongExtra(CoachesFragment.COACH_EXTRA_TAG, 0);
+		new LoadCoachDataTask().execute(coachId);
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.coach_profile, menu);
+		getMenuInflater().inflate(R.menu.athlete_profile, menu);
+		editMenuItem = menu.findItem(R.id.action_edit);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_edit) {
+			showUpdateCoachProfileDialog();
+			return true;
+		} else if (item.getItemId() == android.R.id.home) {
+			finish();
+			overridePendingTransition(R.anim.left_in, R.anim.right_out);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void showUpdateCoachProfileDialog() {
+		DialogFragment newFragment = new UpdateCoachProfileFragment(coach, updateListener);
+		newFragment.show(getSupportFragmentManager(), "updateCoachProfileDialog");
+	}
+
 	private void setupViews() {
 		tvLastAttended = (TextView) findViewById(R.id.tvLastAttended);
+		tvLastAttendedLabel = (TextView) findViewById(R.id.tvLastAttendedLabel);
+		tvNumberOfSessionsAttended = (TextView) findViewById(R.id.tvNumberOfSessionsAttended);
 		ivCoachProfilePic = (ImageView) findViewById(R.id.ivCoachProfilePic);
 		tvCoachFullName = (TextView) findViewById(R.id.tvCoachFullName);
 		ivActiveIcon = (ImageView) findViewById(R.id.ivActiveIcon);
 		tvCoachAge = (TextView) findViewById(R.id.tvCoachAge);
 		tvCoachLocation = (TextView) findViewById(R.id.tvCoachLocation);
 		tvCoachCellPhone = (TextView) findViewById(R.id.tvCoachCellPhone);
+		ivCoachCellPhoneMsg = (ImageView) findViewById(R.id.ivCoachCellPhoneMsg);
 		tvCoachPhone = (TextView) findViewById(R.id.tvCoachPhone);
 		tvCoachEmail = (TextView) findViewById(R.id.tvCoachEmail);
 		tvCoachForeignLanguages = (TextView) findViewById(R.id.tvCoachForeignLanguages);
 		tvCoachSkills = (TextView) findViewById(R.id.tvCoachSkills);
+		rlSkills = (RelativeLayout) findViewById(R.id.rlSkills);
+		rlLocation = (RelativeLayout) findViewById(R.id.rlLocation);
+		rlLanguage = (RelativeLayout) findViewById(R.id.rlLanguage);
 	}
 
-	private void populateViews(Coach coach) {
+	private void populateViews() {
 		//TODO tvLastAttended
 		if (coach != null) {
+
 			if (coach.getGender() == ContactPerson.Gender.FEMALE) {
-				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_f);
 			} else if (coach.getGender() == ContactPerson.Gender.MALE) {
-				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_m);
 			} else {
-				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_u);
 			}
 
-			tvCoachFullName.setText(coach.getFullName());
+			tvCoachFullName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));
+			if (coach.getDateLastAttended() != null) {
+				tvLastAttended.setText(LastAttendedDateFormatter.getFormatedLastAttendedDateString(coach.getDateLastAttended()));
+			} else {
+				tvLastAttended.setVisibility(View.GONE);
+				tvLastAttendedLabel.setVisibility(View.GONE);
+			}
 
 			if (coach.isActive()) {
 				ivActiveIcon.setImageResource(R.drawable.ic_active);
@@ -108,18 +195,20 @@ public class CoachProfileActivity extends Activity {
 
 			String location = coach.getLocation().getLocationString();
 			if (location == null || location.isEmpty()) {
-				location = getResources().getString(R.string.no_location_text);
-				tvCoachLocation.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachLocation.setTypeface(null, Typeface.ITALIC);
+				rlLocation.setVisibility(View.GONE);
 			}
 			tvCoachLocation.setText(location);
 
 			String mobile = coach.getCellPhone();
 			if (mobile == null || mobile.isEmpty()) {
 				tvCoachCellPhone.setEnabled(false);
+				ivCoachCellPhoneMsg.setVisibility(View.GONE);
 				mobile = getResources().getString(R.string.no_mobile_text);
-				tvCoachCellPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachCellPhone.setTypeface(null, Typeface.ITALIC);
+				tvCoachCellPhone.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+			} else {
+				tvCoachCellPhone.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
+				ivCoachCellPhoneMsg.setVisibility(View.VISIBLE);
+				ivCoachCellPhoneMsg.setTag(mobile);
 			}
 			tvCoachCellPhone.setText(mobile);
 
@@ -127,8 +216,9 @@ public class CoachProfileActivity extends Activity {
 			if (phone == null || phone.isEmpty()) {
 				tvCoachPhone.setEnabled(false);
 				phone = getResources().getString(R.string.no_phone_text);
-				tvCoachPhone.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachPhone.setTypeface(null, Typeface.ITALIC);
+				tvCoachPhone.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+			} else {
+				tvCoachPhone.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 			}
 			tvCoachPhone.setText(phone);
 
@@ -136,28 +226,27 @@ public class CoachProfileActivity extends Activity {
 			if (email == null || email.isEmpty()) {
 				tvCoachEmail.setEnabled(false);
 				email = getResources().getString(R.string.no_email_text);
-				tvCoachEmail.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachEmail.setTypeface(null, Typeface.ITALIC);
+				tvCoachEmail.setTextAppearance(this, R.style.TextView_InactiveContact_Keen);
+			} else {
+				tvCoachEmail.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 			}
 			tvCoachEmail.setText(email);
 
 			String foreignLanguages = coach.getForeignLanguages();
 			if (foreignLanguages == null || foreignLanguages.isEmpty()) {
-				foreignLanguages = getResources().getString(R.string.no_foreign_languages_text);
-				tvCoachForeignLanguages.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachForeignLanguages.setTypeface(null, Typeface.ITALIC);
+				rlLanguage.setVisibility(View.GONE);
 			}
 			tvCoachForeignLanguages.setText(foreignLanguages);
 
 			String skills = coach.getSkillsExperience();
 			if (skills == null || skills.isEmpty()) {
-				skills = getResources().getString(R.string.no_skills_text);
-				tvCoachSkills.setTextColor(getResources().getColor(R.color.no_data_message_text_color));
-				tvCoachSkills.setTypeface(null, Typeface.ITALIC);
+				rlSkills.setVisibility(View.GONE);
 			}
 			tvCoachSkills.setText(skills);
+			tvNumberOfSessionsAttended.setText(String.valueOf(coach.getNumberOfSessionsAttended()));
 			setupOnPhoneLongClickListeners();
 			setupOnEmailLongClickListeners();
+			setupOnSmsIconClickListeners();
 		}
 
 	}
@@ -171,4 +260,42 @@ public class CoachProfileActivity extends Activity {
 		tvCoachEmail.setOnLongClickListener(onEmailLongClickListener);
 
 	}
+
+	private void setupOnSmsIconClickListeners() {
+		ivCoachCellPhoneMsg.setOnClickListener(onSmsIconClickListener);
+	}
+
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.right_out);
+	}
+
+	private class LoadCoachDataTask extends AsyncTask<Long, Void, Coach> {
+
+		@Override
+		protected void onPreExecute() {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.VISIBLE);
+			//			}
+		}
+
+		@Override
+		protected Coach doInBackground(Long... params) {
+			CoachDAO coachDAO = new CoachDAO(CoachProfileActivity.this);
+			Coach coach = coachDAO.getCoachById(params[0]);
+			return coach;
+		}
+
+		@Override
+		protected void onPostExecute(Coach dbCoach) {
+			//			if (llProgressBar != null) {
+			//				llProgressBar.setVisibility(View.GONE);
+			//			}
+			coach = dbCoach;
+			populateViews();
+
+		}
+
+	}
+
 }

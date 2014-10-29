@@ -14,11 +14,12 @@
     <string name="program_name_changable">Sample Program Name</string>
     <string name="location_changable">Sample Location</string>
     <string name="date_changable">Sample Date</string>
-    <string name="session_changable">Sample Session</string>
+    <string name="session_changable">1pm - 2pm</string>
     <string name="session_details_button">Session Details</string>
-    <string name="title_activity_check_in">CheckInActivity</string>
+    <string name="title_activity_check_in">Check-In</string>
     <string name="check_in_button">Check-In</string>
     <string name="log_in_button">Login</string>
+    <string name="log_with_data_button">Login (Load)</string>
     <string name="session_list_button">Session List</string>
     <string name="search">Search</string>
     <string name="search_check_in">Enter name ....</string>
@@ -37,6 +38,13 @@
     <string name="no_language_at_home_text">not specified</string>
     <string name="no_parent_relationship_text">not specified</string>
     <string name="no_skills_text">not specified</string>
+    <string name="coachesAttendance">Coaches Check-In</string>
+    <string name="athletesAttendance">Athletes Check-In</string>
+    <string name="action_edit">Edit record</string>
+    <string name="button_cancel_text">Cancel</string>
+    <string name="button_save_text">Save</string>
+     <string name="add_coach_dialog_title">Add Coach Attendance</string>
+    
 
     <color name="color">#eee9e9</color>
 
@@ -57,8 +65,52 @@
     <string name="title_activity_athlete_profile">Athlete Profile</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_session_athlete_coach_list">KEEN</string>
+    <string name="expand_all">Expand All</string>
+    <string name="collapse_all">Collapse All</string>
     <string name="program_type_label">Program Type:</string>
     <string name="program_type">Sample Program Type</string>
     <string name="program_active_date">Active Date:</string>
+    <string name="coach_name">Sample Coach Names</string>
+    <string name="absent_button">Absent</string>
+    <string name="others_button">Others</string>
+    <string name="coaches_registered_label">Coaches</string>
+    <string name="coaches_registered">registered coaches</string>
+    <string name="athletes_registered_label">Athletes</string>
+    <string name="athletes_registered">Athletes registered</string>
+    <string name="athlete_name">Sample Athlete Name</string>
+    <string name="api_key_label">API Key</string>
+    <string name="sms_label">SMS</string>
+    <string name="message_label">message</string>
+    <string name="check_all_athlete">check-in all athletes</string>
+    <string name="check_all_coaches">check-in all coaches</string>
+    <string name="add_coach_label">Add Coach</string>
+    <string name="email_label">EMAIL</string>
+    <string name="checkin_label">checkin</string>
+    <string name="list_label">list of participants</string>
+    <string name="athlete_check_in_button">Athlete Check-In</string>
+    <string name="coach_check_in_button">Coach Check-In</string>
+    <string name="attended_label">ATT</string>
+    <string name="absent_label">ABS</string>
+    <string name="no_cancel_no_show_label">NCNS</string>
+    <string name="registered_label">REG</string>
+    <string name="cancel_label">CAN</string>
+    <string name="mass_message_done_button">Done</string>
+    <string name="mass_message_cancel_button">Cancel</string>
+    <string name="title_activity_splah_screen">SplahScreen</string>
+
+    <string-array name="month_names">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
 
 </resources>

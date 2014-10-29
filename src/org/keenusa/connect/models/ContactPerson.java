@@ -95,6 +95,19 @@ public class ContactPerson implements Serializable {
 		this.gender = gender;
 	}
 
+	public String getFirstLastName() {
+		StringBuilder sb = new StringBuilder();
+		if (getFirstName() != null && !getFirstName().isEmpty()) {
+			sb.append(getFirstName());
+		}
+
+		if (getLastName() != null && !getLastName().isEmpty()) {
+			sb.append(" ");
+			sb.append(getLastName());
+		}
+		return sb.toString();
+	}
+	
 	public String getFullName() {
 		StringBuilder sb = new StringBuilder();
 		if (getFirstName() != null && !getFirstName().isEmpty()) {

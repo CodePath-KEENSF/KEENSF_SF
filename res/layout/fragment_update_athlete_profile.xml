@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+    <RelativeLayout
+        android:id="@+id/rlUpdateAthleteProfileForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tvAthleteFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@color/secondary_theme_color"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Sam Jetti Smith"
+            android:textColor="@color/main_theme_text_color"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/rlAthleteContactInfoTile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAthleteFullName"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin" >
+
+            <TextView
+                android:id="@+id/tvAthletePhoneLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Phone" />
+
+            <EditText
+                android:id="@+id/etAthletePhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tvAthletePhoneLabel"
+                android:layout_below="@+id/tvAthletePhoneLabel"
+                android:hint="000-000-0000"
+                android:inputType="phone"
+                android:maxLength="14"
+                android:textSize="20sp" />
+
+            <requestFocus />
+
+            <TextView
+                android:id="@+id/tvAthleteEmailLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/etAthletePhone"
+                android:layout_below="@id/etAthletePhone"
+                android:layout_marginTop="12dp"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/etAthleteEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tvAthleteEmailLabel"
+                android:layout_below="@id/tvAthleteEmailLabel"
+                android:hint="abc@email.com"
+                android:inputType="textEmailAddress"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlAthleteParentContactInfoTile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/rlAthleteContactInfoTile"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/rlAthleteContactInfoTile"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin" >
+
+            <TextView
+                android:id="@+id/tvAthleteParentFullNameRelationship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Elissa Smith - mother"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAthleteParentCellPhoneLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAthleteParentFullNameRelationship"
+                android:layout_marginTop="10dp"
+                android:text="Mobile" />
+
+            <EditText
+                android:id="@+id/etAthleteParentCellPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tvAthleteParentCellPhoneLabel"
+                android:layout_below="@+id/tvAthleteParentCellPhoneLabel"
+                android:hint="000-000-0000"
+                android:inputType="phone"
+                android:maxLength="14"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvAthleteParentPhoneLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/etAthleteParentCellPhone"
+                android:layout_below="@id/etAthleteParentCellPhone"
+                android:layout_marginTop="12dp"
+                android:text="Phone" />
+
+            <EditText
+                android:id="@+id/etAthleteParentPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tvAthleteParentPhoneLabel"
+                android:layout_below="@+id/tvAthleteParentPhoneLabel"
+                android:hint="000-000-0000"
+                android:inputType="phone"
+                android:maxLength="14"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvAthleteParentEmailLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/etAthleteParentPhone"
+                android:layout_below="@id/etAthleteParentPhone"
+                android:layout_marginTop="12dp"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/etAthleteParentEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tvAthleteParentEmailLabel"
+                android:layout_below="@id/tvAthleteParentEmailLabel"
+                android:hint="adc@email.com"
+                android:inputType="textEmailAddress"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlContactInfoUpdateButtonsTile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rlAthleteParentContactInfoTile"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin" >
+
+            <Button
+                android:id="@+id/btnCancelAthleteProfileUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10dp"
+                android:text="@string/button_cancel_text" />
+
+            <Button
+                android:id="@+id/btnSaveAthleteProfileUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/btnCancelAthleteProfileUpdate"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/button_save_text" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

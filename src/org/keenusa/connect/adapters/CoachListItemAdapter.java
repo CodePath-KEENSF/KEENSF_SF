@@ -3,6 +3,7 @@ package org.keenusa.connect.adapters;
 import java.util.List;
 
 import org.keenusa.connect.R;
+import org.keenusa.connect.helpers.PersonNameFormatter;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
 
@@ -19,6 +20,7 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 	private static class ViewHolder {
 		ImageView ivCoachProfilePic;
 		TextView tvCoachName;
+		TextView tvNumberOfSessions;
 	}
 
 	public CoachListItemAdapter(Context context, List<Coach> coaches) {
@@ -34,19 +36,30 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.ivCoachProfilePic = (ImageView) convertView.findViewById(R.id.ivCoachProfilePic);
 			viewHolder.tvCoachName = (TextView) convertView.findViewById(R.id.tvCoachName);
+			viewHolder.tvNumberOfSessions = (TextView) convertView.findViewById(R.id.tvNumberOfSessions);
 			convertView.setTag(viewHolder);
 		}
-
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-		viewHolder.tvCoachName.setText(coach.getFullName());
+		if (position == 0 && getCount() == 1) {
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
+		} else if (position == 0 && getCount() > 1) {
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
+		} else if (position == getCount() - 1) {
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
+		} else {
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
+		}
+
+		viewHolder.tvCoachName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));
+		viewHolder.tvNumberOfSessions.setText(String.valueOf(coach.getNumberOfSessionsAttended()));
 
 		viewHolder.ivCoachProfilePic.setImageResource(0);
 		if (coach.getGender() == ContactPerson.Gender.FEMALE) {
-			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_f);
 		} else if (coach.getGender() == ContactPerson.Gender.MALE) {
-			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_m);
 		} else {
-			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_u);
 		}
 
 		return convertView;

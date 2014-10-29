@@ -8,12 +8,13 @@ import org.joda.time.Period;
 import org.keenusa.connect.helpers.CivicoreDateStringParser;
 import org.keenusa.connect.helpers.CivicoreGenderStringParser;
 import org.keenusa.connect.helpers.CivicoreParentRelationshipStringParser;
+import org.keenusa.connect.helpers.CivicoreTimestampStringParser;
 import org.keenusa.connect.models.remote.RemoteAthlete;
 
 public class Athlete extends ContactPerson {
 
+	private long id;
 	private long remoteId;
-	// can be empty in the source but present in recent records
 	private String nickName;
 	private DateTime dateOfBirth;
 	private String primaryLanguage;
@@ -22,6 +23,10 @@ public class Athlete extends ContactPerson {
 	private boolean isActive;
 	private Location location;
 	private Parent primaryParent;
+	private long remoteCreateTimestamp;
+	private long remoteUpdatedTimestamp;
+	private int numberOfSessionsAttended;
+	private DateTime dateLastAttended;
 
 	public Athlete() {
 		super();
@@ -75,6 +80,8 @@ public class Athlete extends ContactPerson {
 					.getParentGuardianRelationship()));
 			parent.setPrimary(true);
 			athlete.setPrimaryParent(parent);
+			athlete.setRemoteCreateTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteAthlete.getCreated()).getMillis());
+			athlete.setRemoteUpdatedTimestamp(CivicoreTimestampStringParser.parseTimestamp(remoteAthlete.getUpdated()).getMillis());
 		}
 		return athlete;
 	}
@@ -152,6 +159,46 @@ public class Athlete extends ContactPerson {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public long getRemoteCreateTimestamp() {
+		return remoteCreateTimestamp;
+	}
+
+	public void setRemoteCreateTimestamp(long remoteCreateTimestamp) {
+		this.remoteCreateTimestamp = remoteCreateTimestamp;
+	}
+
+	public long getRemoteUpdatedTimestamp() {
+		return remoteUpdatedTimestamp;
+	}
+
+	public void setRemoteUpdatedTimestamp(long remoteUpdatedTimestamp) {
+		this.remoteUpdatedTimestamp = remoteUpdatedTimestamp;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public int getNumberOfSessionsAttended() {
+		return numberOfSessionsAttended;
+	}
+
+	public void setNumberOfSessionsAttended(int numberOfSessionsAttended) {
+		this.numberOfSessionsAttended = numberOfSessionsAttended;
+	}
+
+	public DateTime getDateLastAttended() {
+		return dateLastAttended;
+	}
+
+	public void setDateLastAttended(DateTime dateLastAttended) {
+		this.dateLastAttended = dateLastAttended;
 	};
 
 }
