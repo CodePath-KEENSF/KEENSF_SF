@@ -42,7 +42,7 @@
         android:layout_below="@id/llLoadingSessionsIndicator"
         android:background="@android:color/white"
         android:divider="@android:color/transparent"
-        android:dividerHeight="30.0sp"
+        android:dividerHeight="15dp"
         android:padding="10dp" />
 
 </RelativeLayout>
