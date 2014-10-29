@@ -118,7 +118,7 @@
                 android:layout_alignTop="@id/cicularProgressBarAthlete"
                 android:gravity="center"
                 android:text="progress"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/secondary_theme_color" />
 
             <TextView
                 android:id="@+id/tvAttAthletesLabel"
@@ -160,7 +160,7 @@
                 android:layout_alignTop="@+id/cicularProgressBarCoach"
                 android:gravity="center"
                 android:text="progress"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/secondary_theme_color" />
 
             <TextView
                 android:id="@+id/tvAttCoachesLabel"

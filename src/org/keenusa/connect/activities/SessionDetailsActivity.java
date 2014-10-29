@@ -86,19 +86,19 @@ public class SessionDetailsActivity extends FragmentActivity {
 			}
 
 			if (session.getRegisteredCoachCount() != 0) {
-				_progressBarCoach.setProgress(100 * session.getCheckedInCoachCount() / session.getRegisteredCoachCount());
+				_progressBarCoach.setProgress(session.getCheckedInCoachCount());
 			} else {
-				_progressBarCoach.setProgress(100);
+				_progressBarCoach.setProgress(0);
 			}
-			_progressBarCoach.setMax(100);
+			_progressBarCoach.setMax(session.getRegisteredCoachCount());
 			tvAttCoach.setText(session.getCheckedInCoachCount() + " / " + session.getRegisteredCoachCount());
 
 			if (session.getRegisteredAthleteCount() != 0) {
-				_progressBarAthlete.setProgress(100 * session.getCheckedInAthleteCount() / session.getRegisteredAthleteCount());
+				_progressBarAthlete.setProgress(session.getCheckedInAthleteCount());
 			} else {
-				_progressBarAthlete.setProgress(100);
+				_progressBarAthlete.setProgress(0);
 			}
-			_progressBarAthlete.setMax(100);
+			_progressBarAthlete.setMax(session.getRegisteredAthleteCount());
 			tvAttAthlete.setText(session.getCheckedInAthleteCount() + " / " + session.getRegisteredAthleteCount());
 		}
 	}
