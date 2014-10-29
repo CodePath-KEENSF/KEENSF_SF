@@ -103,41 +103,41 @@ public class SessionDetailsActivity extends FragmentActivity {
 		}
 	}
 
-	private void changeBackgroundImage(String name) {
-		if (name.equals("Sports 1")) {
-			image.setImageResource(R.drawable.sports1);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("Sports 2")) {
-			image.setImageResource(R.drawable.sports2);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("Sports 1 & 2")) {
-			image.setImageResource(R.drawable.sports1tennis);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("Basketball") || name.equals("Basketball Clinic - Hoops")
-				|| name.equals("Summer Family Pool Party or Basketball & Picnic")) {
-			image.setImageResource(R.drawable.basketballclinic);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("KEENquatics") || name.equals("KEENquatics - SWIM")) {
-			image.setImageResource(R.drawable.quatics);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("Summer Family Picnic & Games")) {
-			image.setImageResource(R.drawable.picnic);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("Kids Sports & Tennis - SFUHS")) {
-			image.setImageResource(R.drawable.sports1tennis);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("Kids and Young Adult Sports at YMCA") || name.equals("Kids Sports and Young Adult Sports - East Bay")) {
-			image.setImageResource(R.drawable.ymca);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("Holiday Party 2012")) {
-			image.setImageResource(R.drawable.holidayparty);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		} else if (name.equals("KEENGala: Pre-Event") || name.equals("KEENGala - Event Volunteer Shift 1")
-				|| name.equals("KEENGala - Event Volunteer Shift 2")) {
-			image.setImageResource(R.drawable.holidayparty);
-			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
-		}
-	}
+//	private void changeBackgroundImage(String name) {
+//		if (name.equals("Sports 1") || name.equals("Kids Sports and Young Adult Sports - East Bay")) {
+//			image.setImageResource(R.drawable.sports1);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("Sports 2")) {
+//			image.setImageResource(R.drawable.sports2);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("Sports 1 & 2")) {
+//			image.setImageResource(R.drawable.sports1tennis);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("Basketball") || name.equals("Basketball Clinic - Hoops")
+//				|| name.equals("Summer Family Pool Party or Basketball & Picnic")) {
+//			image.setImageResource(R.drawable.basketballclinic);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("KEENquatics") || name.equals("KEENquatics - SWIM")) {
+//			image.setImageResource(R.drawable.quatics);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("Summer Family Picnic & Games")) {
+//			image.setImageResource(R.drawable.picnic);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("Kids Sports & Tennis - SFUHS")) {
+//			image.setImageResource(R.drawable.sports1tennis);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("Kids and Young Adult Sports at YMCA")) {
+//			image.setImageResource(R.drawable.ymca);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("Holiday Party 2012")) {
+//			image.setImageResource(R.drawable.holidayparty);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		} else if (name.equals("KEENGala: Pre-Event") || name.equals("KEENGala - Event Volunteer Shift 1")
+//				|| name.equals("KEENGala - Event Volunteer Shift 2")) {
+//			image.setImageResource(R.drawable.holidayparty);
+//			//			blurImage(tvDate, tvProgramName, tvLocation, tvProgramType, tvProgramTimes);
+//		}
+//	}
 
 	//	private void blurImage(final TextView tvDate, final TextView tvProgramName, final TextView tvLocation, final TextView tvProgramType,
 	//			final TextView tvProgramTimes) {

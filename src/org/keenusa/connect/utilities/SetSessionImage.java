@@ -10,7 +10,7 @@ public class SetSessionImage {
 
 		image.setImageResource(0);
 
-		if (name.equals("Sports 1")) {
+		if (name.equals("Sports 1") || name.equals("Kids Sports and Young Adult Sports - East Bay")) {
 			image.setImageResource(R.drawable.sports1);
 		} else if (name.equals("Sports 2")) {
 			image.setImageResource(R.drawable.sports2);
@@ -25,7 +25,7 @@ public class SetSessionImage {
 			image.setImageResource(R.drawable.picnic);
 		} else if (name.equals("Kids Sports & Tennis - SFUHS")) {
 			image.setImageResource(R.drawable.sports1tennis);
-		} else if (name.equals("Kids and Young Adult Sports at YMCA") || name.equals("Kids Sports and Young Adult Sports - East Bay")) {
+		} else if (name.equals("Kids and Young Adult Sports at YMCA")) {
 			image.setImageResource(R.drawable.ymca);
 		} else if (name.equals("Holiday Party 2012")) {
 			image.setImageResource(R.drawable.holidayparty);
