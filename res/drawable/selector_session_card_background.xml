@@ -3,7 +3,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
    <item
       android:state_pressed="true"
-      android:drawable="@drawable/layout_border_3sides_selected" />
+      android:drawable="@drawable/layer_card_background_selected" />
 
-   <item android:drawable="@drawable/layout_border_3sides" />
+   <item android:drawable="@drawable/layer_card_background" />
 </selector>

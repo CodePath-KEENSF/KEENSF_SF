@@ -58,6 +58,13 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 	}
 
 	@Override
+	public void onActivityCreated(Bundle arg0) {
+	    super.onActivityCreated(arg0);
+	    getDialog().getWindow()
+	    .getAttributes().windowAnimations = R.style.DialogAnimation;
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_update_athlete_profile, container);
@@ -82,7 +89,6 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				cancelAthleteProfileUpdate(v);
-				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 
@@ -91,7 +97,6 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				updateAthleteProfileDetails(v);
-				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 

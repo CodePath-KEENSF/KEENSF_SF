@@ -6,7 +6,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
-    android:background="@drawable/selector_card_background" >
+    android:background="@drawable/selector_session_card_background" >
 
     <ImageView
         android:id="@+id/ivSessionImage"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/ivSessionImage"
-        android:background="@drawable/layout_border_3sides"
+        android:background="@drawable/selector_card_background"
         android:padding="10dp" >
 
         <RelativeLayout
@@ -89,7 +89,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/rlSessionDetails"
-            android:background="@drawable/textview_top_border"
+            android:background="@drawable/selector_session_checkin_background"
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingTop="5dp" >

@@ -131,7 +131,6 @@ public class AthleteProfileActivity extends FragmentActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_edit) {
 			showUpdateAthleteProfileDialog();
-			overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			return true;
 		} else if (item.getItemId() == android.R.id.home) {
 			finish();

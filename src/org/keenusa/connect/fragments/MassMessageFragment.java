@@ -65,6 +65,13 @@ public class MassMessageFragment extends DialogFragment {
 		return view;
 
 	}
+	
+	@Override
+	public void onActivityCreated(Bundle arg0) {
+	    super.onActivityCreated(arg0);
+	    getDialog().getWindow()
+	    .getAttributes().windowAnimations = R.style.DialogAnimation;
+	}
 
 	private void setOnClickListeners() {
 

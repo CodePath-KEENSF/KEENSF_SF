@@ -72,7 +72,6 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				cancelCoachProfileUpdate(v);
-				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 
@@ -81,7 +80,6 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				updateCoachProfileDetails(v);
-				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 
@@ -93,6 +91,13 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle arg0) {
+	    super.onActivityCreated(arg0);
+	    getDialog().getWindow()
+	    .getAttributes().windowAnimations = R.style.DialogAnimation;
 	}
 
 	private void populateViews() {
