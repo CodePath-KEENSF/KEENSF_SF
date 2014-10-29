@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class LoginActivity extends Activity {
@@ -20,6 +21,8 @@ public class LoginActivity extends Activity {
 	private Button btnLogin;
 	private EditText etUserName;
 	private EditText etPassword;
+	private ProgressBar pbLoadingProgress;
+	private int loadingProgress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +33,15 @@ public class LoginActivity extends Activity {
 		etPassword = (EditText) findViewById(R.id.etPassword);
 		tvProgressUpdates = (TextView) findViewById(R.id.tvProgressUpdates);
 		btnLogin = (Button) findViewById(R.id.btnApiLogin);
+		pbLoadingProgress = (ProgressBar) findViewById(R.id.pbLoadingProgress);
 
 		etUserName.requestFocus();
 		btnLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				switchUIToLoginActivatedState();
+				pbLoadingProgress.setProgress(0);
+				pbLoadingProgress.setVisibility(View.VISIBLE);
 				new RemoteDataLoader(LoginActivity.this, new DataLoaderResultListener() {
 
 					@Override
@@ -45,6 +51,7 @@ public class LoginActivity extends Activity {
 							@Override
 							public void run() {
 								tvProgressUpdates.setText("");
+								pbLoadingProgress.setProgress(100);
 
 							}
 
@@ -55,13 +62,14 @@ public class LoginActivity extends Activity {
 					}
 
 					@Override
-					public void onDataLoaderProgress(final String progressMessage) {
+					public void onDataLoaderProgress(final String progressMessage, final int progressDelta) {
 						LoginActivity.this.runOnUiThread(new Runnable() {
 
 							@Override
 							public void run() {
-								tvProgressUpdates.setText(progressMessage);
-
+								loadingProgress = loadingProgress + progressDelta;
+								tvProgressUpdates.setText(loadingProgress + "% - " + progressMessage);
+								pbLoadingProgress.setProgress(loadingProgress);
 							}
 						});
 

@@ -58,7 +58,7 @@ public class RemoteDataLoader extends Thread {
 	}
 
 	private void loadAffiliate() {
-		postProgress("Loading affiliate data ...");
+		postProgress("Loading affiliate data ...", 0);
 		List<Affiliate> affiliates = null;
 		try {
 			affiliates = client.fetchAffiliateListData();
@@ -72,11 +72,11 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Affiliate data is loaded");
+		postProgress("Affiliate data is loaded", 1);
 	}
 
 	private void loadCoaches() {
-		postProgress("Loading coach data ...");
+		postProgress("Loading coach data ...", 0);
 		List<Coach> coaches = null;
 		try {
 			coaches = client.fetchCoachListData();
@@ -86,11 +86,11 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Coach data is loaded");
+		postProgress("Coach data is loaded", 20);
 	}
 
 	private void loadAthletes() {
-		postProgress("Loading athlete data ...");
+		postProgress("Loading athlete data ...", 0);
 		List<Athlete> athletes = null;
 		try {
 			athletes = client.fetchAthleteListData();
@@ -100,11 +100,11 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Athlete data is loaded");
+		postProgress("Athlete data is loaded", 4);
 	}
 
 	private void loadPrograms() {
-		postProgress("Loading program data ...");
+		postProgress("Loading program data ...", 0);
 		List<KeenProgram> programs = null;
 		try {
 			programs = client.fetchProgramListData();
@@ -114,11 +114,11 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Program data is loaded");
+		postProgress("Program data is loaded", 1);
 	}
 
 	private void loadSessions() {
-		postProgress("Loading session data ...");
+		postProgress("Loading session data ...", 0);
 		List<KeenSession> sessions = null;
 		try {
 			sessions = client.fetchSessionListData();
@@ -128,11 +128,11 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Session data is loaded");
+		postProgress("Session data is loaded", 8);
 	}
 
 	private void loadProgramEnrolments() {
-		postProgress("Loading program enrolment data ...");
+		postProgress("Loading program enrolment data ...", 0);
 		List<KeenProgramEnrolment> keenProgramEnrolments = null;
 		try {
 			keenProgramEnrolments = client.fetchProgramEnrolmentListData();
@@ -142,11 +142,11 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Program enrolment data is loaded");
+		postProgress("Program enrolment data is loaded", 7);
 	}
 
 	private void loadAthleteAttendances() {
-		postProgress("Loading athlete attendance data ...");
+		postProgress("Loading athlete attendance data ...", 0);
 		List<AthleteAttendance> athleteAttendances = null;
 		try {
 			athleteAttendances = client.fetchAthleteAttendanceListData();
@@ -156,11 +156,11 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Athlete attendance data is loaded");
+		postProgress("Athlete attendance data is loaded", 36);
 	}
 
 	private void loadCoachAttendances() {
-		postProgress("Loading coach attendance data ...");
+		postProgress("Loading coach attendance data ...", 0);
 		List<CoachAttendance> coachAttendances = null;
 		try {
 			coachAttendances = client.fetchCoachAttendanceListData();
@@ -170,12 +170,12 @@ public class RemoteDataLoader extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		postProgress("Coach attendance data is loaded");
+		postProgress("Coach attendance data is loaded", 23);
 	}
 
-	private void postProgress(final String progressMessage) {
+	private void postProgress(final String progressMessage, int progress) {
 		if (listener != null)
-			listener.onDataLoaderProgress(progressMessage);
+			listener.onDataLoaderProgress(progressMessage, progress);
 	}
 
 	public interface DataLoaderResultListener {
@@ -183,7 +183,7 @@ public class RemoteDataLoader extends Thread {
 
 		public void onDataLoaderError();
 
-		public void onDataLoaderProgress(String progressMessage);
+		public void onDataLoaderProgress(String progressMessage, int progress);
 	}
 
 }

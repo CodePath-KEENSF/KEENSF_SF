@@ -12,10 +12,10 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
         android:background="@drawable/login_details_background"
-        android:padding="15dp" >
+        android:padding="15dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp" >
 
         <EditText
             android:id="@+id/etUserName"
@@ -27,9 +27,9 @@
             android:ems="15"
             android:gravity="center"
             android:hint="username"
+            android:inputType="textNoSuggestions|textVisiblePassword"
             android:textColor="@color/main_theme_text_color"
-            android:textColorHint="@android:color/darker_gray"
-            android:inputType="textNoSuggestions|textVisiblePassword" >
+            android:textColorHint="@android:color/darker_gray" >
         </EditText>
 
         <EditText
@@ -39,15 +39,15 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/etUserName"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
             android:ems="15"
             android:gravity="center"
             android:hint="password"
-             android:textColor="@color/main_theme_text_color"
-            android:textColorHint="@android:color/darker_gray"
-            android:inputType="textPassword" >
+            android:inputType="textPassword"
+            android:textColor="@color/main_theme_text_color"
+            android:textColorHint="@android:color/darker_gray" >
         </EditText>
 
         <Button
@@ -62,15 +62,29 @@
             android:layout_marginTop="10dp"
             android:text="@string/log_in_button" />
 
+        <ProgressBar
+            android:id="@+id/pbLoadingProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btnApiLogin"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="false"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_circle"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/tvProgressUpdates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/btnApiLogin"
-            android:layout_marginTop="15dp"
+            android:layout_below="@+id/pbLoadingProgress"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:textColor="@color/main_theme_text_color"
             android:textSize="12sp" />
