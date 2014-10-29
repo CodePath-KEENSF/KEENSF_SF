@@ -54,18 +54,18 @@ public class KeenConnectDB extends SQLiteOpenHelper {
 		Log.e("TRIGGER", sb.toString());
 		db.execSQL(sb.toString());
 
-		// increment number of athletes registered in when new registered athlete attendance record is inserted
-		sb = new StringBuilder();
-		sb.append("CREATE TRIGGER increment_reg_ath_count_reg_attendance AFTER INSERT ON ").append(AthleteAttendanceTable.TABLE_NAME);
-		sb.append(" WHEN ").append("new.").append(AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("='")
-				.append(AthleteAttendance.AttendanceValue.REGISTERED.toString()).append("'");
-		sb.append(" BEGIN ");
-		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME).append("=")
-				.append(SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME).append(" + 1");
-		sb.append(" WHERE ").append(SessionTable.ID_COL_NAME).append("=").append("new.").append(AthleteAttendanceTable.SESSION_ID_COL_NAME);
-		sb.append("; END;");
-		Log.e("TRIGGER", sb.toString());
-		db.execSQL(sb.toString());
+		//		// increment number of athletes registered in when new registered athlete attendance record is inserted
+		//		sb = new StringBuilder();
+		//		sb.append("CREATE TRIGGER increment_reg_ath_count_reg_attendance AFTER INSERT ON ").append(AthleteAttendanceTable.TABLE_NAME);
+		//		sb.append(" WHEN ").append("new.").append(AthleteAttendanceTable.ATTENDANCE_VALUE_COL_NAME).append("='")
+		//				.append(AthleteAttendance.AttendanceValue.REGISTERED.toString()).append("'");
+		//		sb.append(" BEGIN ");
+		//		sb.append("UPDATE ").append(SessionTable.TABLE_NAME).append(" SET ").append(SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME).append("=")
+		//				.append(SessionTable.NUMBER_OF_ATHLETES_CHECKED_IN_COL_NAME).append(" + 1");
+		//		sb.append(" WHERE ").append(SessionTable.ID_COL_NAME).append("=").append("new.").append(AthleteAttendanceTable.SESSION_ID_COL_NAME);
+		//		sb.append("; END;");
+		//		Log.e("TRIGGER", sb.toString());
+		//		db.execSQL(sb.toString());
 
 		// increment number of athletes checked in when new not registered athlete attendance record is inserted
 		sb = new StringBuilder();
