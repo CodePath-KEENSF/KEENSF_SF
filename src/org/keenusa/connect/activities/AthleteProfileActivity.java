@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class AthleteProfileActivity extends FragmentActivity {
 
 	private TextView tvLastAttended;
 	private TextView tvLastAttendedLabel;
-	private TextView tvNumSessionsAttended;
+	private TextView tvNumberOfSessionsAttended;
 	private ImageView ivAthleteProfilePic;
 	private TextView tvAthleteFullName;
 	private ImageView ivActiveIcon;
@@ -45,6 +46,10 @@ public class AthleteProfileActivity extends FragmentActivity {
 	private ImageView ivAthleteParentCellPhoneMsg;
 	private TextView tvAthleteParentPhone;
 	private TextView tvAthleteParentEmail;
+
+	private RelativeLayout rlNickName;
+	private RelativeLayout rlLocation;
+	private RelativeLayout rlLanguage;
 
 	private MenuItem editMenuItem;
 
@@ -148,7 +153,7 @@ public class AthleteProfileActivity extends FragmentActivity {
 
 		tvLastAttended = (TextView) findViewById(R.id.tvLastAttended);
 		tvLastAttendedLabel = (TextView) findViewById(R.id.tvLastAttendedLabel);
-		tvNumSessionsAttended = (TextView) findViewById(R.id.tvNumSessionsAttended);
+		tvNumberOfSessionsAttended = (TextView) findViewById(R.id.tvNumberOfSessionsAttended);
 		ivAthleteProfilePic = (ImageView) findViewById(R.id.ivAthleteProfilePic);
 		tvAthleteFullName = (TextView) findViewById(R.id.tvAthleteFullName);
 		ivActiveIcon = (ImageView) findViewById(R.id.ivActiveIcon);
@@ -163,6 +168,9 @@ public class AthleteProfileActivity extends FragmentActivity {
 		ivAthleteParentCellPhoneMsg = (ImageView) findViewById(R.id.ivAthleteParentCellPhoneMsg);
 		tvAthleteParentPhone = (TextView) findViewById(R.id.tvAthleteParentPhone);
 		tvAthleteParentEmail = (TextView) findViewById(R.id.tvAthleteParentEmail);
+		rlNickName = (RelativeLayout) findViewById(R.id.rlNickName);
+		rlLocation = (RelativeLayout) findViewById(R.id.rlLocation);
+		rlLanguage = (RelativeLayout) findViewById(R.id.rlLanguage);
 
 	}
 
@@ -171,11 +179,11 @@ public class AthleteProfileActivity extends FragmentActivity {
 		if (athlete != null) {
 
 			if (athlete.getGender() == ContactPerson.Gender.FEMALE) {
-				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photo_f);
 			} else if (athlete.getGender() == ContactPerson.Gender.MALE) {
-				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photo_m);
 			} else {
-				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+				ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photo_u);
 			}
 
 			// athlete full name
@@ -202,13 +210,12 @@ public class AthleteProfileActivity extends FragmentActivity {
 			if (athlete.getNickName() != null && !athlete.getNickName().isEmpty()) {
 				tvAthleteNickName.setText(athlete.getNickName());
 			} else {
-				tvAthleteNickName.setVisibility(View.GONE);
+				rlNickName.setVisibility(View.GONE);
 			}
 
 			String location = athlete.getLocation().getLocationString();
 			if (location == null || location.isEmpty()) {
-				location = getResources().getString(R.string.no_location_text);
-				tvAthleteLocation.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
+				rlLocation.setVisibility(View.GONE);
 			}
 			tvAthleteLocation.setText(location);
 
@@ -234,15 +241,14 @@ public class AthleteProfileActivity extends FragmentActivity {
 
 			String languageAtHome = athlete.getPrimaryLanguage();
 			if (languageAtHome == null || languageAtHome.isEmpty()) {
-				languageAtHome = getResources().getString(R.string.no_language_at_home_text);
-				tvAthleteLanguageAtHome.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
+				rlLanguage.setVisibility(View.GONE);
 			}
 			tvAthleteLanguageAtHome.setText(languageAtHome);
 
 			if (athlete.getPrimaryParent() != null) {
 				Parent parent = athlete.getPrimaryParent();
 
-				StringBuilder sbParentNameAndRelationship = new StringBuilder(parent.getFullName());
+				StringBuilder sbParentNameAndRelationship = new StringBuilder(PersonNameFormatter.getFormatedNameString(parent.getFullName()));
 				if (parent.getParentRelationship() != null) {
 					sbParentNameAndRelationship.append(" (" + parent.getParentRelationship().getDisplayName() + ")");
 				}
@@ -282,7 +288,7 @@ public class AthleteProfileActivity extends FragmentActivity {
 					tvAthleteParentEmail.setTextAppearance(this, R.style.TextView_ActiveContact_Keen);
 				}
 				tvAthleteParentEmail.setText(pemail);
-				tvNumSessionsAttended.setText(athlete.getNumberOfSessionsAttended() + " sessions");
+				tvNumberOfSessionsAttended.setText(String.valueOf(athlete.getNumberOfSessionsAttended()));
 				setupOnPhoneLongClickListeners();
 				setupOnEmailLongClickListeners();
 				setupOnSmsIconClickListeners();

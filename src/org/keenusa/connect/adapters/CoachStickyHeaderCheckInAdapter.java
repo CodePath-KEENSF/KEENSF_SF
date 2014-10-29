@@ -102,11 +102,11 @@ public class CoachStickyHeaderCheckInAdapter extends ArrayAdapter<CoachAttendanc
 
 				viewHolder.ivCoachProfilePic.setImageResource(0);
 				if (coach.getGender() == ContactPerson.Gender.FEMALE) {
-					viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+					viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_f);
 				} else if (coach.getGender() == ContactPerson.Gender.MALE) {
-					viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+					viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_m);
 				} else {
-					viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+					viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_u);
 				}
 
 				viewHolder.tvCoachName.setText(PersonNameFormatter.getFormatedNameString(coachAttendance.getCoach().getFirstLastName()));

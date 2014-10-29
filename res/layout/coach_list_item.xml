@@ -5,25 +5,57 @@
 
     <ImageView
         android:id="@+id/ivCoachProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="20dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_user_photos_u" />
+        android:src="@drawable/ic_user_photo_u" />
+
+    <RelativeLayout
+        android:id="@+id/rlSessionCountCoach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@id/tvAthleteName"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp" >
+
+        <ImageView
+            android:id="@+id/ivBadgePic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_badge" />
+
+        <TextView
+            android:id="@+id/tvNumberOfSessions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/ivBadgePic"
+            android:layout_alignRight="@id/ivBadgePic"
+            android:layout_alignTop="@id/ivBadgePic"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:text="6"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="10sp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvCoachName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/ivCoachProfilePic"
+        android:layout_toLeftOf="@id/rlSessionCountCoach"
         android:layout_toRightOf="@+id/ivCoachProfilePic"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="Coach Name"
-        android:textStyle="bold" />
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:textSize="17sp"
+        android:text="Coach Name" />
 
 </RelativeLayout>

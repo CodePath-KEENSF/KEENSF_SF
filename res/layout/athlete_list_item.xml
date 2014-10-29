@@ -5,36 +5,68 @@
 
     <ImageView
         android:id="@+id/ivAthleteProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="20dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_user_photos_u" />
+        android:src="@drawable/ic_user_photo_u" />
+
+    <TextView
+        android:id="@+id/tvAthleteAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvAthleteName"
+        android:layout_below="@+id/tvAthleteName"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="6 years"
+        android:textColor="@color/secondary_text_color"
+        android:textSize="10sp" />
+
+    <RelativeLayout
+        android:id="@+id/rlSessionCountAthlete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp" >
+
+        <ImageView
+            android:id="@+id/ivBadgePic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_badge" />
+
+        <TextView
+            android:id="@+id/tvNumberOfSessions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/ivBadgePic"
+            android:layout_alignLeft="@id/ivBadgePic"
+            android:layout_alignRight="@id/ivBadgePic"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:text="6"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="10sp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvAthleteName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ivAthleteProfilePic"
-        android:layout_toRightOf="@+id/ivAthleteProfilePic"
+        android:layout_alignTop="@id/ivAthleteProfilePic"
+        android:layout_toLeftOf="@id/rlSessionCountAthlete"
+        android:layout_toRightOf="@id/ivAthleteProfilePic"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="Athlete Name"
-        android:textStyle="bold" />
-    
-    <TextView
-        android:id="@+id/tvAthleteAge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvAthleteName"
-        android:layout_alignLeft="@+id/tvAthleteName"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:textSize="10sp"
-        android:text="6 years" />
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:textSize="17sp"
+        android:text="Athlete Name"/>
 
 </RelativeLayout>

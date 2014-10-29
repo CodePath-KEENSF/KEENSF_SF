@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class CoachProfileActivity extends FragmentActivity {
 
 	private TextView tvLastAttended;
 	private TextView tvLastAttendedLabel;
-	private TextView tvNumSessionsAttended;
+	private TextView tvNumberOfSessionsAttended;
 	private ImageView ivCoachProfilePic;
 	private TextView tvCoachFullName;
 	private ImageView ivActiveIcon;
@@ -45,6 +46,10 @@ public class CoachProfileActivity extends FragmentActivity {
 	private OnPhoneLongClickListener onPhoneLongClickListener;
 	private OnEmailLongClickListener onEmailLongClickListener;
 	private OnSmsIconClickListener onSmsIconClickListener;
+
+	private RelativeLayout rlSkills;
+	private RelativeLayout rlLocation;
+	private RelativeLayout rlLanguage;
 
 	private Coach coach;
 	private MenuItem editMenuItem;
@@ -139,7 +144,7 @@ public class CoachProfileActivity extends FragmentActivity {
 	private void setupViews() {
 		tvLastAttended = (TextView) findViewById(R.id.tvLastAttended);
 		tvLastAttendedLabel = (TextView) findViewById(R.id.tvLastAttendedLabel);
-		tvNumSessionsAttended = (TextView) findViewById(R.id.tvNumSessionsAttended);
+		tvNumberOfSessionsAttended = (TextView) findViewById(R.id.tvNumberOfSessionsAttended);
 		ivCoachProfilePic = (ImageView) findViewById(R.id.ivCoachProfilePic);
 		tvCoachFullName = (TextView) findViewById(R.id.tvCoachFullName);
 		ivActiveIcon = (ImageView) findViewById(R.id.ivActiveIcon);
@@ -151,6 +156,9 @@ public class CoachProfileActivity extends FragmentActivity {
 		tvCoachEmail = (TextView) findViewById(R.id.tvCoachEmail);
 		tvCoachForeignLanguages = (TextView) findViewById(R.id.tvCoachForeignLanguages);
 		tvCoachSkills = (TextView) findViewById(R.id.tvCoachSkills);
+		rlSkills = (RelativeLayout) findViewById(R.id.rlSkills);
+		rlLocation = (RelativeLayout) findViewById(R.id.rlLocation);
+		rlLanguage = (RelativeLayout) findViewById(R.id.rlLanguage);
 	}
 
 	private void populateViews() {
@@ -158,11 +166,11 @@ public class CoachProfileActivity extends FragmentActivity {
 		if (coach != null) {
 
 			if (coach.getGender() == ContactPerson.Gender.FEMALE) {
-				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_f);
 			} else if (coach.getGender() == ContactPerson.Gender.MALE) {
-				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_m);
 			} else {
-				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+				ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_u);
 			}
 
 			tvCoachFullName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));
@@ -187,8 +195,7 @@ public class CoachProfileActivity extends FragmentActivity {
 
 			String location = coach.getLocation().getLocationString();
 			if (location == null || location.isEmpty()) {
-				location = getResources().getString(R.string.no_location_text);
-				tvCoachLocation.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
+				rlLocation.setVisibility(View.GONE);
 			}
 			tvCoachLocation.setText(location);
 
@@ -227,18 +234,16 @@ public class CoachProfileActivity extends FragmentActivity {
 
 			String foreignLanguages = coach.getForeignLanguages();
 			if (foreignLanguages == null || foreignLanguages.isEmpty()) {
-				foreignLanguages = getResources().getString(R.string.no_foreign_languages_text);
-				tvCoachForeignLanguages.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
+				rlLanguage.setVisibility(View.GONE);
 			}
 			tvCoachForeignLanguages.setText(foreignLanguages);
 
 			String skills = coach.getSkillsExperience();
 			if (skills == null || skills.isEmpty()) {
-				skills = getResources().getString(R.string.no_skills_text);
-				tvCoachSkills.setTextAppearance(this, R.style.TextView_NoInfo_Keen);
+				rlSkills.setVisibility(View.GONE);
 			}
 			tvCoachSkills.setText(skills);
-			tvNumSessionsAttended.setText(coach.getNumberOfSessionsAttended() + " sessions");
+			tvNumberOfSessionsAttended.setText(String.valueOf(coach.getNumberOfSessionsAttended()));
 			setupOnPhoneLongClickListeners();
 			setupOnEmailLongClickListeners();
 			setupOnSmsIconClickListeners();

@@ -92,11 +92,11 @@ public class AthleteStickyHeaderCheckInAdapter extends ArrayAdapter<AthleteAtten
 
 				viewHolder.ivAthleteProfilePic.setImageResource(0);
 				if (athlete.getGender() == ContactPerson.Gender.FEMALE) {
-					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photo_f);
 				} else if (athlete.getGender() == ContactPerson.Gender.MALE) {
-					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photo_m);
 				} else {
-					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+					viewHolder.ivAthleteProfilePic.setImageResource(R.drawable.ic_user_photo_u);
 				}
 
 				viewHolder.tvAthleteName.setText(PersonNameFormatter.getFormatedNameString(athleteAttendance.getAthlete().getFirstLastName()));

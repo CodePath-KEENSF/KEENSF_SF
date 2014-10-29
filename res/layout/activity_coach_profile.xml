@@ -10,8 +10,6 @@
         android:layout_height="match_parent"
         android:background="#ffffff"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin" >
 
         <TextView
@@ -22,7 +20,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="5dp"
             android:text="01 Jan 2014"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvLastAttendedLabel"
@@ -33,111 +32,195 @@
             android:layout_toLeftOf="@id/tvLastAttended"
             android:gravity="right"
             android:text="last attended:"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvNumSessionsAttended"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/tvLastAttended"
-            android:layout_marginLeft="5dp"
-            android:text="10 sessions"
-            android:textSize="10sp" />
-
-        <TextView
-            android:id="@+id/tvNumSessionsAttendedLabel"
+        <RelativeLayout
+            android:id="@+id/rlCoachMainDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/tvLastAttendedLabel"
-            android:layout_toLeftOf="@id/tvNumSessionsAttended"
-            android:gravity="right"
-            android:text="attended"
-            android:textSize="10sp" />
+            android:layout_alignParentTop="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin" >
 
-        <ImageView
-            android:id="@+id/ivCoachProfilePic"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_alignLeft="@id/tvNumSessionsAttendedLabel"
-            android:layout_below="@id/tvNumSessionsAttendedLabel"
-            android:src="@drawable/ic_user_photos_u" />
+            <ImageView
+                android:id="@+id/ivCoachProfilePic"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_user_photo_u" />
 
-        <TextView
-            android:id="@+id/tvCoachFullName"
+            <TextView
+                android:id="@+id/tvCoachFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/ivCoachProfilePic"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/ivCoachProfilePic"
+                android:text="Sam Jetti Smith"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/ivActiveIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignTop="@+id/tvCoachFullName"
+                android:layout_toRightOf="@+id/tvCoachFullName"
+                android:src="@drawable/ic_active" />
+
+            <TextView
+                android:id="@+id/tvCoachAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tvCoachFullName"
+                android:layout_below="@id/tvCoachFullName"
+                android:text="30 years" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSessionCountCoach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/ivCoachProfilePic"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/ivCoachProfilePic"
-            android:text="Sam Jetti Smith"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_alignBottom="@+id/rlCoachMainDetails"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/rlCoachMainDetails"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_toRightOf="@id/rlCoachMainDetails" >
 
-        <ImageView
-            android:id="@+id/ivActiveIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignTop="@+id/tvCoachFullName"
-            android:layout_toRightOf="@+id/tvCoachFullName"
-            android:src="@drawable/ic_active" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:paddingTop="10dp" >
 
-        <TextView
-            android:id="@+id/tvCoachAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/tvCoachFullName"
-            android:layout_below="@id/tvCoachFullName"
-            android:text="30 years" />
+                <ImageView
+                    android:id="@+id/ivBadgePic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_badge" />
+
+                <TextView
+                    android:id="@+id/tvNumberOfSessionsAttended"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/ivBadgePic"
+                    android:layout_alignRight="@id/ivBadgePic"
+                    android:layout_alignTop="@id/ivBadgePic"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:text="6"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rlAdditionalInfoTile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/ivCoachProfilePic"
-            android:layout_below="@id/ivCoachProfilePic"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/rlCoachMainDetails"
             android:layout_marginTop="5dp"
-            android:background="#ffffff"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:background="#ffffff" >
 
-            <TextView
-                android:id="@+id/tvCoachLocation"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rlLocation"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_location"
-                android:drawablePadding="5dp"
-                android:text="San Francisco, CA 9400" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/list_item_background"
+                android:paddingTop="10dp" >
 
-            <TextView
-                android:id="@+id/tvCoachForeignLanguages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvCoachLocation"
-                android:layout_below="@id/tvCoachLocation"
-                android:layout_marginTop="5dp"
-                android:drawableLeft="@drawable/ic_language"
-                android:drawablePadding="5dp"
-                android:text="German" />
+                <ImageView
+                    android:id="@+id/ivLocation"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_location" />
 
-            <TextView
-                android:id="@+id/tvCoachSkillsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvCoachForeignLanguages"
-                android:layout_below="@id/tvCoachForeignLanguages"
-                android:layout_marginTop="10dp"
-                android:text="Skills and Experience"
-                android:textColor="@android:color/holo_green_dark" />
+                <TextView
+                    android:id="@+id/tvCoachLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/ivLocation"
+                    android:text="San Francisco, CA 9400" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tvCoachSkills"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rlLanguage"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvCoachSkillsLabel"
-                android:layout_below="@id/tvCoachSkillsLabel"
-                android:text="Coach" />
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/rlLocation"
+                android:background="@drawable/list_item_background"
+                android:paddingTop="10dp" >
+
+                <ImageView
+                    android:id="@+id/ivLanguage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_language" />
+
+                <TextView
+                    android:id="@+id/tvCoachForeignLanguages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/ivLanguage"
+                    android:text="German" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlSkills"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/rlLanguage"
+                android:background="@drawable/list_item_background"
+                android:paddingTop="10dp" >
+
+                <ImageView
+                    android:id="@+id/ivSkills"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_skills" />
+
+                <TextView
+                    android:id="@+id/tvCoachSkills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/ivSkills"
+                    android:text="Coach" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -147,67 +230,110 @@
             android:layout_alignLeft="@id/rlAdditionalInfoTile"
             android:layout_below="@id/rlAdditionalInfoTile" >
 
-            <TextView
-                android:id="@+id/tvCoachCellPhoneLabel"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/rlMobile"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvAthleteParentFullNameRelationship"
-                android:layout_below="@id/tvAthleteParentFullNameRelationship"
-                android:layout_marginTop="10dp"
-                android:text="Mobile" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/contact_tile_background"
+                android:paddingTop="10dp" >
 
-            <TextView
-                android:id="@+id/tvCoachCellPhone"
-                style="@style/TextView.ActiveContact.Keen"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/ivMobile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_mobile" />
+
+                <TextView
+                    android:id="@+id/tvCoachCellPhone"
+                    style="@style/TextView.ActiveContact.Keen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/ivMobile"
+                    android:text="650-000-0000" />
+
+                <ImageView
+                    android:id="@+id/ivCoachCellPhoneMsg"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:src="@drawable/ic_message" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlPhone"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvCoachCellPhoneLabel"
-                android:layout_below="@id/tvCoachCellPhoneLabel"
-                android:text="650-000-0000" />
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/rlMobile"
+                android:background="@drawable/contact_tile_background"
+                android:paddingTop="10dp" >
 
-            <ImageView
-                android:id="@+id/ivCoachCellPhoneMsg"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/tvCoachCellPhone"
-                android:src="@drawable/ic_message" />
+                <ImageView
+                    android:id="@+id/ivPhone"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_phone" />
 
-            <TextView
-                android:id="@+id/tvCoachPhoneLabel"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tvCoachPhone"
+                    style="@style/TextView.ActiveContact.Keen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/ivPhone"
+                    android:text="650-000-0000" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvCoachCellPhone"
-                android:layout_below="@id/tvCoachCellPhone"
-                android:layout_marginTop="10dp"
-                android:text="Phone" />
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/rlPhone"
+                android:background="@drawable/contact_tile_background"
+                android:paddingTop="10dp" >
 
-            <TextView
-                android:id="@+id/tvCoachPhone"
-                style="@style/TextView.ActiveContact.Keen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvCoachPhoneLabel"
-                android:layout_below="@id/tvCoachPhoneLabel"
-                android:text="650-000-0000" />
+                <ImageView
+                    android:id="@+id/ivEmail"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_email" />
 
-            <TextView
-                android:id="@+id/tvCoachEmailLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvCoachPhone"
-                android:layout_below="@id/tvCoachPhone"
-                android:layout_marginTop="10dp"
-                android:text="Email" />
-
-            <TextView
-                android:id="@+id/tvCoachEmail"
-                style="@style/TextView.ActiveContact.Keen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tvCoachEmailLabel"
-                android:layout_below="@id/tvCoachEmailLabel"
-                android:text="someone@mail.com" />
+                <TextView
+                    android:id="@+id/tvCoachEmail"
+                    style="@style/TextView.ActiveContact.Keen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/ivEmail"
+                    android:text="someone@mail.com" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

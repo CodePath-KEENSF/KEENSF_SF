@@ -20,6 +20,7 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 	private static class ViewHolder {
 		ImageView ivCoachProfilePic;
 		TextView tvCoachName;
+		TextView tvNumberOfSessions;
 	}
 
 	public CoachListItemAdapter(Context context, List<Coach> coaches) {
@@ -35,6 +36,7 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.ivCoachProfilePic = (ImageView) convertView.findViewById(R.id.ivCoachProfilePic);
 			viewHolder.tvCoachName = (TextView) convertView.findViewById(R.id.tvCoachName);
+			viewHolder.tvNumberOfSessions = (TextView) convertView.findViewById(R.id.tvNumberOfSessions);
 			convertView.setTag(viewHolder);
 		}
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
@@ -49,14 +51,15 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 		}
 
 		viewHolder.tvCoachName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));
+		viewHolder.tvNumberOfSessions.setText(String.valueOf(coach.getNumberOfSessionsAttended()));
 
 		viewHolder.ivCoachProfilePic.setImageResource(0);
 		if (coach.getGender() == ContactPerson.Gender.FEMALE) {
-			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_f);
+			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_f);
 		} else if (coach.getGender() == ContactPerson.Gender.MALE) {
-			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_m);
+			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_m);
 		} else {
-			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photos_u);
+			viewHolder.ivCoachProfilePic.setImageResource(R.drawable.ic_user_photo_u);
 		}
 
 		return convertView;
