@@ -164,19 +164,19 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	}
 
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (CheckinMenuActions.editMode == true) {
-			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
-			miSaveCheckin.setVisible(true);
-
-			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
-			//			miEditCheckin.setVisible(false);
-		} else {
-			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
-			//			miEditCheckin.setVisible(true);
-
-			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
-			miSaveCheckin.setVisible(false);
-		}
+//		if (CheckinMenuActions.editMode == true) {
+//			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
+//			miSaveCheckin.setVisible(true);
+//
+//			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+//			//			miEditCheckin.setVisible(false);
+//		} else {
+//			//			MenuItem miEditCheckin = menu.findItem(R.id.miEditCheckin);
+//			//			miEditCheckin.setVisible(true);
+//
+//			MenuItem miSaveCheckin = menu.findItem(R.id.miSaveCheckin);
+//			miSaveCheckin.setVisible(false);
+//		}
 
 		return true;
 	}
@@ -189,7 +189,7 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.miEditCheckin) {
+		/*	if (item.getItemId() == R.id.miEditCheckin) {
 			//		CheckinEditMode.editMode = true;
 			//		invalidateOptionsMenu();
 			return true;
@@ -197,9 +197,10 @@ public class AthleteCoachCheckinActivity extends FragmentActivity implements Tab
 			//		CheckinEditMode.editMode = false;
 			//		invalidateOptionsMenu();
 			postAttendance();
-			return true;
-		} else if (item.getItemId() == android.R.id.home) {
+			return true; 
+		} else */ if (item.getItemId() == android.R.id.home) {
 			UpdateSession();
+			overridePendingTransition(R.anim.left_in, R.anim.right_out);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);

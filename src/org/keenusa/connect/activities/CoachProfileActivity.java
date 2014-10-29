@@ -99,6 +99,7 @@ public class CoachProfileActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_coach_profile);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		overridePendingTransition(R.anim.left_out, R.anim.right_in);
 		onPhoneLongClickListener = new OnPhoneLongClickListener(this);
 		onEmailLongClickListener = new OnEmailLongClickListener(this);
 		onSmsIconClickListener = new OnSmsIconClickListener(this);
@@ -122,9 +123,11 @@ public class CoachProfileActivity extends FragmentActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_edit) {
 			showUpdateCoachProfileDialog();
+			overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			return true;
 		} else if (item.getItemId() == android.R.id.home) {
 			finish();
+			overridePendingTransition(R.anim.left_in, R.anim.right_out);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

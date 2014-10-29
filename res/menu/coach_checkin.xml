@@ -8,14 +8,14 @@
         android:orderInCategory="5"
         android:showAsAction="always"
         android:title="Search"/>
-    <item
+     <item
         android:id="@+id/miAddCoaches"
         android:icon="@drawable/ic_add_coach"
         android:orderInCategory="20"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/add_coach_label"/>
     
-    <item
+  <!--  <item
         android:id="@+id/miSendMessageCoaches"
         android:icon="@drawable/ic_send_message"
         android:orderInCategory="10"
@@ -27,6 +27,6 @@
         android:icon="@drawable/ic_check_all_in"
         android:orderInCategory="10"
         android:showAsAction="never"
-        android:title="@string/check_all_coaches"/>
+        android:title="@string/check_all_coaches"/>  -->
 
 </menu>

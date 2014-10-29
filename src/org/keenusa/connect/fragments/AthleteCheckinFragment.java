@@ -233,11 +233,11 @@ public class AthleteCheckinFragment extends Fragment {
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		if (CheckinMenuActions.sendMassMessages == true) {
-			menu.findItem(R.id.miSendMessageAthletes).setVisible(true);
-		} else {
-			menu.findItem(R.id.miSendMessageAthletes).setVisible(false);
-		}
+//		if (CheckinMenuActions.sendMassMessages == true) {
+//			menu.findItem(R.id.miSendMessageAthletes).setVisible(true);
+//		} else {
+//			menu.findItem(R.id.miSendMessageAthletes).setVisible(false);
+//		}
 		super.onPrepareOptionsMenu(menu);
 	}
 
@@ -291,12 +291,12 @@ public class AthleteCheckinFragment extends Fragment {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.miSendMessageAthletes) {
-			showMassMessageDialog();
-		} else if (item.getItemId() == R.id.miCheckAllAthleteIn) {
-			checkInAllAthletes();
-		}
-
+//		if (item.getItemId() == R.id.miSendMessageAthletes) {
+//			showMassMessageDialog();
+//		} else if (item.getItemId() == R.id.miCheckAllAthleteIn) {
+//			checkInAllAthletes();
+//		}
+//
 		return super.onOptionsItemSelected(item);
 	}
 

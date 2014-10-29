@@ -9,7 +9,7 @@
         android:showAsAction="always"
         android:title="Search"/>
 
-    <item
+  <!--   <item
         android:id="@+id/miSendMessageAthletes"
         android:icon="@drawable/ic_send_message"
         android:orderInCategory="10"
@@ -21,6 +21,6 @@
         android:icon="@drawable/ic_check_all_in"
         android:orderInCategory="10"
         android:showAsAction="never"
-        android:title="@string/check_all_athlete"/>
+        android:title="@string/check_all_athlete"/>  -->
 
 </menu>

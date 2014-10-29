@@ -556,18 +556,18 @@ public class SessionsFragment extends Fragment {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.miCollapseAll:
-			collapseAllListItems();
-			return true;
-
-		case R.id.miExpandAll:
-			expandAllListItems();
-			return true;
-
-		default:
+//		switch (item.getItemId()) {
+//		case R.id.miCollapseAll:
+//			collapseAllListItems();
+//			return true;
+//
+//		case R.id.miExpandAll:
+//			expandAllListItems();
+//			return true;
+//
+//		default:
 			return super.onOptionsItemSelected(item);
-		}
+//		}
 	}
 
 	private String getFullSessionName(KeenSession session) {

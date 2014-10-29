@@ -255,6 +255,7 @@ public class SessionDetailsActivity extends FragmentActivity {
 			showMassMessageDialog();
 		} else if (item.getItemId() == android.R.id.home) {
 			finish();
+			overridePendingTransition(R.anim.left_in, R.anim.right_out);
 			return true;
 		}
 

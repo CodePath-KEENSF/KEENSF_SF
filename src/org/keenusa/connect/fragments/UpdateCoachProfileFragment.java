@@ -72,7 +72,7 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				cancelCoachProfileUpdate(v);
-
+				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 
@@ -81,7 +81,7 @@ public class UpdateCoachProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				updateCoachProfileDetails(v);
-
+				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 

@@ -82,7 +82,7 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				cancelAthleteProfileUpdate(v);
-
+				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 
@@ -91,7 +91,7 @@ public class UpdateAthleteProfileFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				updateAthleteProfileDetails(v);
-
+				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
 			}
 		});
 

@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -38,6 +39,7 @@ public class AtheletsFragment extends Fragment {
 	private LinearLayout llLoadingAthletesIndicator;
 	public String dummySearchString;
 	private SearchView searchView;
+	private ProgressBar progressBar;
 
 	// Creates a new fragment with given arguments
 	public static AtheletsFragment newInstance() {
@@ -134,6 +136,7 @@ public class AtheletsFragment extends Fragment {
 		protected void onPreExecute() {
 			if (llLoadingAthletesIndicator != null) {
 				llLoadingAthletesIndicator.setVisibility(View.VISIBLE);
+				loadProgressBar();
 			}
 		}
 
@@ -153,6 +156,17 @@ public class AtheletsFragment extends Fragment {
 			adapter.addAll(athletes);
 		}
 
+	}
+	
+	private void loadProgressBar() {
+		try {
+			for (int i = 1; i <= 10; i++) {
+				progressBar.setProgress(i*10);
+				Thread.sleep(500);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

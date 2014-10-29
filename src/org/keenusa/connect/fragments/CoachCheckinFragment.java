@@ -235,15 +235,15 @@ public class CoachCheckinFragment extends Fragment {
 		MenuItem miAddCoaches = menu.findItem(R.id.miAddCoaches);
 		if (CheckinMenuActions.editMode == true) {
 			miAddCoaches.setVisible(true);
-		} else {
-			miAddCoaches.setVisible(false);
-		}
-
-		if (CheckinMenuActions.sendMassMessages == true) {
-			menu.findItem(R.id.miSendMessageCoaches).setVisible(true);
-		} else {
-			menu.findItem(R.id.miSendMessageCoaches).setVisible(false);
-		}
+		} //else {
+//			miAddCoaches.setVisible(false);
+//		}
+//
+//		if (CheckinMenuActions.sendMassMessages == true) {
+//			menu.findItem(R.id.miSendMessageCoaches).setVisible(true);
+//		} else {
+//			menu.findItem(R.id.miSendMessageCoaches).setVisible(false);
+//		}
 
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -303,16 +303,17 @@ public class CoachCheckinFragment extends Fragment {
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.miSendMessageCoaches) {
-			showMassMessageDialog();
-		} else if (item.getItemId() == R.id.miAddCoaches) {
+//		if (item.getItemId() == R.id.miSendMessageCoaches) {
+//			showMassMessageDialog();
+		/*} else*/ if (item.getItemId() == R.id.miAddCoaches) {
 			DialogFragment newFragment = new AddCoachToCheckinFragment();
 			newFragment.show(getActivity().getSupportFragmentManager(),
 					"Add Coach");
-		} else if (item.getItemId() == R.id.miCheckAllCoachIn) {
-			checkInAllCoaches();
-		}
-
+			getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+		} //else if (item.getItemId() == R.id.miCheckAllCoachIn) {
+//			checkInAllCoaches();
+//		}
+//
 		return super.onOptionsItemSelected(item);
 	}
 
