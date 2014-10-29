@@ -39,13 +39,13 @@ public class CoachListItemAdapter extends ArrayAdapter<Coach> {
 		}
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 		if (position == 0 && getCount() == 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		} else if (position == 0 && getCount() > 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		} else if (position == getCount() - 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		} else {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		}
 
 		viewHolder.tvCoachName.setText(PersonNameFormatter.getFormatedNameString(coach.getFullName()));

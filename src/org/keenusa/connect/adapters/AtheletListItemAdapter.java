@@ -43,13 +43,13 @@ public class AtheletListItemAdapter extends ArrayAdapter<Athlete> {
 		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 
 		if (position == 0 && getCount() == 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		} else if (position == 0 && getCount() > 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		} else if (position == getCount() - 1) {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		} else {
-			convertView.setBackgroundResource(R.drawable.list_item_background);
+			convertView.setBackgroundResource(R.drawable.selector_single_item_list_background);
 		}
 
 		viewHolder.tvAthleteName.setText(PersonNameFormatter.getFormatedNameString(athlete.getFullName()));
