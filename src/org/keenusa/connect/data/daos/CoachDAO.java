@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.keenusa.connect.data.KeenConnectDB;
+import org.keenusa.connect.data.tables.CoachAttendanceTable;
 import org.keenusa.connect.data.tables.CoachTable;
 import org.keenusa.connect.models.Coach;
 import org.keenusa.connect.models.ContactPerson;
@@ -56,6 +57,22 @@ public class CoachDAO {
 		}
 		coachsCursor.close();
 		return allCoaches;
+	}
+
+	public List<Coach> getCoachesToRegisterForSessionList(long sessionId) {
+		List<Coach> coaches = null;
+		SQLiteDatabase db = localDB.getReadableDatabase();
+		Cursor coachsCursor = db.query(CoachTable.TABLE_NAME, columnNames, CoachTable.ID_COL_NAME + " NOT IN (SELECT "
+				+ CoachAttendanceTable.COACH_ID_COL_NAME + " FROM " + CoachAttendanceTable.TABLE_NAME + " WHERE "
+				+ CoachAttendanceTable.SESSION_ID_COL_NAME + "=" + sessionId + ")", null, null, null, CoachTable.FIRST_NAME_COL_NAME + " ASC", null);
+		if (coachsCursor.getCount() > 0) {
+			coachsCursor.moveToFirst();
+			coaches = createCoachListFromCursor(coachsCursor);
+		} else {
+			coaches = new ArrayList<Coach>();
+		}
+		coachsCursor.close();
+		return coaches;
 	}
 
 	public Coach getCoachById(long id) {
