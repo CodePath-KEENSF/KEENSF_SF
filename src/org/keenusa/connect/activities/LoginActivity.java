@@ -21,6 +21,7 @@ public class LoginActivity extends Activity {
 	private Button btnLogin;
 	private EditText etUserName;
 	private EditText etPassword;
+	private TextView tvProgressCount;
 	private ProgressBar pbLoadingProgress;
 	private int loadingProgress;
 
@@ -32,6 +33,7 @@ public class LoginActivity extends Activity {
 		etUserName = (EditText) findViewById(R.id.etUserName);
 		etPassword = (EditText) findViewById(R.id.etPassword);
 		tvProgressUpdates = (TextView) findViewById(R.id.tvProgressUpdates);
+		tvProgressCount = (TextView) findViewById(R.id.tvProgressCount);
 		btnLogin = (Button) findViewById(R.id.btnApiLogin);
 		pbLoadingProgress = (ProgressBar) findViewById(R.id.pbLoadingProgress);
 
@@ -40,8 +42,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				switchUIToLoginActivatedState();
-				pbLoadingProgress.setProgress(0);
-				pbLoadingProgress.setVisibility(View.VISIBLE);
+
 				new RemoteDataLoader(LoginActivity.this, new DataLoaderResultListener() {
 
 					@Override
@@ -52,6 +53,7 @@ public class LoginActivity extends Activity {
 							public void run() {
 								tvProgressUpdates.setText("");
 								pbLoadingProgress.setProgress(100);
+								tvProgressCount.setText("100%");
 
 							}
 
@@ -68,7 +70,8 @@ public class LoginActivity extends Activity {
 							@Override
 							public void run() {
 								loadingProgress = loadingProgress + progressDelta;
-								tvProgressUpdates.setText(loadingProgress + "% - " + progressMessage);
+								tvProgressUpdates.setText(progressMessage);
+								tvProgressCount.setText(loadingProgress + "%");
 								pbLoadingProgress.setProgress(loadingProgress);
 							}
 						});
@@ -88,13 +91,14 @@ public class LoginActivity extends Activity {
 	}
 
 	private void switchUIToLoginActivatedState() {
-		etUserName.clearFocus();
-		etPassword.clearFocus();
-		etUserName.setEnabled(false);
-		etPassword.setEnabled(false);
-		btnLogin.setEnabled(false);
+		etUserName.setVisibility(View.INVISIBLE);
+		etPassword.setVisibility(View.INVISIBLE);
+		btnLogin.setVisibility(View.INVISIBLE);
 		closeInputFromWindow();
-
+		pbLoadingProgress.setProgress(0);
+		tvProgressCount.setText("0%");
+		pbLoadingProgress.setVisibility(View.VISIBLE);
+		tvProgressCount.setVisibility(View.VISIBLE);
 	}
 
 	private void openSessionAthleteCoachList() {
